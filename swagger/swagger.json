@@ -288,7 +288,26 @@
                 }
             }
         },
-        "/user": {
+        "/user/profile": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "展示用户自己的信息",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
             "get": {
                 "produces": [
                     "text/html"
@@ -302,28 +321,9 @@
                         "type": "integer",
                         "description": "用户ID",
                         "name": "id",
-                        "in": "query"
+                        "in": "path"
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/profile": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "用户"
-                ],
-                "summary": "展示用户自己的信息",
                 "responses": {
                     "200": {
                         "description": "页面HTML",

@@ -9,8 +9,8 @@ type C struct{}
 // @summary 访问用户详情首页
 // @tags    用户
 // @produce html
-// @param   id query int false "用户ID"
-// @router  /user [GET]
+// @param   id path int false "用户ID"
+// @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (c *C) Index(r *ghttp.Request) {
 
