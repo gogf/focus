@@ -14,7 +14,7 @@ import (
 type Entity struct {
     Id        uint        `orm:"id,primary" json:"id"`         // 回复ID                                   
     ParentId  uint        `orm:"parent_id"  json:"parent_id"`  // 回复对应的上一级回复ID(没有的话默认为0)  
-    Type      string      `orm:"type"       json:"type"`       // 评论类型: question, article, reply       
+    Type      string      `orm:"type"       json:"type"`       // 评论类型: topic, article, reply          
     TargetId  uint        `orm:"target_id"  json:"target_id"`  // 对应内容ID                               
     UserId    uint        `orm:"user_id"    json:"user_id"`    // 网站用户ID                               
     ZanCount  uint        `orm:"zan_count"  json:"zan_count"`  // 赞                                       

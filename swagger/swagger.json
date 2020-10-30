@@ -1,0 +1,260 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {},
+        "license": {}
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "首页"
+                ],
+                "summary": "展示站点首页",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/article": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "展示文章板块页面",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "应用ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "应用名称",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/article/item": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "展示文章内容",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章ID",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "登录"
+                ],
+                "summary": "展示登录页面",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login/do": {
+            "post": {
+                "description": "前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录"
+                ],
+                "summary": "提交登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "账号",
+                        "name": "passport",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "验证码",
+                        "name": "verify_code",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "执行结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "展示社区模块页面",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic/item": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "展示社区模块特定话题内容页面",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "话题ID",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "访问用户详情首页",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "展示用户自己的信息",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.JsonRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码((0:成功, 1:失败, \u003e1:错误码))",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "返回数据(业务接口定义具体数据结构)",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

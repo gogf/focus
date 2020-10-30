@@ -6,15 +6,22 @@ import (
 
 type C struct{}
 
+// @summary 访问用户详情首页
+// @tags    用户
+// @produce html
+// @param   id query int false "用户ID"
+// @router  /user [GET]
+// @success 200 {string} html "页面HTML"
 func (c *C) Index(r *ghttp.Request) {
 
 }
 
-func (c *C) List(r *ghttp.Request) {
-
-}
-
-func (c *C) Item(r *ghttp.Request) {
+// @summary 展示用户自己的信息
+// @tags    用户
+// @produce html
+// @router  /user/profile [GET]
+// @success 200 {string} html "页面HTML"
+func (c *C) Profile(r *ghttp.Request) {
 
 }
 

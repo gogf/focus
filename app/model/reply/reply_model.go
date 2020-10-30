@@ -26,7 +26,7 @@ var (
 	Columns = struct {
 		Id         string // 回复ID                                   
         ParentId   string // 回复对应的上一级回复ID(没有的话默认为0)  
-        Type       string // 评论类型: question, article, reply       
+        Type       string // 评论类型: topic, article, reply          
         TargetId   string // 对应内容ID                               
         UserId     string // 网站用户ID                               
         ZanCount   string // 赞                                       
