@@ -18,8 +18,8 @@ func (c *C) Index(r *ghttp.Request) {
 // @summary 展示社区模块特定话题内容页面
 // @tags    话题
 // @produce html
-// @param   id query int false "话题ID"
-// @router  /topic/detail [GET]
+// @param   id path int false "话题ID"
+// @router  /topic/detail/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (c *C) Detail(r *ghttp.Request) {
 

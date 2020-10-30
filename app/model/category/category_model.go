@@ -24,29 +24,31 @@ var (
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 	// Columns defines and stores column names for table gf_category.
 	Columns = struct {
-		Id         string // 分类ID，自增主键                                        
-        Key        string // 栏目唯一键名，用于程序部分场景硬编码，一般不会用得到    
-        ParentId   string // 父级分类ID，用于层级管理                                
-        UserId     string // 创建的用户ID                                            
-        Name       string // 分类名称                                                
-        Sort       string // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶  
-        Thumb      string // 封面图                                                  
-        Brief      string // 简述                                                    
-        Content    string // 详细介绍                                                
-        CreatedAt  string // 创建时间                                                
-        UpdatedAt  string // 修改时间
+		Id           string // 分类ID，自增主键                                        
+        ContentType  string // 内容类型：topic, ask, article, reply                    
+        Key          string // 栏目唯一键名，用于程序部分场景硬编码，一般不会用得到    
+        ParentId     string // 父级分类ID，用于层级管理                                
+        UserId       string // 创建的用户ID                                            
+        Name         string // 分类名称                                                
+        Sort         string // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶  
+        Thumb        string // 封面图                                                  
+        Brief        string // 简述                                                    
+        Content      string // 详细介绍                                                
+        CreatedAt    string // 创建时间                                                
+        UpdatedAt    string // 修改时间
 	}{
-		Id:        "id",          
-        Key:       "key",         
-        ParentId:  "parent_id",   
-        UserId:    "user_id",     
-        Name:      "name",        
-        Sort:      "sort",        
-        Thumb:     "thumb",       
-        Brief:     "brief",       
-        Content:   "content",     
-        CreatedAt: "created_at",  
-        UpdatedAt: "updated_at",
+		Id:          "id",            
+        ContentType: "content_type",  
+        Key:         "key",           
+        ParentId:    "parent_id",     
+        UserId:      "user_id",       
+        Name:        "name",          
+        Sort:        "sort",          
+        Thumb:       "thumb",         
+        Brief:       "brief",         
+        Content:     "content",       
+        CreatedAt:   "created_at",    
+        UpdatedAt:   "updated_at",
 	}
 )
 

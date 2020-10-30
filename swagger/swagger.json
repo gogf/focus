@@ -33,20 +33,6 @@
                     "文章"
                 ],
                 "summary": "展示文章板块页面",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "应用ID",
-                        "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "应用名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "页面HTML",
@@ -57,7 +43,7 @@
                 }
             }
         },
-        "/article/detail": {
+        "/article/detail/{id}": {
             "get": {
                 "produces": [
                     "text/html"
@@ -71,7 +57,7 @@
                         "type": "integer",
                         "description": "文章ID",
                         "name": "id",
-                        "in": "query"
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -79,6 +65,117 @@
                         "description": "页面HTML",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ask": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "问答"
+                ],
+                "summary": "展示问答模块页面",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ask/detail/{id}": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "问答"
+                ],
+                "summary": "展示问答模块特定问题内容页面",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "话题ID",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/item": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "获取指定分类的详情信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "分类ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分类详情",
+                        "schema": {
+                            "$ref": "#/definitions/category.Item"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "获取分类列表，构造成树形结构返回",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "分类类型:topic, ask, article, reply",
+                        "name": "contentType",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "父级分类ID",
+                        "name": "parentId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分类列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/category.Item"
+                            }
                         }
                     }
                 }
@@ -164,7 +261,7 @@
                 }
             }
         },
-        "/topic/detail": {
+        "/topic/detail/{id}": {
             "get": {
                 "produces": [
                     "text/html"
@@ -178,7 +275,7 @@
                         "type": "integer",
                         "description": "话题ID",
                         "name": "id",
-                        "in": "query"
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -239,6 +336,31 @@
         }
     },
     "definitions": {
+        "category.Item": {
+            "type": "object",
+            "properties": {
+                "brief": {
+                    "description": "简述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "分类ID，自增主键",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父级分类ID，用于层级管理",
+                    "type": "integer"
+                },
+                "thumb": {
+                    "description": "封面图",
+                    "type": "string"
+                }
+            }
+        },
         "response.JsonRes": {
             "type": "object",
             "properties": {

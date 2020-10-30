@@ -28,7 +28,6 @@ var (
         Key         string // 唯一键名，用于程序硬编码，一般不常用                    
         CategoryId  string // 栏目ID                                                  
         UserId      string // 用户ID                                                  
-        AdoptId     string // 采纳的回复ID，问答模块有效                              
         Title       string // 标题                                                    
         Content     string // 内容                                                    
         Sort        string // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶  
@@ -47,7 +46,6 @@ var (
         Key:        "key",          
         CategoryId: "category_id",  
         UserId:     "user_id",      
-        AdoptId:    "adopt_id",     
         Title:      "title",        
         Content:    "content",      
         Sort:       "sort",         

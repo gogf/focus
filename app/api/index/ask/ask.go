@@ -1,4 +1,4 @@
-package article
+package ask
 
 import (
 	"github.com/gogf/gf/net/ghttp"
@@ -6,20 +6,20 @@ import (
 
 type C struct{}
 
-// @summary 展示文章板块页面
-// @tags    文章
+// @summary 展示问答模块页面
+// @tags    问答
 // @produce html
-// @router  /article [GET]
+// @router  /ask [GET]
 // @success 200 {string} html "页面HTML"
 func (c *C) Index(r *ghttp.Request) {
 
 }
 
-// @summary 展示文章内容
-// @tags    文章
+// @summary 展示问答模块特定问题内容页面
+// @tags    问答
 // @produce html
-// @param   id path int false "文章ID"
-// @router  /article/detail/{id} [GET]
+// @param   id path int false "话题ID"
+// @router  /ask/detail/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (c *C) Detail(r *ghttp.Request) {
 
