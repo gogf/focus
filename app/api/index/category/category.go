@@ -6,10 +6,6 @@ import (
 
 type C struct{}
 
-func (c *C) Index(r *ghttp.Request) {
-
-}
-
 func (c *C) List(r *ghttp.Request) {
 
 }

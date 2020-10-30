@@ -21,9 +21,9 @@ func (c *C) Index(r *ghttp.Request) {
 // @tags    文章
 // @produce html
 // @param   id   query int    false "文章ID"
-// @router  /article/item [GET]
+// @router  /article/detail [GET]
 // @success 200 {string} html "页面HTML"
-func (c *C) Item(r *ghttp.Request) {
+func (c *C) Detail(r *ghttp.Request) {
 
 }
 

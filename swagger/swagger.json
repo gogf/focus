@@ -57,7 +57,7 @@
                 }
             }
         },
-        "/article/item": {
+        "/article/detail": {
             "get": {
                 "produces": [
                     "text/html"
@@ -164,7 +164,7 @@
                 }
             }
         },
-        "/topic/item": {
+        "/topic/detail": {
             "get": {
                 "produces": [
                     "text/html"
