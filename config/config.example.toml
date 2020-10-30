@@ -1,0 +1,22 @@
+# HTTP Server配置
+[server]
+	Address     = ":8199"
+	ServerRoot  = "public"
+
+# 全局日志组件配置
+[logger]
+    Path   = "/tmp/log/focus"
+    Level  = "all"
+    Stdout = true
+
+# 模板引擎配置
+[viewer]
+    [viewer.admin]
+        Path        = "template"
+        DefaultFile = "index.html"
+
+
+# 数据库配置
+[database]
+    LinkInfo  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
+    Debug     = true
