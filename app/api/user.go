@@ -94,7 +94,7 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 // @description 前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。
 // @description 注意提交的密码是明文。
 // @description 登录成功后前端引导页面跳转。
-// @tags    登录
+// @tags    用户
 // @produce json
 // @param   passport    formData string true "账号"
 // @param   password    formData string true "密码"
@@ -123,7 +123,7 @@ func (a *loginApi) Login(r *ghttp.Request) {
 // @description 前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。
 // @description 注意提交的密码是明文。
 // @description 登录成功后前端引导页面跳转到首页。
-// @tags    登录
+// @tags    用户
 // @produce json
 // @param   passport    formData string true "账号"
 // @param   password    formData string true "密码"

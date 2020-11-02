@@ -348,7 +348,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "登录"
+                    "用户"
                 ],
                 "summary": "提交登录",
                 "parameters": [
@@ -390,7 +390,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "登录"
+                    "用户"
                 ],
                 "summary": "提交登录",
                 "parameters": [
