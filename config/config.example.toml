@@ -1,22 +1,21 @@
-# HTTP Server配置
+# HTTP Server configurations.
 [server]
-	Address     = ":8199"
-	ServerRoot  = "public"
+	Address        = ":8199"
+	ServerRoot     = "public"
+	RouteOverWrite = true
 
-# 全局日志组件配置
+# Logger configurations.
 [logger]
-    Path   = "/tmp/log/focus"
+    Path   = "/tmp/log/gf-alpha"
     Level  = "all"
     Stdout = true
 
+# View configurations.
 # 模板引擎配置
 [viewer]
-    [viewer.admin]
-        Path        = "template"
-        DefaultFile = "index.html"
+    defaultFile = "layout/default.html"
 
-
-# 数据库配置
+# Database configurations.
 [database]
-    LinkInfo  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
-    Debug     = true
+    Link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
+    Debug = true
