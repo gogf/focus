@@ -68,24 +68,24 @@ var (
 )
 
 // As sets an alias name for current table.
-func (dao *ArticleDao) As(as string) *ArticleDao {
-	return &ArticleDao{M:dao.M.As(as)}
+func (d *ArticleDao) As(as string) *ArticleDao {
+	return &ArticleDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (dao *ArticleDao) TX(tx *gdb.TX) *ArticleDao {
-	return &ArticleDao{M:dao.M.TX(tx)}
+func (d *ArticleDao) TX(tx *gdb.TX) *ArticleDao {
+	return &ArticleDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (dao *ArticleDao) Master() *ArticleDao {
-	return &ArticleDao{M:dao.M.Master()}
+func (d *ArticleDao) Master() *ArticleDao {
+	return &ArticleDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (dao *ArticleDao) Slave() *ArticleDao {
-	return &ArticleDao{M:dao.M.Slave()}
+func (d *ArticleDao) Slave() *ArticleDao {
+	return &ArticleDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -93,8 +93,8 @@ func (dao *ArticleDao) Slave() *ArticleDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ArticleDao) LeftJoin(table ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.LeftJoin(table...)}
+func (d *ArticleDao) LeftJoin(table ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -102,8 +102,8 @@ func (dao *ArticleDao) LeftJoin(table ...string) *ArticleDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ArticleDao) RightJoin(table ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.RightJoin(table...)}
+func (d *ArticleDao) RightJoin(table ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -111,34 +111,34 @@ func (dao *ArticleDao) RightJoin(table ...string) *ArticleDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ArticleDao) InnerJoin(table ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.InnerJoin(table...)}
+func (d *ArticleDao) InnerJoin(table ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (dao *ArticleDao) Fields(fields ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.Fields(fields...)}
+func (d *ArticleDao) Fields(fields ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (dao *ArticleDao) FieldsEx(fields ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.FieldsEx(fields...)}
+func (d *ArticleDao) FieldsEx(fields ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
-func (dao *ArticleDao) Option(option int) *ArticleDao {
-	return &ArticleDao{M:dao.M.Option(option)}
+func (d *ArticleDao) Option(option int) *ArticleDao {
+	return &ArticleDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (dao *ArticleDao) OmitEmpty() *ArticleDao {
-	return &ArticleDao{M:dao.M.OmitEmpty()}
+func (d *ArticleDao) OmitEmpty() *ArticleDao {
+	return &ArticleDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (dao *ArticleDao) Filter() *ArticleDao {
-	return &ArticleDao{M:dao.M.Filter()}
+func (d *ArticleDao) Filter() *ArticleDao {
+	return &ArticleDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -152,8 +152,8 @@ func (dao *ArticleDao) Filter() *ArticleDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (dao *ArticleDao) Where(where interface{}, args ...interface{}) *ArticleDao {
-	return &ArticleDao{M:dao.M.Where(where, args...)}
+func (d *ArticleDao) Where(where interface{}, args ...interface{}) *ArticleDao {
+	return &ArticleDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -161,54 +161,54 @@ func (dao *ArticleDao) Where(where interface{}, args ...interface{}) *ArticleDao
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (dao *ArticleDao) WherePri(where interface{}, args ...interface{}) *ArticleDao {
-	return &ArticleDao{M:dao.M.WherePri(where, args...)}
+func (d *ArticleDao) WherePri(where interface{}, args ...interface{}) *ArticleDao {
+	return &ArticleDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (dao *ArticleDao) And(where interface{}, args ...interface{}) *ArticleDao {
-	return &ArticleDao{M:dao.M.And(where, args...)}
+func (d *ArticleDao) And(where interface{}, args ...interface{}) *ArticleDao {
+	return &ArticleDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (dao *ArticleDao) Or(where interface{}, args ...interface{}) *ArticleDao {
-	return &ArticleDao{M:dao.M.Or(where, args...)}
+func (d *ArticleDao) Or(where interface{}, args ...interface{}) *ArticleDao {
+	return &ArticleDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (dao *ArticleDao) Group(groupBy string) *ArticleDao {
-	return &ArticleDao{M:dao.M.Group(groupBy)}
+func (d *ArticleDao) Group(groupBy string) *ArticleDao {
+	return &ArticleDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (dao *ArticleDao) Order(orderBy ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.Order(orderBy...)}
+func (d *ArticleDao) Order(orderBy ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (dao *ArticleDao) Limit(limit ...int) *ArticleDao {
-	return &ArticleDao{M:dao.M.Limit(limit...)}
+func (d *ArticleDao) Limit(limit ...int) *ArticleDao {
+	return &ArticleDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (dao *ArticleDao) Offset(offset int) *ArticleDao {
-	return &ArticleDao{M:dao.M.Offset(offset)}
+func (d *ArticleDao) Offset(offset int) *ArticleDao {
+	return &ArticleDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (dao *ArticleDao) Page(page, limit int) *ArticleDao {
-	return &ArticleDao{M:dao.M.Page(page, limit)}
+func (d *ArticleDao) Page(page, limit int) *ArticleDao {
+	return &ArticleDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (dao *ArticleDao) Batch(batch int) *ArticleDao {
-	return &ArticleDao{M:dao.M.Batch(batch)}
+func (d *ArticleDao) Batch(batch int) *ArticleDao {
+	return &ArticleDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -223,8 +223,8 @@ func (dao *ArticleDao) Batch(batch int) *ArticleDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (dao *ArticleDao) Cache(duration time.Duration, name ...string) *ArticleDao {
-	return &ArticleDao{M:dao.M.Cache(duration, name...)}
+func (d *ArticleDao) Cache(duration time.Duration, name ...string) *ArticleDao {
+	return &ArticleDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -234,8 +234,8 @@ func (dao *ArticleDao) Cache(duration time.Duration, name ...string) *ArticleDao
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (dao *ArticleDao) Data(data ...interface{}) *ArticleDao {
-	return &ArticleDao{M:dao.M.Data(data...)}
+func (d *ArticleDao) Data(data ...interface{}) *ArticleDao {
+	return &ArticleDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -244,8 +244,8 @@ func (dao *ArticleDao) Data(data ...interface{}) *ArticleDao {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *ArticleDao) All(where ...interface{}) ([]*model.Article, error) {
-	all, err := dao.M.All(where...)
+func (d *ArticleDao) All(where ...interface{}) ([]*model.Article, error) {
+	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -261,8 +261,8 @@ func (dao *ArticleDao) All(where ...interface{}) ([]*model.Article, error) {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *ArticleDao) One(where ...interface{}) (*model.Article, error) {
-	one, err := dao.M.One(where...)
+func (d *ArticleDao) One(where ...interface{}) (*model.Article, error) {
+	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -275,8 +275,8 @@ func (dao *ArticleDao) One(where ...interface{}) (*model.Article, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (dao *ArticleDao) FindOne(where ...interface{}) (*model.Article, error) {
-	one, err := dao.M.FindOne(where...)
+func (d *ArticleDao) FindOne(where ...interface{}) (*model.Article, error) {
+	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -289,8 +289,8 @@ func (dao *ArticleDao) FindOne(where ...interface{}) (*model.Article, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (dao *ArticleDao) FindAll(where ...interface{}) ([]*model.Article, error) {
-	all, err := dao.M.FindAll(where...)
+func (d *ArticleDao) FindAll(where ...interface{}) ([]*model.Article, error) {
+	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -302,8 +302,8 @@ func (dao *ArticleDao) FindAll(where ...interface{}) ([]*model.Article, error) {
 }
 
 // Chunk iterates the table with given size and callback function.
-func (dao *ArticleDao) Chunk(limit int, callback func(entities []*model.Article, err error) bool) {
-	dao.M.Chunk(limit, func(result gdb.Result, err error) bool {
+func (d *ArticleDao) Chunk(limit int, callback func(entities []*model.Article, err error) bool) {
+	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*model.Article
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -314,16 +314,16 @@ func (dao *ArticleDao) Chunk(limit int, callback func(entities []*model.Article,
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (dao *ArticleDao) LockUpdate() *ArticleDao {
-	return &ArticleDao{M:dao.M.LockUpdate()}
+func (d *ArticleDao) LockUpdate() *ArticleDao {
+	return &ArticleDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (dao *ArticleDao) LockShared() *ArticleDao {
-	return &ArticleDao{M:dao.M.LockShared()}
+func (d *ArticleDao) LockShared() *ArticleDao {
+	return &ArticleDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (dao *ArticleDao) Unscoped() *ArticleDao {
-	return &ArticleDao{M:dao.M.Unscoped()}
+func (d *ArticleDao) Unscoped() *ArticleDao {
+	return &ArticleDao{M:d.M.Unscoped()}
 }

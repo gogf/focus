@@ -58,24 +58,24 @@ var (
 )
 
 // As sets an alias name for current table.
-func (dao *ReplyDao) As(as string) *ReplyDao {
-	return &ReplyDao{M:dao.M.As(as)}
+func (d *ReplyDao) As(as string) *ReplyDao {
+	return &ReplyDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (dao *ReplyDao) TX(tx *gdb.TX) *ReplyDao {
-	return &ReplyDao{M:dao.M.TX(tx)}
+func (d *ReplyDao) TX(tx *gdb.TX) *ReplyDao {
+	return &ReplyDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (dao *ReplyDao) Master() *ReplyDao {
-	return &ReplyDao{M:dao.M.Master()}
+func (d *ReplyDao) Master() *ReplyDao {
+	return &ReplyDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (dao *ReplyDao) Slave() *ReplyDao {
-	return &ReplyDao{M:dao.M.Slave()}
+func (d *ReplyDao) Slave() *ReplyDao {
+	return &ReplyDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -83,8 +83,8 @@ func (dao *ReplyDao) Slave() *ReplyDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ReplyDao) LeftJoin(table ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.LeftJoin(table...)}
+func (d *ReplyDao) LeftJoin(table ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -92,8 +92,8 @@ func (dao *ReplyDao) LeftJoin(table ...string) *ReplyDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ReplyDao) RightJoin(table ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.RightJoin(table...)}
+func (d *ReplyDao) RightJoin(table ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -101,34 +101,34 @@ func (dao *ReplyDao) RightJoin(table ...string) *ReplyDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *ReplyDao) InnerJoin(table ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.InnerJoin(table...)}
+func (d *ReplyDao) InnerJoin(table ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (dao *ReplyDao) Fields(fields ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.Fields(fields...)}
+func (d *ReplyDao) Fields(fields ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (dao *ReplyDao) FieldsEx(fields ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.FieldsEx(fields...)}
+func (d *ReplyDao) FieldsEx(fields ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
-func (dao *ReplyDao) Option(option int) *ReplyDao {
-	return &ReplyDao{M:dao.M.Option(option)}
+func (d *ReplyDao) Option(option int) *ReplyDao {
+	return &ReplyDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (dao *ReplyDao) OmitEmpty() *ReplyDao {
-	return &ReplyDao{M:dao.M.OmitEmpty()}
+func (d *ReplyDao) OmitEmpty() *ReplyDao {
+	return &ReplyDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (dao *ReplyDao) Filter() *ReplyDao {
-	return &ReplyDao{M:dao.M.Filter()}
+func (d *ReplyDao) Filter() *ReplyDao {
+	return &ReplyDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -142,8 +142,8 @@ func (dao *ReplyDao) Filter() *ReplyDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (dao *ReplyDao) Where(where interface{}, args ...interface{}) *ReplyDao {
-	return &ReplyDao{M:dao.M.Where(where, args...)}
+func (d *ReplyDao) Where(where interface{}, args ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -151,54 +151,54 @@ func (dao *ReplyDao) Where(where interface{}, args ...interface{}) *ReplyDao {
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (dao *ReplyDao) WherePri(where interface{}, args ...interface{}) *ReplyDao {
-	return &ReplyDao{M:dao.M.WherePri(where, args...)}
+func (d *ReplyDao) WherePri(where interface{}, args ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (dao *ReplyDao) And(where interface{}, args ...interface{}) *ReplyDao {
-	return &ReplyDao{M:dao.M.And(where, args...)}
+func (d *ReplyDao) And(where interface{}, args ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (dao *ReplyDao) Or(where interface{}, args ...interface{}) *ReplyDao {
-	return &ReplyDao{M:dao.M.Or(where, args...)}
+func (d *ReplyDao) Or(where interface{}, args ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (dao *ReplyDao) Group(groupBy string) *ReplyDao {
-	return &ReplyDao{M:dao.M.Group(groupBy)}
+func (d *ReplyDao) Group(groupBy string) *ReplyDao {
+	return &ReplyDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (dao *ReplyDao) Order(orderBy ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.Order(orderBy...)}
+func (d *ReplyDao) Order(orderBy ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (dao *ReplyDao) Limit(limit ...int) *ReplyDao {
-	return &ReplyDao{M:dao.M.Limit(limit...)}
+func (d *ReplyDao) Limit(limit ...int) *ReplyDao {
+	return &ReplyDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (dao *ReplyDao) Offset(offset int) *ReplyDao {
-	return &ReplyDao{M:dao.M.Offset(offset)}
+func (d *ReplyDao) Offset(offset int) *ReplyDao {
+	return &ReplyDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (dao *ReplyDao) Page(page, limit int) *ReplyDao {
-	return &ReplyDao{M:dao.M.Page(page, limit)}
+func (d *ReplyDao) Page(page, limit int) *ReplyDao {
+	return &ReplyDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (dao *ReplyDao) Batch(batch int) *ReplyDao {
-	return &ReplyDao{M:dao.M.Batch(batch)}
+func (d *ReplyDao) Batch(batch int) *ReplyDao {
+	return &ReplyDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -213,8 +213,8 @@ func (dao *ReplyDao) Batch(batch int) *ReplyDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (dao *ReplyDao) Cache(duration time.Duration, name ...string) *ReplyDao {
-	return &ReplyDao{M:dao.M.Cache(duration, name...)}
+func (d *ReplyDao) Cache(duration time.Duration, name ...string) *ReplyDao {
+	return &ReplyDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -224,8 +224,8 @@ func (dao *ReplyDao) Cache(duration time.Duration, name ...string) *ReplyDao {
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (dao *ReplyDao) Data(data ...interface{}) *ReplyDao {
-	return &ReplyDao{M:dao.M.Data(data...)}
+func (d *ReplyDao) Data(data ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -234,8 +234,8 @@ func (dao *ReplyDao) Data(data ...interface{}) *ReplyDao {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *ReplyDao) All(where ...interface{}) ([]*model.Reply, error) {
-	all, err := dao.M.All(where...)
+func (d *ReplyDao) All(where ...interface{}) ([]*model.Reply, error) {
+	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -251,8 +251,8 @@ func (dao *ReplyDao) All(where ...interface{}) ([]*model.Reply, error) {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *ReplyDao) One(where ...interface{}) (*model.Reply, error) {
-	one, err := dao.M.One(where...)
+func (d *ReplyDao) One(where ...interface{}) (*model.Reply, error) {
+	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -265,8 +265,8 @@ func (dao *ReplyDao) One(where ...interface{}) (*model.Reply, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (dao *ReplyDao) FindOne(where ...interface{}) (*model.Reply, error) {
-	one, err := dao.M.FindOne(where...)
+func (d *ReplyDao) FindOne(where ...interface{}) (*model.Reply, error) {
+	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -279,8 +279,8 @@ func (dao *ReplyDao) FindOne(where ...interface{}) (*model.Reply, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (dao *ReplyDao) FindAll(where ...interface{}) ([]*model.Reply, error) {
-	all, err := dao.M.FindAll(where...)
+func (d *ReplyDao) FindAll(where ...interface{}) ([]*model.Reply, error) {
+	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -292,8 +292,8 @@ func (dao *ReplyDao) FindAll(where ...interface{}) ([]*model.Reply, error) {
 }
 
 // Chunk iterates the table with given size and callback function.
-func (dao *ReplyDao) Chunk(limit int, callback func(entities []*model.Reply, err error) bool) {
-	dao.M.Chunk(limit, func(result gdb.Result, err error) bool {
+func (d *ReplyDao) Chunk(limit int, callback func(entities []*model.Reply, err error) bool) {
+	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*model.Reply
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -304,16 +304,16 @@ func (dao *ReplyDao) Chunk(limit int, callback func(entities []*model.Reply, err
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (dao *ReplyDao) LockUpdate() *ReplyDao {
-	return &ReplyDao{M:dao.M.LockUpdate()}
+func (d *ReplyDao) LockUpdate() *ReplyDao {
+	return &ReplyDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (dao *ReplyDao) LockShared() *ReplyDao {
-	return &ReplyDao{M:dao.M.LockShared()}
+func (d *ReplyDao) LockShared() *ReplyDao {
+	return &ReplyDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (dao *ReplyDao) Unscoped() *ReplyDao {
-	return &ReplyDao{M:dao.M.Unscoped()}
+func (d *ReplyDao) Unscoped() *ReplyDao {
+	return &ReplyDao{M:d.M.Unscoped()}
 }

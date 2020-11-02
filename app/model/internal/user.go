@@ -11,7 +11,7 @@ import (
 // User is the golang structure for table gf_user.
 type User struct {
     Id        uint        `orm:"id,primary" json:"id"`         // UID                                                                 
-    RoleId    uint        `orm:"role_id"    json:"role_id"`    // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色  
+    RoleId    int         `orm:"role_id"    json:"role_id"`    // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色  
     Passport  string      `orm:"passport"   json:"passport"`   // 账号                                                                
     Password  string      `orm:"password"   json:"password"`   // MD5密码                                                             
     Nickname  string      `orm:"nickname"   json:"nickname"`   // 昵称                                                                

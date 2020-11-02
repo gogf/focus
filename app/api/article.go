@@ -13,7 +13,7 @@ var Article = new(articleApi)
 // @produce html
 // @router  /article [GET]
 // @success 200 {string} html "页面HTML"
-func (api *articleApi) Index(r *ghttp.Request) {
+func (a *articleApi) Index(r *ghttp.Request) {
 
 }
 
@@ -23,18 +23,18 @@ func (api *articleApi) Index(r *ghttp.Request) {
 // @param   id path int false "文章ID"
 // @router  /article/detail/{id} [GET]
 // @success 200 {string} html "页面HTML"
-func (api *articleApi) Detail(r *ghttp.Request) {
+func (a *articleApi) Detail(r *ghttp.Request) {
 
 }
 
-func (api *articleApi) Create(r *ghttp.Request) {
+func (a *articleApi) Create(r *ghttp.Request) {
 
 }
 
-func (api *articleApi) Update(r *ghttp.Request) {
+func (a *articleApi) Update(r *ghttp.Request) {
 
 }
 
-func (api *articleApi) Delete(r *ghttp.Request) {
+func (a *articleApi) Delete(r *ghttp.Request) {
 
 }

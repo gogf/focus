@@ -13,6 +13,6 @@ var Index = new(indexApi)
 // @produce html
 // @router  / [GET]
 // @success 200 {string} html "页面HTML"
-func (api *indexApi) Index(r *ghttp.Request) {
+func (a *indexApi) Index(r *ghttp.Request) {
 
 }

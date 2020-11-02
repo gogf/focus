@@ -25,12 +25,12 @@ var (
 )
 
 // 查询列表
-func (dao *categoryDao) GetList(r *model.CategoryDaoGetListReq) ([]*model.CategoryItem, error) {
-	m := dao.Where(dao.Columns.ContentType, r.ContentType)
+func (d *categoryDao) GetList(r *model.CategoryDaoGetListReq) ([]*model.CategoryItem, error) {
+	m := d.Where(d.Columns.ContentType, r.ContentType)
 	if r.ParentId > 0 {
-		m = m.Where(dao.Columns.ParentId, r.ParentId)
+		m = m.Where(d.Columns.ParentId, r.ParentId)
 	}
-	m = m.Order(dao.Columns.Sort, "ASC")
+	m = m.Order(d.Columns.Sort, "ASC")
 	// 查询数据
 	all, err := m.All()
 	if err != nil {
@@ -39,7 +39,7 @@ func (dao *categoryDao) GetList(r *model.CategoryDaoGetListReq) ([]*model.Catego
 	// 结构体转换
 	list := make([]*model.CategoryItem, len(all))
 	for i, v := range all {
-		list[i], err = dao.entityToItem(v)
+		list[i], err = d.entityToItem(v)
 		if err != nil {
 			return nil, err
 		}
@@ -48,16 +48,16 @@ func (dao *categoryDao) GetList(r *model.CategoryDaoGetListReq) ([]*model.Catego
 }
 
 // 查询详情
-func (dao *categoryDao) GetItem(id uint) (*model.CategoryItem, error) {
-	entity, err := dao.FindOne(id)
+func (d *categoryDao) GetItem(id uint) (*model.CategoryItem, error) {
+	entity, err := d.FindOne(id)
 	if err != nil {
 		return nil, err
 	}
-	return dao.entityToItem(entity)
+	return d.entityToItem(entity)
 }
 
 // 将ORM Entity装换为Item对象返回
-func (dao *categoryDao) entityToItem(entity *model.Category) (*model.CategoryItem, error) {
+func (d *categoryDao) entityToItem(entity *model.Category) (*model.CategoryItem, error) {
 	if entity == nil {
 		return nil, nil
 	}

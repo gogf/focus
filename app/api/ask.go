@@ -13,7 +13,7 @@ var Ask = new(askApi)
 // @produce html
 // @router  /ask [GET]
 // @success 200 {string} html "页面HTML"
-func (api *askApi) Index(r *ghttp.Request) {
+func (a *askApi) Index(r *ghttp.Request) {
 
 }
 
@@ -23,18 +23,18 @@ func (api *askApi) Index(r *ghttp.Request) {
 // @param   id path int false "话题ID"
 // @router  /ask/detail/{id} [GET]
 // @success 200 {string} html "页面HTML"
-func (api *askApi) Detail(r *ghttp.Request) {
+func (a *askApi) Detail(r *ghttp.Request) {
 
 }
 
-func (api *askApi) Create(r *ghttp.Request) {
+func (a *askApi) Create(r *ghttp.Request) {
 
 }
 
-func (api *askApi) Update(r *ghttp.Request) {
+func (a *askApi) Update(r *ghttp.Request) {
 
 }
 
-func (api *askApi) Delete(r *ghttp.Request) {
+func (a *askApi) Delete(r *ghttp.Request) {
 
 }

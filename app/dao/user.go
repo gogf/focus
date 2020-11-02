@@ -6,6 +6,10 @@ package dao
 
 import (
 	"focus/app/dao/internal"
+	"focus/app/model"
+	"github.com/gogf/gf/crypto/gmd5"
+	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/frame/g"
 )
 
 // userDao is the manager for logic model data accessing
@@ -22,4 +26,74 @@ var (
 	}
 )
 
-// Fill with you ideas below.
+// 将密码按照内部算法进行加密
+func (d *userDao) EncryptPassword(passport, password string) string {
+	return gmd5.MustEncrypt(passport + password)
+}
+
+// 根据账号和密码查询用户信息，一般用于账号密码登录。
+// 注意password参数传入的是按照相同加密算法加密过后的密码字符串。
+func (d *userDao) GetUserByPassportAndPassword(passport, password string) (*model.User, error) {
+	return d.Where(g.Map{
+		d.Columns.Passport: passport,
+		d.Columns.Password: d.EncryptPassword(passport, password),
+	}).One()
+}
+
+// 检测给定的账号是否唯一
+func (d *userDao) CheckPassportUnique(passport string) error {
+	n, err := d.Data(d.Columns.Password, passport).Count()
+	if err != nil {
+		return err
+	}
+	if n > 0 {
+		return gerror.Newf(`账号"%s"已被占用`, passport)
+	}
+	return nil
+}
+
+// 检测给定的昵称是否唯一
+func (d *userDao) CheckNicknameUnique(nickname string) error {
+	n, err := d.Data(d.Columns.Nickname, nickname).Count()
+	if err != nil {
+		return err
+	}
+	if n > 0 {
+		return gerror.Newf(`昵称"%s"已被占用`, nickname)
+	}
+	return nil
+}
+
+// 用户注册
+func (d *userDao) Register(r *model.UserDaoRegisterReq) error {
+	if r.RoleId == 0 {
+		r.RoleId = model.UserDefaultRoleId
+	}
+	if err := d.CheckPassportUnique(r.Passport); err != nil {
+		return err
+	}
+	if err := d.CheckNicknameUnique(r.Nickname); err != nil {
+		return err
+	}
+	r.Password = d.EncryptPassword(r.Passport, r.Password)
+	_, err := d.Data(r).Save()
+	return err
+}
+
+// 修改个人资料
+func (d *userDao) UpdateProfile(r *model.UserDaoUpdateProfileReq) error {
+	if r.Id == 0 {
+		return gerror.New("用户ID不能为空")
+	}
+	if err := d.CheckNicknameUnique(r.Nickname); err != nil {
+		return err
+	}
+	_, err := d.Data(r).Save()
+	return err
+}
+
+// 禁用用户
+func (d *userDao) Disable(id uint) error {
+	_, err := d.Data(d.Columns.Status, model.UserStatusDisabled).Where(d.Columns.Id, id).Update()
+	return err
+}

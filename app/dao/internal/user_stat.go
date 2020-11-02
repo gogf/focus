@@ -46,24 +46,24 @@ var (
 )
 
 // As sets an alias name for current table.
-func (dao *UserStatDao) As(as string) *UserStatDao {
-	return &UserStatDao{M:dao.M.As(as)}
+func (d *UserStatDao) As(as string) *UserStatDao {
+	return &UserStatDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (dao *UserStatDao) TX(tx *gdb.TX) *UserStatDao {
-	return &UserStatDao{M:dao.M.TX(tx)}
+func (d *UserStatDao) TX(tx *gdb.TX) *UserStatDao {
+	return &UserStatDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (dao *UserStatDao) Master() *UserStatDao {
-	return &UserStatDao{M:dao.M.Master()}
+func (d *UserStatDao) Master() *UserStatDao {
+	return &UserStatDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (dao *UserStatDao) Slave() *UserStatDao {
-	return &UserStatDao{M:dao.M.Slave()}
+func (d *UserStatDao) Slave() *UserStatDao {
+	return &UserStatDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -71,8 +71,8 @@ func (dao *UserStatDao) Slave() *UserStatDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserStatDao) LeftJoin(table ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.LeftJoin(table...)}
+func (d *UserStatDao) LeftJoin(table ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -80,8 +80,8 @@ func (dao *UserStatDao) LeftJoin(table ...string) *UserStatDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserStatDao) RightJoin(table ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.RightJoin(table...)}
+func (d *UserStatDao) RightJoin(table ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -89,34 +89,34 @@ func (dao *UserStatDao) RightJoin(table ...string) *UserStatDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserStatDao) InnerJoin(table ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.InnerJoin(table...)}
+func (d *UserStatDao) InnerJoin(table ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (dao *UserStatDao) Fields(fields ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.Fields(fields...)}
+func (d *UserStatDao) Fields(fields ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (dao *UserStatDao) FieldsEx(fields ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.FieldsEx(fields...)}
+func (d *UserStatDao) FieldsEx(fields ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
-func (dao *UserStatDao) Option(option int) *UserStatDao {
-	return &UserStatDao{M:dao.M.Option(option)}
+func (d *UserStatDao) Option(option int) *UserStatDao {
+	return &UserStatDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (dao *UserStatDao) OmitEmpty() *UserStatDao {
-	return &UserStatDao{M:dao.M.OmitEmpty()}
+func (d *UserStatDao) OmitEmpty() *UserStatDao {
+	return &UserStatDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (dao *UserStatDao) Filter() *UserStatDao {
-	return &UserStatDao{M:dao.M.Filter()}
+func (d *UserStatDao) Filter() *UserStatDao {
+	return &UserStatDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -130,8 +130,8 @@ func (dao *UserStatDao) Filter() *UserStatDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (dao *UserStatDao) Where(where interface{}, args ...interface{}) *UserStatDao {
-	return &UserStatDao{M:dao.M.Where(where, args...)}
+func (d *UserStatDao) Where(where interface{}, args ...interface{}) *UserStatDao {
+	return &UserStatDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -139,54 +139,54 @@ func (dao *UserStatDao) Where(where interface{}, args ...interface{}) *UserStatD
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (dao *UserStatDao) WherePri(where interface{}, args ...interface{}) *UserStatDao {
-	return &UserStatDao{M:dao.M.WherePri(where, args...)}
+func (d *UserStatDao) WherePri(where interface{}, args ...interface{}) *UserStatDao {
+	return &UserStatDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (dao *UserStatDao) And(where interface{}, args ...interface{}) *UserStatDao {
-	return &UserStatDao{M:dao.M.And(where, args...)}
+func (d *UserStatDao) And(where interface{}, args ...interface{}) *UserStatDao {
+	return &UserStatDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (dao *UserStatDao) Or(where interface{}, args ...interface{}) *UserStatDao {
-	return &UserStatDao{M:dao.M.Or(where, args...)}
+func (d *UserStatDao) Or(where interface{}, args ...interface{}) *UserStatDao {
+	return &UserStatDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (dao *UserStatDao) Group(groupBy string) *UserStatDao {
-	return &UserStatDao{M:dao.M.Group(groupBy)}
+func (d *UserStatDao) Group(groupBy string) *UserStatDao {
+	return &UserStatDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (dao *UserStatDao) Order(orderBy ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.Order(orderBy...)}
+func (d *UserStatDao) Order(orderBy ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (dao *UserStatDao) Limit(limit ...int) *UserStatDao {
-	return &UserStatDao{M:dao.M.Limit(limit...)}
+func (d *UserStatDao) Limit(limit ...int) *UserStatDao {
+	return &UserStatDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (dao *UserStatDao) Offset(offset int) *UserStatDao {
-	return &UserStatDao{M:dao.M.Offset(offset)}
+func (d *UserStatDao) Offset(offset int) *UserStatDao {
+	return &UserStatDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (dao *UserStatDao) Page(page, limit int) *UserStatDao {
-	return &UserStatDao{M:dao.M.Page(page, limit)}
+func (d *UserStatDao) Page(page, limit int) *UserStatDao {
+	return &UserStatDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (dao *UserStatDao) Batch(batch int) *UserStatDao {
-	return &UserStatDao{M:dao.M.Batch(batch)}
+func (d *UserStatDao) Batch(batch int) *UserStatDao {
+	return &UserStatDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -201,8 +201,8 @@ func (dao *UserStatDao) Batch(batch int) *UserStatDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (dao *UserStatDao) Cache(duration time.Duration, name ...string) *UserStatDao {
-	return &UserStatDao{M:dao.M.Cache(duration, name...)}
+func (d *UserStatDao) Cache(duration time.Duration, name ...string) *UserStatDao {
+	return &UserStatDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -212,8 +212,8 @@ func (dao *UserStatDao) Cache(duration time.Duration, name ...string) *UserStatD
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (dao *UserStatDao) Data(data ...interface{}) *UserStatDao {
-	return &UserStatDao{M:dao.M.Data(data...)}
+func (d *UserStatDao) Data(data ...interface{}) *UserStatDao {
+	return &UserStatDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -222,8 +222,8 @@ func (dao *UserStatDao) Data(data ...interface{}) *UserStatDao {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *UserStatDao) All(where ...interface{}) ([]*model.UserStat, error) {
-	all, err := dao.M.All(where...)
+func (d *UserStatDao) All(where ...interface{}) ([]*model.UserStat, error) {
+	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -239,8 +239,8 @@ func (dao *UserStatDao) All(where ...interface{}) ([]*model.UserStat, error) {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *UserStatDao) One(where ...interface{}) (*model.UserStat, error) {
-	one, err := dao.M.One(where...)
+func (d *UserStatDao) One(where ...interface{}) (*model.UserStat, error) {
+	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -253,8 +253,8 @@ func (dao *UserStatDao) One(where ...interface{}) (*model.UserStat, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (dao *UserStatDao) FindOne(where ...interface{}) (*model.UserStat, error) {
-	one, err := dao.M.FindOne(where...)
+func (d *UserStatDao) FindOne(where ...interface{}) (*model.UserStat, error) {
+	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +267,8 @@ func (dao *UserStatDao) FindOne(where ...interface{}) (*model.UserStat, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (dao *UserStatDao) FindAll(where ...interface{}) ([]*model.UserStat, error) {
-	all, err := dao.M.FindAll(where...)
+func (d *UserStatDao) FindAll(where ...interface{}) ([]*model.UserStat, error) {
+	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -280,8 +280,8 @@ func (dao *UserStatDao) FindAll(where ...interface{}) ([]*model.UserStat, error)
 }
 
 // Chunk iterates the table with given size and callback function.
-func (dao *UserStatDao) Chunk(limit int, callback func(entities []*model.UserStat, err error) bool) {
-	dao.M.Chunk(limit, func(result gdb.Result, err error) bool {
+func (d *UserStatDao) Chunk(limit int, callback func(entities []*model.UserStat, err error) bool) {
+	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*model.UserStat
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -292,16 +292,16 @@ func (dao *UserStatDao) Chunk(limit int, callback func(entities []*model.UserSta
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (dao *UserStatDao) LockUpdate() *UserStatDao {
-	return &UserStatDao{M:dao.M.LockUpdate()}
+func (d *UserStatDao) LockUpdate() *UserStatDao {
+	return &UserStatDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (dao *UserStatDao) LockShared() *UserStatDao {
-	return &UserStatDao{M:dao.M.LockShared()}
+func (d *UserStatDao) LockShared() *UserStatDao {
+	return &UserStatDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (dao *UserStatDao) Unscoped() *UserStatDao {
-	return &UserStatDao{M:dao.M.Unscoped()}
+func (d *UserStatDao) Unscoped() *UserStatDao {
+	return &UserStatDao{M:d.M.Unscoped()}
 }

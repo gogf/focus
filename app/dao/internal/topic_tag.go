@@ -46,24 +46,24 @@ var (
 )
 
 // As sets an alias name for current table.
-func (dao *TopicTagDao) As(as string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.As(as)}
+func (d *TopicTagDao) As(as string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (dao *TopicTagDao) TX(tx *gdb.TX) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.TX(tx)}
+func (d *TopicTagDao) TX(tx *gdb.TX) *TopicTagDao {
+	return &TopicTagDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (dao *TopicTagDao) Master() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Master()}
+func (d *TopicTagDao) Master() *TopicTagDao {
+	return &TopicTagDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (dao *TopicTagDao) Slave() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Slave()}
+func (d *TopicTagDao) Slave() *TopicTagDao {
+	return &TopicTagDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -71,8 +71,8 @@ func (dao *TopicTagDao) Slave() *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *TopicTagDao) LeftJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.LeftJoin(table...)}
+func (d *TopicTagDao) LeftJoin(table ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -80,8 +80,8 @@ func (dao *TopicTagDao) LeftJoin(table ...string) *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *TopicTagDao) RightJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.RightJoin(table...)}
+func (d *TopicTagDao) RightJoin(table ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -89,34 +89,34 @@ func (dao *TopicTagDao) RightJoin(table ...string) *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *TopicTagDao) InnerJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.InnerJoin(table...)}
+func (d *TopicTagDao) InnerJoin(table ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (dao *TopicTagDao) Fields(fields ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Fields(fields...)}
+func (d *TopicTagDao) Fields(fields ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (dao *TopicTagDao) FieldsEx(fields ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.FieldsEx(fields...)}
+func (d *TopicTagDao) FieldsEx(fields ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
-func (dao *TopicTagDao) Option(option int) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Option(option)}
+func (d *TopicTagDao) Option(option int) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (dao *TopicTagDao) OmitEmpty() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.OmitEmpty()}
+func (d *TopicTagDao) OmitEmpty() *TopicTagDao {
+	return &TopicTagDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (dao *TopicTagDao) Filter() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Filter()}
+func (d *TopicTagDao) Filter() *TopicTagDao {
+	return &TopicTagDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -130,8 +130,8 @@ func (dao *TopicTagDao) Filter() *TopicTagDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (dao *TopicTagDao) Where(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Where(where, args...)}
+func (d *TopicTagDao) Where(where interface{}, args ...interface{}) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -139,54 +139,54 @@ func (dao *TopicTagDao) Where(where interface{}, args ...interface{}) *TopicTagD
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (dao *TopicTagDao) WherePri(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.WherePri(where, args...)}
+func (d *TopicTagDao) WherePri(where interface{}, args ...interface{}) *TopicTagDao {
+	return &TopicTagDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (dao *TopicTagDao) And(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.And(where, args...)}
+func (d *TopicTagDao) And(where interface{}, args ...interface{}) *TopicTagDao {
+	return &TopicTagDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (dao *TopicTagDao) Or(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Or(where, args...)}
+func (d *TopicTagDao) Or(where interface{}, args ...interface{}) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (dao *TopicTagDao) Group(groupBy string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Group(groupBy)}
+func (d *TopicTagDao) Group(groupBy string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (dao *TopicTagDao) Order(orderBy ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Order(orderBy...)}
+func (d *TopicTagDao) Order(orderBy ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (dao *TopicTagDao) Limit(limit ...int) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Limit(limit...)}
+func (d *TopicTagDao) Limit(limit ...int) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (dao *TopicTagDao) Offset(offset int) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Offset(offset)}
+func (d *TopicTagDao) Offset(offset int) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (dao *TopicTagDao) Page(page, limit int) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Page(page, limit)}
+func (d *TopicTagDao) Page(page, limit int) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (dao *TopicTagDao) Batch(batch int) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Batch(batch)}
+func (d *TopicTagDao) Batch(batch int) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -201,8 +201,8 @@ func (dao *TopicTagDao) Batch(batch int) *TopicTagDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (dao *TopicTagDao) Cache(duration time.Duration, name ...string) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Cache(duration, name...)}
+func (d *TopicTagDao) Cache(duration time.Duration, name ...string) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -212,8 +212,8 @@ func (dao *TopicTagDao) Cache(duration time.Duration, name ...string) *TopicTagD
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (dao *TopicTagDao) Data(data ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Data(data...)}
+func (d *TopicTagDao) Data(data ...interface{}) *TopicTagDao {
+	return &TopicTagDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -222,8 +222,8 @@ func (dao *TopicTagDao) Data(data ...interface{}) *TopicTagDao {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *TopicTagDao) All(where ...interface{}) ([]*model.TopicTag, error) {
-	all, err := dao.M.All(where...)
+func (d *TopicTagDao) All(where ...interface{}) ([]*model.TopicTag, error) {
+	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -239,8 +239,8 @@ func (dao *TopicTagDao) All(where ...interface{}) ([]*model.TopicTag, error) {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *TopicTagDao) One(where ...interface{}) (*model.TopicTag, error) {
-	one, err := dao.M.One(where...)
+func (d *TopicTagDao) One(where ...interface{}) (*model.TopicTag, error) {
+	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -253,8 +253,8 @@ func (dao *TopicTagDao) One(where ...interface{}) (*model.TopicTag, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (dao *TopicTagDao) FindOne(where ...interface{}) (*model.TopicTag, error) {
-	one, err := dao.M.FindOne(where...)
+func (d *TopicTagDao) FindOne(where ...interface{}) (*model.TopicTag, error) {
+	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +267,8 @@ func (dao *TopicTagDao) FindOne(where ...interface{}) (*model.TopicTag, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (dao *TopicTagDao) FindAll(where ...interface{}) ([]*model.TopicTag, error) {
-	all, err := dao.M.FindAll(where...)
+func (d *TopicTagDao) FindAll(where ...interface{}) ([]*model.TopicTag, error) {
+	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -280,8 +280,8 @@ func (dao *TopicTagDao) FindAll(where ...interface{}) ([]*model.TopicTag, error)
 }
 
 // Chunk iterates the table with given size and callback function.
-func (dao *TopicTagDao) Chunk(limit int, callback func(entities []*model.TopicTag, err error) bool) {
-	dao.M.Chunk(limit, func(result gdb.Result, err error) bool {
+func (d *TopicTagDao) Chunk(limit int, callback func(entities []*model.TopicTag, err error) bool) {
+	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*model.TopicTag
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -292,16 +292,16 @@ func (dao *TopicTagDao) Chunk(limit int, callback func(entities []*model.TopicTa
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (dao *TopicTagDao) LockUpdate() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.LockUpdate()}
+func (d *TopicTagDao) LockUpdate() *TopicTagDao {
+	return &TopicTagDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (dao *TopicTagDao) LockShared() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.LockShared()}
+func (d *TopicTagDao) LockShared() *TopicTagDao {
+	return &TopicTagDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (dao *TopicTagDao) Unscoped() *TopicTagDao {
-	return &TopicTagDao{M:dao.M.Unscoped()}
+func (d *TopicTagDao) Unscoped() *TopicTagDao {
+	return &TopicTagDao{M:d.M.Unscoped()}
 }

@@ -52,24 +52,24 @@ var (
 )
 
 // As sets an alias name for current table.
-func (dao *UserRoleRouteDao) As(as string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.As(as)}
+func (d *UserRoleRouteDao) As(as string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (dao *UserRoleRouteDao) TX(tx *gdb.TX) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.TX(tx)}
+func (d *UserRoleRouteDao) TX(tx *gdb.TX) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (dao *UserRoleRouteDao) Master() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Master()}
+func (d *UserRoleRouteDao) Master() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (dao *UserRoleRouteDao) Slave() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Slave()}
+func (d *UserRoleRouteDao) Slave() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -77,8 +77,8 @@ func (dao *UserRoleRouteDao) Slave() *UserRoleRouteDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserRoleRouteDao) LeftJoin(table ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.LeftJoin(table...)}
+func (d *UserRoleRouteDao) LeftJoin(table ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -86,8 +86,8 @@ func (dao *UserRoleRouteDao) LeftJoin(table ...string) *UserRoleRouteDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserRoleRouteDao) RightJoin(table ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.RightJoin(table...)}
+func (d *UserRoleRouteDao) RightJoin(table ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -95,34 +95,34 @@ func (dao *UserRoleRouteDao) RightJoin(table ...string) *UserRoleRouteDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (dao *UserRoleRouteDao) InnerJoin(table ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.InnerJoin(table...)}
+func (d *UserRoleRouteDao) InnerJoin(table ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (dao *UserRoleRouteDao) Fields(fields ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Fields(fields...)}
+func (d *UserRoleRouteDao) Fields(fields ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (dao *UserRoleRouteDao) FieldsEx(fields ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.FieldsEx(fields...)}
+func (d *UserRoleRouteDao) FieldsEx(fields ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
-func (dao *UserRoleRouteDao) Option(option int) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Option(option)}
+func (d *UserRoleRouteDao) Option(option int) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (dao *UserRoleRouteDao) OmitEmpty() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.OmitEmpty()}
+func (d *UserRoleRouteDao) OmitEmpty() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (dao *UserRoleRouteDao) Filter() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Filter()}
+func (d *UserRoleRouteDao) Filter() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -136,8 +136,8 @@ func (dao *UserRoleRouteDao) Filter() *UserRoleRouteDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (dao *UserRoleRouteDao) Where(where interface{}, args ...interface{}) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Where(where, args...)}
+func (d *UserRoleRouteDao) Where(where interface{}, args ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -145,54 +145,54 @@ func (dao *UserRoleRouteDao) Where(where interface{}, args ...interface{}) *User
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (dao *UserRoleRouteDao) WherePri(where interface{}, args ...interface{}) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.WherePri(where, args...)}
+func (d *UserRoleRouteDao) WherePri(where interface{}, args ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (dao *UserRoleRouteDao) And(where interface{}, args ...interface{}) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.And(where, args...)}
+func (d *UserRoleRouteDao) And(where interface{}, args ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (dao *UserRoleRouteDao) Or(where interface{}, args ...interface{}) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Or(where, args...)}
+func (d *UserRoleRouteDao) Or(where interface{}, args ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (dao *UserRoleRouteDao) Group(groupBy string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Group(groupBy)}
+func (d *UserRoleRouteDao) Group(groupBy string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (dao *UserRoleRouteDao) Order(orderBy ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Order(orderBy...)}
+func (d *UserRoleRouteDao) Order(orderBy ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (dao *UserRoleRouteDao) Limit(limit ...int) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Limit(limit...)}
+func (d *UserRoleRouteDao) Limit(limit ...int) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (dao *UserRoleRouteDao) Offset(offset int) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Offset(offset)}
+func (d *UserRoleRouteDao) Offset(offset int) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (dao *UserRoleRouteDao) Page(page, limit int) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Page(page, limit)}
+func (d *UserRoleRouteDao) Page(page, limit int) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (dao *UserRoleRouteDao) Batch(batch int) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Batch(batch)}
+func (d *UserRoleRouteDao) Batch(batch int) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -207,8 +207,8 @@ func (dao *UserRoleRouteDao) Batch(batch int) *UserRoleRouteDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (dao *UserRoleRouteDao) Cache(duration time.Duration, name ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Cache(duration, name...)}
+func (d *UserRoleRouteDao) Cache(duration time.Duration, name ...string) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -218,8 +218,8 @@ func (dao *UserRoleRouteDao) Cache(duration time.Duration, name ...string) *User
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (dao *UserRoleRouteDao) Data(data ...interface{}) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Data(data...)}
+func (d *UserRoleRouteDao) Data(data ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -228,8 +228,8 @@ func (dao *UserRoleRouteDao) Data(data ...interface{}) *UserRoleRouteDao {
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *UserRoleRouteDao) All(where ...interface{}) ([]*model.UserRoleRoute, error) {
-	all, err := dao.M.All(where...)
+func (d *UserRoleRouteDao) All(where ...interface{}) ([]*model.UserRoleRoute, error) {
+	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -245,8 +245,8 @@ func (dao *UserRoleRouteDao) All(where ...interface{}) ([]*model.UserRoleRoute, 
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (dao *UserRoleRouteDao) One(where ...interface{}) (*model.UserRoleRoute, error) {
-	one, err := dao.M.One(where...)
+func (d *UserRoleRouteDao) One(where ...interface{}) (*model.UserRoleRoute, error) {
+	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -259,8 +259,8 @@ func (dao *UserRoleRouteDao) One(where ...interface{}) (*model.UserRoleRoute, er
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (dao *UserRoleRouteDao) FindOne(where ...interface{}) (*model.UserRoleRoute, error) {
-	one, err := dao.M.FindOne(where...)
+func (d *UserRoleRouteDao) FindOne(where ...interface{}) (*model.UserRoleRoute, error) {
+	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -273,8 +273,8 @@ func (dao *UserRoleRouteDao) FindOne(where ...interface{}) (*model.UserRoleRoute
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (dao *UserRoleRouteDao) FindAll(where ...interface{}) ([]*model.UserRoleRoute, error) {
-	all, err := dao.M.FindAll(where...)
+func (d *UserRoleRouteDao) FindAll(where ...interface{}) ([]*model.UserRoleRoute, error) {
+	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -286,8 +286,8 @@ func (dao *UserRoleRouteDao) FindAll(where ...interface{}) ([]*model.UserRoleRou
 }
 
 // Chunk iterates the table with given size and callback function.
-func (dao *UserRoleRouteDao) Chunk(limit int, callback func(entities []*model.UserRoleRoute, err error) bool) {
-	dao.M.Chunk(limit, func(result gdb.Result, err error) bool {
+func (d *UserRoleRouteDao) Chunk(limit int, callback func(entities []*model.UserRoleRoute, err error) bool) {
+	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*model.UserRoleRoute
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -298,16 +298,16 @@ func (dao *UserRoleRouteDao) Chunk(limit int, callback func(entities []*model.Us
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (dao *UserRoleRouteDao) LockUpdate() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.LockUpdate()}
+func (d *UserRoleRouteDao) LockUpdate() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (dao *UserRoleRouteDao) LockShared() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.LockShared()}
+func (d *UserRoleRouteDao) LockShared() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (dao *UserRoleRouteDao) Unscoped() *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:dao.M.Unscoped()}
+func (d *UserRoleRouteDao) Unscoped() *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Unscoped()}
 }

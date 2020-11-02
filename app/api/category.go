@@ -19,18 +19,18 @@ var Category = new(categoryApi)
 // @param   parentId    query int    false "父级分类ID"
 // @router  /category/list [GET]
 // @success 200 {array} model.CategoryItem "分类列表"
-func (api *categoryApi) List(r *ghttp.Request) {
+func (a *categoryApi) List(r *ghttp.Request) {
 	var (
-		data  *model.CategoryApiListReq
-		param *model.CategoryDaoGetListReq
+		data          *model.CategoryApiListReq
+		daoGetListReq *model.CategoryDaoGetListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &param); err != nil {
+	if err := gconv.Struct(data, &daoGetListReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if list, err := dao.Category.GetList(param); err != nil {
+	if list, err := dao.Category.GetList(daoGetListReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK", list)
@@ -43,7 +43,7 @@ func (api *categoryApi) List(r *ghttp.Request) {
 // @param   id query string true "分类ID"
 // @router  /category/item [GET]
 // @success 200 {object} model.CategoryItem "分类详情"
-func (api *categoryApi) Item(r *ghttp.Request) {
+func (a *categoryApi) Item(r *ghttp.Request) {
 	var (
 		data *model.CategoryApiItemReq
 	)
