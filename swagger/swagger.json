@@ -207,9 +207,143 @@
                 }
             }
         },
-        "/login/do": {
+        "/topic": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "展示话题首页",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic/create": {
             "post": {
-                "description": "前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "创建话题",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TopicApiCreateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "删除话题",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "话题ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic/detail/{id}": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "展示话题详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "话题ID",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/topic/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "话题"
+                ],
+                "summary": "修改话题",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TopicApiUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。\n注意提交的密码是明文。\n登录成功后前端引导页面跳转。",
                 "produces": [
                     "application/json"
                 ],
@@ -249,47 +383,43 @@
                 }
             }
         },
-        "/topic": {
-            "get": {
+        "/user/logout": {
+            "post": {
+                "description": "前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。\n注意提交的密码是明文。\n登录成功后前端引导页面跳转到首页。",
                 "produces": [
-                    "text/html"
+                    "application/json"
                 ],
                 "tags": [
-                    "话题"
+                    "登录"
                 ],
-                "summary": "展示社区模块页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/topic/detail/{id}": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "话题"
-                ],
-                "summary": "展示社区模块特定话题内容页面",
+                "summary": "提交登录",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "话题ID",
-                        "name": "id",
-                        "in": "path"
+                        "type": "string",
+                        "description": "账号",
+                        "name": "passport",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "验证码",
+                        "name": "verify_code",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "页面HTML",
+                        "description": "执行结果",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.JsonRes"
                         }
                     }
                 }
@@ -309,6 +439,67 @@
                         "description": "页面HTML",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "注意提交的密码是明文。\n注册成功后自动登录。前端页面引导跳转",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "AJAX执行注册提交",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserApiRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/update-profile": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "AJAX保存个人资料",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserApiUpdateProfileReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonRes"
                         }
                     }
                 }
@@ -364,6 +555,116 @@
                 },
                 "thumb": {
                     "description": "封面图",
+                    "type": "string"
+                }
+            }
+        },
+        "model.TopicApiCreateReq": {
+            "type": "object",
+            "properties": {
+                "brief": {
+                    "description": "摘要",
+                    "type": "string"
+                },
+                "categoryId": {
+                    "description": "栏目ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "referer": {
+                    "description": "内容来源，例如github/gitee",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "标签名称列表，以JSON存储",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumb": {
+                    "description": "缩略图",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                }
+            }
+        },
+        "model.TopicApiUpdateReq": {
+            "type": "object",
+            "properties": {
+                "brief": {
+                    "description": "摘要",
+                    "type": "string"
+                },
+                "categoryId": {
+                    "description": "栏目ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "修改时ID不能为空",
+                    "type": "integer"
+                },
+                "referer": {
+                    "description": "内容来源，例如github/gitee",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "标签名称列表，以JSON存储",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumb": {
+                    "description": "缩略图",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserApiRegisterReq": {
+            "type": "object",
+            "properties": {
+                "passport": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码(明文)",
+                    "type": "string"
+                },
+                "password2": {
+                    "description": "确认密码(明文)",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserApiUpdateProfileReq": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像地址",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "性别 0: 未设置 1: 男 2: 女",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "description": "昵称",
                     "type": "string"
                 }
             }
