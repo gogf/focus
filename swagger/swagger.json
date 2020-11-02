@@ -384,37 +384,15 @@
             }
         },
         "/user/logout": {
-            "post": {
-                "description": "前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。\n注意提交的密码是明文。\n登录成功后前端引导页面跳转到首页。",
+            "get": {
+                "description": "注销成功后前端引导页面跳转到首页。",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "用户"
                 ],
-                "summary": "提交登录",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "账号",
-                        "name": "passport",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "密码",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "验证码",
-                        "name": "verify_code",
-                        "in": "formData"
-                    }
-                ],
+                "summary": "注销退出",
                 "responses": {
                     "200": {
                         "description": "执行结果",

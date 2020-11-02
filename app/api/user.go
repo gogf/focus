@@ -119,16 +119,11 @@ func (a *loginApi) Login(r *ghttp.Request) {
 	}
 }
 
-// @summary 提交登录
-// @description 前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。
-// @description 注意提交的密码是明文。
-// @description 登录成功后前端引导页面跳转到首页。
+// @summary 注销退出
+// @description 注销成功后前端引导页面跳转到首页。
 // @tags    用户
 // @produce json
-// @param   passport    formData string true "账号"
-// @param   password    formData string true "密码"
-// @param   verify_code formData string false "验证码"
-// @router  /user/logout [POST]
+// @router  /user/logout [GET]
 // @success 200 {object} response.JsonRes "执行结果"
 func (a *loginApi) Logout(r *ghttp.Request) {
 	if err := service.User.Logout(r); err != nil {
