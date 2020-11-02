@@ -1,8 +1,15 @@
 {
+    "schemes": [
+        "http",
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
+        "description": "GoFrame社区API",
+        "title": "GoFrame社区API",
         "contact": {},
-        "license": {}
+        "license": {},
+        "version": "1.0"
     },
     "paths": {
         "/": {
@@ -138,7 +145,7 @@
                     "200": {
                         "description": "分类详情",
                         "schema": {
-                            "$ref": "#/definitions/category.Item"
+                            "$ref": "#/definitions/model.CategoryItem"
                         }
                     }
                 }
@@ -174,7 +181,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/category.Item"
+                                "$ref": "#/definitions/model.CategoryItem"
                             }
                         }
                     }
@@ -336,7 +343,7 @@
         }
     },
     "definitions": {
-        "category.Item": {
+        "model.CategoryItem": {
             "type": "object",
             "properties": {
                 "brief": {
