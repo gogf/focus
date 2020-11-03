@@ -1,7 +1,6 @@
 package api
 
 import (
-	"focus/app/dao"
 	"focus/app/model"
 	"focus/app/service"
 	"focus/library/response"
@@ -42,22 +41,22 @@ func (a *userApi) Profile(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *userApi) Register(r *ghttp.Request) {
 	var (
-		data           *model.UserApiRegisterReq
-		daoRegisterReq *model.UserDaoRegisterReq
+		data               *model.UserApiRegisterReq
+		serviceRegisterReq *model.UserServiceRegisterReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &daoRegisterReq); err != nil {
+	if err := gconv.Struct(data, &serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := dao.User.Register(daoRegisterReq); err != nil {
+	if err := service.User.Register(serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 自动登录
 		err := service.User.Login(r, &model.UserServiceLoginReq{
-			Passport: daoRegisterReq.Passport,
-			Password: daoRegisterReq.Password,
+			Passport: serviceRegisterReq.Passport,
+			Password: serviceRegisterReq.Password,
 		})
 		if err != nil {
 			response.JsonExit(r, 1, err.Error())
@@ -74,16 +73,16 @@ func (a *userApi) Register(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	var (
-		data                *model.UserApiUpdateProfileReq
-		daoUpdateProfileReq *model.UserDaoUpdateProfileReq
+		data                    *model.UserApiUpdateProfileReq
+		serviceUpdateProfileReq *model.UserServiceUpdateProfileReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &daoUpdateProfileReq); err != nil {
+	if err := gconv.Struct(data, &serviceUpdateProfileReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := dao.User.UpdateProfile(daoUpdateProfileReq); err != nil {
+	if err := service.User.UpdateProfile(serviceUpdateProfileReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")

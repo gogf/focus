@@ -25,7 +25,7 @@ type UserApiRegisterReq struct {
 	Password2 string `v:"required|same:Password#请再次输入密码|两次密码输入不一致"` // 确认密码(明文)
 }
 
-// API修改自己的用户信息
+// API修改个人资料
 type UserApiUpdateProfileReq struct {
 	Nickname string `v:"required#请输入昵称信息"` // 昵称
 	Avatar   string // 头像地址
@@ -49,16 +49,16 @@ type UserServiceLoginReq struct {
 	Password string `v:"required#请输入密码"` // 密码(明文)
 }
 
-// DAO创建用户
-type UserDaoRegisterReq struct {
+// Service创建用户
+type UserServiceRegisterReq struct {
 	RoleId   int    // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色
 	Passport string // 账号
 	Password string // 密码(明文)
 	Nickname string // 昵称
 }
 
-// DAO修改用户
-type UserDaoUpdateProfileReq struct {
+// Service修改用户
+type UserServiceUpdateProfileReq struct {
 	Id       uint   // 用户ID
 	Nickname string // 昵称
 	Avatar   string // 头像地址

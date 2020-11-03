@@ -30,8 +30,8 @@ type CategoryApiItemReq struct {
 	Id uint `json:"id" v:"min:1#请输入分类ID"` // 分类ID
 }
 
-// DAO查询分类列表
-type CategoryDaoGetListReq struct {
+// Service查询分类列表
+type CategoryServiceGetListReq struct {
 	ParentId    uint   // 父级分类ID，用于层级管理
 	ContentType string // 内容类型：topic, question, article
 }

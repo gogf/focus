@@ -1,8 +1,8 @@
 package api
 
 import (
-	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gconv"
@@ -21,16 +21,16 @@ var Category = new(categoryApi)
 // @success 200 {array} model.CategoryItem "分类列表"
 func (a *categoryApi) List(r *ghttp.Request) {
 	var (
-		data          *model.CategoryApiListReq
-		daoGetListReq *model.CategoryDaoGetListReq
+		data              *model.CategoryApiListReq
+		serviceGetListReq *model.CategoryServiceGetListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &daoGetListReq); err != nil {
+	if err := gconv.Struct(data, &serviceGetListReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if list, err := dao.Category.GetList(daoGetListReq); err != nil {
+	if list, err := service.Category.GetList(serviceGetListReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK", list)
@@ -50,7 +50,7 @@ func (a *categoryApi) Item(r *ghttp.Request) {
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if item, err := dao.Category.GetItem(data.Id); err != nil {
+	if item, err := service.Category.GetItem(data.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK", item)
