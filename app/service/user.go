@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"focus/app/dao"
 	"focus/app/model"
 	"github.com/gogf/gf/crypto/gmd5"
@@ -12,6 +13,17 @@ import (
 type userService struct{}
 
 var User = new(userService)
+
+// 获取当前登录的用户ID，如果用户未登录返回nil。
+func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
+	value := r.Session.Get(model.UserSessionKey)
+	if value != nil {
+		if userEntity, ok := value.(*model.User); ok {
+			return userEntity
+		}
+	}
+	return nil
+}
 
 // 登录
 func (s *userService) Login(r *ghttp.Request, loginReq *model.UserServiceLoginReq) error {
@@ -91,18 +103,18 @@ func (s *userService) Register(r *model.UserServiceRegisterReq) error {
 }
 
 // 修改个人资料
-func (s *userService) UpdateProfile(r *model.UserServiceUpdateProfileReq) error {
+func (s *userService) UpdateProfile(ctx context.Context, r *model.UserServiceUpdateProfileReq) error {
 	if r.Id == 0 {
 		return gerror.New("用户ID不能为空")
 	}
 	if err := s.CheckNicknameUnique(r.Nickname); err != nil {
 		return err
 	}
-	_, err := dao.User.Data(r).Save()
+	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.GetCtx(ctx).UserId).Save()
 	return err
 }
 
-// 禁用用户
+// 禁用指定用户
 func (s *userService) Disable(id uint) error {
 	_, err := dao.User.
 		Data(dao.User.Columns.Status, model.UserStatusDisabled).

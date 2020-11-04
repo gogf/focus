@@ -35,6 +35,9 @@ func (s *contextService) SetCtxWithUserEntity(r *ghttp.Request, userEntity *mode
 
 // 获得上下文变量，如果没有设置，那么返回nil
 func (s *contextService) GetCtx(ctx context.Context) *model.Context {
+	if ctx == nil {
+		return nil
+	}
 	value := ctx.Value(model.ContextUserKey)
 	if value != nil {
 		if localCtx, ok := value.(*model.Context); ok {

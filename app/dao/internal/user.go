@@ -23,16 +23,16 @@ type UserDao struct {
 
 // UserColumns defines and stores column names for table gf_user.
 type userColumns struct {
-	Id         string // UID                                                                 
-    RoleId     string // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色  
-    Passport   string // 账号                                                                
-    Password   string // MD5密码                                                             
-    Nickname   string // 昵称                                                                
-    Avatar     string // 头像地址                                                            
-    Status     string // 状态 0:启用 1:禁用                                                  
-    Gender     string // 性别 0: 未设置 1: 男 2: 女                                          
-    CreatedAt  string // 注册时间                                                            
-    UpdatedAt  string // 更新时间
+	Id        string // UID
+	RoleId    string // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色
+	Passport  string // 账号
+	Password  string // MD5密码
+	Nickname  string // 昵称
+	Avatar    string // 头像地址
+	Status    string // 状态 0:启用 1:禁用
+	Gender    string // 性别 0: 未设置 1: 男 2: 女
+	CreatedAt string // 注册时间
+	UpdatedAt string // 更新时间
 }
 
 var (
@@ -41,39 +41,39 @@ var (
 		M:     g.DB("default").Table("gf_user").Safe(),
 		Table: "gf_user",
 		Columns: userColumns{
-			Id:        "id",          
-            RoleId:    "role_id",     
-            Passport:  "passport",    
-            Password:  "password",    
-            Nickname:  "nickname",    
-            Avatar:    "avatar",      
-            Status:    "status",      
-            Gender:    "gender",      
-            CreatedAt: "created_at",  
-            UpdatedAt: "updated_at",
+			Id:        "id",
+			RoleId:    "role_id",
+			Passport:  "passport",
+			Password:  "password",
+			Nickname:  "nickname",
+			Avatar:    "avatar",
+			Status:    "status",
+			Gender:    "gender",
+			CreatedAt: "created_at",
+			UpdatedAt: "updated_at",
 		},
 	}
 )
 
 // As sets an alias name for current table.
 func (d *UserDao) As(as string) *UserDao {
-	return &UserDao{M:d.M.As(as)}
+	return &UserDao{M: d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
 func (d *UserDao) TX(tx *gdb.TX) *UserDao {
-	return &UserDao{M:d.M.TX(tx)}
+	return &UserDao{M: d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
 func (d *UserDao) Master() *UserDao {
-	return &UserDao{M:d.M.Master()}
+	return &UserDao{M: d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
 func (d *UserDao) Slave() *UserDao {
-	return &UserDao{M:d.M.Slave()}
+	return &UserDao{M: d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -82,7 +82,7 @@ func (d *UserDao) Slave() *UserDao {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (d *UserDao) LeftJoin(table ...string) *UserDao {
-	return &UserDao{M:d.M.LeftJoin(table...)}
+	return &UserDao{M: d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -91,7 +91,7 @@ func (d *UserDao) LeftJoin(table ...string) *UserDao {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (d *UserDao) RightJoin(table ...string) *UserDao {
-	return &UserDao{M:d.M.RightJoin(table...)}
+	return &UserDao{M: d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -100,33 +100,33 @@ func (d *UserDao) RightJoin(table ...string) *UserDao {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (d *UserDao) InnerJoin(table ...string) *UserDao {
-	return &UserDao{M:d.M.InnerJoin(table...)}
+	return &UserDao{M: d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 func (d *UserDao) Fields(fields ...string) *UserDao {
-	return &UserDao{M:d.M.Fields(fields...)}
+	return &UserDao{M: d.M.Fields(fields...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 func (d *UserDao) FieldsEx(fields ...string) *UserDao {
-	return &UserDao{M:d.M.FieldsEx(fields...)}
+	return &UserDao{M: d.M.FieldsEx(fields...)}
 }
 
 // Option sets the extra operation option for the model.
 func (d *UserDao) Option(option int) *UserDao {
-	return &UserDao{M:d.M.Option(option)}
+	return &UserDao{M: d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
 func (d *UserDao) OmitEmpty() *UserDao {
-	return &UserDao{M:d.M.OmitEmpty()}
+	return &UserDao{M: d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
 func (d *UserDao) Filter() *UserDao {
-	return &UserDao{M:d.M.Filter()}
+	return &UserDao{M: d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -141,7 +141,7 @@ func (d *UserDao) Filter() *UserDao {
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
 func (d *UserDao) Where(where interface{}, args ...interface{}) *UserDao {
-	return &UserDao{M:d.M.Where(where, args...)}
+	return &UserDao{M: d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -150,27 +150,27 @@ func (d *UserDao) Where(where interface{}, args ...interface{}) *UserDao {
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
 func (d *UserDao) WherePri(where interface{}, args ...interface{}) *UserDao {
-	return &UserDao{M:d.M.WherePri(where, args...)}
+	return &UserDao{M: d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
 func (d *UserDao) And(where interface{}, args ...interface{}) *UserDao {
-	return &UserDao{M:d.M.And(where, args...)}
+	return &UserDao{M: d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
 func (d *UserDao) Or(where interface{}, args ...interface{}) *UserDao {
-	return &UserDao{M:d.M.Or(where, args...)}
+	return &UserDao{M: d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
 func (d *UserDao) Group(groupBy string) *UserDao {
-	return &UserDao{M:d.M.Group(groupBy)}
+	return &UserDao{M: d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
 func (d *UserDao) Order(orderBy ...string) *UserDao {
-	return &UserDao{M:d.M.Order(orderBy...)}
+	return &UserDao{M: d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
@@ -178,25 +178,25 @@ func (d *UserDao) Order(orderBy ...string) *UserDao {
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
 func (d *UserDao) Limit(limit ...int) *UserDao {
-	return &UserDao{M:d.M.Limit(limit...)}
+	return &UserDao{M: d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
 func (d *UserDao) Offset(offset int) *UserDao {
-	return &UserDao{M:d.M.Offset(offset)}
+	return &UserDao{M: d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
 func (d *UserDao) Page(page, limit int) *UserDao {
-	return &UserDao{M:d.M.Page(page, limit)}
+	return &UserDao{M: d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
 func (d *UserDao) Batch(batch int) *UserDao {
-	return &UserDao{M:d.M.Batch(batch)}
+	return &UserDao{M: d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -212,7 +212,7 @@ func (d *UserDao) Batch(batch int) *UserDao {
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
 func (d *UserDao) Cache(duration time.Duration, name ...string) *UserDao {
-	return &UserDao{M:d.M.Cache(duration, name...)}
+	return &UserDao{M: d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -223,7 +223,7 @@ func (d *UserDao) Cache(duration time.Duration, name ...string) *UserDao {
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
 func (d *UserDao) Data(data ...interface{}) *UserDao {
-	return &UserDao{M:d.M.Data(data...)}
+	return &UserDao{M: d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -303,15 +303,15 @@ func (d *UserDao) Chunk(limit int, callback func(entities []*model.User, err err
 
 // LockUpdate sets the lock for update for current operation.
 func (d *UserDao) LockUpdate() *UserDao {
-	return &UserDao{M:d.M.LockUpdate()}
+	return &UserDao{M: d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
 func (d *UserDao) LockShared() *UserDao {
-	return &UserDao{M:d.M.LockShared()}
+	return &UserDao{M: d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
 func (d *UserDao) Unscoped() *UserDao {
-	return &UserDao{M:d.M.Unscoped()}
+	return &UserDao{M: d.M.Unscoped()}
 }

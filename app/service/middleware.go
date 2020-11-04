@@ -1,18 +1,30 @@
 package service
 
 import (
+	"focus/app/model"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gmode"
 )
 
 type middlewareService struct{}
 
 var Middleware = new(middlewareService)
 
-// 该中间件用于用户鉴权，保证用户登录之后才能执行下一步服务调用
-func (s *middlewareService) Auth(r *ghttp.Request) {
+// 获取session中的相关信息，写入到上下文变量中。
+func (s *middlewareService) SessionToCtx(r *ghttp.Request) {
+	if gmode.IsDevelop() {
+		Context.SetCtx(r, &model.Context{
+			UserId:       1,
+			UserPassport: "root",
+			UserNickname: "ROOT",
+		})
+	}
+	if userEntity := User.GetSessionUser(r); userEntity != nil {
+		Context.SetCtxWithUserEntity(r, userEntity)
+	}
 	r.Middleware.Next()
 }
 

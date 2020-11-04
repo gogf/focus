@@ -6,7 +6,6 @@ package dao
 
 import (
 	"focus/app/dao/internal"
-	"focus/app/model"
 )
 
 // topicDao is the manager for logic model data accessing
@@ -22,21 +21,3 @@ var (
 		internal.Topic,
 	}
 )
-
-// 创建
-func (d *topicDao) Create(r *model.TopicDaoCreateReq) error {
-	_, err := d.Data(r).Save()
-	return err
-}
-
-// 修改
-func (d *topicDao) Update(r *model.TopicDaoUpdateReq) error {
-	_, err := d.Data(r).Save()
-	return err
-}
-
-// 删除
-func (d *topicDao) Delete(id uint) error {
-	_, err := d.Where(d.Columns.Id, id).Delete()
-	return err
-}

@@ -19,7 +19,7 @@ var User = new(userApi)
 // @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Index(r *ghttp.Request) {
-
+	service.View.Render(r)
 }
 
 // @summary 展示用户自己的信息
@@ -28,18 +28,27 @@ func (a *userApi) Index(r *ghttp.Request) {
 // @router  /user/profile [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Profile(r *ghttp.Request) {
-
+	service.View.Render(r)
 }
 
-// @summary AJAX执行注册提交
+// @summary 展示注册页面
+// @tags    用户
+// @produce html
+// @router  /user/register [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Register(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 执行注册提交处理
 // @description 注意提交的密码是明文。
 // @description 注册成功后自动登录。前端页面引导跳转
 // @tags    用户
 // @produce json
 // @param   entity body model.UserApiRegisterReq true "请求参数" required
-// @router  /user/register [POST]
+// @router  /user/do-register [POST]
 // @success 200 {object} response.JsonRes "请求结果"
-func (a *userApi) Register(r *ghttp.Request) {
+func (a *userApi) DoRegister(r *ghttp.Request) {
 	var (
 		data               *model.UserApiRegisterReq
 		serviceRegisterReq *model.UserServiceRegisterReq
@@ -82,7 +91,7 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceUpdateProfileReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.User.UpdateProfile(serviceUpdateProfileReq); err != nil {
+	if err := service.User.UpdateProfile(r.Context(), serviceUpdateProfileReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")

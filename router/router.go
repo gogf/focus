@@ -9,8 +9,8 @@ import (
 
 func init() {
 	s := g.Server()
+	s.Use(service.Middleware.SessionToCtx, service.Middleware.View)
 	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Middleware(service.Middleware.View)
 		// 首页
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/", api.Index)
