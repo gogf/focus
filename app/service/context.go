@@ -6,9 +6,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type contextService struct{}
-
 var Context = new(contextService)
+
+type contextService struct{}
 
 // 将上下文信息设置到上下文请求中
 func (s *contextService) SetCtx(r *ghttp.Request, localCtx *model.Context) error {

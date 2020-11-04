@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-type topicApi struct{}
-
 var Topic = new(topicApi)
+
+type topicApi struct{}
 
 // @summary 展示话题首页
 // @tags    话题

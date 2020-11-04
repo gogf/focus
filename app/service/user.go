@@ -10,9 +10,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type userService struct{}
-
 var User = new(userService)
+
+type userService struct{}
 
 // 获取当前登录的用户ID，如果用户未登录返回nil。
 func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {

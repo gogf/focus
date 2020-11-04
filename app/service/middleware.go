@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/util/gmode"
 )
 
-type middlewareService struct{}
-
 var Middleware = new(middlewareService)
+
+type middlewareService struct{}
 
 // 获取session中的相关信息，写入到上下文变量中。
 func (s *middlewareService) SessionToCtx(r *ghttp.Request) {

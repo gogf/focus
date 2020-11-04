@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/text/gstr"
 )
 
-type topicService struct{}
-
 var Topic = new(topicService)
+
+type topicService struct{}
 
 // 查询列表
 func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetListReq) (*model.TopicServiceGetListRes, error) {

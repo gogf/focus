@@ -4,9 +4,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type loginApi struct{}
-
 var Login = new(loginApi)
+
+type loginApi struct{}
 
 // @summary 展示登录页面
 // @tags    登录

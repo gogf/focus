@@ -8,18 +8,15 @@ import (
 	"focus/app/dao/internal"
 )
 
+var Setting = &settingDao{
+	internal.Setting,
+}
+
 // settingDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type settingDao struct {
 	*internal.SettingDao
 }
-
-var (
-	// Setting is globally public accessible object for table {TplTableName} operations.
-	Setting = &settingDao{
-		internal.Setting,
-	}
-)
 
 // Fill with you ideas below.

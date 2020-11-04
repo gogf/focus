@@ -4,9 +4,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type indexApi struct{}
-
 var Index = new(indexApi)
+
+type indexApi struct{}
 
 // @summary 展示站点首页
 // @tags    首页

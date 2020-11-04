@@ -8,18 +8,15 @@ import (
 	"focus/app/dao/internal"
 )
 
+var UserRoleRoute = &userRoleRouteDao{
+	internal.UserRoleRoute,
+}
+
 // userRoleRouteDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type userRoleRouteDao struct {
 	*internal.UserRoleRouteDao
 }
-
-var (
-	// UserRoleRoute is globally public accessible object for table {TplTableName} operations.
-	UserRoleRoute = &userRoleRouteDao{
-		internal.UserRoleRoute,
-	}
-)
 
 // Fill with you ideas below.

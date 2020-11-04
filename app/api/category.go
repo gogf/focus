@@ -8,9 +8,9 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-type categoryApi struct{}
-
 var Category = new(categoryApi)
+
+type categoryApi struct{}
 
 // @summary 获取分类列表，构造成树形结构返回
 // @tags    分类

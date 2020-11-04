@@ -1,5 +1,5 @@
 package service
 
-type replyService struct{}
-
 var Reply = new(replyService)
+
+type replyService struct{}

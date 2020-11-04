@@ -4,9 +4,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type replyApi struct{}
-
 var Reply = new(replyApi)
+
+type replyApi struct{}
 
 func (a *replyApi) List(r *ghttp.Request) {
 

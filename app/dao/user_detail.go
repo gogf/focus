@@ -8,18 +8,15 @@ import (
 	"focus/app/dao/internal"
 )
 
+var UserDetail = &userDetailDao{
+	internal.UserDetail,
+}
+
 // userDetailDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type userDetailDao struct {
 	*internal.UserDetailDao
 }
-
-var (
-	// UserDetail is globally public accessible object for table {TplTableName} operations.
-	UserDetail = &userDetailDao{
-		internal.UserDetail,
-	}
-)
 
 // Fill with you ideas below.

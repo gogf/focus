@@ -5,9 +5,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type viewService struct{}
-
 var View = new(viewService)
+
+type viewService struct{}
 
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...g.Map) {

@@ -8,18 +8,15 @@ import (
 	"focus/app/dao/internal"
 )
 
+var ArticleTag = &articleTagDao{
+	internal.ArticleTag,
+}
+
 // articleTagDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type articleTagDao struct {
 	*internal.ArticleTagDao
 }
-
-var (
-	// ArticleTag is globally public accessible object for table {TplTableName} operations.
-	ArticleTag = &articleTagDao{
-		internal.ArticleTag,
-	}
-)
 
 // Fill with you ideas below.

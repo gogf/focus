@@ -4,9 +4,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type askApi struct{}
-
 var Ask = new(askApi)
+
+type askApi struct{}
 
 // @summary 展示问答模块页面
 // @tags    问答

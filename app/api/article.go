@@ -4,9 +4,9 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-type articleApi struct{}
-
 var Article = new(articleApi)
+
+type articleApi struct{}
 
 // @summary 展示文章板块页面
 // @tags    文章

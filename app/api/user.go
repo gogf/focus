@@ -8,9 +8,9 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-type userApi struct{}
-
 var User = new(userApi)
+
+type userApi struct{}
 
 // @summary 访问用户详情首页
 // @tags    用户

@@ -6,9 +6,9 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-type categoryService struct{}
-
 var Category = new(categoryService)
+
+type categoryService struct{}
 
 // 查询列表
 func (s *categoryService) GetList(r *model.CategoryServiceGetListReq) ([]*model.CategoryItem, error) {

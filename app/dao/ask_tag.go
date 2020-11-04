@@ -8,18 +8,15 @@ import (
 	"focus/app/dao/internal"
 )
 
+var AskTag = &askTagDao{
+	internal.AskTag,
+}
+
 // askTagDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type askTagDao struct {
 	*internal.AskTagDao
 }
-
-var (
-	// AskTag is globally public accessible object for table {TplTableName} operations.
-	AskTag = &askTagDao{
-		internal.AskTag,
-	}
-)
 
 // Fill with you ideas below.
