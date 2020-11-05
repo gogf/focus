@@ -31,8 +31,10 @@ func (a *topicApi) Index(r *ghttp.Request) {
 	if getListRes, err := service.Topic.GetList(r.Context(), data); err != nil {
 		service.View.Render(r)
 	} else {
-		service.View.Render(r, g.Map{
-			"list": getListRes,
+		service.View.Render(r, model.View{
+			Data: g.Map{
+				"list": getListRes,
+			},
 		})
 	}
 }

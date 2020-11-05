@@ -46,6 +46,7 @@ func init() {
 		// 用户
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/user", api.User)
+			group.ALL("/user/:id", api.User.Index)
 		})
 	})
 }

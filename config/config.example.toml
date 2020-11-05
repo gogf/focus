@@ -10,10 +10,12 @@
     Level  = "all"
     Stdout = true
 
-# View configurations.
 # 模板引擎配置
 [viewer]
-    defaultFile = "layout/default.html"
+    delimiters  =  ["${", "}"]
+    [viewer.admin]
+        Path        = "template"
+        DefaultFile = "index.html"
 
 # Database configurations.
 [database]

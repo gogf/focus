@@ -1,7 +1,8 @@
 package api
 
 import (
-	"github.com/gogf/gf/frame/g"
+	"focus/app/model"
+	"focus/app/service"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -15,8 +16,7 @@ type indexApi struct{}
 // @router  / [GET]
 // @success 200 {string} html "页面HTML"
 func (a *indexApi) Index(r *ghttp.Request) {
-	r.Response.WriteTpl("web/layout/layout.html", g.Map{
-		"mainTpl": "web/index.html",
-		"title":   "gf bbs - 首页",
+	service.View.Render(r, model.View{
+		Title: "gf bbs - 首页",
 	})
 }

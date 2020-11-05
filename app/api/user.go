@@ -13,24 +13,21 @@ var User = new(userApi)
 
 type userApi struct{}
 
-// @summary 访问用户详情首页
+// @summary 用户主页
 // @tags    用户
 // @produce html
 // @param   id path int false "用户ID"
 // @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Index(r *ghttp.Request) {
-	//service.View.Render(r)
-	// TODO 用户信息查询，展示
-	r.Response.WriteTpl("web/layout/layout.html", g.Map{
-		"mainTpl":     "web/user/user.html",
-		"title":       "gf bbs - 用户",
-		"keywords":    "gf bbs - user keywords",
-		"description": "gf bbs - user description",
+	service.View.Render(r, model.View{
+		Title:       "gf bbs - 用户",
+		Keywords:    "gf bbs - user keywords",
+		Description: "gf bbs - user description",
 	})
 }
 
-// @summary 展示用户自己的信息
+// @summary 展示个人资料页面
 // @tags    用户
 // @produce html
 // @router  /user/profile [GET]
