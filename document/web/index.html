@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css?v=1">
+    <link rel="stylesheet" href="plugin/iconfont/iconfont.css">
+    <script src="plugin/iconfont/iconfont.js"></script>
+    <script src="js/common.js"></script>
+
+    <title>gf bbs</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!--- nav --->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light gf-topnav">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand ml-5 " href="#">
+                <img src="https://cdn.learnku.com//uploads/communities/sNljssWWQoW6J88O9G37.png!/both/44x44" width="30" height="30" alt="" loading="lazy">
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">首页<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">主题</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">问答</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">文章</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              教程
+            </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">GoFrame入门</a>
+                            <a class="dropdown-item" href="#">GoFrame源码</a>
+                            <a class="dropdown-item" href="#">GoFrame实战</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                </form>
+                <div id="noLogin" class="btn-group" role="group" aria-label="First group">
+                    <a class="btn btn-link" href="javascript:void(0);" onclick="window.location.href='register.html'">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg> 注册</a>
+                    <button class="btn btn-link" href="javascript:void(0);" data-toggle="modal" data-target="#loginModal" data-whatever="@fat"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-bar-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z" />
+            </svg> 登录</button>
+                </div>
+                <div id="login" class="btn-group" role="group" aria-label="First group" style="display:none;">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Fly的狐狸
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="window.location.href='user.html'"><span class="iconfont">&#xe647;</span> 个人中心</a>
+                            <a class="dropdown-item" href="javascript:void(0);" onclick=""><span class="iconfont">&#xe68c;</span> 编辑资料</a>
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="gf.logout();"><span class="iconfont">&#xe6c9;</span> 退出</a>
+                        </div>
+                    </div>
+                </div>
+
+        </nav>
+
+        <!--- main --->
+        <main>
+            <div class="row gf-list">
+                <div class="col-md-7 offset-md-1">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <button class=" btn btn-link text-primary top-node-btn btn-sm" data-id="1">活跃</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="5">最新</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="6">周榜</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="7">月榜</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="5">年榜</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="6">翻译</button>
+                            <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="7">招聘</button>
+                        </li>
+                        <!--
+                        <li class="list-group-item">
+                            <a href="#" class="badge badge-primary" style="padding:5px;">活跃</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">最新</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">周榜</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">月榜</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">年榜</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">翻译</a>
+                            <a href="#" class="badge badge-primary" style="padding:5px;margin-left: 10px;">招聘</a>
+                        </li>
+                        -->
+
+
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img onclick="window.location.href='user.html'" src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-primary" style="padding:5px;">文章</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+        <a  onclick="window.location.href='article.html'" href="javascript:void(0);" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！<span class="gf-article-new">new</span></a>
+                                    </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/57343_1581322746.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-primary" style="padding:5px;">文章</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+      <a href="/posts/4" style="color: #222;">没有学历真的是硬伤。
+        <span class="gf-article-new">new</span></a>
+                                    </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/57343_1581322746.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+    <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                                    </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/1_1530614766.png!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-primary" style="padding:5px;">文章</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+      <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                                    </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+  <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                                  </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                                </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                              </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                            </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                          </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                            </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item gf-list-item">
+                            <div style="width:7%;float: left;">
+                                <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                            </div>
+                            <div style="width: 93%;float: left;padding-top: 10px;padding-left: 5px;">
+                                <div style="float: left;">
+                                    <span class="badge badge-success" style="padding:5px;">问答</span>
+                                    <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
+                            </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                    <span style="font-size: 12px;color: #ccc;">10天前</span>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item gf-list-item">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card gf-card" style="background: #fff;padding: 10px;">
+                        <a class="btn btn-primary" onclick="window.location.href='publish.html'" href="javascript:void(0);">发布帖子</a>
+                    </div>
+
+                    <div class="card gf-card">
+                        <div class="card-header">GF社区</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
+                            <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div class="card gf-card">
+                        <div class="card-header">GF社区</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
+                            <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card gf-card">
+                        <div class="card-header">GF社区</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
+                            <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+
+        <!--- footer --->
+        <footer class="navbar navbar-light" style="height: 300px;background: #1b1c1d;">
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item">《社区使用指南》</li>
+                    <li class="list-group-item">《文档撰写指南》</li>
+                    <li class="list-group-item">《LearnKu 社区规范》</li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item">《社区使用指南》</li>
+                    <li class="list-group-item">《文档撰写指南》</li>
+                    <li class="list-group-item">《LearnKu 社区规范》</li>
+                    <li class="list-group-item">《社区使用指南》</li>
+                    <li class="list-group-item">《文档撰写指南》</li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item">《社区使用指南》</li>
+                    <li class="list-group-item">《文档撰写指南》</li>
+                    <li class="list-group-item">《LearnKu 社区规范》</li>
+                    <li class="list-group-item">《社区使用指南》</li>
+                </ul>
+            </div>
+        </footer>
+
+        </div>
+
+        <!--登录-->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">请登录</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group row">
+                                <label for="account-name" class="col-sm-2 col-form-label">帐号:</label>
+                                <div class="col-sm-10 input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><span class="icon iconfont">&#xe622;</span></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="account-name" placeholder="请输入帐号">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="passwd-text" class="col-sm-2 col-form-label">密码:</label>
+                                <div class="col-sm-10 input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><span class="icon iconfont">&#xe611;</span></div>
+                                    </div>
+                                    <input type="password" class="form-control" id="passwd-text" placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary" onclick="gf.login();">提交</button>
+                                <button type="button" class="btn btn-primary" onclick="gf.login();" style="border-left-color: #5b97d3;"><span class="icon iconfont">&#xe6c9;</span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-block"><span class="icon iconfont">&#xe600;</span> Github 登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+
+</html>
