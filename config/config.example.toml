@@ -12,10 +12,8 @@
 
 # 模板引擎配置
 [viewer]
-    delimiters  =  ["${", "}"]
-    [viewer.admin]
-        Path        = "template"
-        DefaultFile = "index.html"
+    Delimiters  =  ["${", "}"]
+    DefaultFile = "web/layout/layout.html"
 
 # Database configurations.
 [database]
