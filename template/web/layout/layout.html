@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    ${include "web/layout/header.html" .}
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- menu -->
+        ${include "web/layout/navbar.html" .}
+
+        <!--- main --->
+        <main>
+            ${include .mainTpl .}
+        </main>
+
+        <!--- footer --->
+        ${include "web/layout/footer.html" .}
+    </div>
+</body>
+
+</html>

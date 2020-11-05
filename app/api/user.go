@@ -4,6 +4,7 @@ import (
 	"focus/app/model"
 	"focus/app/service"
 	"focus/library/response"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gconv"
 )
@@ -19,7 +20,14 @@ type userApi struct{}
 // @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Index(r *ghttp.Request) {
-	service.View.Render(r)
+	//service.View.Render(r)
+	// TODO 用户信息查询，展示
+	r.Response.WriteTpl("web/layout/layout.html", g.Map{
+		"mainTpl":     "web/user/user.html",
+		"title":       "gf bbs - 用户",
+		"keywords":    "gf bbs - user keywords",
+		"description": "gf bbs - user description",
+	})
 }
 
 // @summary 展示用户自己的信息
@@ -37,7 +45,14 @@ func (a *userApi) Profile(r *ghttp.Request) {
 // @router  /user/register [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Register(r *ghttp.Request) {
-	service.View.Render(r)
+	//service.View.Render(r)
+	// TODO
+	r.Response.WriteTpl("web/layout/layout.html", g.Map{
+		"mainTpl":     "web/user/register.html",
+		"title":       "gf bbs - Register",
+		"keywords":    "gf bbs - Register keywords",
+		"description": "gf bbs - Register description",
+	})
 }
 
 // @summary 执行注册提交处理
