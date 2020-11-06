@@ -100,13 +100,15 @@ func (d *UserRoleRouteDao) InnerJoin(table ...string) *UserRoleRouteDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *UserRoleRouteDao) Fields(fields ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *UserRoleRouteDao) Fields(fieldNamesOrMapStruct ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *UserRoleRouteDao) FieldsEx(fields ...string) *UserRoleRouteDao {
-	return &UserRoleRouteDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *UserRoleRouteDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *UserRoleRouteDao {
+	return &UserRoleRouteDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.

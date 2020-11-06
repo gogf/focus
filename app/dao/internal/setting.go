@@ -92,13 +92,15 @@ func (d *SettingDao) InnerJoin(table ...string) *SettingDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *SettingDao) Fields(fields ...string) *SettingDao {
-	return &SettingDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *SettingDao) Fields(fieldNamesOrMapStruct ...interface{}) *SettingDao {
+	return &SettingDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *SettingDao) FieldsEx(fields ...string) *SettingDao {
-	return &SettingDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *SettingDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *SettingDao {
+	return &SettingDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.

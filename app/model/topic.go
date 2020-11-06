@@ -89,8 +89,14 @@ type TopicServiceGetListRes struct {
 }
 
 type TopicServiceGetListResItem struct {
-	Topic TopicListItem `json:"topic"`
-	User  TopicUserItem `json:"user"`
+	Topic *TopicListItem `json:"topic"`
+	User  *TopicUserItem `json:"user"`
+}
+
+// Service查询详情结果
+type TopicServiceGetDetailRes struct {
+	Topic *Topic         `json:"topic"`
+	User  *TopicUserItem `json:"user"`
 }
 
 // Service创建/修改话题基类

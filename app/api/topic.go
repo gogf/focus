@@ -29,7 +29,7 @@ func (a *topicApi) Index(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if getListRes, err := service.Topic.GetList(r.Context(), data); err != nil {
-		service.View.Render(r)
+		service.View.Render500(r)
 	} else {
 		service.View.Render(r, model.View{
 			Data: g.Map{

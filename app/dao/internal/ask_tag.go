@@ -94,13 +94,15 @@ func (d *AskTagDao) InnerJoin(table ...string) *AskTagDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *AskTagDao) Fields(fields ...string) *AskTagDao {
-	return &AskTagDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *AskTagDao) Fields(fieldNamesOrMapStruct ...interface{}) *AskTagDao {
+	return &AskTagDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *AskTagDao) FieldsEx(fields ...string) *AskTagDao {
-	return &AskTagDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *AskTagDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *AskTagDao {
+	return &AskTagDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.

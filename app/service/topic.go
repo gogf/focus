@@ -4,9 +4,9 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
-	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gutil"
 )
 
 var Topic = new(topicService)
@@ -18,7 +18,7 @@ func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetList
 	if r.Size > model.TopicListMaxSize {
 		r.Size = model.TopicListMaxSize
 	}
-	m := dao.Topic.FieldsEx(dao.Topic.Columns.Content)
+	m := dao.Topic.Fields(model.TopicListItem{})
 	m = m.Page(r.Page, r.Size)
 	switch gstr.ToLower(r.Sort) {
 	case "zan":
@@ -28,11 +28,11 @@ func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetList
 	default:
 		m = m.Order(dao.Topic.Columns.Id, "DESC")
 	}
-	all, err := m.M.All()
+	topicEntities, err := m.M.All()
 	if err != nil {
 		return nil, err
 	}
-	total, err := m.Count()
+	total, err := m.Fields("*").Count()
 	if err != nil {
 		return nil, err
 	}
@@ -41,16 +41,35 @@ func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetList
 		Size:  r.Size,
 		Total: total,
 	}
-	if err := all.ScanList(&getListRes.List, "Topic"); err != nil {
+	if err := topicEntities.ScanList(&getListRes.List, "Topic"); err != nil {
 		return nil, err
 	}
 	err = dao.User.
-		Where(dao.User.Columns.Id, gdb.ListItemValuesUnique(getListRes.List, "Topic", "UserId")).
+		Fields(model.TopicUserItem{}).
+		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Topic", "UserId")).
 		ScanList(&getListRes.List, "User", "Topic", "id:UserId")
 	if err != nil {
 		return nil, err
 	}
 	return getListRes, nil
+}
+
+// 查询详情
+func (s *topicService) GetDetail(ctx context.Context, id uint) (*model.TopicServiceGetDetailRes, error) {
+	getDetailRes := new(model.TopicServiceGetDetailRes)
+	topicEntity, err := dao.Topic.Fields(getDetailRes.Topic).WherePri(id).One()
+	if err != nil {
+		return nil, err
+	}
+	userRecord, err := dao.User.Fields(getDetailRes.User).WherePri(topicEntity.UserId).M.One()
+	if err != nil {
+		return nil, err
+	}
+	getDetailRes.Topic = topicEntity
+	if err := userRecord.Struct(&getDetailRes.User); err != nil {
+		return nil, err
+	}
+	return getDetailRes, nil
 }
 
 // 创建

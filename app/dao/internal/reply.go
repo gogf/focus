@@ -106,13 +106,15 @@ func (d *ReplyDao) InnerJoin(table ...string) *ReplyDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *ReplyDao) Fields(fields ...string) *ReplyDao {
-	return &ReplyDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *ReplyDao) Fields(fieldNamesOrMapStruct ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *ReplyDao) FieldsEx(fields ...string) *ReplyDao {
-	return &ReplyDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *ReplyDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *ReplyDao {
+	return &ReplyDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.

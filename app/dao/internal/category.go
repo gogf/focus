@@ -108,13 +108,15 @@ func (d *CategoryDao) InnerJoin(table ...string) *CategoryDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *CategoryDao) Fields(fields ...string) *CategoryDao {
-	return &CategoryDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *CategoryDao) Fields(fieldNamesOrMapStruct ...interface{}) *CategoryDao {
+	return &CategoryDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *CategoryDao) FieldsEx(fields ...string) *CategoryDao {
-	return &CategoryDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *CategoryDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *CategoryDao {
+	return &CategoryDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.

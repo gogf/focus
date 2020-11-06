@@ -98,13 +98,15 @@ func (d *UserAuthDao) InnerJoin(table ...string) *UserAuthDao {
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
-func (d *UserAuthDao) Fields(fields ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Fields(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *UserAuthDao) Fields(fieldNamesOrMapStruct ...interface{}) *UserAuthDao {
+	return &UserAuthDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
-func (d *UserAuthDao) FieldsEx(fields ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.FieldsEx(fields...)}
+// The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
+func (d *UserAuthDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *UserAuthDao {
+	return &UserAuthDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.
