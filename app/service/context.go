@@ -10,39 +10,29 @@ var Context = new(contextService)
 
 type contextService struct{}
 
-// 将上下文信息设置到上下文请求中
-func (s *contextService) SetCtx(r *ghttp.Request, localCtx *model.Context) error {
-	r.SetCtxVar(model.ContextUserKey, localCtx)
-	return nil
-}
-
-// 设置用户信息到Context中
-func (s *contextService) SetCtxWithUserEntity(r *ghttp.Request, userEntity *model.User) error {
-	localCtx := s.GetCtx(r.Context())
-	if localCtx == nil {
-		localCtx = &model.Context{
-			UserId:       userEntity.Id,
-			UserPassport: userEntity.Passport,
-			UserNickname: userEntity.Nickname,
-		}
-	} else {
-		localCtx.UserId = userEntity.Id
-		localCtx.UserPassport = userEntity.Passport
-		localCtx.UserNickname = userEntity.Nickname
-	}
-	return s.SetCtx(r, localCtx)
+// 初始化上下文对象指针到上下文对象中，以便后续的请求流程中可以修改。
+func (s *contextService) Init(r *ghttp.Request) {
+	r.SetCtxVar(model.ContextUserKey, new(model.Context))
 }
 
 // 获得上下文变量，如果没有设置，那么返回nil
-func (s *contextService) GetCtx(ctx context.Context) *model.Context {
-	if ctx == nil {
-		return nil
-	}
+func (s *contextService) Get(ctx context.Context) *model.Context {
 	value := ctx.Value(model.ContextUserKey)
-	if value != nil {
-		if localCtx, ok := value.(*model.Context); ok {
-			return localCtx
-		}
+	if value == nil {
+		panic("找不到上下文对象，代码流程执行出现问题，检查下中间件注册顺序？")
+	}
+	if localCtx, ok := value.(*model.Context); ok {
+		return localCtx
 	}
 	return nil
+}
+
+// 将上下文信息设置到上下文请求中，注意是完整覆盖
+func (s *contextService) SetUser(ctx context.Context, ctxUser *model.ContextUser) {
+	s.Get(ctx).User = ctxUser
+}
+
+// 设置请求的上下文的提示信息，该提示信息用于模板渲染，随后请求结束后清空。
+func (s *contextService) SetMessage(ctx context.Context, ctxMessage *model.ContextMessage) {
+	s.Get(ctx).Message = ctxMessage
 }

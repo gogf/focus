@@ -10,7 +10,11 @@ import (
 )
 
 const (
-	TopicListMaxSize = 50
+	TopicListDefaultSize = 10
+	TopicListMaxSize     = 50
+	TopicSortDefault     = 0
+	TopicSortActive      = 1
+	TopicSortHot         = 2
 )
 
 // Topic is the golang structure for table gf_topic.
@@ -49,35 +53,41 @@ type TopicDetail struct {
 	User  User
 }
 
-// API创建/修改话题基类
+// API查看主题详情
+type TopicApiDetailReq struct {
+	Id uint `v:"min:1#请选择查看的主题"`
+}
+
+// API创建/修改主题基类
 type TopicApiCreateUpdateBase struct {
 	TopicServiceCreateUpdateBase
 	CategoryId uint   `v:"min:1#请输入栏目ID"`    // 栏目ID
-	Title      string `v:"required#请输入话题标题"` // 标题
-	Content    string `v:"required#请输入话题内容"` // 内容
+	Title      string `v:"required#请输入主题标题"` // 标题
+	Content    string `v:"required#请输入主题内容"` // 内容
 }
 
-// API创建话题
+// API创建主题
 type TopicApiCreateReq struct {
 	TopicApiCreateUpdateBase
 }
 
-// API修改话题
+// API修改主题
 type TopicApiUpdateReq struct {
 	TopicApiCreateUpdateBase
-	Id uint `v:"min:1#请选择需要修改的话题"` // 修改时ID不能为空
+	Id uint `v:"min:1#请选择需要修改的主题"` // 修改时ID不能为空
 }
 
-// API删除话题
+// API删除主题
 type TopicApiDeleteReq struct {
-	Id uint `v:"min:1#请选择需要删除的话题"` // 删除时ID不能为空
+	Id uint `v:"min:1#请选择需要删除的主题"` // 删除时ID不能为空
 }
 
 // Service查询列表
 type TopicServiceGetListReq struct {
-	Page int    // 分页号码
-	Size int    // 分页数量，最大50
-	Sort string // 排序类型(active:活跃, zan:热度, id:最新, 默认。)
+	Cate uint // 栏目ID
+	Page int  // 分页号码
+	Size int  // 分页数量，最大50
+	Sort int  // 排序类型(0:最新, 默认。1:活跃, 2:热度)
 }
 
 // Service查询列表结果
@@ -99,7 +109,7 @@ type TopicServiceGetDetailRes struct {
 	User  *TopicUserItem `json:"user"`
 }
 
-// Service创建/修改话题基类
+// Service创建/修改主题基类
 type TopicServiceCreateUpdateBase struct {
 	CategoryId uint     // 栏目ID
 	Title      string   // 标题
@@ -110,13 +120,13 @@ type TopicServiceCreateUpdateBase struct {
 	Referer    string   // 内容来源，例如github/gitee
 }
 
-// Service创建话题
+// Service创建主题
 type TopicServiceCreateReq struct {
 	TopicServiceCreateUpdateBase
 	UserId uint
 }
 
-// Service修改话题
+// Service修改主题
 type TopicServiceUpdateReq struct {
 	TopicServiceCreateUpdateBase
 	Id uint

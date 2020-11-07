@@ -75,7 +75,7 @@ func (a *userApi) DoRegister(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 自动登录
-		err := service.User.Login(r, &model.UserServiceLoginReq{
+		err := service.User.Login(r.Context(), &model.UserServiceLoginReq{
 			Passport: serviceRegisterReq.Passport,
 			Password: serviceRegisterReq.Password,
 		})
@@ -119,9 +119,9 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 // @param   passport    formData string true "账号"
 // @param   password    formData string true "密码"
 // @param   verify_code formData string false "验证码"
-// @router  /user/login [POST]
+// @router  /user/do-login [POST]
 // @success 200 {object} response.JsonRes "执行结果"
-func (a *loginApi) Login(r *ghttp.Request) {
+func (a *loginApi) DoLogin(r *ghttp.Request) {
 	var (
 		data            *model.UserApiLoginReq
 		serviceLoginReq *model.UserServiceLoginReq
@@ -132,7 +132,7 @@ func (a *loginApi) Login(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.User.Login(r, serviceLoginReq); err != nil {
+	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")
@@ -146,7 +146,7 @@ func (a *loginApi) Login(r *ghttp.Request) {
 // @router  /user/logout [GET]
 // @success 200 {object} response.JsonRes "执行结果"
 func (a *loginApi) Logout(r *ghttp.Request) {
-	if err := service.User.Logout(r); err != nil {
+	if err := service.User.Logout(r.Context()); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")

@@ -4,15 +4,37 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/library/response"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var User = new(userService)
+var User = &userService{
+	LoginUri: "/login",
+}
 
-type userService struct{}
+type userService struct {
+	LoginUri string // 登录路由地址
+}
+
+// 检查用户是否登录，当没有登录时返回错误并停止执行
+func (s *userService) CheckLogin(r *ghttp.Request) {
+	user := s.GetSessionUser(r)
+	if user == nil {
+		errMsg := "会话已过期，请重新登录"
+		if r.IsAjaxRequest() {
+			response.JsonRedirectExit(r, 1, errMsg, s.LoginUri)
+		} else {
+			Context.SetMessage(r.Context(), &model.ContextMessage{
+				Type:    model.ContextMessageTypeInfo,
+				Content: errMsg,
+			})
+			r.Response.RedirectTo(s.LoginUri)
+		}
+	}
+}
 
 // 获取当前登录的用户ID，如果用户未登录返回nil。
 func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
@@ -25,8 +47,8 @@ func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
 	return nil
 }
 
-// 登录
-func (s *userService) Login(r *ghttp.Request, loginReq *model.UserServiceLoginReq) error {
+// 执行登录
+func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
 	userEntity, err := s.GetUserByPassportAndPassword(loginReq.Password, loginReq.Passport)
 	if err != nil {
 		return err
@@ -34,18 +56,21 @@ func (s *userService) Login(r *ghttp.Request, loginReq *model.UserServiceLoginRe
 	if userEntity == nil {
 		return gerror.New(`账号或密码错误`)
 	}
-	if err := r.Session.Set(model.UserSessionKey, userEntity); err != nil {
+	if err := Context.Get(ctx).Session.Set(model.UserSessionKey, userEntity); err != nil {
 		return err
 	}
-	if err := Context.SetCtxWithUserEntity(r, userEntity); err != nil {
-		return err
-	}
+	// 自动更新上线
+	Context.SetUser(ctx, &model.ContextUser{
+		Id:       userEntity.Id,
+		Passport: userEntity.Passport,
+		Nickname: userEntity.Nickname,
+	})
 	return nil
 }
 
 // 注销
-func (s *userService) Logout(r *ghttp.Request) error {
-	return r.Session.Remove(model.UserSessionKey)
+func (s *userService) Logout(ctx context.Context) error {
+	return Context.Get(ctx).Session.Remove(model.UserSessionKey)
 }
 
 // 将密码按照内部算法进行加密
@@ -110,7 +135,7 @@ func (s *userService) UpdateProfile(ctx context.Context, r *model.UserServiceUpd
 	if err := s.CheckNicknameUnique(r.Nickname); err != nil {
 		return err
 	}
-	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.GetCtx(ctx).UserId).Save()
+	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Save()
 	return err
 }
 

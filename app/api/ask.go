@@ -20,7 +20,7 @@ func (a *askApi) Index(r *ghttp.Request) {
 // @summary 展示问答模块特定问题内容页面
 // @tags    问答
 // @produce html
-// @param   id path int false "话题ID"
+// @param   id path int false "主题ID"
 // @router  /ask/detail/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *askApi) Detail(r *ghttp.Request) {

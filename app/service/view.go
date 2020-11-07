@@ -26,14 +26,32 @@ func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 	}
 }
 
-func (s *viewService) Render302(r *ghttp.Request) {
-
+// 跳转中间页面
+func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	view.MainTpl = "web/pages/302.html"
+	s.Render(r, view)
 }
 
-func (s *viewService) Render404(r *ghttp.Request) {
-
+// 404页面
+func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	view.MainTpl = "web/pages/404.html"
+	s.Render(r, view)
 }
 
-func (s *viewService) Render500(r *ghttp.Request) {
-
+// 500页面
+func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	view.MainTpl = "web/pages/500.html"
+	s.Render(r, view)
 }

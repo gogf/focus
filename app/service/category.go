@@ -1,55 +1,126 @@
 package service
 
 import (
+	"context"
+	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/os/gcache"
 	"github.com/gogf/gf/util/gconv"
+	"time"
 )
 
 var Category = new(categoryService)
 
+const (
+	mapCacheKey       = "category_map_cache"
+	mapCacheDuration  = time.Hour
+	treeCacheKey      = "category_tree_cache"
+	treeCacheDuration = time.Hour
+)
+
 type categoryService struct{}
 
 // 查询列表
-func (s *categoryService) GetList(r *model.CategoryServiceGetListReq) ([]*model.CategoryItem, error) {
-	m := dao.Category.Where(dao.Category.Columns.ContentType, r.ContentType)
-	if r.ParentId > 0 {
-		m = m.Where(dao.Category.Columns.ParentId, r.ParentId)
-	}
-	m = m.Order(dao.Category.Columns.Sort, "ASC")
-	// 查询数据
-	all, err := m.All()
-	if err != nil {
-		return nil, err
-	}
-	// 结构体转换
-	list := make([]*model.CategoryItem, len(all))
-	for i, v := range all {
-		list[i], err = s.entityToItem(v)
+func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTree, error) {
+	v, err := gcache.GetOrSetFunc(treeCacheKey, func() (interface{}, error) {
+		entities, err := s.GetList(ctx)
 		if err != nil {
 			return nil, err
 		}
-	}
-	return list, nil
-}
-
-// 查询详情
-func (s *categoryService) GetItem(id uint) (*model.CategoryItem, error) {
-	entity, err := dao.Category.FindOne(id)
+		return s.formTree(0, contentType, entities)
+	}, treeCacheDuration)
 	if err != nil {
 		return nil, err
 	}
-	return s.entityToItem(entity)
+	return v.([]*model.CategoryTree), nil
 }
 
-// 将ORM Entity装换为Item对象返回
-func (s *categoryService) entityToItem(entity *model.Category) (*model.CategoryItem, error) {
-	if entity == nil {
-		return nil, nil
-	}
-	item := &model.CategoryItem{}
-	if err := gconv.Struct(entity, item); err != nil {
+// 获取指定栏目ID及其下面所有子ID，构成数组返回。
+// 注意，返回的ID列表中包含查询的栏目ID.
+func (s *categoryService) GetSubIdList(ctx context.Context, id uint) ([]uint, error) {
+	m, err := s.GetMap(ctx)
+	if err != nil {
 		return nil, err
 	}
-	return item, nil
+	entity := m[id]
+	if entity == nil {
+		return nil, gerror.Newf(`%d栏目不存在`, id)
+	}
+	tree, err := s.GetTree(ctx, entity.ContentType)
+	if err != nil {
+		return nil, err
+	}
+	return append([]uint{id}, s.getSubIdListByTree(id, tree)...), nil
+}
+
+// 递归获取指定栏目ID下的所有子级
+func (s *categoryService) getSubIdListByTree(id uint, trees []*model.CategoryTree) []uint {
+	idArray := make([]uint, 0)
+	for _, item := range trees {
+		if item.ParentId == id {
+			idArray = append(idArray, item.Id)
+			if len(item.Items) > 0 {
+				idArray = append(idArray, s.getSubIdListByTree(item.Id, item.Items)...)
+			}
+		} else if len(item.Items) > 0 {
+			idArray = append(idArray, s.getSubIdListByTree(id, item.Items)...)
+		}
+	}
+	return idArray
+}
+
+// 构造树形栏目列表。
+func (s *categoryService) formTree(parentId uint, contentType string, entities []*model.Category) ([]*model.CategoryTree, error) {
+	tree := make([]*model.CategoryTree, 0)
+	for _, entity := range entities {
+		if contentType != "" && entity.ContentType != contentType {
+			continue
+		}
+		if entity.ParentId == parentId {
+			subTree, err := s.formTree(entity.Id, contentType, entities)
+			if err != nil {
+				return nil, err
+			}
+			item := &model.CategoryTree{
+				Items: subTree,
+			}
+			if err = gconv.Struct(entity, item); err != nil {
+				return nil, err
+			}
+			tree = append(tree, item)
+		}
+	}
+	return tree, nil
+}
+
+// 获得所有的栏目列表。
+func (s *categoryService) GetList(ctx context.Context) ([]*model.Category, error) {
+	orderBy := fmt.Sprintf(
+		`%s ASC, %s ASC`,
+		dao.Category.Columns.Sort,
+		dao.Category.Columns.Id,
+	)
+	return dao.Category.Order(orderBy).All()
+}
+
+// 获得所有的栏目列表，构成Map返回，键名为栏目ID
+func (s *categoryService) GetMap(ctx context.Context) (map[uint]*model.Category, error) {
+	v, err := gcache.GetOrSetFunc(mapCacheKey, func() (interface{}, error) {
+		entities, err := s.GetList(ctx)
+		if err != nil {
+			return nil, err
+		}
+		m := make(map[uint]*model.Category)
+		for _, entity := range entities {
+			item := entity
+			m[entity.Id] = item
+		}
+		return m, nil
+	}, mapCacheDuration)
+	if err != nil {
+		return nil, err
+	}
+	return v.(map[uint]*model.Category), nil
 }

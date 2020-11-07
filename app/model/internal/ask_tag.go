@@ -10,9 +10,9 @@ import (
 
 // AskTag is the golang structure for table gf_ask_tag.
 type AskTag struct {
-    Id        int         `orm:"id,primary" json:"id"`         //           
-    AskId     uint        `orm:"ask_id"     json:"ask_id"`     // 话题ID    
-    TagName   string      `orm:"tag_name"   json:"tag_name"`   // 标签名称  
-    CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间  
-    UpdatedAt *gtime.Time `orm:"updated_at" json:"updated_at"` // 修改时间  
+	Id        int         `orm:"id,primary" json:"id"`         //
+	AskId     uint        `orm:"ask_id"     json:"ask_id"`     // 主题ID
+	TagName   string      `orm:"tag_name"   json:"tag_name"`   // 标签名称
+	CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间
+	UpdatedAt *gtime.Time `orm:"updated_at" json:"updated_at"` // 修改时间
 }

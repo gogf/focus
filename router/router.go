@@ -9,7 +9,10 @@ import (
 
 func init() {
 	s := g.Server()
-	s.Use(service.Middleware.SessionToCtx, service.Middleware.View)
+	s.Use(
+		service.Middleware.CustomCtx,
+		service.Middleware.CustomView,
+	)
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		// 首页
 		group.Group("/", func(group *ghttp.RouterGroup) {
@@ -22,7 +25,6 @@ func init() {
 		// 分类
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/category", api.Category)
-			group.ALL("/category/:id", api.Category.Item)
 		})
 		// 主题
 		group.Group("/", func(group *ghttp.RouterGroup) {

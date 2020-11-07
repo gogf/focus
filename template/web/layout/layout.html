@@ -2,24 +2,25 @@
 <html>
 
 <head>
-
     ${include "web/layout/header.html" .}
-
 </head>
 
 <body>
-    <div class="container-fluid">
-        <!-- menu -->
-        ${include "web/layout/navbar.html" .}
+<div class="container-fluid">
+    <!-- menu -->
+    ${include "web/layout/navbar.html" .}
 
-        <!--- main --->
-        <main>
-            ${include .MainTpl .}
-        </main>
+    <!--- main --->
+    <main>
+        ${include .MainTpl .}
+    </main>
 
-        <!--- footer --->
-        ${include "web/layout/footer.html" .}
-    </div>
+    <!--- footer --->
+    ${include "web/layout/footer.html" .}
+</div>
 </body>
 
 </html>
+
+${dump .}
+

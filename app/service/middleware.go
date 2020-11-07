@@ -13,23 +13,42 @@ var Middleware = new(middlewareService)
 
 type middlewareService struct{}
 
-// 获取session中的相关信息，写入到上下文变量中。
-func (s *middlewareService) SessionToCtx(r *ghttp.Request) {
+// 自定义上下文对象
+func (s *middlewareService) CustomCtx(r *ghttp.Request) {
+	// 初始化，务必最开始执行
+	Context.Init(r)
+	customCtx := Context.Get(r.Context())
+	customCtx.Session = r.Session
+	// 开发环境使用，设置测试用户信息
 	if gmode.IsDevelop() {
-		Context.SetCtx(r, &model.Context{
-			UserId:       1,
-			UserPassport: "root",
-			UserNickname: "ROOT",
+		Context.SetUser(r.Context(), &model.ContextUser{
+			Id:       1,
+			Passport: "root",
+			Nickname: "ROOT",
 		})
 	}
 	if userEntity := User.GetSessionUser(r); userEntity != nil {
-		Context.SetCtxWithUserEntity(r, userEntity)
+		Context.SetUser(r.Context(), &model.ContextUser{
+			Id:       userEntity.Id,
+			Passport: userEntity.Passport,
+			Nickname: userEntity.Nickname,
+		})
 	}
+	// 将自定义的上下文对象传递到模板变量中使用
+	r.Assigns(g.Map{
+		"Context":   r.Context(),
+		"CustomCtx": customCtx,
+	})
+	// 执行下一步请求逻辑
 	r.Middleware.Next()
+	// 清理请求自定义消息
+	if customCtx.Message != nil {
+		customCtx.Message = nil
+	}
 }
 
 // 该中间件用于根据URL.Path自动设置mainTpl模板变量
-func (s *middlewareService) View(r *ghttp.Request) {
+func (s *middlewareService) CustomView(r *ghttp.Request) {
 	// 内容模板变量自动设置仅对GET请求有效
 	if r.Method == "GET" {
 		var (
@@ -56,6 +75,9 @@ func (s *middlewareService) View(r *ghttp.Request) {
 				"MainTpl": prefix + "index/index.html",
 			})
 		}
+		r.Assigns(g.Map{
+			"CategoryService": Category,
+		})
 	}
 	r.Middleware.Next()
 }
