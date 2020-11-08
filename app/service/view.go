@@ -4,6 +4,7 @@ import (
 	"focus/app/model"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gmode"
 )
@@ -11,6 +12,11 @@ import (
 var View = new(viewService)
 
 type viewService struct{}
+
+// 视图自定义方法管理对象
+type ViewBuildInFuncManager struct {
+	request *ghttp.Request
+}
 
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
@@ -60,4 +66,18 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	}
 	view.MainTpl = "web/pages/500.html"
 	s.Render(r, view)
+}
+
+// 渲染模板页面
+func (s *ViewBuildInFuncManager) Page(total, size int) string {
+	page := s.request.GetPage(total, size)
+	page.LinkStyle = "page-link"
+	content := page.GetContent(4)
+	content = gstr.ReplaceByMap(content, map[string]string{
+		"<span":  "<li class=\"page-item\"><span",
+		"/span>": "/span></li>",
+		"<a":     "<li class=\"page-item\"><a",
+		"/a>":    "/a></li>",
+	})
+	return content
 }

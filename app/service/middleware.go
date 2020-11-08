@@ -75,8 +75,10 @@ func (s *middlewareService) CustomView(r *ghttp.Request) {
 				"MainTpl": prefix + "index/index.html",
 			})
 		}
+		// 内置变量
 		r.Assigns(g.Map{
-			"CategoryService": Category,
+			"Category":    Category,
+			"BuildInFunc": &ViewBuildInFuncManager{request: r},
 		})
 	}
 	r.Middleware.Next()
