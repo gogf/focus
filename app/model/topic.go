@@ -40,8 +40,17 @@ type TopicListItem struct {
 	UpdatedAt  *gtime.Time `json:"updated_at"`  // 修改时间
 }
 
+// 绑定到Topic列表中的栏目信息
+type TopicListCategoryItem struct {
+	Id          uint   `json:"id"`           // 分类ID，自增主键
+	Name        string `json:"name"`         // 分类名称
+	Thumb       string `json:"thumb"`        // 封面图
+	ContentType string `json:"content_type"` // 内容类型：topic, ask, article, reply
+
+}
+
 // 绑定到Topic列表中的用户信息
-type TopicUserItem struct {
+type TopicListUserItem struct {
 	Id       uint   `json:"id"`       // UID
 	Nickname string `json:"nickname"` // 昵称
 	Avatar   string `json:"avatar"`   // 头像地址
@@ -85,8 +94,8 @@ type TopicApiDeleteReq struct {
 // Service查询列表
 type TopicServiceGetListReq struct {
 	Cate uint // 栏目ID
-	Page int  // 分页号码
-	Size int  // 分页数量，最大50
+	Page int  `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
+	Size int  `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
 	Sort int  // 排序类型(0:最新, 默认。1:活跃, 2:热度)
 }
 
@@ -99,14 +108,15 @@ type TopicServiceGetListRes struct {
 }
 
 type TopicServiceGetListResItem struct {
-	Topic *TopicListItem `json:"topic"`
-	User  *TopicUserItem `json:"user"`
+	Topic    *TopicListItem         `json:"topic"`
+	Category *TopicListCategoryItem `json:"category"`
+	User     *TopicListUserItem     `json:"user"`
 }
 
 // Service查询详情结果
 type TopicServiceGetDetailRes struct {
-	Topic *Topic         `json:"topic"`
-	User  *TopicUserItem `json:"user"`
+	Topic *Topic `json:"topic"`
+	User  *User  `json:"user"`
 }
 
 // Service创建/修改主题基类

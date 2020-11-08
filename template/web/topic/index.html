@@ -11,6 +11,26 @@
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=2">热度</a>
             </li>
 
+            ${range $index, $item := .Data.list}
+            <li class="list-group-item gf-list-item">
+                <div style="width:7%;float: left;">
+                    <img src="${$item.user.avatar}" style="height: 36px;width:36px;">
+                </div>
+                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                    <div style="float: left;">
+                        <span class="badge badge-primary" style="padding:5px;">${$item.category.name}</span>
+                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+                            <a  href="/${$item.category.content_type}/${$item.topic.id}" style="color: #222;">${$item.topic.title}</a>
+                        </span>
+                    </div>
+                    <div style="float: right;">
+                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                        <span style="font-size: 12px;color: #ccc;">10天前</span>
+                    </div>
+                </div>
+            </li>
+            ${end}
+
             <li class="list-group-item gf-list-item">
                 <div style="width:7%;float: left;">
                     <img onclick="window.location.href='user'" src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">

@@ -19,7 +19,7 @@ func (s *contextService) Init(r *ghttp.Request) {
 func (s *contextService) Get(ctx context.Context) *model.Context {
 	value := ctx.Value(model.ContextUserKey)
 	if value == nil {
-		panic("找不到上下文对象，代码流程执行出现问题，检查下中间件注册顺序？")
+		panic("找不到上下文对象，代码执行流程可能出现了问题，请检查下中间件注册顺序")
 	}
 	if localCtx, ok := value.(*model.Context); ok {
 		return localCtx
