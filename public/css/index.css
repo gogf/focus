@@ -240,3 +240,12 @@ footer .list-group-item {
     background-color: #1b1c1d !important;
     border-color: #1b1c1d !important;
 }
+
+/**************** 个人中心样式 ************************/
+.gf-person {
+}
+
+.gf-person .gf-list-item {
+    border: 0px;
+    border-bottom: 1px solid #e5e5e5;
+}

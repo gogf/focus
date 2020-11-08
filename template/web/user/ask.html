@@ -1,0 +1,59 @@
+<div class="row gf-list">
+    <div class="col-md-2 offset-md-1">
+        ${include "web/user/user_menu.html" .}
+    </div>
+    <div class="col-md-8">
+        <div class="card gf-person">
+            <div class="card-header">
+                <span class="iconfont">&#xe717;</span>  我的问答
+            </div>
+            <div class="card-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item gf-list-item">
+                        <div style="width:7%;float: left;">
+                            <img onclick="window.location.href='user'" src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                        </div>
+                        <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
+                            <div style="float: left;">
+                                <span class="badge badge-primary" style="padding:5px;">文章</span>
+                                <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
+        <a  onclick="window.location.href='/article/1'" href="javascript:void(0);" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！<span class="gf-article-new">new</span></a>
+                        </span>
+                            </div>
+                            <div style="float: right;">
+                                <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
+                                <span style="font-size: 12px;color: #ccc;">10天前</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item gf-list-item">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $("#user-ask").addClass("active")
+</script>
