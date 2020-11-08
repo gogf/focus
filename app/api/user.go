@@ -36,6 +36,15 @@ func (a *userApi) Profile(r *ghttp.Request) {
 	service.View.Render(r)
 }
 
+// @summary 修改密码页面
+// @tags    用户
+// @produce html
+// @router  /user/passwd [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Passwd(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
 // @summary 展示注册页面
 // @tags    用户
 // @produce html
