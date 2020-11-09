@@ -8,10 +8,10 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-// ArticleTag is the golang structure for table gf_article_tag.
-type ArticleTag struct {
-    Id        int         `orm:"id,primary" json:"id"`         // 自增主键  
-    ArticleId uint        `orm:"article_id" json:"article_id"` // 文章ID    
+// ContentTag is the golang structure for table gf_content_tag.
+type ContentTag struct {
+    Id        int         `orm:"id,primary" json:"id"`         //           
+    Type      string      `orm:"type"       json:"type"`       // 内容模型  
     TagName   string      `orm:"tag_name"   json:"tag_name"`   // 标签名称  
     CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间  
     UpdatedAt *gtime.Time `orm:"updated_at" json:"updated_at"` // 修改时间  

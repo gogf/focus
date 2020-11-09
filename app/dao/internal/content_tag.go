@@ -13,57 +13,57 @@ import (
 	"time"
 )
 
-// TopicTagDao is the manager for logic model data accessing
+// ContentTagDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type TopicTagDao struct {
+type ContentTagDao struct {
 	gmvc.M
 	Table   string
-	Columns topicTagColumns
+	Columns contentTagColumns
 }
 
-// TopicTagColumns defines and stores column names for table gf_topic_tag.
-type topicTagColumns struct {
-	Id        string //
-	TopicId   string // 主题ID
-	TagName   string // 标签名称
-	CreatedAt string // 创建时间
-	UpdatedAt string // 修改时间
+// ContentTagColumns defines and stores column names for table gf_content_tag.
+type contentTagColumns struct {
+	Id         string //           
+    Type       string // 内容模型  
+    TagName    string // 标签名称  
+    CreatedAt  string // 创建时间  
+    UpdatedAt  string // 修改时间
 }
 
 var (
-	// TopicTag is globally public accessible object for table gf_topic_tag operations.
-	TopicTag = &TopicTagDao{
-		M:     g.DB("default").Table("gf_topic_tag").Safe(),
-		Table: "gf_topic_tag",
-		Columns: topicTagColumns{
-			Id:        "id",
-			TopicId:   "topic_id",
-			TagName:   "tag_name",
-			CreatedAt: "created_at",
-			UpdatedAt: "updated_at",
+	// ContentTag is globally public accessible object for table gf_content_tag operations.
+	ContentTag = &ContentTagDao{
+		M:     g.DB("default").Table("gf_content_tag").Safe(),
+		Table: "gf_content_tag",
+		Columns: contentTagColumns{
+			Id:        "id",          
+            Type:      "type",        
+            TagName:   "tag_name",    
+            CreatedAt: "created_at",  
+            UpdatedAt: "updated_at",
 		},
 	}
 )
 
 // As sets an alias name for current table.
-func (d *TopicTagDao) As(as string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.As(as)}
+func (d *ContentTagDao) As(as string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (d *TopicTagDao) TX(tx *gdb.TX) *TopicTagDao {
-	return &TopicTagDao{M: d.M.TX(tx)}
+func (d *ContentTagDao) TX(tx *gdb.TX) *ContentTagDao {
+	return &ContentTagDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (d *TopicTagDao) Master() *TopicTagDao {
-	return &TopicTagDao{M: d.M.Master()}
+func (d *ContentTagDao) Master() *ContentTagDao {
+	return &ContentTagDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (d *TopicTagDao) Slave() *TopicTagDao {
-	return &TopicTagDao{M: d.M.Slave()}
+func (d *ContentTagDao) Slave() *ContentTagDao {
+	return &ContentTagDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -71,8 +71,8 @@ func (d *TopicTagDao) Slave() *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *TopicTagDao) LeftJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.LeftJoin(table...)}
+func (d *ContentTagDao) LeftJoin(table ...string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -80,8 +80,8 @@ func (d *TopicTagDao) LeftJoin(table ...string) *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *TopicTagDao) RightJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.RightJoin(table...)}
+func (d *ContentTagDao) RightJoin(table ...string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -89,36 +89,36 @@ func (d *TopicTagDao) RightJoin(table ...string) *TopicTagDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *TopicTagDao) InnerJoin(table ...string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.InnerJoin(table...)}
+func (d *ContentTagDao) InnerJoin(table ...string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *TopicTagDao) Fields(fieldNamesOrMapStruct ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Fields(fieldNamesOrMapStruct...)}
+func (d *ContentTagDao) Fields(fieldNamesOrMapStruct ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *TopicTagDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.FieldsEx(fieldNamesOrMapStruct...)}
+func (d *ContentTagDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.
-func (d *TopicTagDao) Option(option int) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Option(option)}
+func (d *ContentTagDao) Option(option int) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (d *TopicTagDao) OmitEmpty() *TopicTagDao {
-	return &TopicTagDao{M: d.M.OmitEmpty()}
+func (d *ContentTagDao) OmitEmpty() *ContentTagDao {
+	return &ContentTagDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (d *TopicTagDao) Filter() *TopicTagDao {
-	return &TopicTagDao{M: d.M.Filter()}
+func (d *ContentTagDao) Filter() *ContentTagDao {
+	return &ContentTagDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -132,8 +132,8 @@ func (d *TopicTagDao) Filter() *TopicTagDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (d *TopicTagDao) Where(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Where(where, args...)}
+func (d *ContentTagDao) Where(where interface{}, args ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -141,54 +141,54 @@ func (d *TopicTagDao) Where(where interface{}, args ...interface{}) *TopicTagDao
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (d *TopicTagDao) WherePri(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.WherePri(where, args...)}
+func (d *ContentTagDao) WherePri(where interface{}, args ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (d *TopicTagDao) And(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.And(where, args...)}
+func (d *ContentTagDao) And(where interface{}, args ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (d *TopicTagDao) Or(where interface{}, args ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Or(where, args...)}
+func (d *ContentTagDao) Or(where interface{}, args ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (d *TopicTagDao) Group(groupBy string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Group(groupBy)}
+func (d *ContentTagDao) Group(groupBy string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (d *TopicTagDao) Order(orderBy ...string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Order(orderBy...)}
+func (d *ContentTagDao) Order(orderBy ...string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (d *TopicTagDao) Limit(limit ...int) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Limit(limit...)}
+func (d *ContentTagDao) Limit(limit ...int) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (d *TopicTagDao) Offset(offset int) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Offset(offset)}
+func (d *ContentTagDao) Offset(offset int) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (d *TopicTagDao) Page(page, limit int) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Page(page, limit)}
+func (d *ContentTagDao) Page(page, limit int) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (d *TopicTagDao) Batch(batch int) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Batch(batch)}
+func (d *ContentTagDao) Batch(batch int) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -203,8 +203,8 @@ func (d *TopicTagDao) Batch(batch int) *TopicTagDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (d *TopicTagDao) Cache(duration time.Duration, name ...string) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Cache(duration, name...)}
+func (d *ContentTagDao) Cache(duration time.Duration, name ...string) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -214,39 +214,39 @@ func (d *TopicTagDao) Cache(duration time.Duration, name ...string) *TopicTagDao
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (d *TopicTagDao) Data(data ...interface{}) *TopicTagDao {
-	return &TopicTagDao{M: d.M.Data(data...)}
+func (d *ContentTagDao) Data(data ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
-// It retrieves the records from table and returns the result as []*model.TopicTag.
+// It retrieves the records from table and returns the result as []*model.ContentTag.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *TopicTagDao) All(where ...interface{}) ([]*model.TopicTag, error) {
+func (d *ContentTagDao) All(where ...interface{}) ([]*model.ContentTag, error) {
 	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.TopicTag
+	var entities []*model.ContentTag
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 	return entities, nil
 }
 
-// One retrieves one record from table and returns the result as *model.TopicTag.
+// One retrieves one record from table and returns the result as *model.ContentTag.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *TopicTagDao) One(where ...interface{}) (*model.TopicTag, error) {
+func (d *ContentTagDao) One(where ...interface{}) (*model.ContentTag, error) {
 	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.TopicTag
+	var entity *model.ContentTag
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -255,12 +255,12 @@ func (d *TopicTagDao) One(where ...interface{}) (*model.TopicTag, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (d *TopicTagDao) FindOne(where ...interface{}) (*model.TopicTag, error) {
+func (d *ContentTagDao) FindOne(where ...interface{}) (*model.ContentTag, error) {
 	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.TopicTag
+	var entity *model.ContentTag
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -269,12 +269,12 @@ func (d *TopicTagDao) FindOne(where ...interface{}) (*model.TopicTag, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (d *TopicTagDao) FindAll(where ...interface{}) ([]*model.TopicTag, error) {
+func (d *ContentTagDao) FindAll(where ...interface{}) ([]*model.ContentTag, error) {
 	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.TopicTag
+	var entities []*model.ContentTag
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -282,9 +282,9 @@ func (d *TopicTagDao) FindAll(where ...interface{}) ([]*model.TopicTag, error) {
 }
 
 // Chunk iterates the table with given size and callback function.
-func (d *TopicTagDao) Chunk(limit int, callback func(entities []*model.TopicTag, err error) bool) {
+func (d *ContentTagDao) Chunk(limit int, callback func(entities []*model.ContentTag, err error) bool) {
 	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
-		var entities []*model.TopicTag
+		var entities []*model.ContentTag
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
 			return false
@@ -294,16 +294,16 @@ func (d *TopicTagDao) Chunk(limit int, callback func(entities []*model.TopicTag,
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (d *TopicTagDao) LockUpdate() *TopicTagDao {
-	return &TopicTagDao{M: d.M.LockUpdate()}
+func (d *ContentTagDao) LockUpdate() *ContentTagDao {
+	return &ContentTagDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (d *TopicTagDao) LockShared() *TopicTagDao {
-	return &TopicTagDao{M: d.M.LockShared()}
+func (d *ContentTagDao) LockShared() *ContentTagDao {
+	return &ContentTagDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (d *TopicTagDao) Unscoped() *TopicTagDao {
-	return &TopicTagDao{M: d.M.Unscoped()}
+func (d *ContentTagDao) Unscoped() *ContentTagDao {
+	return &ContentTagDao{M:d.M.Unscoped()}
 }
