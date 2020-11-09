@@ -89,7 +89,7 @@ func (s *userService) GetUserByPassportAndPassword(passport, password string) (*
 
 // 检测给定的账号是否唯一
 func (s *userService) CheckPassportUnique(passport string) error {
-	n, err := dao.User.Data(dao.User.Columns.Password, passport).Count()
+	n, err := dao.User.Data(dao.User.Columns.Passport, passport).Count()
 	if err != nil {
 		return err
 	}

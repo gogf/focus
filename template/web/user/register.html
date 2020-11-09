@@ -7,47 +7,62 @@
             <div class="card-body">
                 <form>
                     <div class="form-group row">
-                        <label for="email" class="col-sm-2 col-form-label">邮箱</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="email" value="" placeholder="请输入邮箱">
+                        <label for="passport" class="col-sm-3 col-form-label">邮箱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="passport" id="passport" value="test@test.com"
+                                   placeholder="请输入邮箱">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="nickName" class="col-sm-2 col-form-label">昵称</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="nickName" value="" placeholder="请输入昵称">
+                        <label for="nickname" class="col-sm-3 col-form-label">昵称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="nickname" id="nickname" value="test@test.com"
+                                   placeholder="请输入昵称">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="passwd" class="col-sm-2 col-form-label">密码</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="passwd" value="" placeholder="请输入密码">
+                        <label for="password" class="col-sm-3 col-form-label">密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" id="password" value="123456"
+                                   placeholder="请输入密码">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="code" class="col-sm-2 col-form-label">验证码</label>
-                        <div class="col-sm-10">
+                        <label for="password2" class="col-sm-3 col-form-label">确认密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password2" id="password2" value="123456"
+                                   placeholder="请再次输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="code" class="col-sm-3 col-form-label">验证码</label>
+                        <div class="col-sm-9">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" id="code" value="" placeholder="请输入正确的验证码">
+                                <input type="text" class="form-control" name="code" id="code" value="1234"
+                                       placeholder="请输入正确的验证码">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2"> <img src="https://cdn.learnku.com//uploads/communities/sNljssWWQoW6J88O9G37.png!/both/44x44" width="100" height="24" alt="" loading="lazy"></span>
+                                    <span class="input-group-text" id="basic-addon2"> <img
+                                                src="https://cdn.learnku.com//uploads/communities/sNljssWWQoW6J88O9G37.png!/both/44x44"
+                                                width="100" height="24" alt="" loading="lazy"></span>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
+                    <div class="card-text" id="notice" style="color: red;"></div>
                     <div class="form-group row">
-                        <div class="col-sm-3 offset-md-2"> <button type="submit" class="btn btn-primary btn-block">注册</button></div>
-                        <div class="col-sm-3 offset-md-1"> <button type="submit" class="btn btn-secondary btn-block">放弃</button></div>
-                    </div>
-
-
-                    <div class="form-group row">
-
+                        <div class="col-sm-3 offset-md-3">
+                            <button type="button" onclick="user.register();return false;"
+                                    class="btn btn-primary btn-block">注册
+                            </button>
+                        </div>
+                        <div class="col-sm-3 offset-md-1">
+                            <button type="button" class="btn btn-secondary btn-block">放弃</button>
+                        </div>
                     </div>
                 </form>
-                <p class="card-text" style="color: red;">1. 请填写真实邮箱，并及时确认。</p>
+
             </div>
         </div>
     </div>
@@ -84,3 +99,106 @@
         </div>
     </div>
 </div>
+<script>
+    user = {
+        register: function () {
+            // 清空提示
+            this.noticeClear();
+
+            var passport = $('#passport').val();
+            var nickname = $('#nickname').val();
+            if (passport == '') {
+                this.notice('邮箱不能为空！');
+                return;
+            }
+            var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            if (!regexEmail.test(passport)) {
+                this.notice('邮箱格式不正确！');
+                return;
+            }
+
+            if (nickname == '') {
+                this.notice('昵称不能为空！');
+                return;
+            }
+
+            if (nickname.length < 3) {
+                this.notice('昵称长度必须大于3！');
+                return;
+            }
+
+            if (nickname.length > 15) {
+                this.notice('昵称长度必须小于16！');
+                return;
+            }
+
+            var pwd = $('#password').val();
+            var pwd2 = $('#password2').val();
+            if (pwd == '') {
+                this.notice('密码不能为空！');
+                return;
+            }
+            if (pwd2 == '') {
+                this.notice('确认密码不能为空！');
+                return;
+            }
+            if (pwd.length < 6) {
+                this.notice('密码长度必须大于等于6');
+                return;
+            }
+            if (pwd.length > 20) {
+                this.notice('密码长度必须小于等于20');
+                return;
+            }
+
+            if (pwd != pwd2) {
+                this.notice('两次密码不一致！');
+                return;
+            }
+            var imageCode = $('#code').val();
+            if (imageCode == '') {
+                this.notice('验证码不能为空！');
+                return;
+            }
+            if (imageCode.length != 4) {
+                this.notice('验证码输入错误！');
+                return;
+            }
+
+            jQuery.ajax({
+                type: 'POST',
+                url: '/user/do-register',
+                data: $("form").serialize(),
+                success: function (data) {
+                    if (data.code == 0) {
+                        user.notice('注册成功');
+                        // 跳转到注册成功页面
+                        // var prePage = $('[name="pre_page"]').val();
+                        // if (prePage == '') {
+                        //     prePage = "/";
+                        // }
+                        // window.top.location.href = prePage;
+                    } else {
+                        // loadPicimageCode();
+                        $('[name="imageCode"]').val('');
+                        $('[name="password"]').val('');
+                        $('[name="password2"]').val('');
+                        user.notice('注册失败：' + data.message);
+                    }
+                },
+                error: function (html) {
+                    var flag = (typeof console != 'undefined');
+                    if (flag) console.log("服务器忙，提交数据失败，代码:" + html.status + "，请联系管理员！");
+                    alert("服务器忙，提交数据失败，请联系管理员！");
+                }
+            });
+        }
+        , notice: function (msg) {
+            $("#notice").html('<span class="iconfont">&#xe653;</span> ' + msg);
+            $("#notice").fadeIn();
+        }
+        , noticeClear: function () {
+            $("#notice").hide();
+        }
+    }
+</script>

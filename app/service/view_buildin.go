@@ -3,7 +3,10 @@ package service
 import (
 	"focus/app/model"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gconv"
+	"github.com/gogf/gf/util/gmode"
 )
 
 // 视图自定义方法管理对象
@@ -30,4 +33,15 @@ func (s *ViewBuildIn) Page(total, size int) string {
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
 func (s *ViewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
 	return Category.GetTree(s.httpRequest.Context(), contentType)
+}
+
+// 随机数 开发环境时间戳，线上为前端版本号
+func (s *ViewBuildIn) Random() string {
+	var rand string
+	if gmode.IsDevelop() {
+		rand = gconv.String(gtime.TimestampMilli())
+	} else {
+		rand = "1.0.0"
+	}
+	return rand
 }
