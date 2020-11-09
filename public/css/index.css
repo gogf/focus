@@ -57,6 +57,18 @@ main .row {
     left: -8px !important;
 }
 
+/**************** 分页样式 ************************/
+
+.pagination span.disabled {
+    color: #beb0a6;
+}
+
+.pagination span.active {
+    z-index: 3;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
 
 /**************** 定制 ************************/
 
