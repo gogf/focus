@@ -8,7 +8,7 @@ import (
 	"focus/app/model/internal"
 )
 
-// ArticleTag is the golang structure for table gf_article_tag.
-type ArticleTag internal.ArticleTag
+// ContentTag is the golang structure for table gf_content_tag.
+type ContentTag internal.ContentTag
 
 // Fill with you ideas below.

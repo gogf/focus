@@ -23,14 +23,15 @@ type topicApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Index(r *ghttp.Request) {
 	var (
-		data *model.TopicServiceGetListReq
+		data *model.ContentServiceGetListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	if getListRes, err := service.Topic.GetList(r.Context(), data); err != nil {
+	data.Type = model.ContentTypeTopic
+	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
@@ -49,14 +50,14 @@ func (a *topicApi) Index(r *ghttp.Request) {
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Detail(r *ghttp.Request) {
 	var (
-		data *model.TopicApiDetailReq
+		data *model.ContentApiDetailReq
 	)
 	if err := r.Parse(&data); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	if getDetailRes, err := service.Topic.GetDetail(r.Context(), data.Id); err != nil {
+	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
 		service.View.Render(r, model.View{
@@ -82,13 +83,13 @@ func (a *topicApi) Create(r *ghttp.Request) {
 // @description 客户端AJAX提交，客户端
 // @tags    主题
 // @produce json
-// @param   entity body model.TopicApiCreateReq true "请求参数" required
+// @param   entity body model.ContentApiCreateReq true "请求参数" required
 // @router  /topic/do-create [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *topicApi) DoCreate(r *ghttp.Request) {
 	var (
-		data             *model.TopicApiCreateReq
-		serviceCreateReq *model.TopicServiceCreateReq
+		data             *model.ContentApiCreateReq
+		serviceCreateReq *model.ContentServiceCreateReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
@@ -96,7 +97,7 @@ func (a *topicApi) DoCreate(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Topic.Create(r.Context(), serviceCreateReq); err != nil {
+	if err := service.Content.Create(r.Context(), serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")
@@ -116,13 +117,13 @@ func (a *topicApi) Update(r *ghttp.Request) {
 // @summary 修改主题
 // @tags    主题
 // @produce json
-// @param   entity body model.TopicApiUpdateReq true "请求参数" required
+// @param   entity body model.ContentApiUpdateReq true "请求参数" required
 // @router  /topic/do-update [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *topicApi) DoUpdate(r *ghttp.Request) {
 	var (
-		data             *model.TopicApiUpdateReq
-		serviceUpdateReq *model.TopicServiceUpdateReq
+		data             *model.ContentApiUpdateReq
+		serviceUpdateReq *model.ContentServiceUpdateReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
@@ -130,7 +131,7 @@ func (a *topicApi) DoUpdate(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceUpdateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Topic.Update(r.Context(), serviceUpdateReq); err != nil {
+	if err := service.Content.Update(r.Context(), serviceUpdateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")
@@ -145,12 +146,12 @@ func (a *topicApi) DoUpdate(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *topicApi) Delete(r *ghttp.Request) {
 	var (
-		data *model.TopicApiDeleteReq
+		data *model.ContentApiDeleteReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Topic.Delete(r.Context(), data.Id); err != nil {
+	if err := service.Content.Delete(r.Context(), data.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "OK")
