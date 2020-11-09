@@ -72,6 +72,7 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 func (s *ViewBuildInFuncManager) Page(total, size int) string {
 	page := s.request.GetPage(total, size)
 	page.LinkStyle = "page-link"
+	page.SpanStyle = "page-link active"
 	content := page.GetContent(4)
 	content = gstr.ReplaceByMap(content, map[string]string{
 		"<span":     "<li class=\"page-item\"><span",
