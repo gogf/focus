@@ -3,7 +3,7 @@
     <div class="col-md-7 offset-md-1">
         <ul class="list-group">
             <li class="list-group-item">
-                ${range $index, $item := .CategoryService.GetTree .Context "topic"}
+                ${range $index, $item := .Category.GetTree .Context "topic"}
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${$item.Id}">${$item.Name}</a>
                 ${end}
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=0">最新</a>
@@ -11,15 +11,16 @@
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=2">热度</a>
             </li>
 
+            ${range $index, $item := .Data.List}
             <li class="list-group-item gf-list-item">
                 <div style="width:7%;float: left;">
-                    <img onclick="window.location.href='user'" src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
+                    <img src="${$item.User.Avatar}" style="height: 36px;width:36px;">
                 </div>
                 <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
                     <div style="float: left;">
-                        <span class="badge badge-primary" style="padding:5px;">文章</span>
+                        <span class="badge badge-primary" style="padding:5px;">${$item.Category.Name}</span>
                         <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-        <a  onclick="window.location.href='/article/1'" href="javascript:void(0);" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！<span class="gf-article-new">new</span></a>
+                            <a  href="/${$item.Category.ContentType}/${$item.Topic.Id}" style="color: #222;">${$item.Topic.Title}</a>
                         </span>
                     </div>
                     <div style="float: right;">
@@ -28,177 +29,15 @@
                     </div>
                 </div>
             </li>
+            ${end}
+
+
             <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/57343_1581322746.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-primary" style="padding:5px;">文章</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-      <a href="/posts/4" style="color: #222;">没有学历真的是硬伤。
-        <span class="gf-article-new">new</span></a>
-                        </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
+                <ul class="pagination">
+                ${.BuildInFunc.Page .Data.Total .Data.Size }
+                </ul>
             </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/57343_1581322746.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-    <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                                    </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/1_1530614766.png!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-primary" style="padding:5px;">文章</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-      <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                                    </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-  <a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                                  </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                                </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                              </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                            </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                          </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 5px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                            </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item gf-list-item">
-                <div style="width:7%;float: left;">
-                    <img src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100" style="height: 36px;width:36px;">
-                </div>
-                <div style="width: 93%;float: left;padding-top: 10px;padding-left: 5px;">
-                    <div style="float: left;">
-                        <span class="badge badge-success" style="padding:5px;">问答</span>
-                        <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
-<a href="/posts/4" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！</a>
-                            </span>
-                    </div>
-                    <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">回复数 10 |</span>
-                        <span style="font-size: 12px;color: #ccc;">10天前</span>
-                    </div>
-                </div>
-            </li>
+
 
             <li class="list-group-item gf-list-item">
                 <nav aria-label="Page navigation example">
@@ -208,8 +47,11 @@
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
                         <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next">

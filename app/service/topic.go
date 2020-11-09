@@ -14,12 +14,6 @@ type topicService struct{}
 
 // 查询列表
 func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetListReq) (*model.TopicServiceGetListRes, error) {
-	if r.Size == 0 {
-		r.Size = model.TopicListDefaultSize
-	}
-	if r.Size > model.TopicListMaxSize {
-		r.Size = model.TopicListMaxSize
-	}
 	m := dao.Topic.Fields(model.TopicListItem{})
 	if r.Cate > 0 {
 		// 栏目检索
@@ -51,11 +45,21 @@ func (s *topicService) GetList(ctx context.Context, r *model.TopicServiceGetList
 		Size:  r.Size,
 		Total: total,
 	}
+	// Topic
 	if err := topicEntities.ScanList(&getListRes.List, "Topic"); err != nil {
 		return nil, err
 	}
+	// Category
+	err = dao.Category.
+		Fields(model.TopicListCategoryItem{}).
+		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Topic", "CategoryId")).
+		ScanList(&getListRes.List, "Category", "Topic", "id:CategoryId")
+	if err != nil {
+		return nil, err
+	}
+	// User
 	err = dao.User.
-		Fields(model.TopicUserItem{}).
+		Fields(model.TopicListUserItem{}).
 		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Topic", "UserId")).
 		ScanList(&getListRes.List, "User", "Topic", "id:UserId")
 	if err != nil {
