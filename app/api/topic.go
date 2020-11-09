@@ -72,10 +72,6 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 // @router  /topic/create [GET]
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Create(r *ghttp.Request) {
-	userSession := service.User.GetSessionUser(r)
-	if userSession == nil {
-
-	}
 	service.View.Render(r)
 }
 

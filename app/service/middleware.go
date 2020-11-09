@@ -77,8 +77,7 @@ func (s *middlewareService) CustomView(r *ghttp.Request) {
 		}
 		// 内置变量
 		r.Assigns(g.Map{
-			"Category":    Category,
-			"BuildInFunc": &ViewBuildInFuncManager{request: r},
+			"BuildIn": &ViewBuildIn{httpRequest: r},
 		})
 	}
 	r.Middleware.Next()
