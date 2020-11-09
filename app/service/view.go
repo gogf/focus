@@ -74,10 +74,11 @@ func (s *ViewBuildInFuncManager) Page(total, size int) string {
 	page.LinkStyle = "page-link"
 	content := page.GetContent(4)
 	content = gstr.ReplaceByMap(content, map[string]string{
-		"<span":  "<li class=\"page-item\"><span",
-		"/span>": "/span></li>",
-		"<a":     "<li class=\"page-item\"><a",
-		"/a>":    "/a></li>",
+		"<span":     "<li class=\"page-item\"><span",
+		"/span>":    "/span></li>",
+		"<a":        "<li class=\"page-item\"><a",
+		"/a>":       "/a></li>",
+		"GPageSpan": "GPageSpan page-link",
 	})
 	return content
 }
