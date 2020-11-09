@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"focus/app/model"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
@@ -44,4 +45,36 @@ func (s *ViewBuildIn) Random() string {
 		rand = "1.0.0"
 	}
 	return rand
+}
+
+// FormatTime 格式化时间
+func (s *ViewBuildIn) FormatTime(gt *gtime.Time) string {
+	n := gtime.Now().Timestamp()
+	t := gt.Timestamp()
+
+	var ys int64 = 31536000
+	var ds int64 = 86400
+	var hs int64 = 3600
+	var ms int64 = 60
+	var ss int64 = 1
+
+	var rs string
+
+	d := n - t
+	switch {
+	case d > ys:
+		rs = fmt.Sprintf("%d年前", int(d/ys))
+	case d > ds:
+		rs = fmt.Sprintf("%d天前", int(d/ds))
+	case d > hs:
+		rs = fmt.Sprintf("%d小时前", int(d/hs))
+	case d > ms:
+		rs = fmt.Sprintf("%d分钟前", int(d/ms))
+	case d > ss:
+		rs = fmt.Sprintf("%d秒前", int(d/ss))
+	default:
+		rs = "刚刚"
+	}
+
+	return rs
 }
