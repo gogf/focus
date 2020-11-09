@@ -36,6 +36,60 @@ func (a *userApi) Profile(r *ghttp.Request) {
 	service.View.Render(r)
 }
 
+// @summary 修改头像页面
+// @tags    用户
+// @produce html
+// @router  /user/avatar [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Avatar(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 修改密码页面
+// @tags    用户
+// @produce html
+// @router  /user/passwd [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Passwd(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 我的文章页面
+// @tags    用户
+// @produce html
+// @router  /user/article [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Article(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 我的主题页面
+// @tags    用户
+// @produce html
+// @router  /user/topic [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Topic(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 我的问答页面
+// @tags    用户
+// @produce html
+// @router  /user/ask [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Ask(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
+// @summary 我的消息页面
+// @tags    用户
+// @produce html
+// @router  /user/message [GET]
+// @success 200 {string} html "页面HTML"
+func (a *userApi) Message(r *ghttp.Request) {
+	service.View.Render(r)
+}
+
 // @summary 展示注册页面
 // @tags    用户
 // @produce html

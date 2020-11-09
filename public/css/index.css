@@ -5,6 +5,11 @@
     padding: 0;
 }
 
+:after, :before {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
 .container-fluid {
     padding: 0 !important;
 }
@@ -64,10 +69,58 @@ main .row {
     margin: 15px 0;
 }
 
+.gf-card li:after {
+    visibility: hidden;
+    position: absolute;
+    content: "";
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    background: none;
+    margin: .5px 0 0;
+    width: .57142857em;
+    height: .57142857em;
+    border: none;
+    border-bottom: 1px solid #d4d4d5;
+    border-right: 1px solid #d4d4d5;
+    z-index: 2;
+    -webkit-transition: background .1s ease;
+    transition: background .1s ease;
+}
+
 .gf-card li a {
     text-decoration: none;
     color: #000
 }
+
+.gf-card li.active {
+    z-index: 2;
+    color: #000;
+    background-color: rgba(0, 0, 0, .05);
+    border-color: #F5F7FA;
+}
+
+.gf-card li.active:after {
+    visibility: visible;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    background-color: #f2f2f2;
+    -webkit-transform: translateX(50%) translateY(-50%) rotate(45deg);
+    transform: translateX(50%) translateY(-50%) rotate(45deg);
+    margin: 0 -.5px 0 0;
+    border: none;
+    border-top: 1px solid #d4d4d5;
+    border-right: 1px solid #d4d4d5;
+}
+
+.gf-card {
+    margin: 15px 0;
+}
+
 
 .gf-topnav {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
@@ -186,4 +239,13 @@ main .row {
 footer .list-group-item {
     background-color: #1b1c1d !important;
     border-color: #1b1c1d !important;
+}
+
+/**************** 个人中心样式 ************************/
+.gf-person {
+}
+
+.gf-person .gf-list-item {
+    border: 0px;
+    border-bottom: 1px solid #e5e5e5;
 }
