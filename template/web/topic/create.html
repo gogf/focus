@@ -1,51 +1,131 @@
-<div class="col-sm-8 offset-md-1 gf-publish">
+<div class="col-sm-10 offset-md-1 gf-publish">
     <div class="card">
         <div class="card-header">
-            文章发布
+            发布主题
         </div>
         <div class="card-body">
-            <form action="/topic/">
+            <form id="contentForm" action="/content/do-create" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">标题</label>
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="staticEmail" value="" placeholder="请输入标题">
+                        <input type="text" class="form-control" value="" name="title" placeholder="请输入标题">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">栏目</label>
+                    <label for="inputPassword" class="col-sm-1 col-form-label required">栏目</label>
                     <div class="col-sm-10">
+                        ${range $index, $item := .BuildIn.CategoryTree "topic"}
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                            <label class="form-check-label" for="inlineRadio1">目录1</label>
+                            <input class="form-check-input" type="radio" name="categoryId" value="${$item.Id}">
+                            <label class="form-check-label" for="inlineRadio1">${$item.Name}</label>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                            <label class="form-check-label" for="inlineRadio2">目录2</label>
-                        </div>
+                        ${end}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">标题</label>
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="10"> </textarea>
+                        <textarea class="form-control" rows="10" name="content"> </textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3 offset-md-2"> <button type="submit" class="btn btn-primary btn-block">发布</button></div>
-                    <div class="col-sm-3 offset-md-1"> <button type="submit" class="btn btn-secondary btn-block">放弃</button></div>
+                    <div class="col-sm-3 offset-md-1">
+                        <button type="submit" class="btn btn-primary btn-block">发布</button>
+                    </div>
                 </div>
 
-
-                <div class="form-group row">
-
-                </div>
+                <div class="form-group row"></div>
             </form>
-            <p class="card-text" style="color: red;">1. 博文题目必须填写，并且不能超过80个文字。</p>
-            <p class="card-text" style="color: red;">2. 博文内容尽量控制在1200个文字内，内容合法健康，否则可能会被删除。</p>
-            <p class="card-text" style="color: red;">3. 关键词请使用逗号分隔不同标签，最多5个哦，并且不能超过150个文字。 <br></p>
         </div>
     </div>
-
-
-
 </div>
+
+<script src="/plugin/jquery/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+jQuery(function($) {
+    // 为必填字段添加提示
+    $('.required').append('&nbsp;<span class="icon iconfont red">&#xe71b;</span>');
+})
+
+jQuery(function($) {
+    $('#contentForm').validate({
+        errorElement: 'div',
+        errorClass: 'help-block',
+        focusInvalid: true,
+        rules: {
+            title: {
+                required: true
+            },
+            content: {
+                required: true
+            },
+            categoryId: {
+                required: true
+            }
+        },
+        messages: {
+            title: {
+                required: "请输入内容标题"
+            },
+            content: {
+                required: "请输入发布内容"
+            },
+            categoryId: {
+                required: "请选择发布栏目"
+            }
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (data, textStatus) {
+                    if (data.result) {
+                        // 成功刷新页面
+                        window.location.reload();
+                    } else {
+                        // 失败弹出提示
+                        $.gritter.add({
+                            title: '错误提示',
+                            text:  data.data,
+                            class_name: 'gritter-error'
+                        });
+
+                    }
+                }
+            });
+            $('button[type=submit]').removeAttr('disabled');
+        }
+        // highlight: function (e) {
+        //     $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+        // },
+        //
+        // success: function (e) {
+        //     $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+        //     $(e).remove();
+        // },
+        //
+        // errorPlacement: function (error, element) {
+        //     if(element.is(':checkbox') || element.is(':radio')) {
+        //         var controls = element.closest('div[class*="col-"]');
+        //         if(controls.find(':checkbox,:radio').length > 1) {
+        //             controls.append(error);
+        //         } else {
+        //             error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+        //         }
+        //     } else if(element.is('.select2')) {
+        //         error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+        //     } else if(element.is('.chosen-select')) {
+        //         error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+        //     } else {
+        //         error.insertAfter(element.parent());
+        //     }
+        // }
+    });
+
+});
+</script>
+
+
+
+

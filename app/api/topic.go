@@ -5,7 +5,6 @@ import (
 	"focus/app/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
 )
 
 var Topic = new(topicApi)
@@ -75,31 +74,6 @@ func (a *topicApi) Create(r *ghttp.Request) {
 	service.View.Render(r)
 }
 
-// @summary 创建主题
-// @description 客户端AJAX提交，客户端
-// @tags    主题
-// @produce json
-// @param   entity body model.ContentApiCreateReq true "请求参数" required
-// @router  /topic/do-create [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *topicApi) DoCreate(r *ghttp.Request) {
-	var (
-		data             *model.ContentApiCreateReq
-		serviceCreateReq *model.ContentServiceCreateReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.Content.Create(r.Context(), serviceCreateReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	} else {
-		response.JsonExit(r, 0, "OK")
-	}
-}
-
 // @summary 展示修改主题页面
 // @tags    主题
 // @produce html
@@ -108,30 +82,6 @@ func (a *topicApi) DoCreate(r *ghttp.Request) {
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Update(r *ghttp.Request) {
 	service.View.Render(r)
-}
-
-// @summary 修改主题
-// @tags    主题
-// @produce json
-// @param   entity body model.ContentApiUpdateReq true "请求参数" required
-// @router  /topic/do-update [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *topicApi) DoUpdate(r *ghttp.Request) {
-	var (
-		data             *model.ContentApiUpdateReq
-		serviceUpdateReq *model.ContentServiceUpdateReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := gconv.Struct(data, &serviceUpdateReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.Content.Update(r.Context(), serviceUpdateReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	} else {
-		response.JsonExit(r, 0, "OK")
-	}
 }
 
 // @summary 删除主题

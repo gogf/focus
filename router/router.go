@@ -26,6 +26,10 @@ func init() {
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/category", api.Category)
 		})
+		// 内容
+		group.Group("/", func(group *ghttp.RouterGroup) {
+			group.ALL("/content", api.Content)
+		})
 		// 主题
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/topic", api.Topic)

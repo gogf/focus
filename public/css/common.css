@@ -10,6 +10,7 @@
     box-sizing: inherit;
 }
 
+.red {color:red}
 .container-fluid {
     padding: 0 !important;
 }
@@ -69,6 +70,10 @@ main .row {
     background-color: #007bff;
     border-color: #007bff;
 }
+
+
+/*************** 表单校验 *********************/
+.help-block {color:red;}
 
 /**************** 定制 ************************/
 
