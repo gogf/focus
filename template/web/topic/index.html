@@ -3,7 +3,7 @@
     <div class="col-md-7 offset-md-1">
         <ul class="list-group">
             <li class="list-group-item">
-                ${range $index, $item := .Category.GetTree .Context "topic"}
+                ${range $index, $item := .BuildIn.CategoryTree "topic"}
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${$item.Id}">${$item.Name}</a>
                 ${end}
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=0">最新</a>
@@ -34,7 +34,7 @@
 
             <li class="list-group-item gf-list-item">
                 <ul class="pagination">
-                ${.BuildInFunc.Page .Data.Total .Data.Size }
+                ${.BuildIn.Page .Data.Total .Data.Size }
                 </ul>
             </li>
 
