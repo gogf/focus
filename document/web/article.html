@@ -139,7 +139,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="gf-comment-list" style="background-color: white;margin: 10px;">
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -198,9 +197,11 @@
                             后方可回复, 如果你还没有账号请点击这里<a href="/user/register" class="btn btn btn-link">注册</a>。
                         </li>
                     </ul>
-                    <div id="vditor" class="mt-1">
-
-                    </div>
+                </div>
+                <div style="background-color: white;margin: 10px;padding: 10px;">
+                    <div id="vditor" class="mt-1"></div>
+                    <br>
+                    <button class="btn btn-primary submit-reply">提交</button>
                 </div>
             </div>
 
@@ -312,25 +313,26 @@
 </div>
 <script>
     $(function () {
-        Vditor = new Vditor('vditor', {
-            mode: 'wysiwyg',
+        var editor = new Vditor('vditor', {
             height: 360,
-            cache: {
-                enable: false,
-            },
-            value: 'Markdown 配置',
+            mode: 'wysiwyg',
+            cache: {enable: false},
+            placeholder: "~请开始你的表演...",
             upload: {
                 accept: 'image/*,.mp3, .wav, .rar',
                 token: 'test',
                 url: '/api/upload/editor',
                 linkToImgUrl: '/api/upload/fetch',
-                filename (name) {
-                    return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
-                    replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
-                    replace('/\\s/g', '')
+                filename(name) {
+                    return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
                 },
             },
         });
+
+        $('.submit-reply').click(function () {
+            editor.getValue()  // 获取 markdwon 内容
+            editor.getHTML()  //  获取 markdwon html 内容
+        })
     })
 </script>
 </body>
