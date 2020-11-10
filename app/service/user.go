@@ -49,7 +49,7 @@ func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
 
 // 执行登录
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
-	userEntity, err := s.GetUserByPassportAndPassword(loginReq.Password, loginReq.Passport)
+	userEntity, err := s.GetUserByPassportAndPassword(loginReq.Passport, loginReq.Password)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (s *userService) GetUserByPassportAndPassword(passport, password string) (*
 
 // 检测给定的账号是否唯一
 func (s *userService) CheckPassportUnique(passport string) error {
-	n, err := dao.User.Data(dao.User.Columns.Passport, passport).Count()
+	n, err := dao.User.Where(dao.User.Columns.Passport, passport).Count()
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (s *userService) CheckPassportUnique(passport string) error {
 
 // 检测给定的昵称是否唯一
 func (s *userService) CheckNicknameUnique(nickname string) error {
-	n, err := dao.User.Data(dao.User.Columns.Nickname, nickname).Count()
+	n, err := dao.User.Where(dao.User.Columns.Nickname, nickname).Count()
 	if err != nil {
 		return err
 	}
