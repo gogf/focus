@@ -21,7 +21,7 @@ type contentApi struct{}
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *contentApi) DoCreate(r *ghttp.Request) {
 	var (
-		data             *model.ContentApiCreateReq
+		data             *model.ContentApiDoCreateReq
 		serviceCreateReq *model.ContentServiceCreateReq
 	)
 	if err := r.Parse(&data); err != nil {
@@ -45,7 +45,7 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *contentApi) DoUpdate(r *ghttp.Request) {
 	var (
-		data             *model.ContentApiUpdateReq
+		data             *model.ContentApiDoUpdateReq
 		serviceUpdateReq *model.ContentServiceUpdateReq
 	)
 	if err := r.Parse(&data); err != nil {
@@ -65,11 +65,11 @@ func (a *contentApi) DoUpdate(r *ghttp.Request) {
 // @tags    内容
 // @produce json
 // @param   id formData int true "内容ID"
-// @router  /content/delete [POST]
+// @router  /content/do-delete [POST]
 // @success 200 {object} response.JsonRes "请求结果"
-func (a *contentApi) Delete(r *ghttp.Request) {
+func (a *contentApi) DoDelete(r *ghttp.Request) {
 	var (
-		data *model.ContentApiDeleteReq
+		data *model.ContentApiDoDeleteReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())

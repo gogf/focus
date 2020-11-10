@@ -76,6 +76,11 @@ type ContentApiDetailReq struct {
 	Id uint `v:"min:1#请选择查看的内容"`
 }
 
+// API展示修改内容页面
+type ContentApiUpdateReq struct {
+	Id uint `v:"min:1#请选择需要修改的内容"`
+}
+
 // API创建/修改内容基类
 type ContentApiCreateUpdateBase struct {
 	ContentServiceCreateUpdateBase
@@ -84,19 +89,19 @@ type ContentApiCreateUpdateBase struct {
 	Content    string `v:"required#请输入内容内容"` // 内容
 }
 
-// API创建内容
-type ContentApiCreateReq struct {
+// API执行创建内容
+type ContentApiDoCreateReq struct {
 	ContentApiCreateUpdateBase
 }
 
-// API修改内容
-type ContentApiUpdateReq struct {
+// API执行修改内容
+type ContentApiDoUpdateReq struct {
 	ContentApiCreateUpdateBase
 	Id uint `v:"min:1#请选择需要修改的内容"` // 修改时ID不能为空
 }
 
-// API删除内容
-type ContentApiDeleteReq struct {
+// API执行删除内容
+type ContentApiDoDeleteReq struct {
 	Id uint `v:"min:1#请选择需要删除的内容"` // 删除时ID不能为空
 }
 

@@ -98,9 +98,9 @@ func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCrea
 
 // 修改
 func (s *contentService) Update(ctx context.Context, r *model.ContentServiceUpdateReq) error {
-	_, err := dao.Content.Data(r).Where(
-		dao.Content.Columns.UserId, Context.Get(ctx).User.Id,
-	).Save()
+	_, err := dao.Content.Data(r).
+		FieldsEx(dao.Content.Columns.Id).
+		Where(dao.Content.Columns.UserId, Context.Get(ctx).User.Id).Update()
 	return err
 }
 
