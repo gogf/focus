@@ -7,7 +7,7 @@
         <ul class="list-group">
             <li class="list-group-item">
                 ${range $index, $item := .BuildIn.CategoryTree "article"}
-                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/article?cate=${$item.Id}">${$item.Name}</a>
+                <a class=" btn btn-link  top-node-btn btn-sm" href="/article?cate=${$item.Id}">${$item.Name}</a>
                 ${end}
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/article?cate=${.Query.cate}&sort=0">最新</a>
                 <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/article?cate=${.Query.cate}&sort=1">活跃</a>

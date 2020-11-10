@@ -16,7 +16,7 @@
                     <label for="inputPassword" class="col-sm-1 col-form-label required">栏目</label>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
-                            <select class="" name="categoryId">
+                            <select class="form-control" name="categoryId">
                                 ${range $index, $item := .BuildIn.CategoryTree "article"}
                                 <option value="${$item.Id}">${$item.Name}</option>
                                 ${end}

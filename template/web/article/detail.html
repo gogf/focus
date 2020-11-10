@@ -17,8 +17,72 @@
                 ${.Data.Content.Content}
             </div>
         </div>
+        <div class="gf-comment-list" style="background-color: white;margin: 10px 10px 0 10px;">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    共 100 条回复
+                </li>
+                <li class="list-group-item">
+                    <div class="reply" style="padding: 5px;width: 100%;">
+                        <div class="reply-avatar" style="width: 100%;">
+                            <a href="/users/1">
+                                <img class="img-thumbnail"
+                                     src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100"
+                                     style="max-width:40px;border-radius: 120px;" alt="">
+                            </a>
+                            <a href="" class="text-dark font-weight-bold">u1440247613</a> <span
+                                    class="text-success">#21</span> · <span class="text-secondary">20 天前</span>
+                            <span class="badge badge-success">已采纳</span>
+                        </div>
+                        <div class="reply-content" style="padding: 5px;">
+                            信息架构是啥话题？ 有相关的文章或书推荐么信息架构是啥话题？ 有相关的文章或书推荐么信息架构是啥话题？ 有相关的文章或书推荐么
+                        </div>
+                        <div class="reply-operating" style="padding: 5px">
+                            <a href="" class="text-secondary" style="font-size: 14px;">采纳</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">回复</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">删除</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">踩(20)</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">赞(20)</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="reply" style="padding: 5px;width: 100%;">
+                        <div class="reply-avatar" style="width: 100%;">
+                            <a href="/users/1">
+                                <img class="img-thumbnail"
+                                     src="https://cdn.learnku.com/uploads/avatars/45384_1563461368.jpeg!/both/100x100"
+                                     style="max-width:40px;border-radius: 120px;" alt="">
+                            </a>
+                            <a href="" class="text-dark font-weight-bold">u1440247613</a> <span
+                                    class="text-success">#21</span> · <span class="text-secondary">20 天前</span>
+                            <span class="badge badge-success">已采纳</span>
+                        </div>
+                        <div class="reply-content" style="padding: 5px;">
+                            信息架构是啥话题？ 有相关的文章或书推荐么信息架构是啥话题？ 有相关的文章或书推荐么信息架构是啥话题？ 有相关的文章或书推荐么
+                        </div>
+                        <div class="reply-operating" style="padding: 5px">
+                            <a href="" class="text-secondary" style="font-size: 14px;">采纳</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">回复</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">删除</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">踩(20)</a>
+                            <a href="" class="text-secondary" style="font-size: 14px;">赞(20)</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    需要<a href="/user/login" class="btn btn-link">登录</a>
+                    后方可回复, 如果你还没有账号请点击这里<a href="/user/register" class="btn btn btn-link">注册</a>。
+                </li>
+            </ul>
+        </div>
+        <div style="background-color: white;margin: 5px 10px 0 10px;">
+            <div id="vditor" class="mt-1"></div>
+        </div>
+        <div style="background-color: white;margin: 5px 10px 10px 10px;padding: 4px;" class="text-right">
+            <button class="btn btn-primary">提交</button>
+        </div>
     </div>
-
     <div class="col-md-3">
 
         <div class="gf-user">
@@ -27,7 +91,8 @@
             </div>
             <div>
                 <a href="/user/${.Data.User.Id}" target="_blank">
-                <img class="gf-user-img image-border circle-image topic-list-author-avatar" src="${.Data.User.Avatar}">
+                    <img class="gf-user-img image-border circle-image topic-list-author-avatar"
+                         src="${.Data.User.Avatar}">
                 </a>
             </div>
             <div class="row gf-user-statistics">
@@ -52,10 +117,14 @@
             </div>
             <div>
                 <div class="row" style="margin:10px 0;">
-                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span class="icon iconfont">&#xe666</span> 关注</button>
+                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span
+                                class="icon iconfont">&#xe666</span> 关注
+                    </button>
                 </div>
                 <div class="row" style="margin:10px 0;">
-                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span class="icon iconfont">&#xe61c;</span> 私信</button>
+                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span
+                                class="icon iconfont">&#xe61c;</span> 私信
+                    </button>
                 </div>
             </div>
         </div>
@@ -86,3 +155,27 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        const editor = new Vditor('vditor', {
+            height: 360,
+            mode: 'wysiwyg',
+            cache: {enable: false},
+            placeholder: "~请开始你的表演...",
+            upload: {
+                accept: 'image/*,.mp3, .wav, .rar',
+                token: 'test',
+                url: '/api/upload/editor',
+                linkToImgUrl: '/api/upload/fetch',
+                filename(name) {
+                    return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
+                },
+            },
+        });
+
+        $('.submit-reply').click(function () {
+            editor.getValue()
+            editor.getHTML()  //  获取 markdwon html 内容
+        })
+    })
+</script>
