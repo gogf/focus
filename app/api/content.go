@@ -30,9 +30,6 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	for i := 0; i < 52; i++ {
-		service.Content.Create(r.Context(), serviceCreateReq)
-	}
 	if err := service.Content.Create(r.Context(), serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
