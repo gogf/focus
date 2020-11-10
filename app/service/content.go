@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
 )
 
-var Content = new(contentService)
+var Content = &contentService{}
 
 type contentService struct{}
 
@@ -98,9 +99,9 @@ func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCrea
 
 // 修改
 func (s *contentService) Update(ctx context.Context, r *model.ContentServiceUpdateReq) error {
-	_, err := dao.Content.Data(r).Where(
-		dao.Content.Columns.UserId, Context.Get(ctx).User.Id,
-	).Save()
+	_, err := dao.Content.Data(r).
+		FieldsEx(dao.Content.Columns.Id).
+		Where(dao.Content.Columns.UserId, Context.Get(ctx).User.Id).Update()
 	return err
 }
 
@@ -111,4 +112,15 @@ func (s *contentService) Delete(ctx context.Context, id uint) error {
 		dao.Content.Columns.UserId: Context.Get(ctx).User.Id,
 	}).Delete()
 	return err
+}
+
+// 浏览次数增加
+func (s *contentService) AddViewCount(ctx context.Context, id uint, count int) error {
+	_, err := dao.Content.
+		Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.Columns.ViewCount, dao.Content.Columns.ViewCount, count)).
+		WherePri(id).Update()
+	if err != nil {
+		return err
+	}
+	return nil
 }

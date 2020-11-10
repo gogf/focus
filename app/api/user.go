@@ -138,7 +138,7 @@ func (a *userApi) DoRegister(r *ghttp.Request) {
 		if err != nil {
 			response.JsonExit(r, 1, err.Error())
 		}
-		response.JsonExit(r, 0, "OK")
+		response.JsonExit(r, 0, "")
 	}
 }
 
@@ -162,7 +162,7 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	if err := service.User.UpdateProfile(r.Context(), serviceUpdateProfileReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "OK")
+		response.JsonExit(r, 0, "")
 	}
 }
 
@@ -191,7 +191,7 @@ func (a *loginApi) DoLogin(r *ghttp.Request) {
 	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "OK")
+		response.JsonExit(r, 0, "")
 	}
 }
 
@@ -205,6 +205,6 @@ func (a *loginApi) Logout(r *ghttp.Request) {
 	if err := service.User.Logout(r.Context()); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "OK")
+		response.JsonExit(r, 0, "")
 	}
 }

@@ -27,6 +27,6 @@ func (a *categoryApi) Tree(r *ghttp.Request) {
 	if tree, err := service.Category.GetTree(r.Context(), data.ContentType); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "OK", tree)
+		response.JsonExit(r, 0, "", tree)
 	}
 }

@@ -3,7 +3,6 @@ package api
 import (
 	"focus/app/model"
 	"focus/app/service"
-	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -59,6 +58,9 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
+		// 浏览次数增加
+		service.Content.AddViewCount(r.Context(), data.Id, 1)
+
 		service.View.Render(r, model.View{
 			Data: getDetailRes,
 		})
@@ -81,25 +83,19 @@ func (a *topicApi) Create(r *ghttp.Request) {
 // @router  /topic/update [GET]
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Update(r *ghttp.Request) {
-	service.View.Render(r)
-}
-
-// @summary 删除主题
-// @tags    主题
-// @produce json
-// @param   id formData int true "主题ID"
-// @router  /topic/delete [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *topicApi) Delete(r *ghttp.Request) {
 	var (
-		data *model.ContentApiDeleteReq
+		data *model.ContentApiUpdateReq
 	)
 	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
 	}
-	if err := service.Content.Delete(r.Context(), data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
+	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
+		service.View.Render500(r)
 	} else {
-		response.JsonExit(r, 0, "OK")
+		service.View.Render(r, model.View{
+			Data: getDetailRes,
+		})
 	}
 }
