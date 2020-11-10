@@ -5,7 +5,13 @@
                 ${.Data.Content.Title}
             </div>
             <div class="gf-detail">
-                <span>${.Data.Content.ViewCount} / ${.Data.Content.ZanCount} / ${.Data.Content.CaiCount} / 发布于 1小时前</span>
+                <span>
+                    浏览：${.Data.Content.ViewCount} &nbsp;/&nbsp;
+                    回复：${.Data.Content.ReplyCount} &nbsp;/&nbsp;
+                    赞：${.Data.Content.ZanCount} &nbsp;/&nbsp;
+                    踩：${.Data.Content.CaiCount} &nbsp;/&nbsp;
+                    发布于 ${.Data.Content.CreatedAt | .BuildIn.FormatTime}
+                </span>
             </div>
             <div class="gf-content">
                 ${.Data.Content.Content}

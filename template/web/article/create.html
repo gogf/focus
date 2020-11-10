@@ -1,0 +1,97 @@
+<div class="col-sm-10 offset-md-1 gf-publish">
+    <div class="card">
+        <div class="card-header">
+            发布主题
+        </div>
+        <div class="card-body">
+            <form id="contentForm" action="/content/do-create" method="post" enctype="application/x-www-form-urlencoded">
+                <input type="hidden" value="article" name="type">
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" value="" name="title" placeholder="请输入标题">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-1 col-form-label required">栏目</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <select class="" name="categoryId">
+                                ${range $index, $item := .BuildIn.CategoryTree "article"}
+                                <option value="${$item.Id}">${$item.Name}</option>
+                                ${end}
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="10" name="content"> </textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3 offset-md-1">
+                        <button type="submit" class="btn btn-primary btn-block">发布</button>
+                    </div>
+                </div>
+
+                <div class="form-group row"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+jQuery(function($) {
+    $('#contentForm').validate({
+        errorElement: 'div',
+        errorClass: 'help-block',
+        focusInvalid: true,
+        rules: {
+            title: {
+                required: true
+            },
+            content: {
+                required: true
+            },
+            categoryId: {
+                required: true
+            }
+        },
+        messages: {
+            title: {
+                required: "请输入标题"
+            },
+            content: {
+                required: "请输入内容"
+            },
+            categoryId: {
+                required: "请选择栏目"
+            }
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (data, textStatus) {
+                    if (data.code == 0 ) {
+                        alert(data.message)
+                    } else {
+                        alert(data.message)
+                    }
+                }
+            });
+            $('button[type=submit]').removeAttr('disabled');
+        }
+    });
+
+});
+</script>
+
+
+
+

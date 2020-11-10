@@ -6,12 +6,12 @@
     <div class="col-md-7 offset-md-1">
         <ul class="list-group">
             <li class="list-group-item">
-                ${range $index, $item := .BuildIn.CategoryTree "topic"}
-                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${$item.Id}">${$item.Name}</a>
+                ${range $index, $item := .BuildIn.CategoryTree "ask"}
+                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/ask?cate=${$item.Id}">${$item.Name}</a>
                 ${end}
-                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=0">最新</a>
-                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=1">活跃</a>
-                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/topic?cate=${.Query.cate}&sort=2">热度</a>
+                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/ask?cate=${.Query.cate}&sort=0">最新</a>
+                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/ask?cate=${.Query.cate}&sort=1">活跃</a>
+                <a class=" btn btn-link text-secondary top-node-btn btn-sm" href="/ask?cate=${.Query.cate}&sort=2">热度</a>
             </li>
 
             ${range $index, $item := .Data.List}
@@ -47,7 +47,7 @@
     <div class="col-md-3">
 
         <div class="card gf-card" style="background: #fff;padding: 10px;">
-            <a class="btn btn-primary" href="/topic/create" >发布帖子</a>
+            <a class="btn btn-primary" href="/ask/create">发布帖子</a>
         </div>
 
         <div class="card gf-card">
