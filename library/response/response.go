@@ -1,6 +1,7 @@
 package response
 
 import (
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -14,9 +15,11 @@ type JsonRes struct {
 
 // 返回标准JSON数据。
 func Json(r *ghttp.Request, code int, message string, data ...interface{}) {
-	responseData := interface{}(nil)
+	var responseData interface{}
 	if len(data) > 0 {
 		responseData = data[0]
+	} else {
+		responseData = g.Map{}
 	}
 	r.Response.WriteJson(JsonRes{
 		Code:    code,
