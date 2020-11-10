@@ -43,11 +43,40 @@ func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 }
 
 // 404页面
+func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	r.Assigns(g.Map{
+		"MainTpl": "web/pages/401.html",
+	})
+	view.MainTpl = "web/pages/401.html"
+	s.Render(r, view)
+}
+
+// 404页面
+func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	r.Assigns(g.Map{
+		"MainTpl": "web/pages/403.html",
+	})
+	view.MainTpl = "web/pages/403.html"
+	s.Render(r, view)
+}
+
+// 404页面
 func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
 	view := model.View{}
 	if len(data) > 0 {
 		view = data[0]
 	}
+	r.Assigns(g.Map{
+		"MainTpl": "web/pages/404.html",
+	})
 	view.MainTpl = "web/pages/404.html"
 	s.Render(r, view)
 }
@@ -58,6 +87,9 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
+	r.Assigns(g.Map{
+		"MainTpl": "web/pages/500.html",
+	})
 	view.MainTpl = "web/pages/500.html"
 	s.Render(r, view)
 }
