@@ -24,16 +24,16 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 		}
 		m = m.Where(dao.Content.Columns.CategoryId, idArray)
 	}
-	m = m.Page(r.Page, r.Size)
+	listModel := m.Page(r.Page, r.Size)
 	switch r.Sort {
 	case model.ContentSortHot:
-		m = m.Order(dao.Content.Columns.ZanCount, "DESC")
+		listModel = listModel.Order(dao.Content.Columns.ZanCount, "DESC")
 	case model.ContentSortActive:
-		m = m.Order(dao.Content.Columns.UpdatedAt, "DESC")
+		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
 	default:
-		m = m.Order(dao.Content.Columns.Id, "DESC")
+		listModel = listModel.Order(dao.Content.Columns.Id, "DESC")
 	}
-	contentEntities, err := m.M.All()
+	contentEntities, err := listModel.M.All()
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCrea
 	if r.UserId == 0 {
 		r.UserId = Context.Get(ctx).User.Id
 	}
-	_, err := dao.Content.Data(r).Save()
+	_, err := dao.Content.Data(r).Insert()
 	return err
 }
 

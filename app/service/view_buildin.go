@@ -19,14 +19,13 @@ type ViewBuildIn struct {
 func (s *ViewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
 	page.LinkStyle = "page-link"
-	page.SpanStyle = "page-link active"
+	page.SpanStyle = "page-link"
 	content := page.GetContent(4)
 	content = gstr.ReplaceByMap(content, map[string]string{
-		"<span":     "<li class=\"page-item\"><span",
-		"/span>":    "/span></li>",
-		"<a":        "<li class=\"page-item\"><a",
-		"/a>":       "/a></li>",
-		"GPageSpan": "GPageSpan page-link",
+		"<span":  "<li class=\"page-item disabled\"><span",
+		"/span>": "/span></li>",
+		"<a":     "<li class=\"page-item\"><a",
+		"/a>":    "/a></li>",
 	})
 	return content
 }
