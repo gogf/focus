@@ -177,7 +177,7 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 // @param   verify_code formData string false "验证码"
 // @router  /user/do-login [POST]
 // @success 200 {object} response.JsonRes "执行结果"
-func (a *loginApi) DoLogin(r *ghttp.Request) {
+func (a *userApi) DoLogin(r *ghttp.Request) {
 	var (
 		data            *model.UserApiLoginReq
 		serviceLoginReq *model.UserServiceLoginReq
@@ -201,7 +201,7 @@ func (a *loginApi) DoLogin(r *ghttp.Request) {
 // @produce json
 // @router  /user/logout [GET]
 // @success 200 {object} response.JsonRes "执行结果"
-func (a *loginApi) Logout(r *ghttp.Request) {
+func (a *userApi) Logout(r *ghttp.Request) {
 	if err := service.User.Logout(r.Context()); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {

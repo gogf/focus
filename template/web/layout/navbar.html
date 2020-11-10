@@ -74,33 +74,34 @@
       </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form name="loginForm">
                     <div class="form-group row">
-                        <label for="account-name" class="col-sm-2 col-form-label">帐号:</label>
+                        <label for="login-username" class="col-sm-2 col-form-label">帐号:</label>
                         <div class="col-sm-10 input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><span class="icon iconfont">&#xe622;</span></div>
                             </div>
-                            <input type="text" class="form-control" id="account-name" placeholder="请输入帐号">
+                            <input type="text" class="form-control" id="login-username" placeholder="请输入帐号">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="passwd-text" class="col-sm-2 col-form-label">密码:</label>
+                        <label for="login-passwd" class="col-sm-2 col-form-label">密码:</label>
                         <div class="col-sm-10 input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><span class="icon iconfont">&#xe611;</span></div>
                             </div>
-                            <input type="password" class="form-control" id="passwd-text" placeholder="请输入密码">
+                            <input type="password" class="form-control" id="login-passwd" placeholder="请输入密码">
                         </div>
                     </div>
+                    <div class="card-text notice" style="color: red;margin-bottom: 20px;"></div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary" onclick="gf.login();">提交</button>
-                        <button type="button" class="btn btn-primary" onclick="gf.login();" style="border-left-color: #5b97d3;"><span class="icon iconfont">&#xe6c9;</span></button>
+                        <button type="button" onclick="gf.login();" class="btn btn-primary">提交</button>
+                        <button type="button" onclick="gf.login();" class="btn btn-primary" style="border-left-color: #5b97d3;"><span class="icon iconfont">&#xe6c9;</span></button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info btn-block"><span class="icon iconfont">&#xe600;</span> Github 登录</button>
+                <button type="button"  onclick="gf.loginGithub();" class="btn btn-info btn-block"><span class="icon iconfont">&#xe600;</span> Github 登录</button>
             </div>
         </div>
     </div>

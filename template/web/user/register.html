@@ -5,7 +5,7 @@
                 <span class="iconfont">&#xe647;</span> 用户注册
             </div>
             <div class="card-body">
-                <form>
+                <form name="registerForm">
                     <div class="form-group row">
                         <label for="passport" class="col-sm-3 col-form-label  required">邮箱</label>
                         <div class="col-sm-9">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <div class="card-text" id="notice" style="color: red;"></div>
+                    <div class="card-text notice" style="color: red;"></div>
                     <div class="form-group row">
                         <div class="col-sm-3 offset-md-3">
                             <button type="button" onclick="user.register();return false;"
@@ -112,7 +112,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span id="register-passport"></span>账号注册成功
+                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span
+                        id="register-passport"></span>账号注册成功
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
@@ -215,11 +216,10 @@
             });
         }
         , notice: function (msg) {
-            $("#notice").html('<span class="iconfont">&#xe653;</span> ' + msg);
-            $("#notice").fadeIn();
+            gf.notice(msg, ".gf-register")
         }
         , noticeClear: function () {
-            $("#notice").hide();
+            gf.noticeClear(".gf-register");
         }
     }
     $('#modalRegister').on('hidden.bs.modal', function (e) {
