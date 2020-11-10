@@ -10,7 +10,7 @@ import (
 
 // ZanCai is the golang structure for table gf_zan_cai.
 type ZanCai struct {
-    Id          uint        `orm:"id,primary"   json:"id"`           // 标签名称                                  
+    Id          uint        `orm:"id,primary"   json:"id"`           // 自增ID                                    
     Type        int         `orm:"type"         json:"type"`         // 操作类型。0:赞，1:踩。                    
     UserId      uint        `orm:"user_id"      json:"user_id"`      // 操作用户                                  
     ContentId   uint        `orm:"content_id"   json:"content_id"`   // 对应内容ID，该内容可能是content, reply    

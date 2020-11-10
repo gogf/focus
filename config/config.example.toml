@@ -1,12 +1,16 @@
-# HTTP Server configurations.
+# Web Server.
 [server]
 	Address        = ":8199"
 	ServerRoot     = "public"
 	RouteOverWrite = true
 
-# Logger configurations.
+# 文件上传设置
+[upload]
+    path = "upload"
+
+# 日志配置
 [logger]
-    Path   = "/tmp/log/gf-alpha"
+    Path   = "/tmp/log/focus"
     Level  = "all"
     Stdout = true
 
@@ -15,7 +19,7 @@
     Delimiters  =  ["${", "}"]
     DefaultFile = "web/layout/layout.html"
 
-# Database configurations.
+# 数据库配置
 [database]
     Link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
     Debug = true
