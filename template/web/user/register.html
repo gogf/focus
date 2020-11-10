@@ -9,28 +9,28 @@
                     <div class="form-group row">
                         <label for="passport" class="col-sm-3 col-form-label  required">邮箱</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="passport" id="passport" value="test@test.com"
+                            <input type="text" class="form-control" name="passport" id="passport" value=""
                                    placeholder="请输入邮箱">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="nickname" class="col-sm-3 col-form-label  required">昵称</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nickname" id="nickname" value="test@test.com"
+                            <input type="text" class="form-control" name="nickname" id="nickname" value=""
                                    placeholder="请输入昵称">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-3 col-form-label  required">密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password" id="password" value="123456"
+                            <input type="password" class="form-control" name="password" id="password" value=""
                                    placeholder="请输入密码">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password2" class="col-sm-3 col-form-label  required">确认密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password2" id="password2" value="123456"
+                            <input type="password" class="form-control" name="password2" id="password2" value=""
                                    placeholder="请再次输入密码">
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                         <label for="code" class="col-sm-3 col-form-label  required">验证码</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="code" id="code" value="1234"
+                                <input type="text" class="form-control" name="code" id="code" value=""
                                        placeholder="请输入正确的验证码">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2"> <img
@@ -99,6 +99,28 @@
         </div>
     </div>
 </div>
+
+<!-- 注册成功提示Modal -->
+<div class="modal fade" id="modalRegister" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">注册成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span id="register-passport"></span>账号注册成功
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     user = {
         register: function () {
@@ -164,6 +186,9 @@
                 this.notice('验证码输入错误！');
                 return;
             }
+            // 传输加密
+            $('#password').val(hex_md5(pwd + pwd));
+            $('#password2').val(hex_md5(pwd2 + pwd2));
 
             jQuery.ajax({
                 type: 'POST',
@@ -172,12 +197,8 @@
                 success: function (data) {
                     if (data.code == 0) {
                         user.notice('注册成功');
-                        // 跳转到注册成功页面
-                        // var prePage = $('[name="pre_page"]').val();
-                        // if (prePage == '') {
-                        //     prePage = "/";
-                        // }
-                        // window.top.location.href = prePage;
+                        $("#register-passport").text($('#nickname').val());
+                        $('#modalRegister').modal('toggle')
                     } else {
                         // loadPicimageCode();
                         $('[name="imageCode"]').val('');
@@ -201,4 +222,7 @@
             $("#notice").hide();
         }
     }
+    $('#modalRegister').on('hidden.bs.modal', function (e) {
+        window.top.location.href = "/";
+    })
 </script>

@@ -23,6 +23,7 @@ type UserApiRegisterReq struct {
 	Passport  string `v:"required#请输入账号"`                           // 账号
 	Password  string `v:"required#请输入密码"`                           // 密码(明文)
 	Password2 string `v:"required|same:Password#请再次输入密码|两次密码输入不一致"` // 确认密码(明文)
+	Nickname  string `v:"required#请输入昵称"`                           // 昵称
 }
 
 // API修改个人资料

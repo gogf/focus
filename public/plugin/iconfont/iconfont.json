@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "9826666",
+      "name": "成功",
+      "font_class": "chenggong",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
       "icon_id": "5127172",
       "name": "asterisk",
       "font_class": "asterisk1",
