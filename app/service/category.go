@@ -24,7 +24,7 @@ type categoryService struct{}
 
 // 查询列表
 func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTree, error) {
-	v, err := gcache.GetOrSetFunc(treeCacheKey, func() (interface{}, error) {
+	v, err := gcache.GetOrSetFunc(treeCacheKey+contentType, func() (interface{}, error) {
 		entities, err := s.GetList(ctx)
 		if err != nil {
 			return nil, err

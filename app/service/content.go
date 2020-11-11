@@ -28,7 +28,7 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 	listModel := m.Page(r.Page, r.Size)
 	switch r.Sort {
 	case model.ContentSortHot:
-		listModel = listModel.Order(dao.Content.Columns.ZanCount, "DESC")
+		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
 	case model.ContentSortActive:
 		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
 	default:
@@ -101,7 +101,9 @@ func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCrea
 func (s *contentService) Update(ctx context.Context, r *model.ContentServiceUpdateReq) error {
 	_, err := dao.Content.Data(r).
 		FieldsEx(dao.Content.Columns.Id).
-		Where(dao.Content.Columns.UserId, Context.Get(ctx).User.Id).Update()
+		Where(dao.Content.Columns.Id, r.Id).
+		Where(dao.Content.Columns.UserId, Context.Get(ctx).User.Id).
+		Update()
 	return err
 }
 

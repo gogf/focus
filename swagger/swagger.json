@@ -374,6 +374,34 @@
                 }
             }
         },
+        "/file/upload": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "文件域",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求结果",
+                        "schema": {
+                            "$ref": "#/definitions/model.FileApiUploadRes"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "get": {
                 "produces": [
@@ -1048,9 +1076,26 @@
                 }
             }
         },
+        "model.FileApiUploadRes": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "文件名称",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "访问URL，可能只是URI",
+                    "type": "string"
+                }
+            }
+        },
         "model.UserApiRegisterReq": {
             "type": "object",
             "properties": {
+                "nickname": {
+                    "description": "昵称",
+                    "type": "string"
+                },
                 "passport": {
                     "description": "账号",
                     "type": "string"

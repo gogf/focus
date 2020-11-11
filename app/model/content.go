@@ -40,6 +40,7 @@ type ContentListItem struct {
 	Referer    string      `json:"referer"`     // 内容来源，例如github/gitee
 	Status     uint        `json:"status"`      // 状态 0: 正常, 1: 禁用
 	ViewCount  uint        `json:"view_count"`  // 浏览数量
+	ReplyCount uint        `json:"reply_count"` // 回复数量
 	ZanCount   uint        `json:"zan_count"`   // 赞
 	CaiCount   uint        `json:"cai_count"`   // 踩
 	CreatedAt  *gtime.Time `json:"created_at"`  // 创建时间

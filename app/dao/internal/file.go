@@ -13,61 +13,59 @@ import (
 	"time"
 )
 
-// ZanCaiDao is the manager for logic model data accessing
+// FileDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type ZanCaiDao struct {
+type FileDao struct {
 	gmvc.M
 	Table   string
-	Columns zanCaiColumns
+	Columns fileColumns
 }
 
-// ZanCaiColumns defines and stores column names for table gf_zan_cai.
-type zanCaiColumns struct {
-	Id           string // 自增ID                                    
-    Type         string // 操作类型。0:赞，1:踩。                    
-    UserId       string // 操作用户                                  
-    ContentId    string // 对应内容ID，该内容可能是content, reply    
-    ContentType  string // 内容模型: content, reply, 具体由程序定义  
-    CreatedAt    string //                                           
-    UpdatedAt    string //
+// FileColumns defines and stores column names for table gf_file.
+type fileColumns struct {
+	Id         string // 自增ID             
+    Name       string // 文件名称           
+    Src        string // 本地文件存储路径   
+    Url        string // URL地址，可能为空  
+    UserId     string // 操作用户           
+    CreatedAt  string //
 }
 
 var (
-	// ZanCai is globally public accessible object for table gf_zan_cai operations.
-	ZanCai = &ZanCaiDao{
-		M:     g.DB("default").Table("gf_zan_cai").Safe(),
-		Table: "gf_zan_cai",
-		Columns: zanCaiColumns{
-			Id:          "id",            
-            Type:        "type",          
-            UserId:      "user_id",       
-            ContentId:   "content_id",    
-            ContentType: "content_type",  
-            CreatedAt:   "created_at",    
-            UpdatedAt:   "updated_at",
+	// File is globally public accessible object for table gf_file operations.
+	File = &FileDao{
+		M:     g.DB("default").Table("gf_file").Safe(),
+		Table: "gf_file",
+		Columns: fileColumns{
+			Id:        "id",          
+            Name:      "name",        
+            Src:       "src",         
+            Url:       "url",         
+            UserId:    "user_id",     
+            CreatedAt: "created_at",
 		},
 	}
 )
 
 // As sets an alias name for current table.
-func (d *ZanCaiDao) As(as string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.As(as)}
+func (d *FileDao) As(as string) *FileDao {
+	return &FileDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (d *ZanCaiDao) TX(tx *gdb.TX) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.TX(tx)}
+func (d *FileDao) TX(tx *gdb.TX) *FileDao {
+	return &FileDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (d *ZanCaiDao) Master() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Master()}
+func (d *FileDao) Master() *FileDao {
+	return &FileDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (d *ZanCaiDao) Slave() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Slave()}
+func (d *FileDao) Slave() *FileDao {
+	return &FileDao{M:d.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -75,8 +73,8 @@ func (d *ZanCaiDao) Slave() *ZanCaiDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *ZanCaiDao) LeftJoin(table ...string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.LeftJoin(table...)}
+func (d *FileDao) LeftJoin(table ...string) *FileDao {
+	return &FileDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -84,8 +82,8 @@ func (d *ZanCaiDao) LeftJoin(table ...string) *ZanCaiDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *ZanCaiDao) RightJoin(table ...string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.RightJoin(table...)}
+func (d *FileDao) RightJoin(table ...string) *FileDao {
+	return &FileDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -93,36 +91,36 @@ func (d *ZanCaiDao) RightJoin(table ...string) *ZanCaiDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *ZanCaiDao) InnerJoin(table ...string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.InnerJoin(table...)}
+func (d *FileDao) InnerJoin(table ...string) *FileDao {
+	return &FileDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *ZanCaiDao) Fields(fieldNamesOrMapStruct ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
+func (d *FileDao) Fields(fieldNamesOrMapStruct ...interface{}) *FileDao {
+	return &FileDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *ZanCaiDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
+func (d *FileDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *FileDao {
+	return &FileDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.
-func (d *ZanCaiDao) Option(option int) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Option(option)}
+func (d *FileDao) Option(option int) *FileDao {
+	return &FileDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (d *ZanCaiDao) OmitEmpty() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.OmitEmpty()}
+func (d *FileDao) OmitEmpty() *FileDao {
+	return &FileDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (d *ZanCaiDao) Filter() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Filter()}
+func (d *FileDao) Filter() *FileDao {
+	return &FileDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -136,8 +134,8 @@ func (d *ZanCaiDao) Filter() *ZanCaiDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (d *ZanCaiDao) Where(where interface{}, args ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Where(where, args...)}
+func (d *FileDao) Where(where interface{}, args ...interface{}) *FileDao {
+	return &FileDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -145,54 +143,54 @@ func (d *ZanCaiDao) Where(where interface{}, args ...interface{}) *ZanCaiDao {
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (d *ZanCaiDao) WherePri(where interface{}, args ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.WherePri(where, args...)}
+func (d *FileDao) WherePri(where interface{}, args ...interface{}) *FileDao {
+	return &FileDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (d *ZanCaiDao) And(where interface{}, args ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.And(where, args...)}
+func (d *FileDao) And(where interface{}, args ...interface{}) *FileDao {
+	return &FileDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (d *ZanCaiDao) Or(where interface{}, args ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Or(where, args...)}
+func (d *FileDao) Or(where interface{}, args ...interface{}) *FileDao {
+	return &FileDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (d *ZanCaiDao) Group(groupBy string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Group(groupBy)}
+func (d *FileDao) Group(groupBy string) *FileDao {
+	return &FileDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (d *ZanCaiDao) Order(orderBy ...string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Order(orderBy...)}
+func (d *FileDao) Order(orderBy ...string) *FileDao {
+	return &FileDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (d *ZanCaiDao) Limit(limit ...int) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Limit(limit...)}
+func (d *FileDao) Limit(limit ...int) *FileDao {
+	return &FileDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (d *ZanCaiDao) Offset(offset int) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Offset(offset)}
+func (d *FileDao) Offset(offset int) *FileDao {
+	return &FileDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (d *ZanCaiDao) Page(page, limit int) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Page(page, limit)}
+func (d *FileDao) Page(page, limit int) *FileDao {
+	return &FileDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (d *ZanCaiDao) Batch(batch int) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Batch(batch)}
+func (d *FileDao) Batch(batch int) *FileDao {
+	return &FileDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -207,8 +205,8 @@ func (d *ZanCaiDao) Batch(batch int) *ZanCaiDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (d *ZanCaiDao) Cache(duration time.Duration, name ...string) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Cache(duration, name...)}
+func (d *FileDao) Cache(duration time.Duration, name ...string) *FileDao {
+	return &FileDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -218,39 +216,39 @@ func (d *ZanCaiDao) Cache(duration time.Duration, name ...string) *ZanCaiDao {
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (d *ZanCaiDao) Data(data ...interface{}) *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Data(data...)}
+func (d *FileDao) Data(data ...interface{}) *FileDao {
+	return &FileDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
-// It retrieves the records from table and returns the result as []*model.ZanCai.
+// It retrieves the records from table and returns the result as []*model.File.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *ZanCaiDao) All(where ...interface{}) ([]*model.ZanCai, error) {
+func (d *FileDao) All(where ...interface{}) ([]*model.File, error) {
 	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.ZanCai
+	var entities []*model.File
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 	return entities, nil
 }
 
-// One retrieves one record from table and returns the result as *model.ZanCai.
+// One retrieves one record from table and returns the result as *model.File.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *ZanCaiDao) One(where ...interface{}) (*model.ZanCai, error) {
+func (d *FileDao) One(where ...interface{}) (*model.File, error) {
 	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.ZanCai
+	var entity *model.File
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -259,12 +257,12 @@ func (d *ZanCaiDao) One(where ...interface{}) (*model.ZanCai, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (d *ZanCaiDao) FindOne(where ...interface{}) (*model.ZanCai, error) {
+func (d *FileDao) FindOne(where ...interface{}) (*model.File, error) {
 	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.ZanCai
+	var entity *model.File
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -273,12 +271,12 @@ func (d *ZanCaiDao) FindOne(where ...interface{}) (*model.ZanCai, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (d *ZanCaiDao) FindAll(where ...interface{}) ([]*model.ZanCai, error) {
+func (d *FileDao) FindAll(where ...interface{}) ([]*model.File, error) {
 	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.ZanCai
+	var entities []*model.File
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -286,9 +284,9 @@ func (d *ZanCaiDao) FindAll(where ...interface{}) ([]*model.ZanCai, error) {
 }
 
 // Chunk iterates the table with given size and callback function.
-func (d *ZanCaiDao) Chunk(limit int, callback func(entities []*model.ZanCai, err error) bool) {
+func (d *FileDao) Chunk(limit int, callback func(entities []*model.File, err error) bool) {
 	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
-		var entities []*model.ZanCai
+		var entities []*model.File
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
 			return false
@@ -298,16 +296,16 @@ func (d *ZanCaiDao) Chunk(limit int, callback func(entities []*model.ZanCai, err
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (d *ZanCaiDao) LockUpdate() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.LockUpdate()}
+func (d *FileDao) LockUpdate() *FileDao {
+	return &FileDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (d *ZanCaiDao) LockShared() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.LockShared()}
+func (d *FileDao) LockShared() *FileDao {
+	return &FileDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (d *ZanCaiDao) Unscoped() *ZanCaiDao {
-	return &ZanCaiDao{M:d.M.Unscoped()}
+func (d *FileDao) Unscoped() *FileDao {
+	return &FileDao{M:d.M.Unscoped()}
 }
