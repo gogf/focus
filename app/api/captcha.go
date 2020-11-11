@@ -36,8 +36,8 @@ func (a *CaptchaApi) Get(r *ghttp.Request) {
 
 	item, _ := c.Driver.DrawCaptcha(content)
 
-	microsecond := gconv.String(time.Microsecond)
-
+	microsecond := gconv.String(time.Now().UnixNano())
+	g.Dump(microsecond)
 	_ = r.Session.Set("captcha", microsecond)
 
 	c.Store.Set(microsecond, answer)
@@ -48,7 +48,6 @@ func (a *CaptchaApi) Get(r *ghttp.Request) {
 func (a *CaptchaApi) Verify(r *ghttp.Request) {
 
 	code := r.GetQueryString("code")
-
 	if store.Verify(r.Session.GetString("captcha"), code, true) {
 		r.Session.Remove("captcha")
 		response.JsonExit(r, 1, "ok", g.Map{"status": true})
