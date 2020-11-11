@@ -86,6 +86,9 @@ gf = {
         pageCls = pageCls || "";
         pageCls = (pageCls == "") ? ".notice" : (pageCls + " .notice");
         $(pageCls).hide();
+    },
+    activeNav:function (navId) {
+        $(navId).parent("li.nav-item").addClass("active");
     }
 }
 

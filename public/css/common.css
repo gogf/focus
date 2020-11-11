@@ -64,11 +64,6 @@ main .row {
     border-color: #d9ecff !important;
 }
 
-#login .dropdown-menu {
-    min-width: 8rem !important;
-    left: -8px !important;
-}
-
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -158,6 +153,14 @@ main .row {
     border-top: 4px solid #007bff;
 }
 
+.gf-topnav li.active {
+    border-bottom: 2px solid #007bff;
+}
+
+#login .dropdown-menu {
+    min-width: 8rem !important;
+    left: -8px !important;
+}
 
 /**************** 文章列表 ************************/
 
