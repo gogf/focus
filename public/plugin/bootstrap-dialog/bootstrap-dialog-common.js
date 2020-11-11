@@ -1,8 +1,5 @@
 // 提示框
 dialog = {
-    EmptyFunc: function () {
-        return;
-    },
     Alert: function (message, handler) {
         handler = handler || null;
         BootstrapDialog.alert({
@@ -56,8 +53,11 @@ dialog = {
                 }
             }
         });
-    }
-    , f: function (fn) {
+    },
+    EmptyFunc: function () {
+        return;
+    },
+    f: function (fn) {
         fn();
     }
 }
