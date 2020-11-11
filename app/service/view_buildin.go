@@ -30,6 +30,16 @@ func (s *ViewBuildIn) Page(total, size int) string {
 	return content
 }
 
+// 获取顶部菜单列表
+func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
+	return Menu.GetTopMenus()
+}
+
+// 获取当前页面的Url Path.
+func (s *ViewBuildIn) UrlPath() string {
+	return s.httpRequest.URL.Path
+}
+
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
 func (s *ViewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
 	return Category.GetTree(s.httpRequest.Context(), contentType)

@@ -4,34 +4,26 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand ml-5 " href="#">
-        <img src="https://cdn.learnku.com//uploads/communities/sNljssWWQoW6J88O9G37.png!/both/44x44" width="30" height="30" alt="" loading="lazy">
+    <a class="navbar-brand " href="#">
+        <img src="/images/logo.png" width="30" height="30">
     </a>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" id="nav-home" href="/">首页</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="nav-topic" href="/topic">主题</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="nav-ask" href="/ask">问答</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="nav-article" href="/article">文章</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    教程
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" id="nav-a1" href="#">GoFrame入门</a>
-                    <a class="dropdown-item" id="nav-a2" href="#">GoFrame源码</a>
-                    <a class="dropdown-item" id="nav-a3" href="#">GoFrame实战</a>
+            ${range $index, $item := .BuildIn.TopMenus}
+            <li class="nav-item ${if eq $.BuildIn.UrlPath $item.Url }active${end} ${if $item.Items}dropdown${end}">
+                ${if $item.Items}
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${$item.Name}</a>
+                <div class="dropdown-menu">
+                    ${range $index, $subItem := $item.Items}
+                    <a class="dropdown-item" href="${$subItem.Url}" target="${$subItem.Target}">${$subItem.Name}</a>
+                    ${end}
                 </div>
+                ${else}
+                <a class="nav-link" href="${$item.Url}" target="${$item.Target}">${$item.Name} </a>
+                ${end}
             </li>
+            ${end}
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
