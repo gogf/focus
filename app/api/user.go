@@ -122,25 +122,20 @@ func (a *userApi) DoRegister(r *ghttp.Request) {
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-
-	codeVerify := store.Verify(r.Session.GetString("captcha"), data.Code, true)
-	r.Session.Remove("captcha")
-	if !codeVerify {
-		response.JsonExit(r, 1, "验证码输入错误")
+	if service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, data.Code) {
+		response.JsonExit(r, 1, "请输入正确的验证码")
 	}
 
 	if err := gconv.Struct(data, &serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	// 注册，暂存原始密码
-	passwd := serviceRegisterReq.Password
 	if err := service.User.Register(serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 自动登录
 		err := service.User.Login(r.Context(), &model.UserServiceLoginReq{
 			Passport: serviceRegisterReq.Passport,
-			Password: passwd,
+			Password: serviceRegisterReq.Password,
 		})
 		if err != nil {
 			response.JsonExit(r, 1, err.Error())

@@ -6,7 +6,6 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/text/gstr"
-	"github.com/gogf/gf/util/gmode"
 )
 
 var Middleware = new(middlewareService)
@@ -20,13 +19,13 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 	customCtx := Context.Get(r.Context())
 	customCtx.Session = r.Session
 	// 开发环境使用，设置测试用户信息
-	if gmode.IsDevelop() {
-		Context.SetUser(r.Context(), &model.ContextUser{
-			Id:       1,
-			Passport: "root",
-			Nickname: "ROOT",
-		})
-	}
+	//if gmode.IsDevelop() {
+	//	Context.SetUser(r.Context(), &model.ContextUser{
+	//		Id:       1,
+	//		Passport: "root",
+	//		Nickname: "ROOT",
+	//	})
+	//}
 	if userEntity := User.GetSessionUser(r); userEntity != nil {
 		Context.SetUser(r.Context(), &model.ContextUser{
 			Id:       userEntity.Id,
@@ -36,8 +35,7 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 	}
 	// 将自定义的上下文对象传递到模板变量中使用
 	r.Assigns(g.Map{
-		"Context":   r.Context(),
-		"CustomCtx": customCtx,
+		"Context": customCtx,
 	})
 	// 执行下一步请求逻辑
 	r.Middleware.Next()

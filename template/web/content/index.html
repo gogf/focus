@@ -37,13 +37,13 @@
             </li>
             ${end}
 
-
+            ${if gt .Data.Total .Data.Size}
             <li class="list-group-item gf-list-item">
                 <ul class="pagination">
                     ${.BuildIn.Page .Data.Total .Data.Size }
                 </ul>
             </li>
-
+            ${end}
         </ul>
     </div>
 

@@ -39,7 +39,52 @@
                 "tags": [
                     "文章"
                 ],
-                "summary": "展示文章板块页面",
+                "summary": "展示文章首页",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "栏目ID",
+                        "name": "cate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页号码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页数量",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序方式",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/article/create": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "展示创建文章页面",
                 "responses": {
                     "200": {
                         "description": "页面HTML",
@@ -58,7 +103,7 @@
                 "tags": [
                     "文章"
                 ],
-                "summary": "展示文章内容",
+                "summary": "展示文章详情",
                 "parameters": [
                     {
                         "type": "integer",
@@ -77,7 +122,7 @@
                 }
             }
         },
-        "/article/publish": {
+        "/article/update": {
             "get": {
                 "produces": [
                     "text/html"
@@ -85,7 +130,16 @@
                 "tags": [
                     "文章"
                 ],
-                "summary": "展示发布文章页面",
+                "summary": "展示修改文章页面",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "页面HTML",
@@ -104,7 +158,52 @@
                 "tags": [
                     "问答"
                 ],
-                "summary": "展示问答模块页面",
+                "summary": "展示问答首页",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "栏目ID",
+                        "name": "cate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页号码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页数量",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序方式",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ask/create": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "问答"
+                ],
+                "summary": "展示创建问答页面",
                 "responses": {
                     "200": {
                         "description": "页面HTML",
@@ -123,11 +222,11 @@
                 "tags": [
                     "问答"
                 ],
-                "summary": "展示问答模块特定问题内容页面",
+                "summary": "展示问答详情",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "主题ID",
+                        "description": "问答ID",
                         "name": "id",
                         "in": "path"
                     }
@@ -137,6 +236,54 @@
                         "description": "页面HTML",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ask/update": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "问答"
+                ],
+                "summary": "展示修改问答页面",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "问答ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/captcha": {
+            "get": {
+                "description": "注意直接返回的是图片二进制内容。",
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "验证码"
+                ],
+                "summary": "获取默认的验证码",
+                "responses": {
+                    "200": {
+                        "description": "验证码二进制内容",
+                        "schema": {
+                            "type": "file"
                         }
                     }
                 }
@@ -528,6 +675,25 @@
                         "description": "请求结果",
                         "schema": {
                             "$ref": "#/definitions/response.JsonRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "首页"
+                ],
+                "summary": "搜索",
+                "responses": {
+                    "200": {
+                        "description": "页面HTML",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1092,6 +1258,10 @@
         "model.UserApiRegisterReq": {
             "type": "object",
             "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string"
+                },
                 "nickname": {
                     "description": "昵称",
                     "type": "string"

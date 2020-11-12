@@ -4,7 +4,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand " href="#">
+    <a class="navbar-brand " href="/">
         <img src="/images/logo.png" width="30" height="30">
     </a>
 
@@ -28,10 +28,10 @@
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" id="search" placeholder="请输入搜索内容" aria-label="Search" value=''>
         </form>
-        ${if .CustomCtx.User}
+        ${if .Context.User}
         <div id="login" class="btn-group" role="group" aria-label="First group">
             <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     ${.CustomCtx.User.Nickname}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

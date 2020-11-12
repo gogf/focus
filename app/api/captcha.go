@@ -1,57 +1,22 @@
 package api
 
 import (
-	"focus/library/response"
-	"github.com/gogf/gf/frame/g"
+	"focus/app/model"
+	"focus/app/service"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
-	captcha "github.com/mojocn/base64Captcha"
-	"time"
 )
 
-var Captcha = new(CaptchaApi)
+// 图形验证码
+var Captcha = new(captchaApi)
 
-type CaptchaApi struct{}
+type captchaApi struct{}
 
-var store = captcha.DefaultMemStore
-
-func NewDriver() *captcha.DriverString {
-	driver := new(captcha.DriverString)
-	driver.Height = 44
-	driver.Width = 120
-	driver.NoiseCount = 5
-	driver.ShowLineOptions = captcha.OptionShowSineLine | captcha.OptionShowSlimeLine | captcha.OptionShowHollowLine
-	driver.Length = 4
-	driver.Source = "1234567890"
-	driver.Fonts = []string{"wqy-microhei.ttc"}
-	return driver
-}
-
-func (a *CaptchaApi) Get(r *ghttp.Request) {
-	var driver = NewDriver().ConvertFonts()
-
-	c := captcha.NewCaptcha(driver, store)
-
-	_, content, answer := c.Driver.GenerateIdQuestionAnswer()
-
-	item, _ := c.Driver.DrawCaptcha(content)
-
-	microsecond := gconv.String(time.Now().UnixNano())
-	g.Dump(microsecond)
-	_ = r.Session.Set("captcha", microsecond)
-
-	c.Store.Set(microsecond, answer)
-
-	_, _ = item.WriteTo(r.Response.Writer)
-}
-
-func (a *CaptchaApi) Verify(r *ghttp.Request) {
-
-	code := r.GetQueryString("code")
-	if store.Verify(r.Session.GetString("captcha"), code, true) {
-		r.Session.Remove("captcha")
-		response.JsonExit(r, 1, "ok", g.Map{"status": true})
-	} else {
-		response.JsonExit(r, 1, "ok", g.Map{"status": false})
-	}
+// @summary 获取默认的验证码
+// @description 注意直接返回的是图片二进制内容。
+// @tags    验证码
+// @produce png
+// @router  /captcha [GET]
+// @success 200 {file} body "验证码二进制内容"
+func (a *captchaApi) Index(r *ghttp.Request) {
+	service.Captcha.NewAndStore(r, model.CaptchaDefaultName)
 }

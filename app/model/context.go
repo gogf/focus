@@ -4,7 +4,10 @@
 
 package model
 
-import "github.com/gogf/gf/net/ghttp"
+import (
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
+)
 
 const (
 	ContextUserKey          = "ContextUserKey"
@@ -18,6 +21,7 @@ type Context struct {
 	User    *ContextUser    // 上下文用户信息
 	Session *ghttp.Session  // 当前Session管理对象
 	Message *ContextMessage // 上下文消息提示
+	Data    g.Map           // 自定KV变量
 }
 
 // 请求上下文中的用户信息
