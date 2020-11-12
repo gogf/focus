@@ -41,8 +41,8 @@
                                 <input type="text" class="form-control" name="code" id="code" value=""
                                        placeholder="请输入正确的验证码">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2"> <img
-                                                src="https://cdn.learnku.com//uploads/communities/sNljssWWQoW6J88O9G37.png!/both/44x44"
+                                    <span class="input-group-text" id="basic-addon2" style="cursor: pointer"> <img id="code-img"
+                                                src=""
                                                 width="100" height="24" alt="" loading="lazy"></span>
                                 </div>
                             </div>
@@ -201,8 +201,8 @@
                         $("#register-passport").text($('#nickname').val());
                         $('#modalRegister').modal('toggle')
                     } else {
-                        // loadPicimageCode();
-                        $('[name="imageCode"]').val('');
+                        user.loadCodeImg();
+                        $('[name="code"]').val('');
                         $('[name="password"]').val('');
                         $('[name="password2"]').val('');
                         user.notice('注册失败：' + data.message);
@@ -215,6 +215,9 @@
                 }
             });
         }
+        ,loadCodeImg:function () {
+            $("#code-img").attr("src","/captcha?v="+Math.random());
+        }
         , notice: function (msg) {
             gf.notice(msg, ".gf-register")
         }
@@ -222,7 +225,14 @@
             gf.noticeClear(".gf-register");
         }
     }
-    $('#modalRegister').on('hidden.bs.modal', function (e) {
-        window.top.location.href = "/";
-    })
+    $(function (){
+        user.loadCodeImg();
+        $("#code-img").on("click",function(){
+           user.loadCodeImg();
+        });
+
+        $('#modalRegister').on('hidden.bs.modal', function (e) {
+            window.top.location.href = "/";
+        })
+    });
 </script>

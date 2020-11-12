@@ -35,7 +35,8 @@ func (a *articleApi) Index(r *ghttp.Request) {
 		})
 	} else {
 		service.View.Render(r, model.View{
-			Data: getListRes,
+			ContentType: model.ContentTypeArticle,
+			Data:        getListRes,
 		})
 	}
 }
@@ -55,14 +56,14 @@ func (a *articleApi) Detail(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	}
+	// 浏览次数增加
+	service.Content.AddViewCount(r.Context(), data.Id, 1)
 	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
-		// 浏览次数增加
-		service.Content.AddViewCount(r.Context(), data.Id, 1)
-
 		service.View.Render(r, model.View{
-			Data: getDetailRes,
+			ContentType: model.ContentTypeArticle,
+			Data:        getDetailRes,
 		})
 	}
 }
@@ -73,7 +74,9 @@ func (a *articleApi) Detail(r *ghttp.Request) {
 // @router  /article/create [GET]
 // @success 200 {string} html "页面HTML"
 func (a *articleApi) Create(r *ghttp.Request) {
-	service.View.Render(r)
+	service.View.Render(r, model.View{
+		ContentType: model.ContentTypeArticle,
+	})
 }
 
 // @summary 展示修改文章页面
@@ -95,7 +98,8 @@ func (a *articleApi) Update(r *ghttp.Request) {
 		service.View.Render500(r)
 	} else {
 		service.View.Render(r, model.View{
-			Data: getDetailRes,
+			ContentType: model.ContentTypeArticle,
+			Data:        getDetailRes,
 		})
 	}
 }

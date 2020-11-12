@@ -35,7 +35,8 @@ func (a *topicApi) Index(r *ghttp.Request) {
 		})
 	} else {
 		service.View.Render(r, model.View{
-			Data: getListRes,
+			ContentType: model.ContentTypeTopic,
+			Data:        getListRes,
 		})
 	}
 }
@@ -55,14 +56,14 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	}
+	// 浏览次数增加
+	service.Content.AddViewCount(r.Context(), data.Id, 1)
 	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
-		// 浏览次数增加
-		service.Content.AddViewCount(r.Context(), data.Id, 1)
-
 		service.View.Render(r, model.View{
-			Data: getDetailRes,
+			ContentType: model.ContentTypeTopic,
+			Data:        getDetailRes,
 		})
 	}
 }
@@ -73,7 +74,9 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 // @router  /topic/create [GET]
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Create(r *ghttp.Request) {
-	service.View.Render(r)
+	service.View.Render(r, model.View{
+		ContentType: model.ContentTypeTopic,
+	})
 }
 
 // @summary 展示修改主题页面
@@ -95,7 +98,8 @@ func (a *topicApi) Update(r *ghttp.Request) {
 		service.View.Render500(r)
 	} else {
 		service.View.Render(r, model.View{
-			Data: getDetailRes,
+			ContentType: model.ContentTypeTopic,
+			Data:        getDetailRes,
 		})
 	}
 }

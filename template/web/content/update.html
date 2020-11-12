@@ -1,15 +1,16 @@
 <div class="col-sm-10 offset-md-1 gf-publish">
     <div class="card">
         <div class="card-header">
-            发布内容
+            修改内容
         </div>
         <div class="card-body">
-            <form id="contentForm" action="/content/do-create" method="post" enctype="application/x-www-form-urlencoded">
-                <input type="hidden" value="${.ContentType}" name="type">
+            <form id="contentForm" action="/content/do-update" method="post" enctype="application/x-www-form-urlencoded">
+                <input type="hidden" value="${.Data.Content.Id}" name="id">
+                <input type="hidden" value="${.Data.Content.Type}" name="type">
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="" name="title" placeholder="请输入标题">
+                        <input type="text" class="form-control" value="${.Data.Content.Title}" name="title" placeholder="请输入标题">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -18,7 +19,7 @@
                         <div class="form-check form-check-inline">
                             <select class="" name="categoryId">
                                 ${range $index, $item := .BuildIn.CategoryTree .ContentType}
-                                <option value="${$item.Id}">${$item.Name}</option>
+                                <option value="${$item.Id}" ${if eq $item.Id $.Data.Content.CategoryId }selected${end}>${$item.Name}</option>
                                 ${end}
                             </select>
                         </div>
@@ -28,12 +29,12 @@
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="10" name="content"> </textarea>
+                        <textarea class="form-control" rows="10" name="content">${.Data.Content.Content}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-3 offset-md-1">
-                        <button type="submit" class="btn btn-primary btn-block">发布</button>
+                        <button type="submit" class="btn btn-primary btn-block">保存</button>
                     </div>
                 </div>
 

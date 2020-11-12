@@ -66,7 +66,7 @@ gf = {
                     window.top.location.href = "/";
                 } else {
                     // loadPicimageCode();
-                   console.log('登录失败：' + data.message);
+                    console.log('登录失败：' + data.message);
                 }
             },
             error: function (html) {
@@ -75,6 +75,9 @@ gf = {
                 alert("服务器忙，提交数据失败，请联系管理员！");
             }
         });
+    },
+    search: function () {
+        window.top.location.href = "/search?q=" + $("#search").val();
     },
     notice: function (msg, pageCls) {
         pageCls = pageCls || "";
@@ -87,7 +90,7 @@ gf = {
         pageCls = (pageCls == "") ? ".notice" : (pageCls + " .notice");
         $(pageCls).hide();
     },
-    activeNav:function (navId) {
+    activeNav: function (navId) {
         $(navId).parent("li.nav-item").addClass("active");
     }
 }
@@ -95,6 +98,14 @@ gf = {
 jQuery(function ($) {
     // 为必填字段添加提示
     $('.required').prepend('&nbsp;<span class="icon iconfont red">&#xe71b;</span>');
+
+    // 回车搜索
+    $("#search").keydown(function (e) {
+        if (e.keyCode == 13) {
+            gf.search();
+            e.preventDefault();
+        }
+    });
 
     // 分页高亮
     $pageItem = $("ul.pagination li.page-item")
