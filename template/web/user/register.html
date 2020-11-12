@@ -134,11 +134,11 @@
                 this.notice('邮箱不能为空！');
                 return;
             }
-            var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-            if (!regexEmail.test(passport)) {
-                this.notice('邮箱格式不正确！');
-                return;
-            }
+            // var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            // if (!regexEmail.test(passport)) {
+            //     this.notice('邮箱格式不正确！');
+            //     return;
+            // }
 
             if (nickname == '') {
                 this.notice('昵称不能为空！');

@@ -8,11 +8,11 @@ gf = {
             this.notice('账号不能为空！');
             return;
         }
-        var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (!regexEmail.test(loginName)) {
-            gf.notice('账号格式不正确！', "#loginModal");
-            return;
-        }
+        // var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        // if (!regexEmail.test(loginName)) {
+        //     gf.notice('账号格式不正确！', "#loginModal");
+        //     return;
+        // }
         if (loginPasswd == '') {
             gf.notice('密码不能为空！', "#loginModal");
             return;
