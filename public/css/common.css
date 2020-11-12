@@ -159,7 +159,7 @@ main .row {
 
 #login .dropdown-menu {
     min-width: 8rem !important;
-    left: -8px !important;
+    left: -15px !important;
 }
 
 /**************** 文章列表 ************************/
