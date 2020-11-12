@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gutil"
 )
 
 var User = &userService{
@@ -149,4 +150,74 @@ func (s *userService) Disable(id uint) error {
 		Where(dao.User.Columns.Id, id).
 		Update()
 	return err
+}
+
+// 查询用户内容列表
+func (s *userService) GetList(ctx context.Context, r *model.UserServiceGetListReq) (*model.UserServiceGetListRes, error) {
+	m := dao.Content.Fields(model.ContentListItem{})
+	if r.Type != "" {
+		m = m.Where(dao.Content.Columns.Type, r.Type)
+	}
+	if r.CategoryId > 0 {
+		// 栏目检索
+		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
+		if err != nil {
+			return nil, err
+		}
+		m = m.Where(dao.Content.Columns.CategoryId, idArray)
+	}
+	m = m.Where(dao.Content.Columns.UserId, r.Id)
+
+	listModel := m.Page(r.Page, r.Size)
+	switch r.Sort {
+	case model.ContentSortHot:
+		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
+	case model.ContentSortActive:
+		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
+	default:
+		listModel = listModel.Order(dao.Content.Columns.Id, "DESC")
+	}
+	contentEntities, err := listModel.M.All()
+	if err != nil {
+		return nil, err
+	}
+	total, err := m.Fields("*").Count()
+	if err != nil {
+		return nil, err
+	}
+	getListRes := &model.UserServiceGetListRes{
+		Page:  r.Page,
+		Size:  r.Size,
+		Total: total,
+	}
+	// Content
+	if err := contentEntities.ScanList(&getListRes.List, "Content"); err != nil {
+		return nil, err
+	}
+	// Category
+	err = dao.Category.
+		Fields(model.ContentListCategoryItem{}).
+		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
+		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
+	if err != nil {
+		return nil, err
+	}
+	// User
+	err = dao.User.
+		Fields(model.ContentListUserItem{}).
+		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "UserId")).
+		ScanList(&getListRes.List, "User", "Content", "id:UserId")
+	if err != nil {
+		return nil, err
+	}
+
+	userRecord, err := dao.User.Fields(getListRes.User).WherePri(r.Id).M.One()
+	if err != nil {
+		return nil, err
+	}
+	if err := userRecord.Struct(&getListRes.User); err != nil {
+		return nil, err
+	}
+
+	return getListRes, nil
 }

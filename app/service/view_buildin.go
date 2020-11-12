@@ -26,6 +26,8 @@ func (s *ViewBuildIn) Page(total, size int) string {
 		"/span>": "/span></li>",
 		"<a":     "<li class=\"page-item\"><a",
 		"/a>":    "/a></li>",
+		"下一页":    ">>",
+		"上一页":    "<<",
 	})
 	return content
 }
