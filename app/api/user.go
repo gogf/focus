@@ -129,13 +129,15 @@ func (a *userApi) DoRegister(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
+	// 注册，暂存原始密码
+	passwd := serviceRegisterReq.Password
 	if err := service.User.Register(serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 自动登录
 		err := service.User.Login(r.Context(), &model.UserServiceLoginReq{
 			Passport: serviceRegisterReq.Passport,
-			Password: serviceRegisterReq.Password,
+			Password: passwd,
 		})
 		if err != nil {
 			response.JsonExit(r, 1, err.Error())
