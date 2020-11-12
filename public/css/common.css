@@ -178,15 +178,17 @@ main .row {
 }
 
 .gf-list .gf-list-item .gf-list-item-img {
-    width:45px;
+    width: 45px;
     float: left;
 }
+
 .gf-list .gf-list-item .gf-list-item-li {
     width: 94%;
     float: left;
     padding-top: 5px;
     padding-left: 5px;
 }
+
 .gf-list .gf-list-item .gf-list-item-text {
     width: 94%;
     float: left;
@@ -240,12 +242,14 @@ main .row {
 
 /**************** 注册页样式 ************************/
 
-.gf-register {
+.gf-register,
+.gf-login {
     margin-bottom: 80px;
     margin-top: 20px;
 }
 
-.gf-register .notice {
+.gf-register .notice
+.gf-login .notice {
     margin-bottom: 20px;
 }
 
