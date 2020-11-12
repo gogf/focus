@@ -18,7 +18,7 @@ var (
 func newDriver() *captcha.DriverString {
 	driver := &captcha.DriverString{
 		Height:          44,
-		Width:           120,
+		Width:           126,
 		NoiseCount:      5,
 		ShowLineOptions: captcha.OptionShowSineLine | captcha.OptionShowSlimeLine | captcha.OptionShowHollowLine,
 		Length:          4,

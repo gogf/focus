@@ -49,7 +49,10 @@ func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
 
 // 执行登录
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
-	userEntity, err := s.GetUserByPassportAndPassword(loginReq.Passport, loginReq.Password)
+	userEntity, err := s.GetUserByPassportAndPassword(
+		loginReq.Passport,
+		s.EncryptPassword(loginReq.Passport, loginReq.Password),
+	)
 	if err != nil {
 		return err
 	}
@@ -83,7 +86,7 @@ func (s *userService) EncryptPassword(passport, password string) string {
 func (s *userService) GetUserByPassportAndPassword(passport, password string) (*model.User, error) {
 	return dao.User.Where(g.Map{
 		dao.User.Columns.Passport: passport,
-		dao.User.Columns.Password: s.EncryptPassword(passport, password),
+		dao.User.Columns.Password: password,
 	}).One()
 }
 
