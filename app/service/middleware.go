@@ -80,3 +80,10 @@ func (s *middlewareService) CustomView(r *ghttp.Request) {
 	}
 	r.Middleware.Next()
 }
+
+// 权限控制，用户必须登录才能访问
+func (s *middlewareService) Auth(r *ghttp.Request) {
+	if User.CheckLogin(r) {
+		r.Middleware.Next()
+	}
+}

@@ -67,39 +67,3 @@ func (a *askApi) Detail(r *ghttp.Request) {
 		})
 	}
 }
-
-// @summary 展示创建问答页面
-// @tags    问答
-// @produce html
-// @router  /ask/create [GET]
-// @success 200 {string} html "页面HTML"
-func (a *askApi) Create(r *ghttp.Request) {
-	service.View.Render(r, model.View{
-		ContentType: model.ContentTypeAsk,
-	})
-}
-
-// @summary 展示修改问答页面
-// @tags    问答
-// @produce html
-// @param   id query int true "问答ID"
-// @router  /ask/update [GET]
-// @success 200 {string} html "页面HTML"
-func (a *askApi) Update(r *ghttp.Request) {
-	var (
-		data *model.ContentApiUpdateReq
-	)
-	if err := r.Parse(&data); err != nil {
-		service.View.Render500(r, model.View{
-			Error: err.Error(),
-		})
-	}
-	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
-		service.View.Render500(r)
-	} else {
-		service.View.Render(r, model.View{
-			ContentType: model.ContentTypeAsk,
-			Data:        getDetailRes,
-		})
-	}
-}

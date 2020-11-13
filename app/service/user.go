@@ -12,7 +12,7 @@ import (
 )
 
 var User = &userService{
-	LoginUri: "/login",
+	LoginUri: "/user/login",
 }
 
 type userService struct {
@@ -20,7 +20,7 @@ type userService struct {
 }
 
 // 检查用户是否登录，当没有登录时返回错误并停止执行
-func (s *userService) CheckLogin(r *ghttp.Request) {
+func (s *userService) CheckLogin(r *ghttp.Request) bool {
 	user := s.GetSessionUser(r)
 	if user == nil {
 		errMsg := "会话已过期，请重新登录"
@@ -33,7 +33,9 @@ func (s *userService) CheckLogin(r *ghttp.Request) {
 			})
 			r.Response.RedirectTo(s.LoginUri)
 		}
+		return false
 	}
+	return true
 }
 
 // 获取当前登录的用户ID，如果用户未登录返回nil。

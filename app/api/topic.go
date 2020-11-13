@@ -67,39 +67,3 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 		})
 	}
 }
-
-// @summary 展示创建主题页面
-// @tags    主题
-// @produce html
-// @router  /topic/create [GET]
-// @success 200 {string} html "页面HTML"
-func (a *topicApi) Create(r *ghttp.Request) {
-	service.View.Render(r, model.View{
-		ContentType: model.ContentTypeTopic,
-	})
-}
-
-// @summary 展示修改主题页面
-// @tags    主题
-// @produce html
-// @param   id query int true "主题ID"
-// @router  /topic/update [GET]
-// @success 200 {string} html "页面HTML"
-func (a *topicApi) Update(r *ghttp.Request) {
-	var (
-		data *model.ContentApiUpdateReq
-	)
-	if err := r.Parse(&data); err != nil {
-		service.View.Render500(r, model.View{
-			Error: err.Error(),
-		})
-	}
-	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
-		service.View.Render500(r)
-	} else {
-		service.View.Render(r, model.View{
-			ContentType: model.ContentTypeTopic,
-			Data:        getDetailRes,
-		})
-	}
-}

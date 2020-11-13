@@ -1,5 +1,5 @@
 <div class="row gf-content">
-    <div class="col-md-7 offset-md-1">
+    <div class="col-md-9">
         <div class="gf-article-show">
             <div class="gf-title">
                 ${.Data.Content.Title}
@@ -17,10 +17,10 @@
                 ${.Data.Content.Content}
             </div>
         </div>
-        <div class="gf-comment-list" style="background-color: white;margin: 10px 10px 0 10px;">
+        <div class="gf-comment-list">
             <ul class="list-group">
                 <li class="list-group-item">
-                    共 100 条回复
+                    共 ${.Data.Content.ReplyCount} 条回复
                 </li>
                 <li class="list-group-item">
                     <div class="reply" style="padding: 5px;width: 100%;">
@@ -76,25 +76,23 @@
                 </li>
             </ul>
         </div>
-        <div style="background-color: white;margin: 5px 10px 0 10px;">
+        <div class="gf-comment-editor">
             <div id="vditor" class="mt-1"></div>
+            <div style="background-color: white;padding: 10px;" class="text-right">
+                <button class="btn btn-primary">提交</button>
+            </div>
         </div>
-        <div style="background-color: white;margin: 5px 10px 10px 10px;padding: 4px;" class="text-right">
-            <button class="btn btn-primary">提交</button>
-        </div>
+
     </div>
     <div class="col-md-3">
 
-        <div class="gf-user">
-            <div class="gf-user-title">
-                资料卡
-            </div>
+        <div class="gf-content-user">
             <div>
                 <a href="/user/${.Data.User.Id}" target="_blank">
-                    <img class="gf-user-img image-border circle-image topic-list-author-avatar"
-                         src="${.Data.User.Avatar}">
+                    <img class="gf-content-user-img image-border circle-image topic-list-author-avatar" src="${.Data.User.Avatar}">
                 </a>
             </div>
+            ${/*
             <div class="row gf-user-statistics">
                 <div class="col">
                     <div>文章</div>
@@ -109,12 +107,16 @@
                     <div>200</div>
                 </div>
             </div>
+            */}
             <div class="gf-user-detail">
-                <h3>程序员小助手 <span class="icon iconfont">&#xe646;</span></h3>
+                <h3>${.Data.User.Nickname} <span class="icon iconfont">&#xe646;</span></h3>
+                ${/*
                 <p><span class="icon iconfont">&#xe638;</span> 北京</p>
                 <p><span class="icon iconfont">&#xe60c;</span> author.baidu.com/home</p>
                 <p><span class="icon iconfont">&#xe645;</span> 24小时前</p>
+                */}
             </div>
+            ${/*
             <div>
                 <div class="row" style="margin:10px 0;">
                     <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span
@@ -127,6 +129,7 @@
                     </button>
                 </div>
             </div>
+            */}
         </div>
 
         <div class="card gf-card">
@@ -164,9 +167,8 @@
             placeholder: "~请开始你的表演...",
             upload: {
                 accept: 'image/*,.mp3, .wav, .rar',
-                token: 'test',
-                url: '/api/upload/editor',
-                linkToImgUrl: '/api/upload/fetch',
+                url: '/file/upload',
+                linkToImgUrl: '/upload',
                 filename(name) {
                     return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
                 },

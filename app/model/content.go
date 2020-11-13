@@ -77,6 +77,11 @@ type ContentApiDetailReq struct {
 	Id uint `v:"min:1#请选择查看的内容"`
 }
 
+// API展示创建内容页面
+type ContentApiCreateReq struct {
+	Type string `v:"required#请选择需要创建的内容类型"`
+}
+
 // API展示修改内容页面
 type ContentApiUpdateReq struct {
 	Id uint `v:"min:1#请选择需要修改的内容"`
