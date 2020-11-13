@@ -66,3 +66,21 @@ type UserServiceUpdateProfileReq struct {
 	Avatar   string // 头像地址
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
 }
+
+type UserServiceGetListReq struct {
+	Id         uint   `v:"min:1#请选择正确的输入参数"`
+	Type       string // 内容模型
+	CategoryId uint   `p:"cate"`                    // 栏目ID
+	Page       int    `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
+	Size       int    `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
+	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
+}
+
+// Service查询用户详情结果
+type UserServiceGetListRes struct {
+	List  []*ContentServiceGetListResItem `json:"list"`  // 列表
+	User  *User                           `json:"user"`  // 查询用户
+	Page  int                             `json:"page"`  // 分页码
+	Size  int                             `json:"size"`  // 分页数量
+	Total int                             `json:"total"` // 数据总数
+}

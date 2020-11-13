@@ -7,10 +7,10 @@
             <div class="card-body">
                 <form name="registerForm">
                     <div class="form-group row">
-                        <label for="passport" class="col-sm-3 col-form-label  required">邮箱</label>
+                        <label for="passport" class="col-sm-3 col-form-label  required">账号</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="passport" id="passport" value=""
-                                   placeholder="请输入邮箱">
+                                   placeholder="请输入账号">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -58,7 +58,7 @@
                             </button>
                         </div>
                         <div class="col-sm-3 offset-md-1">
-                            <button type="button" class="btn btn-secondary btn-block">放弃</button>
+                            <button type="button" onclick="window.location.href='/'" class="btn btn-secondary btn-block">返回首页</button>
                         </div>
                     </div>
                 </form>
@@ -67,8 +67,7 @@
         </div>
     </div>
 
-    <div class="col-md-3">
-
+    <div class="col-md-3" style="margin-top: 20px;">
         <div class="card gf-card" style="background: #fff;padding: 10px;">
             <a class="btn btn-primary" onclick="window.location.href='publish.html'" href="javascript:void(0);">发布帖子</a>
         </div>
