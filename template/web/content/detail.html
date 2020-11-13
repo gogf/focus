@@ -78,8 +78,8 @@
         </div>
         <div class="gf-comment-editor">
             <div id="vditor" class="mt-1"></div>
-            <div style="background-color: white;padding: 10px;" class="text-right">
-                <button class="btn btn-primary">提交</button>
+            <div style="background-color: white;padding: 10px;margin-bottom: 10px;" class="text-right">
+                <button class="btn btn-primary btn-submit">提交</button>
             </div>
         </div>
 
@@ -89,7 +89,8 @@
         <div class="gf-content-user">
             <div>
                 <a href="/user/${.Data.User.Id}" target="_blank">
-                    <img class="gf-content-user-img image-border circle-image topic-list-author-avatar" src="${.Data.User.Avatar}">
+                    <img class="gf-content-user-img image-border circle-image topic-list-author-avatar"
+                         src="${.Data.User.Avatar}">
                 </a>
             </div>
             ${/*
@@ -161,23 +162,52 @@
 <script>
     $(function () {
         const editor = new Vditor('vditor', {
-            height: 360,
-            mode: 'wysiwyg',
+            theme: 'classic',
+            height: 300,
+            icon: 'ant',
             cache: {enable: false},
             placeholder: "~请开始你的表演...",
+            toolbar: [
+                'emoji',
+                'headings',
+                'bold',
+                'italic',
+                'strike',
+                '|',
+                'line',
+                'quote',
+                'list',
+                'ordered-list',
+                'check',
+                'outdent',
+                'indent',
+                'code',
+                'inline-code',
+                'insert-after',
+                'insert-before',
+                'undo',
+                'redo',
+                'upload',
+                'link',
+                'table',
+                'fullscreen'
+            ],
             upload: {
-                accept: 'image/*,.mp3, .wav, .rar',
+                accept: 'image/*',
                 url: '/file/upload',
-                linkToImgUrl: '/upload',
+                linkToImgUrl: '/file/upload',
                 filename(name) {
                     return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
                 },
+                format(file, response) {
+                    const {code, data, msg} = JSON.parse(response)
+                    return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
+                }
             },
         });
 
-        $('.submit-reply').click(function () {
-            editor.getValue()
-            editor.getHTML()  //  获取 markdwon html 内容
+        $('.btn-submit').click(function () {
+            console.log(editor.getValue(), editor.getHTML())
         })
     })
 </script>
