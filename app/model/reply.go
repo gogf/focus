@@ -10,23 +10,3 @@ import (
 
 // Reply is the golang structure for table gf_reply.
 type Reply internal.Reply
-
-// API赞
-type ReplyApiZanReq struct {
-	Id uint `v:"min:1#请选择需要赞的回复"`
-}
-
-// API取消赞
-type ReplyApiCancelZanReq struct {
-	Id uint `v:"min:1#请选择需要取消赞的回复"`
-}
-
-// API踩
-type ReplyApiCaiReq struct {
-	Id uint `v:"min:1#请选择需要踩的回复"`
-}
-
-// API取消踩
-type ReplyApiCancelCaiReq struct {
-	Id uint `v:"min:1#请选择需要取消踩的回复"`
-}

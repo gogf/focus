@@ -111,26 +111,6 @@ type ContentApiDoDeleteReq struct {
 	Id uint `v:"min:1#请选择需要删除的内容"` // 删除时ID不能为空
 }
 
-// API赞
-type ContentApiZanReq struct {
-	Id uint `v:"min:1#请选择需要赞的内容"`
-}
-
-// API取消赞
-type ContentApiCancelZanReq struct {
-	Id uint `v:"min:1#请选择需要取消赞的内容"`
-}
-
-// API踩
-type ContentApiCaiReq struct {
-	Id uint `v:"min:1#请选择需要踩的内容"`
-}
-
-// API取消踩
-type ContentApiCancelCaiReq struct {
-	Id uint `v:"min:1#请选择需要取消踩的内容"`
-}
-
 // ==========================================================================================
 // Service
 // ==========================================================================================

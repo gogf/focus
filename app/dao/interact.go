@@ -8,17 +8,17 @@ import (
 	"focus/app/dao/internal"
 )
 
-// zanCaiDao is the manager for logic model data accessing
+// interactDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
-type zanCaiDao struct {
-	*internal.ZanCaiDao
+type interactDao struct {
+	*internal.InteractDao
 }
 
 var (
-	// ZanCai is globally public accessible object for table {TplTableName} operations.
-	ZanCai = &zanCaiDao{
-		internal.ZanCai,
+	// Interact is globally public accessible object for table {TplTableName} operations.
+	Interact = &interactDao{
+		internal.Interact,
 	}
 )
 

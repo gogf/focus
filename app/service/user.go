@@ -13,11 +13,11 @@ import (
 )
 
 var User = &userService{
-	LoginUri: "/user/login",
+	LoginUrl: "/login",
 }
 
 type userService struct {
-	LoginUri string // 登录路由地址
+	LoginUrl string // 登录路由地址
 }
 
 // 检查用户是否登录，当没有登录时返回错误并停止执行
@@ -26,13 +26,13 @@ func (s *userService) CheckLogin(r *ghttp.Request) bool {
 	if user == nil {
 		errMsg := "会话已过期，请重新登录"
 		if r.IsAjaxRequest() {
-			response.JsonRedirectExit(r, 1, errMsg, s.LoginUri)
+			response.JsonRedirectExit(r, 1, errMsg, s.LoginUrl)
 		} else {
 			Context.SetMessage(r.Context(), &model.ContextMessage{
 				Type:    model.ContextMessageTypeInfo,
 				Content: errMsg,
 			})
-			r.Response.RedirectTo(s.LoginUri)
+			r.Response.RedirectTo(s.LoginUrl)
 		}
 		return false
 	}

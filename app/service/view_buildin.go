@@ -20,14 +20,14 @@ func (s *ViewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
 	page.LinkStyle = "page-link"
 	page.SpanStyle = "page-link"
-	content := page.GetContent(4)
+	page.PrevPageTag = "«"
+	page.NextPageTag = "»"
+	content := page.PrevPage() + page.PageBar() + page.NextPage()
 	content = gstr.ReplaceByMap(content, map[string]string{
 		"<span":  "<li class=\"page-item disabled\"><span",
 		"/span>": "/span></li>",
 		"<a":     "<li class=\"page-item\"><a",
 		"/a>":    "/a></li>",
-		"下一页":    ">>",
-		"上一页":    "<<",
 	})
 	return content
 }
