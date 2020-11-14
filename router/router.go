@@ -11,7 +11,6 @@ func init() {
 	s := g.Server()
 	s.Use(
 		service.Middleware.CustomCtx,
-		service.Middleware.CustomView,
 	)
 	// 所有路由注册
 	s.Group("/", func(group *ghttp.RouterGroup) {
@@ -34,7 +33,7 @@ func init() {
 		group.Middleware(service.Middleware.Auth)
 		group.ALL("/user", api.User)         // 用户
 		group.ALL("/content", api.Content)   // 内容
-		group.ALL("/interact", api.Interact) // 文件
+		group.ALL("/interact", api.Interact) // 交互
 		group.ALL("/file", api.File)         // 文件
 	})
 	// 错误页面

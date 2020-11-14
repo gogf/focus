@@ -29,75 +29,34 @@
             <input class="form-control mr-sm-2" type="text" id="search" placeholder="请输入搜索内容" aria-label="Search" value=''>
         </form>
         ${if .Context.User}
-        <div id="login" class="btn-group" role="group" aria-label="First group">
+        <div id="logon" class="btn-group" role="group" aria-label="First group">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     ${.Context.User.Nickname}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="javascript:void(0);" onclick="window.location.href='/user/0'"><span class="iconfont">&#xe647;</span> 个人中心</a>
-                    <a class="dropdown-item" href="javascript:void(0);" onclick="window.location.href='/user/profile'"><span class="iconfont">&#xe68c;</span> 编辑资料</a>
-                    <a class="dropdown-item" href="javascript:void(0);" onclick="gf.logout();"><span class="iconfont">&#xe6c9;</span> 退出</a>
+                    <a class="dropdown-item" href="/user/${.Context.User.Id}"><span class="iconfont">&#xe647;</span> 个人中心</a>
+                    <a class="dropdown-item" href="/user/profile"><span class="iconfont">&#xe68c;</span> 编辑资料</a>
+                    <a class="dropdown-item" href="/user/logout"><span class="iconfont">&#xe6c9;</span> 退出</a>
                 </div>
             </div>
         </div>
         ${else}
-        <div id="noLogin" class="btn-group" role="group" aria-label="First group">
-            <a class="btn btn-link" href="javascript:void(0);" onclick="window.location.href='/user/register'">
+        <div id="noLogon" class="btn-group" role="group" aria-label="First group">
+            <a class="btn btn-link" href="/register">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
                           d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                </svg> 注册</a>
-            <button class="btn btn-link" href="javascript:void(0);" data-toggle="modal" data-target="#loginModal" data-whatever="@fat"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-bar-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                </svg> 注册
+            </a>
+            <a class="btn btn-link" href="/login">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-bar-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
                           d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z" />
-                </svg> 登录</button>
+                </svg> 登录
+            </a>
         </div>
         ${end}
     </div>
-
 </nav>
 
-<!--登录-->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">请登录</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-            </div>
-            <div class="modal-body">
-                <form name="loginForm">
-                    <div class="form-group row">
-                        <label for="login-username" class="col-sm-2 col-form-label">帐号:</label>
-                        <div class="col-sm-10 input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text"><span class="icon iconfont">&#xe622;</span></div>
-                            </div>
-                            <input type="text" class="form-control" id="login-username" placeholder="请输入帐号">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="login-passwd" class="col-sm-2 col-form-label">密码:</label>
-                        <div class="col-sm-10 input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text"><span class="icon iconfont">&#xe611;</span></div>
-                            </div>
-                            <input type="password" class="form-control" id="login-passwd" placeholder="请输入密码">
-                        </div>
-                    </div>
-                    <div class="card-text notice" style="color: red;margin-bottom: 20px;"></div>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" onclick="gf.login();" class="btn btn-primary">提交</button>
-                        <button type="button" onclick="gf.login();" class="btn btn-primary" style="border-left-color: #5b97d3;"><span class="icon iconfont">&#xe6c9;</span></button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button"  onclick="gf.loginGithub();" class="btn btn-info btn-block"><span class="icon iconfont">&#xe600;</span> Github 登录</button>
-            </div>
-        </div>
-    </div>
-</div>

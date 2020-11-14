@@ -1,48 +1,43 @@
 <div class="row">
-    <div class="col-md-6 offset-md-2 gf-register">
+    <div class="col-md-6 offset-md-3 gf-register">
         <div class="card">
             <div class="card-header">
                 <span class="iconfont">&#xe647;</span> 用户注册
             </div>
             <div class="card-body">
-                <form name="registerForm">
+                <form id="registerForm" action="/register/do" method="post">
                     <div class="form-group row">
-                        <label for="passport" class="col-sm-3 col-form-label  required">账号</label>
+                        <label for="passport" class="col-sm-3 col-form-label required text-right">账号</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="passport" id="passport" value=""
-                                   placeholder="请输入账号">
+                            <input type="text" class="form-control" name="passport" placeholder="请输入账号">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="nickname" class="col-sm-3 col-form-label  required">昵称</label>
+                        <label for="nickname" class="col-sm-3 col-form-label required text-right">昵称</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nickname" id="nickname" value=""
-                                   placeholder="请输入昵称">
+                            <input type="text" class="form-control" name="nickname" placeholder="请输入昵称">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-sm-3 col-form-label  required">密码</label>
+                        <label for="password" class="col-sm-3 col-form-label required text-right">密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password" id="password" value=""
-                                   placeholder="请输入密码">
+                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password2" class="col-sm-3 col-form-label  required">确认密码</label>
+                        <label for="password2" class="col-sm-3 col-form-label required text-right">确认密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password2" id="password2" value=""
-                                   placeholder="请再次输入密码">
+                            <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="code" class="col-sm-3 col-form-label  required">验证码</label>
+                        <label for="code" class="col-sm-3 col-form-label required text-right">验证码</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="code" id="code" value=""
-                                       placeholder="请输入正确的验证码">
+                                <input type="text" class="form-control" name="captcha" placeholder="请输入正确的验证码">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2" style="cursor: pointer;padding: 0;">
-                                        <img id="code-img" loading="lazy" style="height: calc(2.1rem + 2px);border-radius: 2px;cursor: pointer;">
+                                    <span class="input-group-text" style="cursor: pointer;padding: 0;">
+                                        <img id="code-img" class="captcha" loading="lazy" onclick="gf.reloadCaptcha()">
                                     </span>
                                 </div>
                             </div>
@@ -53,12 +48,7 @@
                     <div class="card-text notice" style="color: red;"></div>
                     <div class="form-group row">
                         <div class="col-sm-3 offset-md-3">
-                            <button type="button" onclick="user.register();return false;"
-                                    class="btn btn-primary btn-block">注册
-                            </button>
-                        </div>
-                        <div class="col-sm-3 offset-md-1">
-                            <button type="button" onclick="window.location.href='/'" class="btn btn-secondary btn-block">返回首页</button>
+                            <button type="submit" class="btn btn-primary btn-block">注册</button>
                         </div>
                     </div>
                 </form>
@@ -67,36 +57,6 @@
         </div>
     </div>
 
-    <div class="col-md-3" style="margin-top: 20px;">
-        <div class="card gf-card" style="background: #fff;padding: 10px;">
-            <a class="btn btn-primary" onclick="window.location.href='publish.html'" href="javascript:void(0);">发布帖子</a>
-        </div>
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <!-- 注册成功提示Modal -->
@@ -111,8 +71,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span
-                        id="register-passport"></span>账号注册成功
+                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span id="register-passport"></span>账号注册成功
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
@@ -121,117 +80,72 @@
     </div>
 </div>
 
-<script>
-    user = {
-        register: function () {
-            // 清空提示
-            this.noticeClear();
-
-            var passport = $('#passport').val();
-            var nickname = $('#nickname').val();
-            if (passport == '') {
-                this.notice('邮箱不能为空！');
-                return;
+<script type="text/javascript">
+jQuery(function($) {
+    gf.reloadCaptcha();
+    $('#registerForm').validate({
+        errorElement: 'div',
+        errorClass: 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            passport: {
+                required: true
+            },
+            password: {
+                required: true
+            },
+            password2: {
+                required: true
+            },
+            nickname: {
+                required: true
+            },
+            captcha: {
+                required: true
             }
-            // var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-            // if (!regexEmail.test(passport)) {
-            //     this.notice('邮箱格式不正确！');
-            //     return;
-            // }
-
-            if (nickname == '') {
-                this.notice('昵称不能为空！');
-                return;
+        },
+        messages: {
+            passport: {
+                required: "请输入账号"
+            },
+            password: {
+                required: "请输入密码"
+            },
+            password2: {
+                required: "请确认密码"
+            },
+            nickname: {
+                required: "请确认昵称"
+            },
+            captcha: {
+                required: "请确认验证码"
             }
-
-            if (nickname.length < 3) {
-                this.notice('昵称长度必须大于3！');
-                return;
-            }
-
-            if (nickname.length > 15) {
-                this.notice('昵称长度必须小于16！');
-                return;
-            }
-
-            var pwd = $('#password').val();
-            var pwd2 = $('#password2').val();
-            if (pwd == '') {
-                this.notice('密码不能为空！');
-                return;
-            }
-            if (pwd2 == '') {
-                this.notice('确认密码不能为空！');
-                return;
-            }
-            if (pwd.length < 6) {
-                this.notice('密码长度必须大于等于6');
-                return;
-            }
-            if (pwd.length > 20) {
-                this.notice('密码长度必须小于等于20');
-                return;
-            }
-
-            if (pwd != pwd2) {
-                this.notice('两次密码不一致！');
-                return;
-            }
-            var imageCode = $('#code').val();
-            if (imageCode == '') {
-                this.notice('验证码不能为空！');
-                return;
-            }
-            if (imageCode.length != 4) {
-                this.notice('验证码输入错误！');
-                return;
-            }
-            // 传输加密
-            $('#password').val(hex_md5(pwd + pwd));
-            $('#password2').val(hex_md5(pwd2 + pwd2));
-
-            jQuery.ajax({
-                type: 'POST',
-                url: '/user/do-register',
-                data: $("form").serialize(),
-                success: function (data) {
-                    if (data.code == 0) {
-                        user.notice('注册成功');
-                        $("#register-passport").text($('#nickname').val());
-                        $('#modalRegister').modal('toggle')
-                    } else {
-                        user.loadCodeImg();
-                        $('[name="code"]').val('');
-                        $('[name="password"]').val('');
-                        $('[name="password2"]').val('');
-                        user.notice('注册失败：' + data.message);
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (r, textStatus) {
+                    if (r.message != "") {
+                        alert(r.message)
                     }
-                },
-                error: function (html) {
-                    var flag = (typeof console != 'undefined');
-                    if (flag) console.log("服务器忙，提交数据失败，代码:" + html.status + "，请联系管理员！");
-                    alert("服务器忙，提交数据失败，请联系管理员！");
+                    if (r.code == 0) {
+                        if (r.redirect != "") {
+                            window.location.href = r.redirect;
+                        } else {
+                            window.location.href = "/";
+                        }
+                    } else {
+                        gf.reloadCaptcha();
+                    }
                 }
             });
+            $('button[type=submit]').removeAttr('disabled');
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
         }
-        ,loadCodeImg:function () {
-            $("#code-img").attr("src","/captcha?v="+Math.random());
-        }
-        , notice: function (msg) {
-            gf.notice(msg, ".gf-register")
-        }
-        , noticeClear: function () {
-            gf.noticeClear(".gf-register");
-        }
-    }
-    $(function (){
-        user.loadCodeImg();
-        $("#code-img").on("click",function(){
-           user.loadCodeImg();
-        });
-
-        $('#modalRegister').on('hidden.bs.modal', function (e) {
-            window.top.location.href = "/";
-        })
     });
+});
 </script>

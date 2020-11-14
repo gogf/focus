@@ -38,7 +38,6 @@ func (a *userApi) Index(r *ghttp.Request) {
 			Title:       title,
 			Keywords:    title,
 			Description: title,
-			ContentType: model.ContentTypeTopic,
 			Data:        getListRes,
 		})
 	}
@@ -140,8 +139,10 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "执行结果"
 func (a *userApi) Logout(r *ghttp.Request) {
 	if err := service.User.Logout(r.Context()); err != nil {
-		response.JsonExit(r, 1, err.Error())
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
 	} else {
-		response.JsonExit(r, 0, "")
+		r.Response.RedirectTo("/")
 	}
 }

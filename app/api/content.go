@@ -22,7 +22,9 @@ func (a *contentApi) Create(r *ghttp.Request) {
 		data *model.ContentApiCreateReq
 	)
 	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
 	}
 	service.View.Render(r, model.View{
 		ContentType: data.Type,
@@ -41,7 +43,7 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 		data             *model.ContentApiDoCreateReq
 		serviceCreateReq *model.ContentServiceCreateReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
@@ -90,7 +92,7 @@ func (a *contentApi) DoUpdate(r *ghttp.Request) {
 		data             *model.ContentApiDoUpdateReq
 		serviceUpdateReq *model.ContentServiceUpdateReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := gconv.Struct(data, &serviceUpdateReq); err != nil {
@@ -113,7 +115,7 @@ func (a *contentApi) DoDelete(r *ghttp.Request) {
 	var (
 		data *model.ContentApiDoDeleteReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.Content.Delete(r.Context(), data.Id); err != nil {

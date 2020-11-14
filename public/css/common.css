@@ -64,6 +64,16 @@ main .row {
     border-color: #d9ecff !important;
 }
 
+.captcha{
+    height: calc(2.1rem + 2px);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.top-message {
+    margin-bottom: 0;
+    margin-top: 10px;
+}
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -79,8 +89,10 @@ main .row {
 
 
 /*************** 表单校验 *********************/
-.help-block {
+.validation-error-block {
     color: red;
+    padding: 2px 0 0 12px;
+    width:100%;
 }
 
 /**************** 定制 ************************/
@@ -157,9 +169,12 @@ main .row {
     border-bottom: 2px solid #007bff;
 }
 
-#login .dropdown-menu {
+#logon {
+
+}
+#logon .dropdown-menu {
     min-width: 8rem !important;
-    left: -15px !important;
+    left: -55px !important;
 }
 
 /**************** 文章列表 ************************/
@@ -267,14 +282,10 @@ main .row {
 
 .gf-register,
 .gf-login {
-    margin-bottom: 80px;
-    margin-top: 20px;
+    margin-bottom: 60px;
+    margin-top: 10px;
 }
 
-.gf-register .notice
-.gf-login .notice {
-    margin-bottom: 20px;
-}
 
 /**************** 资料卡样式 ************************/
 

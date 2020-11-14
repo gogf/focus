@@ -9,10 +9,9 @@ import (
 )
 
 const (
-	UserSessionKey     = "UserSessionKey" // 用户信息存放在Session中的Key
-	UserDefaultRoleId  = 1                // 默认的用户角色ID
-	UserStatusOk       = 0                // 用户状态正常
-	UserStatusDisabled = 1                // 用户状态禁用
+	UserDefaultRoleId  = 1 // 默认的用户角色ID
+	UserStatusOk       = 0 // 用户状态正常
+	UserStatusDisabled = 1 // 用户状态禁用
 )
 
 // User is the golang structure for table gf_user.
@@ -24,7 +23,7 @@ type UserApiRegisterReq struct {
 	Password  string `v:"required#请输入密码"`                           // 密码(明文)
 	Password2 string `v:"required|same:Password#请再次输入密码|两次密码输入不一致"` // 确认密码(明文)
 	Nickname  string `v:"required#请输入昵称"`                           // 昵称
-	Code      string `v:"required#请输入验证码"`                          // 验证码
+	Captcha   string `v:"required#请输入验证码"`                          // 验证码
 }
 
 // API修改个人资料
@@ -68,7 +67,7 @@ type UserServiceUpdateProfileReq struct {
 }
 
 type UserServiceGetListReq struct {
-	Id         uint   `v:"min:1#请选择正确的输入参数"`
+	Id         uint   `v:"min:1#请选择查看的用户"`
 	Type       string // 内容模型
 	CategoryId uint   `p:"cate"`                    // 栏目ID
 	Page       int    `d:"1"  v:"min:0#分页号码错误"`     // 分页号码

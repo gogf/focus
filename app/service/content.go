@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/util/gutil"
 )
 
+// 内容管理服务
 var Content = &contentService{}
 
 type contentService struct{}

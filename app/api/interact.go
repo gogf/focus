@@ -13,7 +13,7 @@ var Interact = new(interactApi)
 type interactApi struct{}
 
 // @summary 赞
-// @tags    赞踩
+// @tags    交互
 // @produce json
 // @param   id formData int true "内容ID"
 // @router  /interact/zan [POST]
@@ -32,7 +32,7 @@ func (a *interactApi) Zan(r *ghttp.Request) {
 }
 
 // @summary 取消赞
-// @tags    赞踩
+// @tags    交互
 // @produce json
 // @param   id formData int true "内容ID"
 // @router  /interact/cancel-zan [POST]
@@ -51,7 +51,7 @@ func (a *interactApi) CancelZan(r *ghttp.Request) {
 }
 
 // @summary 踩
-// @tags    赞踩
+// @tags    交互
 // @produce json
 // @param   id formData int true "内容ID"
 // @router  /interact/cai [POST]
@@ -70,7 +70,7 @@ func (a *interactApi) Cai(r *ghttp.Request) {
 }
 
 // @summary 取消踩
-// @tags    赞踩
+// @tags    交互
 // @produce json
 // @param   id   formData int    true "内容ID"
 // @param   type formData string true "内容模型"

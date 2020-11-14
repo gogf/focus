@@ -25,14 +25,14 @@ func (a *loginApi) Index(r *ghttp.Request) {
 // @description 前面5次不需要验证码，同一个IP登录失败5次之后将会启用验证码校验。
 // @description 注意提交的密码是明文。
 // @description 登录成功后前端引导页面跳转。
-// @tags    用户
+// @tags    登录
 // @produce json
 // @param   passport    formData string true "账号"
 // @param   password    formData string true "密码"
 // @param   verify_code formData string false "验证码"
 // @router  /login/do [POST]
 // @success 200 {object} response.JsonRes "执行结果"
-func (a *userApi) Do(r *ghttp.Request) {
+func (a *loginApi) Do(r *ghttp.Request) {
 	var (
 		data            *model.UserApiLoginReq
 		serviceLoginReq *model.UserServiceLoginReq
@@ -46,6 +46,10 @@ func (a *userApi) Do(r *ghttp.Request) {
 	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "")
+		loginReferer := service.Session.GetLoginReferer(r.Context())
+		if loginReferer != "" {
+			service.Session.RemoveLoginReferer(r.Context())
+		}
+		response.JsonRedirectExit(r, 0, "", loginReferer)
 	}
 }

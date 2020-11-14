@@ -4,51 +4,15 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
-	"focus/library/response"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gutil"
 )
 
-var User = &userService{
-	LoginUrl: "/login",
-}
+var User = &userService{}
 
-type userService struct {
-	LoginUrl string // 登录路由地址
-}
-
-// 检查用户是否登录，当没有登录时返回错误并停止执行
-func (s *userService) CheckLogin(r *ghttp.Request) bool {
-	user := s.GetSessionUser(r)
-	if user == nil {
-		errMsg := "会话已过期，请重新登录"
-		if r.IsAjaxRequest() {
-			response.JsonRedirectExit(r, 1, errMsg, s.LoginUrl)
-		} else {
-			Context.SetMessage(r.Context(), &model.ContextMessage{
-				Type:    model.ContextMessageTypeInfo,
-				Content: errMsg,
-			})
-			r.Response.RedirectTo(s.LoginUrl)
-		}
-		return false
-	}
-	return true
-}
-
-// 获取当前登录的用户ID，如果用户未登录返回nil。
-func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
-	value := r.Session.Get(model.UserSessionKey)
-	if value != nil {
-		if userEntity, ok := value.(*model.User); ok {
-			return userEntity
-		}
-	}
-	return nil
-}
+type userService struct{}
 
 // 执行登录
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
@@ -62,7 +26,7 @@ func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLogi
 	if userEntity == nil {
 		return gerror.New(`账号或密码错误`)
 	}
-	if err := Context.Get(ctx).Session.Set(model.UserSessionKey, userEntity); err != nil {
+	if err := Session.SetUser(ctx, userEntity); err != nil {
 		return err
 	}
 	// 自动更新上线
@@ -76,7 +40,7 @@ func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLogi
 
 // 注销
 func (s *userService) Logout(ctx context.Context) error {
-	return Context.Get(ctx).Session.Remove(model.UserSessionKey)
+	return Session.RemoveUser(ctx)
 }
 
 // 将密码按照内部算法进行加密
@@ -117,8 +81,8 @@ func (s *userService) CheckNicknameUnique(nickname string) error {
 	return nil
 }
 
-// 用户注册
-func (s *userService) Register(r *model.UserServiceRegisterReq) error {
+// 用户注册，注意这里是值传参，因为内部会修改参数的属性，防止对输入参数造成影响。
+func (s *userService) Register(r model.UserServiceRegisterReq) error {
 	if r.RoleId == 0 {
 		r.RoleId = model.UserDefaultRoleId
 	}

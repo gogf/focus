@@ -1,35 +1,28 @@
+
+
 <div class="row">
-    <div class="col-md-6 offset-md-2 gf-login">
+    <div class="col-md-6 offset-md-3 gf-login">
         <div class="card">
             <div class="card-header">
                 <span class="iconfont">&#xe647;</span> 用户登录
             </div>
             <div class="card-body">
-                <form name="registerForm">
+                <form id="loginForm" action="/login/do" method="post">
                     <div class="form-group row">
-                        <label for="passport" class="col-sm-3 col-form-label  required">账号</label>
+                        <label for="passport" class="col-sm-3 col-form-label required text-right">账号：</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="passport" id="passport" value=""
-                                   placeholder="请输入账号">
+                            <input type="text" class="form-control" name="passport" placeholder="请输入账号">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-sm-3 col-form-label  required">密码</label>
+                        <label for="password" class="col-sm-3 col-form-label required text-right">密码：</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password" id="password" value=""
-                                   placeholder="请输入密码">
+                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
                         </div>
                     </div>
-
-                    <div class="card-text notice" style="color: red;"></div>
                     <div class="form-group row">
                         <div class="col-sm-3 offset-md-3">
-                            <button type="button" onclick="user.login();return false;"
-                                    class="btn btn-primary btn-block">登录
-                            </button>
-                        </div>
-                        <div class="col-sm-3 offset-md-1">
-                            <button type="button" onclick="window.location.href='/'" class="btn btn-secondary btn-block">返回首页</button>
+                            <button type="submit" class="btn btn-primary btn-block">登录</button>
                         </div>
                     </div>
                 </form>
@@ -37,95 +30,53 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-3" style="margin-top: 20px;">
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-    </div>
 </div>
 
-<script>
-    user = {
-        login: function () {
-            var loginName = $('#passport').val();
-            var loginPasswd = $('#password').val();
-            if (loginName == '') {
-                this.notice('账号不能为空！');
-                return;
+<script type="text/javascript">
+jQuery(function($) {
+    $('#loginForm').validate({
+        errorElement: 'div',
+        errorClass: 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            passport: {
+                required: true
+            },
+            password: {
+                required: true
             }
-            // var regexEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-            // if (!regexEmail.test(loginName)) {
-            //     user.notice('账号格式不正确！', "#loginModal");
-            //     return;
-            // }
-            if (loginPasswd == '') {
-                user.notice('密码不能为空！', "#loginModal");
-                return;
+        },
+        messages: {
+            passport: {
+                required: "请输入账号"
+            },
+            password: {
+                required: "请输入密码"
             }
-            if (loginPasswd.length < 6) {
-                user.notice('账号或密码错误', "#loginModal");
-                return;
-            }
-            if (loginPasswd.length > 20) {
-                user.notice('账号或密码错误', "#loginModal");
-                return;
-            }
-
-            jQuery.ajax({
-                type: 'POST',
-                url: '/user/do-login',
-                data: {
-                    "passport": loginName,
-                    "password": hex_md5(loginPasswd + loginPasswd)
-                },
-                success: function (data) {
-                    if (data.code == 0) {
-                        user.notice('登录成功', ".gf-login");
-                        setTimeout(function () {
-                            window.top.location.href = "/";
-                        }, 500);
-
-                    } else {
-                        user.notice('登录失败：' + data.message, "#loginModal");
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (r, textStatus) {
+                    if (r.message != "") {
+                        alert(r.message)
                     }
-                },
-                error: function (html) {
-                    var flag = (typeof console != 'undefined');
-                    if (flag) console.log("服务器忙，提交数据失败，代码:" + html.status + "，请联系管理员！");
-                    alert("服务器忙，提交数据失败，请联系管理员！");
+                    if (r.code == 0) {
+                        if (r.redirect != "") {
+                            window.location.href = r.redirect;
+                        } else {
+                            window.location.href = "/";
+                        }
+                    }
                 }
             });
+            $('button[type=submit]').removeAttr('disabled');
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
         }
-        , notice: function (msg) {
-            gf.notice(msg, ".gf-login")
-        }
-        , noticeClear: function () {
-            gf.noticeClear(".gf-login");
-        }
-    }
-    $(function (){
     });
+});
 </script>
