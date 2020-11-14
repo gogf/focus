@@ -79,7 +79,7 @@
         <div class="gf-comment-editor">
             <div id="vditor" class="mt-1"></div>
             <div style="background-color: white;padding: 10px;margin-bottom: 10px;" class="text-right">
-                <button class="btn btn-primary btn-submit">提交</button>
+                <button class="btn btn-primary btn-submit" type="submit">提交</button>
             </div>
         </div>
 
@@ -161,7 +161,7 @@
 </div>
 <script>
     $(function () {
-        const editor = new Vditor('vditor', {
+        let editor = new Vditor('vditor', {
             theme: 'classic',
             height: 300,
             icon: 'ant',
@@ -193,12 +193,16 @@
                 'fullscreen'
             ],
             upload: {
+                // 附件格式
                 accept: 'image/*',
+                // 上传路径
                 url: '/file/upload',
+                // 粘贴图片上传
                 linkToImgUrl: '/file/upload',
                 filename(name) {
                     return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
                 },
+                // 格式化上传返回
                 format(file, response) {
                     const {code, data, msg} = JSON.parse(response)
                     return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
@@ -206,8 +210,29 @@
             },
         });
 
-        $('.btn-submit').click(function () {
-            console.log(editor.getValue(), editor.getHTML())
+        $('.btn-submit').on('click', function () {
+            if (!editor.getHTML()) return;
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery.ajax({
+                type: 'POST',
+                url: '/reply/do-create',
+                data: {
+                    parent_id: 0,
+                    content: editor.getHTML(),
+                    target_id: "${.Data.Content.Id}",
+                    content_type: "${.Data.Content.Type}",
+                },
+                success: function (data) {
+                    $('button[type=submit]').removeAttr('disabled');
+                    if (data.code === 0) {
+                        alert(data.message)
+                    } else {
+                        alert(data.message)
+                    }
+                },
+                error: function (html) {
+                }
+            });
         })
     })
 </script>
