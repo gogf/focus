@@ -60,6 +60,9 @@ func (s *ViewBuildIn) Random() string {
 
 // FormatTime 格式化时间
 func (s *ViewBuildIn) FormatTime(gt *gtime.Time) string {
+	if gt == nil {
+		return ""
+	}
 	n := gtime.Now().Timestamp()
 	t := gt.Timestamp()
 

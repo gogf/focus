@@ -56,11 +56,13 @@ func (a *articleApi) Detail(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	}
-	// 浏览次数增加
-	service.Content.AddViewCount(r.Context(), data.Id, 1)
 	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
+		if getDetailRes == nil {
+			service.View.Render404(r)
+		}
+		service.Content.AddViewCount(r.Context(), data.Id, 1)
 		service.View.Render(r, model.View{
 			ContentType: model.ContentTypeArticle,
 			Data:        getDetailRes,
