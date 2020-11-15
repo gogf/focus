@@ -143,6 +143,6 @@ func (a *userApi) Logout(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	} else {
-		r.Response.RedirectTo("/")
+		r.Response.RedirectTo(service.Middleware.LoginUrl)
 	}
 }

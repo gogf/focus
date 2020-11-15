@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="/plugin/prism/prism.css">
+<script src="/plugin/prism/prism.js"></script>
+
+<link rel="stylesheet" href="/css/vditor.css"/>
+<script src="/js/vditor.js" defer></script>
+
 <div class="row gf-content">
     <div class="col-md-9">
         <div class="gf-article-show">
@@ -12,17 +18,15 @@
                     踩：${.Data.Content.CaiCount} &nbsp;/&nbsp;
                     发布于 ${.Data.Content.CreatedAt | .BuildIn.FormatTime}
                 </span>
-                ${if eq .Data.Content.UserId .Context.User.Id}
-                <span class="float-right">
-                    <a href="/content/update?id=${.Data.Content.Id}">编辑</a>
-                    &nbsp;&nbsp;
-                    <a href="javascript:gf.content.delete(${.Data.Content.Id})">删除</a>
-                </span>
+                ${if .Context.User}
+                    ${if eq .Data.Content.UserId .Context.User.Id}
+                    <span class="float-right">
+                        <a href="/content/update?id=${.Data.Content.Id}">编辑</a>
+                    </span>
+                    ${end}
                 ${end}
             </div>
-            <div class="gf-content markdown-body" id="content">
-                ${.Data.Content.Content}
-            </div>
+            <div class="gf-content markdown-body" id="content">${.Data.Content.Content}</div>
         </div>
         <div class="gf-comment-list">
             <ul class="list-group">
@@ -100,44 +104,9 @@
                          src="${.Data.User.Avatar}">
                 </a>
             </div>
-            ${/*
-            <div class="row gf-user-statistics">
-                <div class="col">
-                    <div>文章</div>
-                    <div>30</div>
-                </div>
-                <div class="col">
-                    <div>粉丝</div>
-                    <div>12</div>
-                </div>
-                <div class="col">
-                    <div>喜欢</div>
-                    <div>200</div>
-                </div>
-            </div>
-            */}
             <div class="gf-user-detail">
                 <h3>${.Data.User.Nickname} <span class="icon iconfont">&#xe646;</span></h3>
-                ${/*
-                <p><span class="icon iconfont">&#xe638;</span> 北京</p>
-                <p><span class="icon iconfont">&#xe60c;</span> author.baidu.com/home</p>
-                <p><span class="icon iconfont">&#xe645;</span> 24小时前</p>
-                */}
             </div>
-            ${/*
-            <div>
-                <div class="row" style="margin:10px 0;">
-                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span
-                                class="icon iconfont">&#xe666</span> 关注
-                    </button>
-                </div>
-                <div class="row" style="margin:10px 0;">
-                    <button style="width: 100%;" class="btn btn-outline-secondary" type="submit"><span
-                                class="icon iconfont">&#xe61c;</span> 私信
-                    </button>
-                </div>
-            </div>
-            */}
         </div>
 
         <div class="card gf-card">
@@ -169,8 +138,15 @@
 <script type="application/javascript">
 $(function () {
     // 解析Markdown
-    let content =$.trim($("#content").html())
-    $('#content').html(marked(content));
+    $('.markdown-body').each(function(i, block) {
+        if ($(block).attr("parsed") == undefined) {
+            $(block).html(marked($(block).html()))
+            $(block).find('pre code').each(function(i, block) {
+                Prism.highlightElement(block);
+            });
+            $(block).attr("parsed", "true")
+        }
+    });
 
     let editor = new Vditor('vditor', {
         theme: 'classic',

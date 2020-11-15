@@ -69,6 +69,10 @@ main .row {
     margin-bottom: 0;
     margin-top: 10px;
 }
+
+code[class*="language-"], pre[class*="language-"] {
+    font-size:14px !important;
+}
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -222,14 +226,13 @@ main .row {
 }
 
 .gf-article-show .gf-title {
-    margin-left: 10px;
+    margin-left: 5px;
     padding: 0;
     font-size: 20px;
     color:#24292e;
 }
 
 .gf-article-show .gf-detail {
-    margin-left: 10px;
     padding: 5px;
 }
 
@@ -239,7 +242,7 @@ main .row {
 }
 
 .gf-article-show .gf-content {
-    padding: 15px;
+    padding: 5px;
     font-family: "Microsoft YaHei", BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .gf-comment-list {
