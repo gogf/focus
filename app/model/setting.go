@@ -10,5 +10,3 @@ import (
 
 // Setting is the golang structure for table gf_setting.
 type Setting internal.Setting
-
-// Fill with you ideas below.

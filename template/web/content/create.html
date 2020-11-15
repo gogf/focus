@@ -1,51 +1,96 @@
-<div class="col-sm-8 offset-md-1 gf-publish">
+<div class="col-sm-10 offset-md-1 gf-publish">
     <div class="card">
         <div class="card-header">
-            文章发布
+            发布内容
         </div>
         <div class="card-body">
-            <form action="/content/do-create" method="post" enctype="application/x-www-form-urlencoded">
+            <form id="contentForm" action="/content/do-create" method="post">
+                <input type="hidden" value="${.ContentType}" name="type">
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">标题</label>
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="staticEmail" value="" placeholder="请输入标题">
+                        <input type="text" class="form-control" value="" name="title" placeholder="请输入标题">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">栏目</label>
+                    <label for="inputPassword" class="col-sm-1 col-form-label required">栏目</label>
                     <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                            <label class="form-check-label" for="inlineRadio1">目录1</label>
+                        <div class="form-group">
+                            <select class="form-control" name="categoryId">
+                                ${range $index, $item := .BuildIn.CategoryTree .ContentType}
+                                <option value="${$item.Id}">${$item.Name}</option>
+                                ${end}
+                            </select>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                            <label class="form-check-label" for="inlineRadio2">目录2</label>
-                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">标题</label>
+                    <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="10"> </textarea>
+                        <textarea class="form-control" rows="10" name="content"> </textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3 offset-md-2"> <button type="submit" class="btn btn-primary btn-block">发布</button></div>
-                    <div class="col-sm-3 offset-md-1"> <button type="submit" class="btn btn-secondary btn-block">放弃</button></div>
+                    <div class="col-sm-3 offset-md-1">
+                        <button type="submit" class="btn btn-primary btn-block">发布</button>
+                    </div>
                 </div>
 
-
-                <div class="form-group row">
-
-                </div>
+                <div class="form-group row"></div>
             </form>
-            <p class="card-text" style="color: red;">1. 博文题目必须填写，并且不能超过80个文字。</p>
-            <p class="card-text" style="color: red;">2. 博文内容尽量控制在1200个文字内，内容合法健康，否则可能会被删除。</p>
-            <p class="card-text" style="color: red;">3. 关键词请使用逗号分隔不同标签，最多5个哦，并且不能超过150个文字。 <br></p>
         </div>
     </div>
-
-
-
 </div>
+
+
+
+<script type="text/javascript">
+jQuery(function($) {
+    $('#contentForm').validate({
+        errorElement: 'div',
+        errorClass: 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            title: {
+                required: true
+            },
+            content: {
+                required: true
+            },
+            categoryId: {
+                required: true
+            }
+        },
+        messages: {
+            title: {
+                required: "请输入标题"
+            },
+            content: {
+                required: "请输入内容"
+            },
+            categoryId: {
+                required: "请选择栏目"
+            }
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (data, textStatus) {
+                    if (data.code == 0 ) {
+                        alert(data.message)
+                    } else {
+                        alert(data.message)
+                    }
+                }
+            });
+            $('button[type=submit]').removeAttr('disabled');
+        }
+    });
+
+});
+</script>
+
+
+
+

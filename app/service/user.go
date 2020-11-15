@@ -4,59 +4,29 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
-	"focus/library/response"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gutil"
 )
 
-var User = &userService{
-	LoginUri: "/login",
-}
+var User = &userService{}
 
-type userService struct {
-	LoginUri string // 登录路由地址
-}
-
-// 检查用户是否登录，当没有登录时返回错误并停止执行
-func (s *userService) CheckLogin(r *ghttp.Request) {
-	user := s.GetSessionUser(r)
-	if user == nil {
-		errMsg := "会话已过期，请重新登录"
-		if r.IsAjaxRequest() {
-			response.JsonRedirectExit(r, 1, errMsg, s.LoginUri)
-		} else {
-			Context.SetMessage(r.Context(), &model.ContextMessage{
-				Type:    model.ContextMessageTypeInfo,
-				Content: errMsg,
-			})
-			r.Response.RedirectTo(s.LoginUri)
-		}
-	}
-}
-
-// 获取当前登录的用户ID，如果用户未登录返回nil。
-func (s *userService) GetSessionUser(r *ghttp.Request) *model.User {
-	value := r.Session.Get(model.UserSessionKey)
-	if value != nil {
-		if userEntity, ok := value.(*model.User); ok {
-			return userEntity
-		}
-	}
-	return nil
-}
+type userService struct{}
 
 // 执行登录
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
-	userEntity, err := s.GetUserByPassportAndPassword(loginReq.Passport, loginReq.Password)
+	userEntity, err := s.GetUserByPassportAndPassword(
+		loginReq.Passport,
+		s.EncryptPassword(loginReq.Passport, loginReq.Password),
+	)
 	if err != nil {
 		return err
 	}
 	if userEntity == nil {
 		return gerror.New(`账号或密码错误`)
 	}
-	if err := Context.Get(ctx).Session.Set(model.UserSessionKey, userEntity); err != nil {
+	if err := Session.SetUser(ctx, userEntity); err != nil {
 		return err
 	}
 	// 自动更新上线
@@ -70,7 +40,7 @@ func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLogi
 
 // 注销
 func (s *userService) Logout(ctx context.Context) error {
-	return Context.Get(ctx).Session.Remove(model.UserSessionKey)
+	return Session.RemoveUser(ctx)
 }
 
 // 将密码按照内部算法进行加密
@@ -83,7 +53,7 @@ func (s *userService) EncryptPassword(passport, password string) string {
 func (s *userService) GetUserByPassportAndPassword(passport, password string) (*model.User, error) {
 	return dao.User.Where(g.Map{
 		dao.User.Columns.Passport: passport,
-		dao.User.Columns.Password: s.EncryptPassword(passport, password),
+		dao.User.Columns.Password: password,
 	}).One()
 }
 
@@ -111,8 +81,8 @@ func (s *userService) CheckNicknameUnique(nickname string) error {
 	return nil
 }
 
-// 用户注册
-func (s *userService) Register(r *model.UserServiceRegisterReq) error {
+// 用户注册，注意这里是值传参，因为内部会修改参数的属性，防止对输入参数造成影响。
+func (s *userService) Register(r model.UserServiceRegisterReq) error {
 	if r.RoleId == 0 {
 		r.RoleId = model.UserDefaultRoleId
 	}
@@ -146,4 +116,74 @@ func (s *userService) Disable(id uint) error {
 		Where(dao.User.Columns.Id, id).
 		Update()
 	return err
+}
+
+// 查询用户内容列表
+func (s *userService) GetList(ctx context.Context, r *model.UserServiceGetListReq) (*model.UserServiceGetListRes, error) {
+	m := dao.Content.Fields(model.ContentListItem{})
+	if r.Type != "" {
+		m = m.Where(dao.Content.Columns.Type, r.Type)
+	}
+	if r.CategoryId > 0 {
+		// 栏目检索
+		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
+		if err != nil {
+			return nil, err
+		}
+		m = m.Where(dao.Content.Columns.CategoryId, idArray)
+	}
+	m = m.Where(dao.Content.Columns.UserId, r.Id)
+
+	listModel := m.Page(r.Page, r.Size)
+	switch r.Sort {
+	case model.ContentSortHot:
+		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
+	case model.ContentSortActive:
+		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
+	default:
+		listModel = listModel.Order(dao.Content.Columns.Id, "DESC")
+	}
+	contentEntities, err := listModel.M.All()
+	if err != nil {
+		return nil, err
+	}
+	total, err := m.Fields("*").Count()
+	if err != nil {
+		return nil, err
+	}
+	getListRes := &model.UserServiceGetListRes{
+		Page:  r.Page,
+		Size:  r.Size,
+		Total: total,
+	}
+	// Content
+	if err := contentEntities.ScanList(&getListRes.List, "Content"); err != nil {
+		return nil, err
+	}
+	// Category
+	err = dao.Category.
+		Fields(model.ContentListCategoryItem{}).
+		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
+		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
+	if err != nil {
+		return nil, err
+	}
+	// User
+	err = dao.User.
+		Fields(model.ContentListUserItem{}).
+		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "UserId")).
+		ScanList(&getListRes.List, "User", "Content", "id:UserId")
+	if err != nil {
+		return nil, err
+	}
+
+	userRecord, err := dao.User.Fields(getListRes.User).WherePri(r.Id).M.One()
+	if err != nil {
+		return nil, err
+	}
+	if err := userRecord.Struct(&getListRes.User); err != nil {
+		return nil, err
+	}
+
+	return getListRes, nil
 }

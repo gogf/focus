@@ -64,6 +64,16 @@ main .row {
     border-color: #d9ecff !important;
 }
 
+.captcha{
+    height: calc(2.1rem + 2px);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.top-message {
+    margin-bottom: 0;
+    margin-top: 10px;
+}
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -79,8 +89,10 @@ main .row {
 
 
 /*************** 表单校验 *********************/
-.help-block {
+.validation-error-block {
     color: red;
+    padding: 2px 0 0 12px;
+    width:100%;
 }
 
 /**************** 定制 ************************/
@@ -143,23 +155,26 @@ main .row {
 }
 
 .gf-card {
-    margin: 15px 0;
+    margin: 0 0 15px 0;
 }
 
 
 .gf-topnav {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
     background: #fff;
-    border-top: 4px solid #007bff;
+    /*border-top: 4px solid #007bff;*/
 }
 
 .gf-topnav li.active {
     border-bottom: 2px solid #007bff;
 }
 
-#login .dropdown-menu {
+#logon {
+
+}
+#logon .dropdown-menu {
     min-width: 8rem !important;
-    left: -8px !important;
+    left: -55px !important;
 }
 
 /**************** 文章列表 ************************/
@@ -177,13 +192,38 @@ main .row {
     text-decoration: none;
 }
 
+.gf-list .gf-list-item .gf-list-item-img {
+    width: 45px;
+    float: left;
+}
+
+.gf-list .gf-list-item .gf-list-item-li {
+    width: 94%;
+    float: left;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.gf-list .gf-list-item .gf-list-item-text {
+    width: 94%;
+    float: left;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.gf-list .gf-list-item .gf-list-item-title {
+    font-size: 16px;
+    line-height: 130%;
+    text-shadow: 0 1px 0 #fff;
+}
 
 /**************** 文章内容样式 ************************/
 
 .gf-article-show {
     background-color: white;
     padding: 15px;
-    margin: 10px;
+    margin: 10px 0 10px 0;
+    border-radius: 4px;
 }
 
 .gf-article-show .gf-title {
@@ -204,9 +244,31 @@ main .row {
 
 .gf-article-show .gf-content {
     padding: 15px;
-    margin: 10px;
+}
+.gf-comment-list {
+    background-color: white;
+    margin: 10px 0 10px 0;
+    border-radius: 4px;
 }
 
+.gf-comment-editor {
+    border-radius: 4px;
+}
+.gf-content-user {
+    text-align: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0 10px 0;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+}
+
+.gf-content-user-img {
+    width: 70%;
+    border-radius: inherit;
+    border: none;
+    cursor: pointer;
+}
 
 /**************** 发布页样式 ************************/
 
@@ -218,22 +280,20 @@ main .row {
 
 /**************** 注册页样式 ************************/
 
-.gf-register {
-    margin-bottom: 80px;
-    margin-top: 20px;
+.gf-register,
+.gf-login {
+    margin-bottom: 60px;
+    margin-top: 10px;
 }
 
-.gf-register .notice {
-    margin-bottom: 20px;
-}
 
 /**************** 资料卡样式 ************************/
 
 .gf-user {
     background-color: white;
-    padding: 5px;
+    padding: 10px;
     border-radius: 4px;
-    margin: 10px;
+    margin: 10px 0 10px 0;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
 }
 

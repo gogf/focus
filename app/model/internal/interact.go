@@ -8,13 +8,14 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-// ZanCai is the golang structure for table gf_zan_cai.
-type ZanCai struct {
+// Interact is the golang structure for table gf_interact.
+type Interact struct {
     Id          uint        `orm:"id,primary"   json:"id"`           // 自增ID                                    
     Type        int         `orm:"type"         json:"type"`         // 操作类型。0:赞，1:踩。                    
     UserId      uint        `orm:"user_id"      json:"user_id"`      // 操作用户                                  
     ContentId   uint        `orm:"content_id"   json:"content_id"`   // 对应内容ID，该内容可能是content, reply    
     ContentType string      `orm:"content_type" json:"content_type"` // 内容模型: content, reply, 具体由程序定义  
+    Count       uint        `orm:"count"        json:"count"`        // 操作数据值                                
     CreatedAt   *gtime.Time `orm:"created_at"   json:"created_at"`   //                                           
     UpdatedAt   *gtime.Time `orm:"updated_at"   json:"updated_at"`   //                                           
 }

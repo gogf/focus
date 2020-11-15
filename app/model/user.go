@@ -9,10 +9,9 @@ import (
 )
 
 const (
-	UserSessionKey     = "UserSessionKey" // 用户信息存放在Session中的Key
-	UserDefaultRoleId  = 1                // 默认的用户角色ID
-	UserStatusOk       = 0                // 用户状态正常
-	UserStatusDisabled = 1                // 用户状态禁用
+	UserDefaultRoleId  = 1 // 默认的用户角色ID
+	UserStatusOk       = 0 // 用户状态正常
+	UserStatusDisabled = 1 // 用户状态禁用
 )
 
 // User is the golang structure for table gf_user.
@@ -24,6 +23,7 @@ type UserApiRegisterReq struct {
 	Password  string `v:"required#请输入密码"`                           // 密码(明文)
 	Password2 string `v:"required|same:Password#请再次输入密码|两次密码输入不一致"` // 确认密码(明文)
 	Nickname  string `v:"required#请输入昵称"`                           // 昵称
+	Captcha   string `v:"required#请输入验证码"`                          // 验证码
 }
 
 // API修改个人资料
@@ -40,8 +40,9 @@ type UserApiDisableReq struct {
 
 // Api用户登录
 type UserApiLoginReq struct {
-	Passport string `v:"required#请输入账号"` // 账号
-	Password string `v:"required#请输入密码"` // 密码(明文)
+	Passport string `v:"required#请输入账号"`  // 账号
+	Password string `v:"required#请输入密码"`  // 密码(明文)
+	Captcha  string `v:"required#请输入验证码"` // 验证码
 }
 
 // Service用户登录
@@ -64,4 +65,22 @@ type UserServiceUpdateProfileReq struct {
 	Nickname string // 昵称
 	Avatar   string // 头像地址
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
+}
+
+type UserServiceGetListReq struct {
+	Id         uint   `v:"min:1#请选择查看的用户"`
+	Type       string // 内容模型
+	CategoryId uint   `p:"cate"`                    // 栏目ID
+	Page       int    `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
+	Size       int    `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
+	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
+}
+
+// Service查询用户详情结果
+type UserServiceGetListRes struct {
+	List  []*ContentServiceGetListResItem `json:"list"`  // 列表
+	User  *User                           `json:"user"`  // 查询用户
+	Page  int                             `json:"page"`  // 分页码
+	Size  int                             `json:"size"`  // 分页数量
+	Total int                             `json:"total"` // 数据总数
 }

@@ -4,6 +4,8 @@ import (
 	"focus/app/model"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gfile"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gmode"
 )
@@ -14,7 +16,7 @@ type viewService struct{}
 
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
-	var viewData g.Map
+	viewData := make(g.Map)
 	if len(data) > 0 {
 		viewData = gconv.Map(data[0])
 		for k, v := range viewData {
@@ -22,14 +24,50 @@ func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 				delete(viewData, k)
 			}
 		}
-		r.Response.WriteTplDefault(viewData)
-	} else {
-		r.Response.WriteTplDefault()
 	}
+	// 内置对象
+	viewData["BuildIn"] = &ViewBuildIn{httpRequest: r}
+	// 内容模板
+	if viewData["MainTpl"] == nil {
+		viewData["MainTpl"] = s.getDefaultMainTpl(r)
+	}
+	// 提示信息
+	if notice, _ := Session.GetNotice(r.Context()); notice != nil {
+		Session.RemoveNotice(r.Context())
+		viewData["Notice"] = notice
+	}
+	// 渲染模板
+	r.Response.WriteTplDefault(viewData)
 	// 开发模式下，在页面最下面打印所有的模板变量
-	if r.Method == "GET" && gmode.IsDevelop() {
+	if gmode.IsDevelop() {
 		r.Response.WriteTplContent(`${dump .}`, viewData)
 	}
+	// 退出当前业务函数执行
+	r.Exit()
+}
+
+// 获取自动设置的MainTpl
+func (s *viewService) getDefaultMainTpl(r *ghttp.Request) string {
+	var (
+		prefix  = "web/"
+		array   = gstr.SplitAndTrim(r.URL.Path, "/")
+		mainTpl = ""
+	)
+	switch {
+	case len(array) == 2:
+		// 如果2级路由为数字，那么为模块的详情页面，那么路由固定为/xxx/detail。
+		// 如果需要定制化内容模板，请在具体路由方法中设置MainTpl。
+		if gstr.IsNumeric(array[1]) {
+			array[1] = "detail"
+		}
+		mainTpl = prefix + gfile.Join(array[0], array[1]) + ".html"
+	case len(array) == 1:
+		mainTpl = prefix + array[0] + "/index.html"
+	default:
+		// 默认首页内容
+		mainTpl = prefix + "index/index.html"
+	}
+	return mainTpl
 }
 
 // 跳转中间页面
@@ -42,28 +80,22 @@ func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 	s.Render(r, view)
 }
 
-// 404页面
+// 401页面
 func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
 	view := model.View{}
 	if len(data) > 0 {
 		view = data[0]
 	}
-	r.Assigns(g.Map{
-		"MainTpl": "web/pages/401.html",
-	})
 	view.MainTpl = "web/pages/401.html"
 	s.Render(r, view)
 }
 
-// 404页面
+// 403页面
 func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
 	view := model.View{}
 	if len(data) > 0 {
 		view = data[0]
 	}
-	r.Assigns(g.Map{
-		"MainTpl": "web/pages/403.html",
-	})
 	view.MainTpl = "web/pages/403.html"
 	s.Render(r, view)
 }
@@ -74,9 +106,6 @@ func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
-	r.Assigns(g.Map{
-		"MainTpl": "web/pages/404.html",
-	})
 	view.MainTpl = "web/pages/404.html"
 	s.Render(r, view)
 }
@@ -87,9 +116,6 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
-	r.Assigns(g.Map{
-		"MainTpl": "web/pages/500.html",
-	})
 	view.MainTpl = "web/pages/500.html"
 	s.Render(r, view)
 }

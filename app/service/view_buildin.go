@@ -20,7 +20,9 @@ func (s *ViewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
 	page.LinkStyle = "page-link"
 	page.SpanStyle = "page-link"
-	content := page.GetContent(4)
+	page.PrevPageTag = "«"
+	page.NextPageTag = "»"
+	content := page.PrevPage() + page.PageBar() + page.NextPage()
 	content = gstr.ReplaceByMap(content, map[string]string{
 		"<span":  "<li class=\"page-item disabled\"><span",
 		"/span>": "/span></li>",
@@ -28,6 +30,16 @@ func (s *ViewBuildIn) Page(total, size int) string {
 		"/a>":    "/a></li>",
 	})
 	return content
+}
+
+// 获取顶部菜单列表
+func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
+	return Menu.GetTopMenus()
+}
+
+// 获取当前页面的Url Path.
+func (s *ViewBuildIn) UrlPath() string {
+	return s.httpRequest.URL.Path
 }
 
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
@@ -48,6 +60,9 @@ func (s *ViewBuildIn) Random() string {
 
 // FormatTime 格式化时间
 func (s *ViewBuildIn) FormatTime(gt *gtime.Time) string {
+	if gt == nil {
+		return ""
+	}
 	n := gtime.Now().Timestamp()
 	t := gt.Timestamp()
 

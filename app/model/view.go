@@ -12,5 +12,6 @@ type View struct {
 	Error       string      // 错误信息
 	MainTpl     string      // 自定义MainTpl展示模板文件
 	Redirect    string      // 引导页面跳转
+	ContentType string      // 内容模型
 	Data        interface{} // 页面参数
 }

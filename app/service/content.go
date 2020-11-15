@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/util/gutil"
 )
 
+// 内容管理服务
 var Content = &contentService{}
 
 type contentService struct{}
@@ -37,6 +38,10 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 	contentEntities, err := listModel.M.All()
 	if err != nil {
 		return nil, err
+	}
+	// 没有数据
+	if contentEntities.IsEmpty() {
+		return nil, nil
 	}
 	total, err := m.Fields("*").Count()
 	if err != nil {
@@ -76,6 +81,10 @@ func (s *contentService) GetDetail(ctx context.Context, id uint) (*model.Content
 	contentEntity, err := dao.Content.Fields(getDetailRes.Content).WherePri(id).One()
 	if err != nil {
 		return nil, err
+	}
+	// 没有数据
+	if contentEntity == nil {
+		return nil, nil
 	}
 	userRecord, err := dao.User.Fields(getDetailRes.User).WherePri(contentEntity.UserId).M.One()
 	if err != nil {

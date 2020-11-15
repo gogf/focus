@@ -77,6 +77,11 @@ type ContentApiDetailReq struct {
 	Id uint `v:"min:1#请选择查看的内容"`
 }
 
+// API展示创建内容页面
+type ContentApiCreateReq struct {
+	Type string `v:"required#请选择需要创建的内容类型"`
+}
+
 // API展示修改内容页面
 type ContentApiUpdateReq struct {
 	Id uint `v:"min:1#请选择需要修改的内容"`
@@ -104,26 +109,6 @@ type ContentApiDoUpdateReq struct {
 // API执行删除内容
 type ContentApiDoDeleteReq struct {
 	Id uint `v:"min:1#请选择需要删除的内容"` // 删除时ID不能为空
-}
-
-// API赞
-type ContentApiZanReq struct {
-	Id uint `v:"min:1#请选择需要赞的内容"`
-}
-
-// API取消赞
-type ContentApiCancelZanReq struct {
-	Id uint `v:"min:1#请选择需要取消赞的内容"`
-}
-
-// API踩
-type ContentApiCaiReq struct {
-	Id uint `v:"min:1#请选择需要踩的内容"`
-}
-
-// API取消踩
-type ContentApiCancelCaiReq struct {
-	Id uint `v:"min:1#请选择需要取消踩的内容"`
 }
 
 // ==========================================================================================

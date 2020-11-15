@@ -5,84 +5,35 @@ import (
 	"focus/app/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gconv"
 )
 
+// 回复控制器
 var Reply = new(replyApi)
 
 type replyApi struct{}
 
-// @summary 赞-回复
+// @summary 创建回复
+// @description 客户端AJAX提交，客户端
 // @tags    内容
 // @produce json
-// @param   id formData int true "回复ID"
-// @router  /reply/zan [POST]
+// @param   entity body model.ContentApiDoCreateReq true "请求参数" required
+// @router  /content/do-create [POST]
 // @success 200 {object} response.JsonRes "请求结果"
-func (a *replyApi) Zan(r *ghttp.Request) {
+func (a *replyApi) DoCreate(r *ghttp.Request) {
 	var (
-		data *model.ReplyApiZanReq
+		data             *model.ReplyApiCreateUpdateBase
+		serviceCreateReq *model.ReplyServiceCreateReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.ZanCai.Zan(r.Context(), model.ZanCaiContentTypeReply, data.Id); err != nil {
+	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 取消赞-回复
-// @tags    内容
-// @produce json
-// @param   id formData int true "回复ID"
-// @router  /reply/cancel-zan [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *replyApi) CancelZan(r *ghttp.Request) {
-	var (
-		data *model.ReplyApiCancelZanReq
-	)
-	if err := r.Parse(&data); err != nil {
+	if err := service.Reply.Create(r.Context(), serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
+	} else {
+		response.JsonExit(r, 0, "")
 	}
-	if err := service.ZanCai.CancelZan(r.Context(), model.ZanCaiContentTypeReply, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 踩-回复
-// @tags    内容
-// @produce json
-// @param   id formData int true "回复ID"
-// @router  /reply/cai [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *replyApi) Cai(r *ghttp.Request) {
-	var (
-		data *model.ReplyApiCaiReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.Cai(r.Context(), model.ZanCaiContentTypeReply, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 取消踩-回复
-// @tags    内容
-// @produce json
-// @param   id formData int true "回复ID"
-// @router  /reply/cancel-cai [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *replyApi) CancelCai(r *ghttp.Request) {
-	var (
-		data *model.ReplyApiCancelCaiReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.CancelCai(r.Context(), model.ZanCaiContentTypeReply, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
 }

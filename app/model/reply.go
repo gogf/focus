@@ -6,27 +6,63 @@ package model
 
 import (
 	"focus/app/model/internal"
+	"github.com/gogf/gf/os/gtime"
 )
 
 // Reply is the golang structure for table gf_reply.
 type Reply internal.Reply
 
-// API赞
-type ReplyApiZanReq struct {
-	Id uint `v:"min:1#请选择需要赞的回复"`
+// API用户注册
+type ReplyApiCreateUpdateBase struct {
+	Title       string
+	ParentId    uint   `v:"required#请输入账号"`    // 回复对应的上一级回复ID(没有的话默认为0)
+	ContentType string `v:"required#评论内容类型错误"` // 评论类型: topic, ask, article, reply
+	TargetId    uint   `v:"required#评论目标ID错误"` // 对应内容ID
+	Content     string `v:"required#评论内容不能为空"` // 回复内容
 }
 
-// API取消赞
-type ReplyApiCancelZanReq struct {
-	Id uint `v:"min:1#请选择需要取消赞的回复"`
+// Service创建内容
+type ReplyServiceCreateReq struct {
+	ReplyApiCreateUpdateBase
+	UserId uint
 }
 
-// API踩
-type ReplyApiCaiReq struct {
-	Id uint `v:"min:1#请选择需要踩的回复"`
+type ReplyListItem struct {
+	Id          uint        `orm:"id,primary"   json:"id"`           // 回复ID
+	ParentId    uint        `orm:"parent_id"    json:"parent_id"`    // 回复对应的上一级回复ID(没有的话默认为0)
+	ContentType string      `orm:"content_type" json:"content_type"` // 评论类型: topic, ask, article, reply
+	TargetId    uint        `orm:"target_id"    json:"target_id"`    // 对应内容ID
+	UserId      uint        `orm:"user_id"      json:"user_id"`      // 网站用户ID
+	ZanCount    uint        `orm:"zan_count"    json:"zan_count"`    // 赞
+	CaiCount    uint        `orm:"cai_count"    json:"cai_count"`    // 踩
+	Title       string      `orm:"title"        json:"title"`        // 回复标题
+	Content     string      `orm:"content"      json:"content"`      // 回复内容
+	CreatedAt   *gtime.Time `orm:"created_at"   json:"created_at"`   // 创建时间
+	UpdatedAt   *gtime.Time `orm:"updated_at"   json:"updated_at"`   //
 }
 
-// API取消踩
-type ReplyApiCancelCaiReq struct {
-	Id uint `v:"min:1#请选择需要取消踩的回复"`
+// Service查询列表
+type ReplyServiceGetListReq struct {
+	Page int `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
+	Size int `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
+}
+
+// Service查询列表结果
+type ReplyServiceGetListRes struct {
+	List  []*ReplyServiceGetListResItem `json:"list"`  // 列表
+	Page  int                             `json:"page"`  // 分页码
+	Size  int                             `json:"size"`  // 分页数量
+	Total int                             `json:"total"` // 数据总数
+}
+
+type ReplyServiceGetListResItem struct {
+	Content  *ReplyListItem         `json:"content"`
+	User     *ReplyListUserItem     `json:"user"`
+}
+
+// 绑定到Content列表中的用户信息
+type ReplyListUserItem struct {
+	Id       uint   `json:"id"`       // UID
+	Nickname string `json:"nickname"` // 昵称
+	Avatar   string `json:"avatar"`   // 头像地址
 }

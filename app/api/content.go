@@ -12,6 +12,25 @@ var Content = new(contentApi)
 
 type contentApi struct{}
 
+// @summary 展示创建内容页面
+// @tags    内容
+// @produce html
+// @router  /content/create [GET]
+// @success 200 {string} html "页面HTML"
+func (a *contentApi) Create(r *ghttp.Request) {
+	var (
+		data *model.ContentApiCreateReq
+	)
+	if err := r.Parse(&data); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	}
+	service.View.Render(r, model.View{
+		ContentType: data.Type,
+	})
+}
+
 // @summary 创建内容
 // @description 客户端AJAX提交，客户端
 // @tags    内容
@@ -24,7 +43,7 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 		data             *model.ContentApiDoCreateReq
 		serviceCreateReq *model.ContentServiceCreateReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
@@ -34,6 +53,31 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
+	}
+}
+
+// @summary 展示修改内容页面
+// @tags    内容
+// @produce html
+// @param   id query int true "问答ID"
+// @router  /content/update [GET]
+// @success 200 {string} html "页面HTML"
+func (a *contentApi) Update(r *ghttp.Request) {
+	var (
+		data *model.ContentApiUpdateReq
+	)
+	if err := r.Parse(&data); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	}
+	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
+		service.View.Render500(r)
+	} else {
+		service.View.Render(r, model.View{
+			ContentType: getDetailRes.Content.Type,
+			Data:        getDetailRes,
+		})
 	}
 }
 
@@ -48,7 +92,7 @@ func (a *contentApi) DoUpdate(r *ghttp.Request) {
 		data             *model.ContentApiDoUpdateReq
 		serviceUpdateReq *model.ContentServiceUpdateReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := gconv.Struct(data, &serviceUpdateReq); err != nil {
@@ -71,7 +115,7 @@ func (a *contentApi) DoDelete(r *ghttp.Request) {
 	var (
 		data *model.ContentApiDoDeleteReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.Content.Delete(r.Context(), data.Id); err != nil {
@@ -79,80 +123,4 @@ func (a *contentApi) DoDelete(r *ghttp.Request) {
 	} else {
 		response.JsonExit(r, 0, "")
 	}
-}
-
-// @summary 赞-内容
-// @tags    内容
-// @produce json
-// @param   id formData int true "内容ID"
-// @router  /content/zan [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *contentApi) Zan(r *ghttp.Request) {
-	var (
-		data *model.ContentApiZanReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.Zan(r.Context(), model.ZanCaiContentTypeContent, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 取消赞-内容
-// @tags    内容
-// @produce json
-// @param   id formData int true "内容ID"
-// @router  /content/cancel-zan [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *contentApi) CancelZan(r *ghttp.Request) {
-	var (
-		data *model.ContentApiCancelZanReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.CancelZan(r.Context(), model.ZanCaiContentTypeContent, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 踩-内容
-// @tags    内容
-// @produce json
-// @param   id formData int true "内容ID"
-// @router  /content/cai [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *contentApi) Cai(r *ghttp.Request) {
-	var (
-		data *model.ContentApiCaiReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.Cai(r.Context(), model.ZanCaiContentTypeContent, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
-}
-
-// @summary 取消踩-内容
-// @tags    内容
-// @produce json
-// @param   id formData int true "内容ID"
-// @router  /content/cancel-cai [POST]
-// @success 200 {object} response.JsonRes "请求结果"
-func (a *contentApi) CancelCai(r *ghttp.Request) {
-	var (
-		data *model.ContentApiCancelCaiReq
-	)
-	if err := r.Parse(&data); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.ZanCai.CancelCai(r.Context(), model.ZanCaiContentTypeContent, data.Id); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, "")
 }

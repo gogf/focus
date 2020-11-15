@@ -35,7 +35,8 @@ func (a *articleApi) Index(r *ghttp.Request) {
 		})
 	} else {
 		service.View.Render(r, model.View{
-			Data: getListRes,
+			ContentType: model.ContentTypeArticle,
+			Data:        getListRes,
 		})
 	}
 }
@@ -58,44 +59,13 @@ func (a *articleApi) Detail(r *ghttp.Request) {
 	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
 		service.View.Render500(r)
 	} else {
-		// 浏览次数增加
+		if getDetailRes == nil {
+			service.View.Render404(r)
+		}
 		service.Content.AddViewCount(r.Context(), data.Id, 1)
-
 		service.View.Render(r, model.View{
-			Data: getDetailRes,
-		})
-	}
-}
-
-// @summary 展示创建文章页面
-// @tags    文章
-// @produce html
-// @router  /article/create [GET]
-// @success 200 {string} html "页面HTML"
-func (a *articleApi) Create(r *ghttp.Request) {
-	service.View.Render(r)
-}
-
-// @summary 展示修改文章页面
-// @tags    文章
-// @produce html
-// @param   id query int true "文章ID"
-// @router  /article/update [GET]
-// @success 200 {string} html "页面HTML"
-func (a *articleApi) Update(r *ghttp.Request) {
-	var (
-		data *model.ContentApiUpdateReq
-	)
-	if err := r.Parse(&data); err != nil {
-		service.View.Render500(r, model.View{
-			Error: err.Error(),
-		})
-	}
-	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
-		service.View.Render500(r)
-	} else {
-		service.View.Render(r, model.View{
-			Data: getDetailRes,
+			ContentType: model.ContentTypeArticle,
+			Data:        getDetailRes,
 		})
 	}
 }

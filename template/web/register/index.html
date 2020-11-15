@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col-md-6 offset-md-3 gf-register">
+        <div class="card">
+            <div class="card-header">
+                <span class="iconfont">&#xe647;</span> 用户注册
+            </div>
+            <div class="card-body">
+                <form id="registerForm" action="/register/do" method="post">
+                    <div class="form-group row">
+                        <label for="passport" class="col-sm-3 col-form-label required text-right">账号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="passport" placeholder="请输入账号">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nickname" class="col-sm-3 col-form-label required text-right">昵称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="nickname" placeholder="请输入昵称">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label required text-right">密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password2" class="col-sm-3 col-form-label required text-right">确认密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="code" class="col-sm-3 col-form-label required text-right">验证码</label>
+                        <div class="col-sm-9">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="captcha" placeholder="请输入正确的验证码">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="cursor: pointer;padding: 0;">
+                                        <img id="code-img" class="captcha" loading="lazy" onclick="gf.reloadCaptcha()">
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card-text notice" style="color: red;"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-3 offset-md-3">
+                            <button type="submit" class="btn btn-primary btn-block">注册</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    gf.reloadCaptcha();
+    $('#registerForm').validate({
+        errorElement: 'div',
+        errorClass: 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            passport: {
+                required: true
+            },
+            password: {
+                required: true
+            },
+            password2: {
+                required: true
+            },
+            nickname: {
+                required: true
+            },
+            captcha: {
+                required: true
+            }
+        },
+        messages: {
+            passport: {
+                required: "请输入账号"
+            },
+            password: {
+                required: "请输入密码"
+            },
+            password2: {
+                required: "请确认密码"
+            },
+            nickname: {
+                required: "请确认昵称"
+            },
+            captcha: {
+                required: "请确认验证码"
+            }
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (r, textStatus) {
+                    if (r.message != "") {
+                        swal({
+                            text:   r.message,
+                            icon:   (r.code == 0) ? "success" : "warning",
+                            button: "确定",
+                        });
+                    }
+                    if (r.code == 0) {
+                        swal({
+                            title:   "注册成功",
+                            text:    "3秒后自动跳转到注册前页面",
+                            icon:    "success",
+                            timer:   3000,
+                            buttons: false
+                        }).then((value) => {
+                            if (r.redirect != "") {
+                                window.location.href = r.redirect;
+                            } else {
+                                window.location.href = "/";
+                            }
+                        });
+                    } else {
+                        gf.reloadCaptcha()
+                    }
+                }
+            });
+            $('button[type=submit]').removeAttr('disabled');
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
+        }
+    });
+});
+</script>

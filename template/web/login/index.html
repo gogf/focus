@@ -1,0 +1,115 @@
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3 gf-login">
+        <div class="card">
+            <div class="card-header">
+                <span class="iconfont">&#xe647;</span> 用户登录
+            </div>
+            <div class="card-body">
+                <form id="loginForm" action="/login/do" method="post">
+                    <div class="form-group row">
+                        <label for="passport" class="col-sm-3 col-form-label required text-right">账号：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="passport" placeholder="请输入账号">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label required text-right">密码：</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="code" class="col-sm-3 col-form-label required text-right">验证码</label>
+                        <div class="col-sm-9">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="captcha" placeholder="请输入正确的验证码">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="cursor: pointer;padding: 0;">
+                                        <img id="code-img" class="captcha" loading="lazy" onclick="gf.reloadCaptcha()">
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3 offset-md-3">
+                            <button type="submit" class="btn btn-primary btn-block">登录</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    gf.reloadCaptcha()
+    $('#loginForm').validate({
+        errorElement: 'div',
+        errorClass: 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            passport: {
+                required: true
+            },
+            password: {
+                required: true
+            },
+            captcha: {
+                required: true
+            }
+        },
+        messages: {
+            passport: {
+                required: "请输入账号"
+            },
+            password: {
+                required: "请输入密码"
+            },
+            captcha: {
+                required: "请确认验证码"
+            }
+        },
+        submitHandler: function(form) {
+            $('button[type=submit]').attr('disabled', 'true');
+            jQuery(form).ajaxSubmit({
+                dataType: 'json',
+                success:  function (r, textStatus) {
+                    if (r.code == 0) {
+                        swal({
+                            title:   "登录成功",
+                            text:    "3秒后自动跳转到登录前页面",
+                            icon:    "success",
+                            timer:   3000,
+                            buttons: false
+                        }).then((value) => {
+                            if (r.redirect != "") {
+                                window.location.href = r.redirect;
+                            } else {
+                                window.location.href = "/";
+                            }
+                        });
+                    } else {
+                        swal({
+                            text:   r.message,
+                            icon:   "warning",
+                            button: "确定",
+                        });
+                        gf.reloadCaptcha()
+                    }
+                }
+            });
+            $('button[type=submit]').removeAttr('disabled');
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
+        }
+    });
+});
+</script>
