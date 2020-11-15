@@ -27,7 +27,8 @@
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="10" name="content"> </textarea>
+                        <input name="content" type="hidden" />
+                        <div id="vditor"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -46,15 +47,69 @@
 
 <script type="text/javascript">
 jQuery(function($) {
+    // 编辑器初始化
+    let editor = new Vditor('vditor', {
+        theme : 'classic',
+        height: 400,
+        icon  : 'ant',
+        mode  : 'wysiwyg',
+        value : '',
+        cache : {enable: false},
+        placeholder: "请输入内容",
+        toolbar: [
+            "emoji",
+            "headings",
+            "bold",
+            "italic",
+            "strike",
+            "link",
+            "|",
+            "list",
+            "ordered-list",
+            "check",
+            "outdent",
+            "indent",
+            "|",
+            "quote",
+            "line",
+            "code",
+            "inline-code",
+            "insert-before",
+            "insert-after",
+            "|",
+            "upload",
+            "table",
+            "|",
+            "undo",
+            "redo",
+            "|",
+            "fullscreen",
+            "edit-mode",
+            "outline",
+            "preview"
+        ],
+        upload: {
+            accept:       'image/*',       // 附件格式
+            url:          '/file/upload',  // 上传路径
+            linkToImgUrl: '/file/upload',  // 粘贴图片上传
+            max:          8 * 1024 * 1024, // 最大上传文件大小（8MB）
+            filename(name) {
+                return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
+            },
+            // 格式化上传返回
+            format(file, response) {
+                const {code, data, msg} = JSON.parse(response)
+                return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
+            }
+        },
+    });
+    // 表单校验
     $('#contentForm').validate({
         errorElement: 'div',
         errorClass: 'validation-error-block',
         focusInvalid: true,
         rules: {
             title: {
-                required: true
-            },
-            content: {
                 required: true
             },
             categoryId: {
@@ -65,29 +120,65 @@ jQuery(function($) {
             title: {
                 required: "请输入标题"
             },
-            content: {
-                required: "请输入内容"
-            },
             categoryId: {
                 required: "请选择栏目"
             }
         },
         submitHandler: function(form) {
-            $('button[type=submit]').attr('disabled', 'true');
-            jQuery(form).ajaxSubmit({
+            let submit = $('button[type=submit]')
+            if (submit.attr('disabled') == 'true') {
+                swal({
+                    text:   "请勿重复提交",
+                    icon:   "warning",
+                    button: "确定",
+                });
+                return
+            }
+            // 将编辑器的内容设置到content输入域中
+            let value = editor.getValue()
+            if (value.length < 10) {
+                swal({
+                    text:   "请输入内容",
+                    icon:   "warning",
+                    button: "确定",
+                });
+                return
+            }
+            $('input[name=content]').val(value)
+
+            submit.attr('disabled', 'true');
+            $(form).ajaxSubmit({
                 dataType: 'json',
-                success:  function (data, textStatus) {
-                    if (data.code == 0 ) {
-                        alert(data.message)
+                success:  function (r, textStatus) {
+                    if (r.code == 0) {
+                        swal({
+                            title:   "发布成功",
+                            text:    "内容发布成功",
+                            icon:    "success",
+                            buttons: ["继续撰写", "查看详情"]
+                        }).then((value) => {
+                            if (value) {
+                                window.location.href = "/${.ContentType}/" + r.data.content_id
+                            } else {
+                                window.location.reload()
+                            }
+                        });
                     } else {
-                        alert(data.message)
+                        swal({
+                            text:   r.message,
+                            icon:   "warning",
+                            button: "确定",
+                        });
                     }
                 }
             });
-            $('button[type=submit]').removeAttr('disabled');
+            submit.removeAttr('disabled');
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
         }
     });
-
 });
 </script>
 

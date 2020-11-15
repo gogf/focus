@@ -1,10 +1,5 @@
 /** 系统重置 **/
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
 :after, :before {
     -webkit-box-sizing: inherit;
     box-sizing: inherit;
@@ -230,6 +225,7 @@ main .row {
     margin-left: 10px;
     padding: 0;
     font-size: 20px;
+    color:#24292e;
 }
 
 .gf-article-show .gf-detail {
@@ -244,6 +240,7 @@ main .row {
 
 .gf-article-show .gf-content {
     padding: 15px;
+    font-family: "Microsoft YaHei", BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .gf-comment-list {
     background-color: white;
@@ -264,11 +261,17 @@ main .row {
 }
 
 .gf-content-user-img {
-    width: 70%;
+    width: 100%;
     border-radius: inherit;
     border: none;
     cursor: pointer;
 }
+
+/**************** 编辑器 ************************/
+.vditor-preview__action {
+    display: none;
+}
+
 
 /**************** 发布页样式 ************************/
 

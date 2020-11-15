@@ -8,6 +8,8 @@ import (
 )
 
 func init() {
+	g.SetDebug(true)
+
 	// 绑定Swagger Plugin
 	s := g.Server()
 	s.Plugin(&swagger.Swagger{})

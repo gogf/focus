@@ -29,11 +29,11 @@ func (s *sessionService) SetUser(ctx context.Context, user *model.User) error {
 
 // 获取当前登录的用户信息对象，如果用户未登录返回nil。
 func (s *sessionService) GetUser(ctx context.Context) *model.User {
-	value := Context.Get(ctx).Session.Get(sessionKeyUser)
-	if value != nil {
-		if userEntity, ok := value.(*model.User); ok {
-			return userEntity
-		}
+	v := Context.Get(ctx).Session.GetVar(sessionKeyUser)
+	if !v.IsNil() {
+		var user *model.User
+		_ = v.Struct(&user)
+		return user
 	}
 	return nil
 }

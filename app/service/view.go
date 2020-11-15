@@ -16,13 +16,29 @@ type viewService struct{}
 
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
-	viewData := make(g.Map)
+	var (
+		viewObj  = model.View{}
+		viewData = make(g.Map)
+	)
 	if len(data) > 0 {
-		viewData = gconv.Map(data[0])
-		for k, v := range viewData {
-			if g.IsEmpty(v) {
-				delete(viewData, k)
-			}
+		viewObj = data[0]
+	}
+	if viewObj.Title == "" {
+		viewObj.Title = g.Cfg().GetString(`setting.title`)
+	} else {
+		viewObj.Title = data[0].Title + ` - ` + g.Cfg().GetString(`setting.title`)
+	}
+	if viewObj.Keywords == "" {
+		viewObj.Keywords = g.Cfg().GetString(`setting.keywords`)
+	}
+	if viewObj.Description == "" {
+		viewObj.Description = g.Cfg().GetString(`setting.description`)
+	}
+	// 去掉空数据
+	viewData = gconv.Map(viewObj)
+	for k, v := range viewData {
+		if g.IsEmpty(v) {
+			delete(viewData, k)
 		}
 	}
 	// 内置对象
@@ -76,6 +92,9 @@ func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
+	if view.Title == "" {
+		view.Title = "页面跳转中"
+	}
 	view.MainTpl = "web/pages/302.html"
 	s.Render(r, view)
 }
@@ -85,6 +104,9 @@ func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
 	view := model.View{}
 	if len(data) > 0 {
 		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "无访问权限"
 	}
 	view.MainTpl = "web/pages/401.html"
 	s.Render(r, view)
@@ -96,6 +118,9 @@ func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
+	if view.Title == "" {
+		view.Title = "无访问权限"
+	}
 	view.MainTpl = "web/pages/403.html"
 	s.Render(r, view)
 }
@@ -106,6 +131,9 @@ func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
 	if len(data) > 0 {
 		view = data[0]
 	}
+	if view.Title == "" {
+		view.Title = "资源不存在"
+	}
 	view.MainTpl = "web/pages/404.html"
 	s.Render(r, view)
 }
@@ -115,6 +143,9 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	view := model.View{}
 	if len(data) > 0 {
 		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "请求执行错误"
 	}
 	view.MainTpl = "web/pages/500.html"
 	s.Render(r, view)

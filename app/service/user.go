@@ -2,17 +2,34 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gfile"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gutil"
+	"github.com/o1egl/govatar"
 )
 
-var User = &userService{}
+var User = &userService{
+	AvatarUploadPath:      g.Cfg().GetString(`upload.path`) + `/avatar`,
+	AvatarUploadUrlPrefix: `/upload/avatar`,
+}
 
-type userService struct{}
+type userService struct {
+	AvatarUploadPath      string // 头像上传路径
+	AvatarUploadUrlPrefix string // 头像上传对应的URL前缀
+}
+
+func init() {
+	// 启动时创建头像存储目录
+	if !gfile.Exists(User.AvatarUploadPath) {
+		gfile.Mkdir(User.AvatarUploadPath)
+	}
+}
 
 // 执行登录
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
@@ -81,19 +98,29 @@ func (s *userService) CheckNicknameUnique(nickname string) error {
 	return nil
 }
 
-// 用户注册，注意这里是值传参，因为内部会修改参数的属性，防止对输入参数造成影响。
-func (s *userService) Register(r model.UserServiceRegisterReq) error {
-	if r.RoleId == 0 {
-		r.RoleId = model.UserDefaultRoleId
-	}
-	if err := s.CheckPassportUnique(r.Passport); err != nil {
+// 用户注册。
+func (s *userService) Register(r *model.UserServiceRegisterReq) error {
+	var user *model.User
+	if err := gconv.Struct(r, &user); err != nil {
 		return err
 	}
-	if err := s.CheckNicknameUnique(r.Nickname); err != nil {
+	if user.RoleId == 0 {
+		user.RoleId = model.UserDefaultRoleId
+	}
+	if err := s.CheckPassportUnique(user.Passport); err != nil {
 		return err
 	}
-	r.Password = s.EncryptPassword(r.Passport, r.Password)
-	_, err := dao.User.Data(r).Save()
+	if err := s.CheckNicknameUnique(user.Nickname); err != nil {
+		return err
+	}
+	user.Password = s.EncryptPassword(user.Passport, user.Password)
+	// 自动生成头像
+	avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.AvatarUploadPath, user.Passport)
+	if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
+		return gerror.Wrapf(err, `自动创建头像失败`)
+	}
+	user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.AvatarUploadUrlPrefix, user.Passport)
+	_, err := dao.User.Data(user).OmitEmpty().Save()
 	return err
 }
 

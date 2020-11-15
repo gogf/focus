@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"github.com/gogf/gf/encoding/ghtml"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
 )
@@ -98,16 +99,31 @@ func (s *contentService) GetDetail(ctx context.Context, id uint) (*model.Content
 }
 
 // 创建
-func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCreateReq) error {
+func (s *contentService) Create(ctx context.Context, r *model.ContentServiceCreateReq) (*model.ContentServiceCreateRes, error) {
 	if r.UserId == 0 {
 		r.UserId = Context.Get(ctx).User.Id
 	}
-	_, err := dao.Content.Data(r).Insert()
-	return err
+	// 不允许HTML代码
+	if err := ghtml.SpecialCharsMapOrStruct(r); err != nil {
+		return nil, err
+	}
+	result, err := dao.Content.Data(r).Insert()
+	if err != nil {
+		return nil, err
+	}
+	n, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	return &model.ContentServiceCreateRes{ContentId: uint(n)}, err
 }
 
 // 修改
 func (s *contentService) Update(ctx context.Context, r *model.ContentServiceUpdateReq) error {
+	// 不允许HTML代码
+	if err := ghtml.SpecialCharsMapOrStruct(r); err != nil {
+		return err
+	}
 	_, err := dao.Content.Data(r).
 		FieldsEx(dao.Content.Columns.Id).
 		Where(dao.Content.Columns.Id, r.Id).

@@ -161,6 +161,11 @@ type ContentServiceCreateReq struct {
 	UserId uint
 }
 
+// Service创建内容返回结果
+type ContentServiceCreateRes struct {
+	ContentId uint `json:"content_id"`
+}
+
 // Service修改内容
 type ContentServiceUpdateReq struct {
 	ContentServiceCreateUpdateBase

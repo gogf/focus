@@ -37,7 +37,7 @@ func (a *contentApi) Create(r *ghttp.Request) {
 // @produce json
 // @param   entity body model.ContentApiDoCreateReq true "请求参数" required
 // @router  /content/do-create [POST]
-// @success 200 {object} response.JsonRes "请求结果"
+// @success 200 {object} model.ContentServiceCreateRes "请求结果"
 func (a *contentApi) DoCreate(r *ghttp.Request) {
 	var (
 		data             *model.ContentApiDoCreateReq
@@ -49,10 +49,10 @@ func (a *contentApi) DoCreate(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Content.Create(r.Context(), serviceCreateReq); err != nil {
+	if res, err := service.Content.Create(r.Context(), serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "")
+		response.JsonExit(r, 0, "", res)
 	}
 }
 

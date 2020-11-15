@@ -16,6 +16,22 @@ gf = {
                 window.location.href = "/user/logout";
             }
         });
+    },
+    // 内容模块
+    content: {
+        delete: function (id) {
+            swal({
+                title:   "删除内容",
+                text:    "您确定需要该内容吗？",
+                icon:    "warning",
+                buttons: ["取消", "确定"]
+            }).then((value) => {
+                if (value) {
+
+                    window.location.href = "/";
+                }
+            });
+        }
     }
 }
 

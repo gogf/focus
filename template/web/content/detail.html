@@ -12,8 +12,15 @@
                     踩：${.Data.Content.CaiCount} &nbsp;/&nbsp;
                     发布于 ${.Data.Content.CreatedAt | .BuildIn.FormatTime}
                 </span>
+                ${if eq .Data.Content.UserId .Context.User.Id}
+                <span class="float-right">
+                    <a href="/content/update?id=${.Data.Content.Id}">编辑</a>
+                    &nbsp;&nbsp;
+                    <a href="javascript:gf.content.delete(${.Data.Content.Id})">删除</a>
+                </span>
+                ${end}
             </div>
-            <div class="gf-content">
+            <div class="gf-content markdown-body" id="content">
                 ${.Data.Content.Content}
             </div>
         </div>
@@ -159,80 +166,84 @@
         </div>
     </div>
 </div>
-<script>
-    $(function () {
-        let editor = new Vditor('vditor', {
-            theme: 'classic',
-            height: 300,
-            icon: 'ant',
-            cache: {enable: false},
-            placeholder: "~请开始你的表演...",
-            toolbar: [
-                'emoji',
-                'headings',
-                'bold',
-                'italic',
-                'strike',
-                '|',
-                'line',
-                'quote',
-                'list',
-                'ordered-list',
-                'check',
-                'outdent',
-                'indent',
-                'code',
-                'inline-code',
-                'insert-after',
-                'insert-before',
-                'undo',
-                'redo',
-                'upload',
-                'link',
-                'table',
-                'fullscreen'
-            ],
-            upload: {
-                // 附件格式
-                accept: 'image/*',
-                // 上传路径
-                url: '/file/upload',
-                // 粘贴图片上传
-                linkToImgUrl: '/file/upload',
-                filename(name) {
-                    return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
-                },
-                // 格式化上传返回
-                format(file, response) {
-                    const {code, data, msg} = JSON.parse(response)
-                    return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
+<script type="application/javascript">
+$(function () {
+    // 解析Markdown
+    let content =$.trim($("#content").html())
+    $('#content').html(marked(content));
+
+    let editor = new Vditor('vditor', {
+        theme: 'classic',
+        height: 300,
+        icon: 'ant',
+        cache: {enable: false},
+        placeholder: "~请开始你的表演...",
+        toolbar: [
+            'emoji',
+            'headings',
+            'bold',
+            'italic',
+            'strike',
+            '|',
+            'line',
+            'quote',
+            'list',
+            'ordered-list',
+            'check',
+            'outdent',
+            'indent',
+            'code',
+            'inline-code',
+            'insert-after',
+            'insert-before',
+            'undo',
+            'redo',
+            'upload',
+            'link',
+            'table',
+            'fullscreen'
+        ],
+        upload: {
+            // 附件格式
+            accept: 'image/*',
+            // 上传路径
+            url: '/file/upload',
+            // 粘贴图片上传
+            linkToImgUrl: '/file/upload',
+            filename(name) {
+                return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
+            },
+            // 格式化上传返回
+            format(file, response) {
+                const {code, data, msg} = JSON.parse(response)
+                return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
+            }
+        },
+    });
+
+    $('.btn-submit').on('click', function () {
+        if (!editor.getHTML()) return;
+        $('button[type=submit]').attr('disabled', 'true');
+        jQuery.ajax({
+            type: 'POST',
+            url: '/reply/do-create',
+            data: {
+                parent_id: 0,
+                content: editor.getHTML(),
+                target_id: "${.Data.Content.Id}",
+                content_type: "${.Data.Content.Type}",
+            },
+            success: function (data) {
+                $('button[type=submit]').removeAttr('disabled');
+                if (data.code === 0) {
+                    alert(data.message)
+                } else {
+                    alert(data.message)
                 }
             },
+            error: function (html) {
+            }
         });
-
-        $('.btn-submit').on('click', function () {
-            if (!editor.getHTML()) return;
-            $('button[type=submit]').attr('disabled', 'true');
-            jQuery.ajax({
-                type: 'POST',
-                url: '/reply/do-create',
-                data: {
-                    parent_id: 0,
-                    content: editor.getHTML(),
-                    target_id: "${.Data.Content.Id}",
-                    content_type: "${.Data.Content.Type}",
-                },
-                success: function (data) {
-                    $('button[type=submit]').removeAttr('disabled');
-                    if (data.code === 0) {
-                        alert(data.message)
-                    } else {
-                        alert(data.message)
-                    }
-                },
-                error: function (html) {
-                }
-            });
-        })
     })
+})
 </script>

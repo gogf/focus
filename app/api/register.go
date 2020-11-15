@@ -44,8 +44,7 @@ func (a *registerApi) Do(r *ghttp.Request) {
 	if err := gconv.Struct(data, &serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	// 注册，暂存原始密码
-	if err := service.User.Register(*serviceRegisterReq); err != nil {
+	if err := service.User.Register(serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 自动登录

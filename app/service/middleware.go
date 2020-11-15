@@ -23,14 +23,6 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 		Session: r.Session,
 	}
 	Context.Init(r, customCtx)
-	// 开发环境使用，设置测试用户信息
-	//if gmode.IsDevelop() {
-	//	Context.SetUser(r.Context(), &model.ContextUser{
-	//		Id:       1,
-	//		Passport: "root",
-	//		Nickname: "ROOT",
-	//	})
-	//}
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {
 		customCtx.User = &model.ContextUser{
 			Id:       userEntity.Id,
@@ -52,18 +44,18 @@ func (s *middlewareService) Auth(r *ghttp.Request) {
 	if user == nil {
 		Session.SetNotice(r.Context(), &model.SessionNotice{
 			Type:    model.SessionNoticeTypeWarn,
-			Content: "未登录或会话已过期，请您重新登录",
+			Content: "未登录或会话已过期，请您登录后再继续",
 		})
+		// 只有GET请求才支持保存当前URL，以便后续登录后再跳转回来。
+		if r.Method == "GET" {
+			Session.SetLoginReferer(r.Context(), r.GetUrl())
+		}
+		// 根据当前请求方式执行不同的返回数据结构
 		if r.IsAjaxRequest() {
 			response.JsonRedirectExit(r, 1, "", s.LoginUrl)
 		} else {
 			r.Response.RedirectTo(s.LoginUrl)
 		}
-		// 只有GET请求才支持保存当前URL，以便后续登录后再跳转回来。
-		if r.Method == "GET" {
-			Session.SetLoginReferer(r.Context(), r.GetUrl())
-		}
-		return
 	}
 	r.Middleware.Next()
 }
