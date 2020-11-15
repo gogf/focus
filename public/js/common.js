@@ -4,11 +4,18 @@ gf = {
     reloadCaptcha: function() {
         $("img.captcha").attr("src","/captcha?v="+Math.random());
     },
-    notice: function (msg, pageCls) {
-        pageCls = pageCls || "";
-        pageCls = (pageCls == "") ? ".notice" : (pageCls + " .notice");
-        $(pageCls).html('<span class="iconfont">&#xe653;</span> ' + msg);
-        $(pageCls).fadeIn();
+    // 退出登录
+    logout: function () {
+        swal({
+            title:   "注销登录",
+            text:    "您确定需要注销当前登录状态吗？",
+            icon:    "warning",
+            buttons: ["取消", "确定"]
+        }).then((value) => {
+            if (value) {
+                window.location.href = "/user/logout";
+            }
+        });
     }
 }
 

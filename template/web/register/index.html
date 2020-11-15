@@ -56,28 +56,6 @@
             </div>
         </div>
     </div>
-
-</div>
-
-<!-- 注册成功提示Modal -->
-<div class="modal fade" id="modalRegister" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">注册成功</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <span class="iconfont" style="color:green;font-size: 18px;">&#xe615;</span> 恭喜您，<span id="register-passport"></span>账号注册成功
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script type="text/javascript">
@@ -127,16 +105,28 @@ jQuery(function($) {
                 dataType: 'json',
                 success:  function (r, textStatus) {
                     if (r.message != "") {
-                        alert(r.message)
+                        swal({
+                            text:   r.message,
+                            icon:   (r.code == 0) ? "success" : "warning",
+                            button: "确定",
+                        });
                     }
                     if (r.code == 0) {
-                        if (r.redirect != "") {
-                            window.location.href = r.redirect;
-                        } else {
-                            window.location.href = "/";
-                        }
+                        swal({
+                            title:   "注册成功",
+                            text:    "3秒后自动跳转到注册前页面",
+                            icon:    "success",
+                            timer:   3000,
+                            buttons: false
+                        }).then((value) => {
+                            if (r.redirect != "") {
+                                window.location.href = r.redirect;
+                            } else {
+                                window.location.href = "/";
+                            }
+                        });
                     } else {
-                        gf.reloadCaptcha();
+                        gf.reloadCaptcha()
                     }
                 }
             });

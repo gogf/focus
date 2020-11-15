@@ -40,8 +40,9 @@ type UserApiDisableReq struct {
 
 // Api用户登录
 type UserApiLoginReq struct {
-	Passport string `v:"required#请输入账号"` // 账号
-	Password string `v:"required#请输入密码"` // 密码(明文)
+	Passport string `v:"required#请输入账号"`  // 账号
+	Password string `v:"required#请输入密码"`  // 密码(明文)
+	Captcha  string `v:"required#请输入验证码"` // 验证码
 }
 
 // Service用户登录

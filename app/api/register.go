@@ -41,7 +41,6 @@ func (a *registerApi) Do(r *ghttp.Request) {
 	if !service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, data.Captcha) {
 		response.JsonExit(r, 1, "请输入正确的验证码")
 	}
-
 	if err := gconv.Struct(data, &serviceRegisterReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}

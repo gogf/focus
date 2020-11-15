@@ -40,12 +40,16 @@ func (a *loginApi) Do(r *ghttp.Request) {
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
+	if !service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, data.Captcha) {
+		response.JsonExit(r, 1, "请输入正确的验证码")
+	}
 	if err := gconv.Struct(data, &serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
+		// 识别并跳转到登录前页面
 		loginReferer := service.Session.GetLoginReferer(r.Context())
 		if loginReferer != "" {
 			service.Session.RemoveLoginReferer(r.Context())
