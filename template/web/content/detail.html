@@ -27,20 +27,22 @@
                 {{.Data.Content.Title}}
             </div>
             <div class="gf-detail">
-                <span>
-                    浏览：{{.Data.Content.ViewCount}} &nbsp;/&nbsp;
-                    回复：{{.Data.Content.ReplyCount}} &nbsp;/&nbsp;
-                    赞：{{.Data.Content.ZanCount}} &nbsp;/&nbsp;
-                    踩：{{.Data.Content.CaiCount}} &nbsp;/&nbsp;
+                <div class="gf-detail-info">
+                    <span class="icon iconfont">&#xe650;</span>
+                    {{.Data.Content.ViewCount}} &nbsp; / &nbsp;
+                    <span class="icon iconfont">&#xe62c;</span>
+                    {{.Data.Content.ReplyCount}} &nbsp; / &nbsp;
+                    <a href=""><span class="icon iconfont">&#xe62a;</span> {{.Data.Content.ZanCount}}</a> &nbsp; / &nbsp;
+                    <a href=""><span class="icon iconfont">&#xe629;</span> {{.Data.Content.CaiCount}}</a> &nbsp; / &nbsp;
                     发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
-                </span>
-                {{if .Context.User}}
-                    {{if eq .Data.Content.UserId .Context.User.Id}}
-                    <span class="float-right">
+
+                    {{if .Context.User}}
+                        {{if eq .Data.Content.UserId .Context.User.Id}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
-                    </span>
+                        {{end}}
                     {{end}}
-                {{end}}
+                </div>
             </div>
             <div class="gf-content markdown-body" id="content">{{.Data.Content.Content}}</div>
         </div>
@@ -125,7 +127,7 @@
                     <a href="/user/{{.Data.User.Id}}" target="_blank">
                         {{.Data.User.Nickname}}
                     </a>
-                    <span class="icon iconfont">&#xe646;</span>
+                    <span class="icon iconfont">{{.BuildIn.GenderFont .Data.User.Gender}}</span>
                 </h3>
             </div>
         </div>

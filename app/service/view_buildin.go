@@ -15,6 +15,18 @@ type ViewBuildIn struct {
 	httpRequest *ghttp.Request
 }
 
+// 根据性别字段内容返回性别的font。
+func (s *ViewBuildIn) GenderFont(gender int) string {
+	switch gender {
+	case model.UserGenderMale:
+		return "&#xe651;"
+	case model.UserGenderFemale:
+		return "&#xe636;"
+	default:
+		return "&#xead2;"
+	}
+}
+
 // 创建分页HTML内容
 func (s *ViewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
@@ -34,7 +46,35 @@ func (s *ViewBuildIn) Page(total, size int) string {
 
 // 获取顶部菜单列表
 func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
-	return Menu.GetTopMenus()
+	topMenus, err := Menu.GetTopMenus()
+	if err != nil {
+		return nil, err
+	}
+	if len(topMenus) == 0 {
+		return nil, nil
+	}
+	// 处理是否选中
+	for _, v := range topMenus {
+		if gstr.Equal(v.Url, s.httpRequest.URL.Path) {
+			v.Active = true
+			return topMenus, nil
+		}
+	}
+	// 没有选中的菜单，那么自动识别第一层路由，例如：
+	// /topic/1 则选中 /topic 菜单。
+	array := gstr.SplitAndTrim(s.httpRequest.URL.Path, "/")
+	if len(array) > 1 {
+		path := "/" + array[0]
+		for _, v := range topMenus {
+			if gstr.Equal(v.Url, path) {
+				v.Active = true
+				return topMenus, nil
+			}
+		}
+	}
+	// 最后则自动高亮首页(第一个菜单)
+	topMenus[0].Active = true
+	return topMenus, nil
 }
 
 // 获取当前页面的Url Path.

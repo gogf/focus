@@ -254,9 +254,17 @@ code[class*="language-"], pre[class*="language-"] {
     padding: 5px;
 }
 
-.gf-content-show .gf-detail span {
+.gf-detail-info {
     color: gray;
-    font-size: .9em;
+    font-size: 14px;
+    margin:5px 0 20px 0;
+}
+
+.gf-detail-info a, .gf-detail-info a:visited, .gf-detail-info a:active {
+    color: #24292e;
+}
+.gf-detail-info a:hover {
+    color:#007bff;
 }
 
 .gf-content-show .gf-content {
