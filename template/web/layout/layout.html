@@ -2,22 +2,22 @@
 <html>
 
 <head>
-    ${include "web/layout/header.html" .}
+    {{include "web/layout/header.html" .}}
 </head>
 
 <body>
 <div class="container-fluid">
     <!-- menu -->
-    ${include "web/layout/navbar.html" .}
+    {{include "web/layout/navbar.html" .}}
 
     <!--- main --->
     <main>
-        ${include "web/layout/message.html" .}
-        ${include .MainTpl .}
+        {{include "web/layout/message.html" .}}
+        {{include .MainTpl .}}
     </main>
 
     <!--- footer --->
-    ${include "web/layout/footer.html" .}
+    {{include "web/layout/footer.html" .}}
 </div>
 </body>
 

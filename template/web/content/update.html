@@ -9,12 +9,12 @@
         </div>
         <div class="card-body">
             <form id="contentForm" action="/content/do-update" method="post" enctype="application/x-www-form-urlencoded">
-                <input type="hidden" value="${.Data.Content.Id}" name="id">
-                <input type="hidden" value="${.Data.Content.Type}" name="type">
+                <input type="hidden" value="{{.Data.Content.Id}}" name="id">
+                <input type="hidden" value="{{.Data.Content.Type}}" name="type">
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="${.Data.Content.Title}" name="title" placeholder="请输入标题">
+                        <input type="text" class="form-control" value="{{.Data.Content.Title}}" name="title" placeholder="请输入标题">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -22,9 +22,9 @@
                     <div class="col-sm-10">
                         <div class="form-grou">
                             <select class="form-control" name="categoryId">
-                                ${range $index, $item := .BuildIn.CategoryTree .ContentType}
-                                <option value="${$item.Id}" ${if eq $item.Id $.Data.Content.CategoryId }selected${end}>${$item.Name}</option>
-                                ${end}
+                                {{range $index, $item := .BuildIn.CategoryTree .ContentType}}
+                                <option value="{{$item.Id}}" {{if eq $item.Id $.Data.Content.CategoryId }}selected{{end}}>{{$item.Name}}</option>
+                                {{end}}
                             </select>
                         </div>
 
@@ -33,7 +33,7 @@
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">内容</label>
                     <div class="col-sm-10">
-                        <textarea style="display: none" name="content">${.Data.Content.Content}</textarea>
+                        <textarea style="display: none" name="content">{{.Data.Content.Content}}</textarea>
                         <div id="vditor"></div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                                 buttons: ["继续修改", "查看详情"]
                             }).then((value) => {
                                 if (value) {
-                                    window.location.href = "/${.Data.Content.Type}/${.Data.Content.Id}"
+                                    window.location.href = "/{{.Data.Content.Type}}/{{.Data.Content.Id}}"
                                 } else {
                                     window.location.reload()
                                 }

@@ -105,6 +105,15 @@ func (s *categoryService) GetList(ctx context.Context) ([]*model.Category, error
 	return dao.Category.Order(orderBy).All()
 }
 
+// 查询单个栏目信息
+func (s *categoryService) GetItem(ctx context.Context, id uint) (*model.Category, error) {
+	m, err := s.GetMap(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return m[id], nil
+}
+
 // 获得所有的栏目列表，构成Map返回，键名为栏目ID
 func (s *categoryService) GetMap(ctx context.Context) (map[uint]*model.Category, error) {
 	v, err := gcache.GetOrSetFunc(mapCacheKey, func() (interface{}, error) {

@@ -6,32 +6,48 @@
 
 <div class="row gf-content">
     <div class="col-md-9">
-        <div class="gf-article-show">
+        <div class="gf-content-show">
+            {{if .BreadCrumb}}
+            <nav aria-label="breadcrumb" class="gf-content-breadcrumb">
+                <ol class="breadcrumb">
+                    {{range $index, $item := .BreadCrumb}}
+                    <li class="breadcrumb-item {{if not $item.Url}}active{{end}}">
+                        {{if $item.Url}}
+                        <a href="{{$item.Url}}">{{$item.Name}}</a>
+                        {{else}}
+                        {{$item.Name}}
+                        {{end}}
+                    </li>
+                    {{end}}
+                </ol>
+            </nav>
+            {{end}}
+
             <div class="gf-title">
-                ${.Data.Content.Title}
+                {{.Data.Content.Title}}
             </div>
             <div class="gf-detail">
                 <span>
-                    浏览：${.Data.Content.ViewCount} &nbsp;/&nbsp;
-                    回复：${.Data.Content.ReplyCount} &nbsp;/&nbsp;
-                    赞：${.Data.Content.ZanCount} &nbsp;/&nbsp;
-                    踩：${.Data.Content.CaiCount} &nbsp;/&nbsp;
-                    发布于 ${.Data.Content.CreatedAt | .BuildIn.FormatTime}
+                    浏览：{{.Data.Content.ViewCount}} &nbsp;/&nbsp;
+                    回复：{{.Data.Content.ReplyCount}} &nbsp;/&nbsp;
+                    赞：{{.Data.Content.ZanCount}} &nbsp;/&nbsp;
+                    踩：{{.Data.Content.CaiCount}} &nbsp;/&nbsp;
+                    发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
                 </span>
-                ${if .Context.User}
-                    ${if eq .Data.Content.UserId .Context.User.Id}
+                {{if .Context.User}}
+                    {{if eq .Data.Content.UserId .Context.User.Id}}
                     <span class="float-right">
-                        <a href="/content/update?id=${.Data.Content.Id}">编辑</a>
+                        <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
                     </span>
-                    ${end}
-                ${end}
+                    {{end}}
+                {{end}}
             </div>
-            <div class="gf-content markdown-body" id="content">${.Data.Content.Content}</div>
+            <div class="gf-content markdown-body" id="content">{{.Data.Content.Content}}</div>
         </div>
         <div class="gf-comment-list">
             <ul class="list-group">
                 <li class="list-group-item">
-                    共 ${.Data.Content.ReplyCount} 条回复
+                    共 {{.Data.Content.ReplyCount}} 条回复
                 </li>
                 <li class="list-group-item">
                     <div class="reply" style="padding: 5px;width: 100%;">
@@ -99,13 +115,18 @@
 
         <div class="gf-content-user">
             <div>
-                <a href="/user/${.Data.User.Id}" target="_blank">
+                <a href="/user/{{.Data.User.Id}}" target="_blank">
                     <img class="gf-content-user-img image-border circle-image topic-list-author-avatar"
-                         src="${.Data.User.Avatar}">
+                         src="{{.Data.User.Avatar}}">
                 </a>
             </div>
             <div class="gf-user-detail">
-                <h3>${.Data.User.Nickname} <span class="icon iconfont">&#xe646;</span></h3>
+                <h3>
+                    <a href="/user/{{.Data.User.Id}}" target="_blank">
+                        {{.Data.User.Nickname}}
+                    </a>
+                    <span class="icon iconfont">&#xe646;</span>
+                </h3>
             </div>
         </div>
 
@@ -206,8 +227,8 @@ $(function () {
             data: {
                 parent_id: 0,
                 content: editor.getHTML(),
-                target_id: "${.Data.Content.Id}",
-                content_type: "${.Data.Content.Type}",
+                target_id: "{{.Data.Content.Id}}",
+                content_type: "{{.Data.Content.Type}}",
             },
             success: function (data) {
                 $('button[type=submit]').removeAttr('disabled');

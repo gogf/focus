@@ -66,6 +66,11 @@ func (a *articleApi) Detail(r *ghttp.Request) {
 		service.View.Render(r, model.View{
 			ContentType: model.ContentTypeArticle,
 			Data:        getDetailRes,
+			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &model.ViewServiceGetBreadCrumbReq{
+				ContentId:   getDetailRes.Content.Id,
+				ContentType: getDetailRes.Content.Type,
+				CategoryId:  getDetailRes.Content.CategoryId,
+			}),
 		})
 	}
 }

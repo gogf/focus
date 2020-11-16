@@ -3,18 +3,18 @@
         <div class="card gf-card">
             <div class="card-header">Ta的创作</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe622;</span> <a href="/user/${ .Data.User.Id}">全部资料</a></li>
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe61c;</span> <a href="/user/${ .Data.User.Id}?type=article">Ta的文章</a> <span class="badge badge-primary" style="float: right;">12</span></li>
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe6b3;</span> <a href="/user/${ .Data.User.Id}?type=topic">Ta的主题</a> <span class="badge badge-primary" style="float: right;">13</span></li>
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe717;</span> <a href="/user/${ .Data.User.Id}?type=ask">Ta的问答</a> <span class="badge badge-primary" style="float: right;">13</span></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe622;</span> <a href="/user/{{ .Data.User.Id}}">全部资料</a></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe61c;</span> <a href="/user/{{ .Data.User.Id}}?type=article">Ta的文章</a> <span class="badge badge-primary" style="float: right;">12</span></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe6b3;</span> <a href="/user/{{ .Data.User.Id}}?type=topic">Ta的主题</a> <span class="badge badge-primary" style="float: right;">13</span></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe717;</span> <a href="/user/{{ .Data.User.Id}}?type=ask">Ta的问答</a> <span class="badge badge-primary" style="float: right;">13</span></li>
             </ul>
         </div>
 
         <div class="card gf-card">
             <div class="card-header">Ta的关系</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe61c;</span> <a href="/user/${ .Data.User.Id}?type=follower">Ta的关注</a> <span class="badge badge-primary" style="float: right;">12</span></li>
-                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe647;</span> <a href="/user/${ .Data.User.Id}?type=fans">Ta的粉丝</a> <span class="badge badge-primary" style="float: right;">13</span></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe61c;</span> <a href="/user/{{ .Data.User.Id}}?type=follower">Ta的关注</a> <span class="badge badge-primary" style="float: right;">12</span></li>
+                <li class="list-group-item gf-list-item"><span class="icon iconfont">&#xe647;</span> <a href="/user/{{ .Data.User.Id}}?type=fans">Ta的粉丝</a> <span class="badge badge-primary" style="float: right;">13</span></li>
             </ul>
         </div>
     </div>
@@ -23,25 +23,25 @@
             <li class="list-group-item gf-list-item">
                 个人签名：专注编程知识，圈子动态的IT领域原创作者
             </li>
-            ${range $index, $item := .Data.List}
+            {{range $index, $item := .Data.List}}
             <li class="list-group-item gf-list-item">
                 <div class="gf-list-item-img">
-                    <img src="${$item.User.Avatar}" style="height: 36px;width:36px;">
+                    <img src="{{$item.User.Avatar}}" style="height: 36px;width:36px;">
                 </div>
                 <div class="gf-list-item-text" style="width: 90%;">
                     <div style="float: left;">
-                        <span class="badge badge-primary">${$item.Category.Name}</span>
+                        <span class="badge badge-primary">{{$item.Category.Name}}</span>
                         <span class="gf-list-item-title">
-                            <a  href="/${$item.Category.ContentType}/${$item.Content.Id}" style="color: #222;">${$item.Content.Title}</a>
+                            <a  href="/{{$item.Category.ContentType}}/{{$item.Content.Id}}" style="color: #222;">{{$item.Content.Title}}</a>
                         </span>
                     </div>
                     <div style="float: right;">
-                        <span style="font-size: 12px;color: #ccc;text-align: right;">浏览 ${$item.Content.ViewCount} | 回复 ${$item.Content.ReplyCount} |</span>
-                        <span style="font-size: 12px;color: #ccc;">发布于 ${$item.Content.CreatedAt | $.BuildIn.FormatTime}</span>
+                        <span style="font-size: 12px;color: #ccc;text-align: right;">浏览 {{$item.Content.ViewCount}} | 回复 {{$item.Content.ReplyCount}} |</span>
+                        <span style="font-size: 12px;color: #ccc;">发布于 {{$item.Content.CreatedAt | $.BuildIn.FormatTime}}</span>
                     </div>
                 </div>
             </li>
-            ${end}
+            {{end}}
             <li class="list-group-item gf-list-item">
                 <div style="width:7%;float: left;">
                     <img src="https://cdn.learnku.com/uploads/avatars/57343_1581322746.jpeg!/both/100x100" style="height: 36px;width:36px;">
@@ -51,7 +51,7 @@
                         <span class="badge badge-primary" style="padding:5px;">文章</span>
                         <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
 <a href="/posts/4" style="color: #222;">没有学历真的是硬伤。
-<span class="gf-article-new">new</span></a>
+<span class="gf-content-new">new</span></a>
                         </span>
                     </div>
                     <div style="float: right;">
@@ -77,13 +77,13 @@
                     </div>
                 </div>
             </li>
-            ${if gt .Data.Total .Data.Size}
+            {{if gt .Data.Total .Data.Size}}
             <li class="list-group-item gf-list-item">
                 <ul class="pagination">
-                    ${.BuildIn.Page .Data.Total .Data.Size }
+                    {{.BuildIn.Page .Data.Total .Data.Size }}
                 </ul>
             </li>
-            ${end}
+            {{end}}
 
         </ul>
     </div>
@@ -95,9 +95,9 @@
                 资料卡
             </div>
             <div>
-                <a href="/user/${.Data.User.Id}" target="_blank">
+                <a href="/user/{{.Data.User.Id}}" target="_blank">
                     <img class="gf-user-img image-border circle-image topic-list-author-avatar"
-                         src="${.Data.User.Avatar}">
+                         src="{{.Data.User.Avatar}}">
                 </a>
             </div>
             <div class="row gf-user-statistics">

@@ -1,4 +1,4 @@
-${if not .Data.q}
+{{if not .Data.q}}
 <div class="row" style="margin-top: 10px;">
     <div class="col-md-7 offset-md-2">
         <!--- main --->
@@ -10,7 +10,7 @@ ${if not .Data.q}
         </div>
     </div>
 </div>
-${end}
+{{end}}
 
 <div class="row gf-list">
     <div class="col-md-2 offset-md-1">
@@ -45,7 +45,7 @@ ${end}
         <ul class="list-group">
             <li class="list-group-item">
                 <div class="float-left">
-                    <span class="icon iconfont">&#xe637;</span> 为您找到 <b>275</b> 条关于 <span class="badge badge-light" style="padding:5px;">${ .Data.q}</span> 的内容
+                    <span class="icon iconfont">&#xe637;</span> 为您找到 <b>275</b> 条关于 <span class="badge badge-light" style="padding:5px;">{{ .Data.q}}</span> 的内容
                 </div>
                 <div class="float-right">
                     <button class=" btn btn-link text-primary top-node-btn btn-sm" data-id="5">最新</button>
@@ -65,7 +65,7 @@ ${end}
                         <span class="badge badge-primary" style="padding:5px;">文章</span>
                         <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
         <a onclick="window.location.href='/article/1'" href="javascript:void(0);" style="color: #222;">Vue+Laravel 个人博客，针对爬虫做的SEO优化！<span
-                    class="gf-article-new">new</span></a>
+                    class="gf-content-new">new</span></a>
                         </span>
                     </div>
                     <div style="float: right;">
@@ -84,7 +84,7 @@ ${end}
                         <span class="badge badge-primary" style="padding:5px;">文章</span>
                         <span style="font-size: 16px;line-height: 130%;text-shadow: 0 1px 0 #fff;">
       <a href="/posts/4" style="color: #222;">没有学历真的是硬伤。
-        <span class="gf-article-new">new</span></a>
+        <span class="gf-content-new">new</span></a>
                         </span>
                     </div>
                     <div style="float: right;">
@@ -284,6 +284,6 @@ ${end}
 <script>
     $(function () {
         $("#search-all").addClass("active")
-        $("#search").val("${.Data.q}")
+        $("#search").val("{{.Data.q}}")
     });
 </script>

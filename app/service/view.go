@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+	"fmt"
 	"focus/app/model"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -13,6 +15,39 @@ import (
 var View = new(viewService)
 
 type viewService struct{}
+
+// 获取面包屑列表
+func (s *viewService) GetBreadCrumb(ctx context.Context, r *model.ViewServiceGetBreadCrumbReq) []model.ViewBreadCrumb {
+	breadcrumb := []model.ViewBreadCrumb{
+		{Name: "首页", Url: "/"},
+	}
+	var uriPrefix string
+	if r.ContentType != "" {
+		uriPrefix = "/" + r.ContentType
+		topMenuItem, _ := Menu.GetTopMenuByUrl(uriPrefix)
+		if topMenuItem != nil {
+			breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
+				Name: topMenuItem.Name,
+				Url:  topMenuItem.Url,
+			})
+		}
+	}
+	if uriPrefix != "" && r.CategoryId > 0 {
+		category, _ := Category.GetItem(ctx, r.CategoryId)
+		if category != nil {
+			breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
+				Name: category.Name,
+				Url:  fmt.Sprintf(`%s?cate=%d`, uriPrefix, category.Id),
+			})
+		}
+	}
+	if r.ContentId > 0 {
+		breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
+			Name: "内容详情",
+		})
+	}
+	return breadcrumb
+}
 
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
@@ -56,7 +91,7 @@ func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 	r.Response.WriteTplDefault(viewData)
 	// 开发模式下，在页面最下面打印所有的模板变量
 	if gmode.IsDevelop() {
-		r.Response.WriteTplContent(`${dump .}`, viewData)
+		r.Response.WriteTplContent(`{{dump .}}`, viewData)
 	}
 	// 退出当前业务函数执行
 	r.Exit()

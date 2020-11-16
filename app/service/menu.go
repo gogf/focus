@@ -33,3 +33,14 @@ func (s *menuService) GetTopMenus() ([]*model.TopMenuItem, error) {
 	err = v.Structs(&topMenus)
 	return topMenus, err
 }
+
+// 根据给定的Url检索顶部菜单，给定的Url可能只是一个Url Path。
+func (s *menuService) GetTopMenuByUrl(url string) (*model.TopMenuItem, error) {
+	items, _ := s.GetTopMenus()
+	for _, v := range items {
+		if v.Url == url {
+			return v, nil
+		}
+	}
+	return nil, nil
+}

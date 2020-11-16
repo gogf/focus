@@ -10,38 +10,38 @@
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            ${range $index, $item := .BuildIn.TopMenus}
-            <li class="nav-item ${if eq $.BuildIn.UrlPath $item.Url }active${end} ${if $item.Items}dropdown${end}">
-                ${if $item.Items}
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${$item.Name}</a>
+            {{range $index, $item := .BuildIn.TopMenus}}
+            <li class="nav-item {{if eq $.BuildIn.UrlPath $item.Url }}active{{end}} {{if $item.Items}}dropdown{{end}}">
+                {{if $item.Items}}
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$item.Name}}</a>
                 <div class="dropdown-menu">
-                    ${range $index, $subItem := $item.Items}
-                    <a class="dropdown-item" href="${$subItem.Url}" target="${$subItem.Target}">${$subItem.Name}</a>
-                    ${end}
+                    {{range $index, $subItem := $item.Items}}
+                    <a class="dropdown-item" href="{{$subItem.Url}}" target="{{$subItem.Target}}">{{$subItem.Name}}</a>
+                    {{end}}
                 </div>
-                ${else}
-                <a class="nav-link" href="${$item.Url}" target="${$item.Target}">${$item.Name} </a>
-                ${end}
+                {{else}}
+                <a class="nav-link" href="{{$item.Url}}" target="{{$item.Target}}">{{$item.Name}} </a>
+                {{end}}
             </li>
-            ${end}
+            {{end}}
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" id="search" placeholder="请输入搜索内容" aria-label="Search" value=''>
         </form>
-        ${if .Context.User}
+        {{if .Context.User}}
         <div id="logon" class="btn-group" role="group" aria-label="First group">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    ${.Context.User.Nickname}
+                    {{.Context.User.Nickname}}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/user/${.Context.User.Id}"><span class="iconfont">&#xe647;</span> 个人中心</a>
+                    <a class="dropdown-item" href="/user/{{.Context.User.Id}}"><span class="iconfont">&#xe647;</span> 个人中心</a>
                     <a class="dropdown-item" href="/user/profile"><span class="iconfont">&#xe68c;</span> 编辑资料</a>
                     <a class="dropdown-item" href="javascript:gf.user.logout()"><span class="iconfont">&#xe6c9;</span> 退出</a>
                 </div>
             </div>
         </div>
-        ${else}
+        {{else}}
         <div id="noLogon" class="btn-group" role="group" aria-label="First group">
             <a class="btn btn-link" href="/register">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,7 @@
                 </svg> 登录
             </a>
         </div>
-        ${end}
+        {{end}}
     </div>
 </nav>
 

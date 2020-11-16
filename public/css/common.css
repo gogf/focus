@@ -5,6 +5,8 @@
     box-sizing: inherit;
 }
 
+
+
 .red {
     color: red
 }
@@ -96,7 +98,7 @@ code[class*="language-"], pre[class*="language-"] {
 
 /**************** 定制 ************************/
 
-.gf-article-new {
+.gf-content-new {
     color: red;
     font-style: italic;
 }
@@ -180,7 +182,7 @@ code[class*="language-"], pre[class*="language-"] {
 
 .gf-list {
     margin-bottom: 80px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .gf-list .gf-list-item:hover {
@@ -218,30 +220,46 @@ code[class*="language-"], pre[class*="language-"] {
 
 /**************** 文章内容样式 ************************/
 
-.gf-article-show {
+.gf-content-show {
     background-color: white;
     padding: 15px;
     margin: 10px 0 10px 0;
     border-radius: 4px;
 }
 
-.gf-article-show .gf-title {
+.gf-content-breadcrumb {
+
+}
+
+.breadcrumb {
+    background-color: white !important;
+    padding: 0 0 0 5px;
+}
+
+.breadcrumb a, .breadcrumb a:visited, .breadcrumb a:active {
+    color: #24292e;
+}
+.breadcrumb a:hover {
+    color:#007bff;
+}
+
+.gf-content-show .gf-title {
     margin-left: 5px;
     padding: 0;
     font-size: 20px;
     color:#24292e;
 }
 
-.gf-article-show .gf-detail {
+.gf-content-show .gf-detail {
     padding: 5px;
 }
 
-.gf-article-show .gf-detail span {
+.gf-content-show .gf-detail span {
     color: gray;
     font-size: .9em;
 }
 
-.gf-article-show .gf-content {
+.gf-content-show .gf-content {
     padding: 5px;
     font-family: "Microsoft YaHei", BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -269,6 +287,7 @@ code[class*="language-"], pre[class*="language-"] {
     border: none;
     cursor: pointer;
 }
+
 
 /**************** 编辑器 ************************/
 .vditor-preview__action {
@@ -336,6 +355,13 @@ code[class*="language-"], pre[class*="language-"] {
 
 .gf-user .gf-user-detail p {
     margin-top: 10px;
+}
+
+.gf-user-detail a, .gf-user-detail a:visited, .gf-user-detail a:active {
+    color: #24292e;
+}
+.gf-user-detail a:hover {
+    color:#007bff;
 }
 
 footer .list-group-item {

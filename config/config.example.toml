@@ -22,7 +22,6 @@
 
 # 模板引擎配置
 [viewer]
-    Delimiters  =  ["${", "}"]
     DefaultFile = "web/layout/layout.html"
 
 # 数据库配置

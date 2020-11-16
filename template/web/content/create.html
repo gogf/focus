@@ -8,7 +8,7 @@
         </div>
         <div class="card-body">
             <form id="contentForm" action="/content/do-create" method="post">
-                <input type="hidden" value="${.ContentType}" name="type">
+                <input type="hidden" value="{{.ContentType}}" name="type">
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-1 col-form-label required">标题</label>
                     <div class="col-sm-10">
@@ -20,9 +20,9 @@
                     <div class="col-sm-10">
                         <div class="form-group">
                             <select class="form-control" name="categoryId">
-                                ${range $index, $item := .BuildIn.CategoryTree .ContentType}
-                                <option value="${$item.Id}">${$item.Name}</option>
-                                ${end}
+                                {{range $index, $item := .BuildIn.CategoryTree .ContentType}}
+                                <option value="{{$item.Id}}">{{$item.Name}}</option>
+                                {{end}}
                             </select>
                         </div>
                     </div>
@@ -160,7 +160,7 @@ jQuery(function($) {
                             buttons: ["继续撰写", "查看详情"]
                         }).then((value) => {
                             if (value) {
-                                window.location.href = "/${.ContentType}/" + r.data.content_id
+                                window.location.href = "/{{.ContentType}}/" + r.data.content_id
                             } else {
                                 window.location.reload()
                             }

@@ -55,7 +55,7 @@ main .row {
 
 /**************** 定制 ************************/
 
-.gf-article-new {
+.gf-content-new {
     color: red;
     font-style: italic;
 }
@@ -94,29 +94,29 @@ main .row {
 
 /**************** 文章内容样式 ************************/
 
-.gf-article-show {
+.gf-content-show {
     background-color: white;
     padding: 15px;
     margin: 10px;
 }
 
-.gf-article-show .gf-title {
+.gf-content-show .gf-title {
     margin-left: 10px;
     padding: 0;
     font-size: 20px;
 }
 
-.gf-article-show .gf-detail {
+.gf-content-show .gf-detail {
     margin-left: 10px;
     padding: 5px;
 }
 
-.gf-article-show .gf-detail span {
+.gf-content-show .gf-detail span {
     color: gray;
     font-size: .9em;
 }
 
-.gf-article-show .gf-content {
+.gf-content-show .gf-content {
     padding: 15px;
     margin: 10px;
 }
