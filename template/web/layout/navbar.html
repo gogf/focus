@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             {{range $index, $item := .BuildIn.TopMenus}}
-            <li class="nav-item {{if eq $.BuildIn.UrlPath $item.Url }}active{{end}} {{if $item.Items}}dropdown{{end}}">
+            <li class="nav-item {{if $item.Active }}active{{end}} {{if $item.Items}}dropdown{{end}}">
                 {{if $item.Items}}
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$item.Name}}</a>
                 <div class="dropdown-menu">
@@ -25,9 +25,11 @@
             </li>
             {{end}}
         </ul>
+
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" id="search" placeholder="请输入搜索内容" aria-label="Search" value=''>
         </form>
+
         {{if .Context.User}}
         <div id="logon" class="btn-group" role="group" aria-label="First group">
             <div class="nav-item dropdown">
