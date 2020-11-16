@@ -15,7 +15,7 @@ type userApi struct{}
 // @summary 用户主页
 // @tags    用户
 // @produce html
-// @param   id path int false "用户ID"
+// @param   entity body model.UserServiceGetListReq true "请求参数" required
 // @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Index(r *ghttp.Request) {
@@ -105,6 +105,26 @@ func (a *userApi) Ask(r *ghttp.Request) {
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Message(r *ghttp.Request) {
 	service.View.Render(r)
+}
+
+// @summary AJAX保存个人资料
+// @tags    用户
+// @produce json
+// @param   entity body model.UserApiPasswordReq true "请求参数" required
+// @router  /user/update-password [POST]
+// @success 200 {object} response.JsonRes "请求结果"
+func (a *userApi) UpdatePassword(r *ghttp.Request) {
+	var (
+		data *model.UserApiPasswordReq
+	)
+	if err := r.Parse(&data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if err := service.User.UpdatePassword(r.Context(), data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	} else {
+		response.JsonExit(r, 0, "")
+	}
 }
 
 // @summary AJAX保存个人资料

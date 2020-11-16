@@ -9,32 +9,32 @@
                     <div class="form-group row">
                         <label for="passport" class="col-sm-3 col-form-label required text-right">账号</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="passport" placeholder="请输入账号">
+                            <input type="text" class="form-control" minlength="3" maxlength="20"  name="passport" placeholder="请输入账号" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="nickname" class="col-sm-3 col-form-label required text-right">昵称</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nickname" placeholder="请输入昵称">
+                            <input type="text" class="form-control" minlength="2" maxlength="20" name="nickname" placeholder="请输入昵称" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-3 col-form-label required text-right">密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                            <input type="password" class="form-control" minlength="6" maxlength="20"  id="password" name="password" placeholder="请输入密码" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password2" class="col-sm-3 col-form-label required text-right">确认密码</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
+                            <input type="password" class="form-control" minlength="6" maxlength="20" name="password2" placeholder="请再次输入密码" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="code" class="col-sm-3 col-form-label required text-right">验证码</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="captcha" placeholder="请输入正确的验证码">
+                                <input type="text" class="form-control" minlength="4" maxlength="4"  name="captcha" placeholder="请输入正确的验证码" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text" style="cursor: pointer;padding: 0;">
                                         <img id="code-img" class="captcha" loading="lazy" onclick="gf.reloadCaptcha()">
@@ -45,7 +45,6 @@
                         </div>
                     </div>
 
-                    <div class="card-text notice" style="color: red;"></div>
                     <div class="form-group row">
                         <div class="col-sm-3 offset-md-3">
                             <button type="submit" class="btn btn-primary btn-block">注册</button>
@@ -66,21 +65,9 @@ jQuery(function($) {
         errorClass: 'validation-error-block',
         focusInvalid: true,
         rules: {
-            passport: {
-                required: true
-            },
-            password: {
-                required: true
-            },
             password2: {
-                required: true
+                equalTo: "#password"
             },
-            nickname: {
-                required: true
-            },
-            captcha: {
-                required: true
-            }
         },
         messages: {
             passport: {
@@ -90,7 +77,8 @@ jQuery(function($) {
                 required: "请输入密码"
             },
             password2: {
-                required: "请确认密码"
+                required: "请确认密码",
+                equalTo: "输入的新密码两次不同"
             },
             nickname: {
                 required: "请确认昵称"
@@ -101,16 +89,16 @@ jQuery(function($) {
         },
         submitHandler: function(form) {
             $('button[type=submit]').attr('disabled', 'true');
+
+            // 传输加密
+            var pwd = $('[name="password"]').val();
+            var pwd2 = $('[name="password2"]').val();
+            $('[name="password"]').val(hex_md5(pwd + pwd));
+            $('[name="password2"]').val(hex_md5(pwd2 + pwd2));
+
             jQuery(form).ajaxSubmit({
                 dataType: 'json',
                 success:  function (r, textStatus) {
-                    if (r.message != "") {
-                        swal({
-                            text:   r.message,
-                            icon:   (r.code == 0) ? "success" : "warning",
-                            button: "确定",
-                        });
-                    }
                     if (r.code == 0) {
                         swal({
                             title:   "注册成功",
@@ -126,6 +114,16 @@ jQuery(function($) {
                             }
                         });
                     } else {
+                        if (r.message != "") {
+                            swal({
+                                text:   r.message,
+                                icon:   "warning",
+                                button: "确定"
+                            });
+                        }
+                        $('[name="code"]').val('');
+                        $('[name="password"]').val('');
+                        $('[name="password2"]').val('');
                         gf.reloadCaptcha()
                     }
                 }

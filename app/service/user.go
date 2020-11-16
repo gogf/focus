@@ -124,15 +124,29 @@ func (s *userService) Register(r *model.UserServiceRegisterReq) error {
 	return err
 }
 
+// 修改个人密码
+func (s *userService) UpdatePassword(ctx context.Context, r *model.UserApiPasswordReq) error {
+	oldPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.OldPassword)
+	n, err := dao.User.Where(dao.User.Columns.Password, oldPassword).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Count()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
+		return gerror.New(`原始密码错误`)
+	}
+	newPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.NewPassword)
+	_, err = dao.User.Data(g.Map{
+		dao.User.Columns.Password: newPassword,
+	}).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Update()
+	return err
+}
+
 // 修改个人资料
 func (s *userService) UpdateProfile(ctx context.Context, r *model.UserServiceUpdateProfileReq) error {
-	if r.Id == 0 {
-		return gerror.New("用户ID不能为空")
-	}
 	if err := s.CheckNicknameUnique(r.Nickname); err != nil {
 		return err
 	}
-	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Save()
+	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Update()
 	return err
 }
 

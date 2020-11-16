@@ -19,11 +19,16 @@ type User internal.User
 
 // API用户注册
 type UserApiRegisterReq struct {
-	Passport  string `v:"required#请输入账号"`                           // 账号
-	Password  string `v:"required#请输入密码"`                           // 密码(明文)
-	Password2 string `v:"required|same:Password#请再次输入密码|两次密码输入不一致"` // 确认密码(明文)
-	Nickname  string `v:"required#请输入昵称"`                           // 昵称
-	Captcha   string `v:"required#请输入验证码"`                          // 验证码
+	Passport string `v:"required#请输入账号"`  // 账号
+	Password string `v:"required#请输入密码"`  // 密码
+	Nickname string `v:"required#请输入昵称"`  // 昵称
+	Captcha  string `v:"required#请输入验证码"` // 验证码
+}
+
+// API修改用户密码
+type UserApiPasswordReq struct {
+	OldPassword string `v:"required#请输入原始密码"` // 原密码
+	NewPassword string `v:"required#请输入新密码"`  // 新密码
 }
 
 // API修改个人资料
