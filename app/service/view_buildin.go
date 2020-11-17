@@ -53,9 +53,20 @@ func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
 	if len(topMenus) == 0 {
 		return nil, nil
 	}
-	// 处理是否选中
+	currentUriWithQueryString := s.httpRequest.URL.String()
+	// 处理是否选中, URL，包含QueryString
 	for _, v := range topMenus {
-		if gstr.Equal(v.Url, s.httpRequest.URL.Path) {
+		if gstr.Equal(v.Url, currentUriWithQueryString) {
+			v.Active = true
+			return topMenus, nil
+		}
+	}
+	// 处理是否选中, URI
+	for _, v := range topMenus {
+		if v.Url == "/" {
+			continue
+		}
+		if gstr.HasPrefix(currentUriWithQueryString, v.Url) {
 			v.Active = true
 			return topMenus, nil
 		}

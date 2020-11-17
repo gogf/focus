@@ -49,6 +49,7 @@
 <script type="text/javascript">
 jQuery(function($) {
     gf.reloadCaptcha()
+
     // footer悬浮
     $("footer").addClass("fixed-bottom");
 
@@ -70,8 +71,9 @@ jQuery(function($) {
         submitHandler: function(form) {
             $('button[type=submit]').attr('disabled', 'true');
 
-            var pwd = $('[name="password"]').val();
-            $('[name="password"]').val(hex_md5(pwd + pwd));
+            let passport = $('[name="passport"]').val();
+            let password = $('[name="password"]').val();
+            $('[name="password"]').val(hex_md5(passport + password));
 
             jQuery(form).ajaxSubmit({
                 dataType: 'json',
