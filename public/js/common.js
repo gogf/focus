@@ -4,54 +4,173 @@ gf = {
     reloadCaptcha: function() {
         $("img.captcha").attr("src","/captcha?v="+Math.random());
     },
-    // 用户模块
-    user: {
-        // 退出登录
-        logout: function () {
-            swal({
-                title:   "注销登录",
-                text:    "您确定需要注销当前登录状态吗？",
-                icon:    "warning",
-                buttons: ["取消", "确定"]
-            }).then((value) => {
-                if (value) {
-                    window.location.href = "/user/logout";
-                }
-            });
-        },
+}
+
+// 用户模块
+gf.user = {
+    // 退出登录
+    logout: function () {
+        swal({
+            title:   "注销登录",
+            text:    "您确定需要注销当前登录状态吗？",
+            icon:    "warning",
+            buttons: ["取消", "确定"]
+        }).then((value) => {
+            if (value) {
+                window.location.href = "/user/logout";
+            }
+        });
     },
-    // 内容模块
-    content: {
-        delete: function (id) {
-            swal({
-                title:   "删除内容",
-                text:    "您确定要删除该内容吗？",
-                icon:    "warning",
-                buttons: ["取消", "确定"]
-            }).then((value) => {
-                if (value) {
-                    jQuery.ajax({
-                        type: 'POST',
-                        url : '/content/do-delete',
-                        data: {
-                            id: id
-                        },
-                        sync: true,
-                        success: function (data) {
-                            swal({
-                                title:   "删除完成",
-                                text:    "3秒后自动跳转到",
-                                icon:    "success",
-                                timer:   2000,
-                                buttons: false
-                            }).then((value) => {
-                                window.location.href = "/";
-                            })
-                        }
-                    });
-                }
-            });
+}
+
+// 内容模块
+gf.content = {
+    // 删除内容
+    delete: function (id) {
+        swal({
+            title:   "删除内容",
+            text:    "您确定要删除该内容吗？",
+            icon:    "warning",
+            buttons: ["取消", "确定"]
+        }).then((value) => {
+            if (value) {
+                jQuery.ajax({
+                    type: 'POST',
+                    url : '/content/do-delete',
+                    data: {
+                        id: id
+                    },
+                    sync: true,
+                    success: function (data) {
+                        swal({
+                            title:   "删除完成",
+                            text:    "3秒后自动跳转到",
+                            icon:    "success",
+                            timer:   2000,
+                            buttons: false
+                        }).then((value) => {
+                            window.location.href = "/";
+                        })
+                    }
+                });
+            }
+        });
+    }
+}
+
+// 互动模块
+gf.interact = {
+    // 检查赞
+    checkZan: function (elem, type, id) {
+        if ($(elem).find('.icon').hasClass('icon-zan-done')) {
+            this.cancelZan(elem, type, id)
+        } else {
+            this.zan(elem, type, id)
         }
+    },
+    // 赞
+    zan: function (elem, type, id) {
+        jQuery.ajax({
+            type: 'POST',
+            url : '/interact/zan',
+            data: {
+                id:   id,
+                type: type
+            },
+            sync: true,
+            success: function (r, status) {
+                if (r.code == 0) {
+                    let number = $(elem).find('.number').html()
+                    $(elem).find('.number').html(parseInt(number)+1)
+                    $(elem).find('.icon').removeClass('icon-zan').addClass('icon-zan-done')
+                } else {
+                    swal({
+                        text:   r.message,
+                        button: "确定"
+                    })
+                }
+            }
+        });
+    },
+    // 取消赞
+    cancelZan: function (elem, type, id) {
+        jQuery.ajax({
+            type: 'POST',
+            url:  '/interact/cancel-zan',
+            data: {
+                id:   id,
+                type: type
+            },
+            sync: true,
+            success: function (r, status) {
+                if (r.code == 0) {
+                    let number = $(elem).find('.number').html()
+                    $(elem).find('.number').html(parseInt(number) - 1)
+                    $(elem).find('.icon').removeClass('icon-zan-done').addClass('icon-zan')
+                } else {
+                    swal({
+                        text: r.message,
+                        button: "确定"
+                    })
+                }
+            }
+        });
+    },
+    // 检查是执行踩还是取消踩
+    checkCai: function (elem, type, id) {
+        if ($(elem).find('.icon').hasClass('icon-cai-done')) {
+            this.cancelCai(elem, type, id)
+        } else {
+            this.cai(elem, type, id)
+        }
+    },
+    // 踩
+    cai: function (elem, type, id) {
+        jQuery.ajax({
+            type: 'POST',
+            url : '/interact/cai',
+            data: {
+                id:   id,
+                type: type
+            },
+            sync: true,
+            success: function (r, status) {
+                if (r.code == 0) {
+                    let number = $(elem).find('.number').html()
+                    $(elem).find('.number').html(parseInt(number)+1)
+                    $(elem).find('.icon').removeClass('icon-cai').addClass('icon-cai-done')
+                } else {
+                    swal({
+                        text:   r.message,
+                        button: "确定"
+                    })
+                }
+            }
+        });
+    },
+    // 取消踩
+    cancelCai: function (elem, type, id) {
+        jQuery.ajax({
+            type: 'POST',
+            url:  '/interact/cancel-cai',
+            data: {
+                id:   id,
+                type: type
+            },
+            sync: true,
+            success: function (r, status) {
+                if (r.code == 0) {
+                    let number = $(elem).find('.number').html()
+                    $(elem).find('.number').html(parseInt(number) - 1)
+                    $(elem).find('.icon').removeClass('icon-cai-done').addClass('icon-cai')
+                } else {
+                    swal({
+                        text: r.message,
+                        button: "确定"
+                    })
+                }
+            }
+        });
     }
 }
 

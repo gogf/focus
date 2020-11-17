@@ -23,14 +23,14 @@ type InteractDao struct {
 
 // InteractColumns defines and stores column names for table gf_interact.
 type interactColumns struct {
-	Id           string // 自增ID                                    
-    Type         string // 操作类型。0:赞，1:踩。                    
-    UserId       string // 操作用户                                  
-    ContentId    string // 对应内容ID，该内容可能是content, reply    
-    ContentType  string // 内容模型: content, reply, 具体由程序定义  
-    Count        string // 操作数据值                                
-    CreatedAt    string //                                           
-    UpdatedAt    string //
+	Id          string // 自增ID                                    
+    Type        string // 操作类型。0:赞，1:踩。                    
+    UserId      string // 操作用户                                  
+    TargetId    string // 对应内容ID，该内容可能是content, reply    
+    TargetType  string // 内容模型: content, reply, 具体由程序定义  
+    Count       string // 操作数据值                                
+    CreatedAt   string //                                           
+    UpdatedAt   string //
 }
 
 var (
@@ -39,14 +39,14 @@ var (
 		M:     g.DB("default").Table("gf_interact").Safe(),
 		Table: "gf_interact",
 		Columns: interactColumns{
-			Id:          "id",            
-            Type:        "type",          
-            UserId:      "user_id",       
-            ContentId:   "content_id",    
-            ContentType: "content_type",  
-            Count:       "count",         
-            CreatedAt:   "created_at",    
-            UpdatedAt:   "updated_at",
+			Id:         "id",           
+            Type:       "type",         
+            UserId:     "user_id",      
+            TargetId:   "target_id",    
+            TargetType: "target_type",  
+            Count:      "count",        
+            CreatedAt:  "created_at",   
+            UpdatedAt:  "updated_at",
 		},
 	}
 )

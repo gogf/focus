@@ -44,6 +44,18 @@ func (s *ViewBuildIn) Page(total, size int) string {
 	return content
 }
 
+// 我是否赞了这个内容
+func (s *ViewBuildIn) DidIZan(targetType string, targetId uint) bool {
+	b, _ := Interact.DidIZan(s.httpRequest.Context(), targetType, targetId)
+	return b
+}
+
+// 我是否踩了这个内容
+func (s *ViewBuildIn) DidICai(targetType string, targetId uint) bool {
+	b, _ := Interact.DidICai(s.httpRequest.Context(), targetType, targetId)
+	return b
+}
+
 // 获取顶部菜单列表
 func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
 	topMenus, err := Menu.GetTopMenus()

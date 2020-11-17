@@ -75,6 +75,23 @@ main .row {
 code[class*="language-"], pre[class*="language-"] {
     font-size:14px !important;
 }
+
+.icon-zan:before {
+    content: "\e6a2";
+}
+
+.icon-zan-done:before {
+    content: "\e6a1";
+}
+
+.icon-cai:before {
+    content: "\e690";
+}
+
+.icon-cai-done:before {
+    content: "\e68f";
+}
+
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {

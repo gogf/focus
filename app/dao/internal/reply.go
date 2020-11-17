@@ -23,17 +23,17 @@ type ReplyDao struct {
 
 // ReplyColumns defines and stores column names for table gf_reply.
 type replyColumns struct {
-	Id           string // 回复ID                                   
-    ParentId     string // 回复对应的上一级回复ID(没有的话默认为0)  
-    ContentType  string // 评论类型: topic, ask, article, reply     
-    TargetId     string // 对应内容ID                               
-    UserId       string // 网站用户ID                               
-    ZanCount     string // 赞                                       
-    CaiCount     string // 踩                                       
-    Title        string // 回复标题                                 
-    Content      string // 回复内容                                 
-    CreatedAt    string // 创建时间                                 
-    UpdatedAt    string //
+	Id          string // 回复ID                                                          
+    ParentId    string // 回复对应的上一级回复ID(没有的话默认为0)                         
+    Title       string // 回复标题                                                        
+    Content     string // 回复内容                                                        
+    TargetType  string // 评论类型: content, reply                                        
+    TargetId    string // 对应内容ID，可能回复的是另一个回复，所以这里没有使用content_id  
+    UserId      string // 网站用户ID                                                      
+    ZanCount    string // 赞                                                              
+    CaiCount    string // 踩                                                              
+    CreatedAt   string // 创建时间                                                        
+    UpdatedAt   string //
 }
 
 var (
@@ -42,17 +42,17 @@ var (
 		M:     g.DB("default").Table("gf_reply").Safe(),
 		Table: "gf_reply",
 		Columns: replyColumns{
-			Id:          "id",            
-            ParentId:    "parent_id",     
-            ContentType: "content_type",  
-            TargetId:    "target_id",     
-            UserId:      "user_id",       
-            ZanCount:    "zan_count",     
-            CaiCount:    "cai_count",     
-            Title:       "title",         
-            Content:     "content",       
-            CreatedAt:   "created_at",    
-            UpdatedAt:   "updated_at",
+			Id:         "id",           
+            ParentId:   "parent_id",    
+            Title:      "title",        
+            Content:    "content",      
+            TargetType: "target_type",  
+            TargetId:   "target_id",    
+            UserId:     "user_id",      
+            ZanCount:   "zan_count",    
+            CaiCount:   "cai_count",    
+            CreatedAt:  "created_at",   
+            UpdatedAt:  "updated_at",
 		},
 	}
 )

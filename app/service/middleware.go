@@ -21,6 +21,7 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 	// 初始化，务必最开始执行
 	customCtx := &model.Context{
 		Session: r.Session,
+		Data:    make(g.Map),
 	}
 	Context.Init(r, customCtx)
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {

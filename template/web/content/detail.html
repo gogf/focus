@@ -27,12 +27,29 @@
                 {{.Data.Content.Title}}
             </h2>
             <div class="gf-detail-info">
-                <span class="icon iconfont">&#xe650;</span>
+                <span class="icon iconfont">&#xe660;</span>
                 {{.Data.Content.ViewCount}} &nbsp; / &nbsp;
-                <span class="icon iconfont">&#xe62c;</span>
+                <span class="icon iconfont">&#xe6ab;</span>
                 {{.Data.Content.ReplyCount}} &nbsp; / &nbsp;
-                <a href=""><span class="icon iconfont">&#xe62a;</span> {{.Data.Content.ZanCount}}</a> &nbsp; / &nbsp;
-                <a href=""><span class="icon iconfont">&#xe629;</span> {{.Data.Content.CaiCount}}</a> &nbsp; / &nbsp;
+
+                <a href="javascript:void(0);" onclick="javascript:gf.interact.checkZan(this, 'content', {{.Data.Content.Id}})">
+                    {{if .BuildIn.DidIZan "content" .Data.Content.Id}}
+                    <span class="icon iconfont icon-zan-done"></span> <span class="number">{{.Data.Content.ZanCount}}</span>
+                    {{else}}
+                    <span class="icon iconfont icon-zan"></span> <span class="number">{{.Data.Content.ZanCount}}</span>
+                    {{end}}
+                </a>
+
+                &nbsp; / &nbsp;
+
+                <a href="javascript:void(0);" onclick="javascript:gf.interact.checkCai(this, 'content', {{.Data.Content.Id}})">
+                    {{if .BuildIn.DidICai "content" .Data.Content.Id}}
+                    <span class="icon iconfont icon-cai-done"></span> <span class="number">{{.Data.Content.CaiCount}}</span>
+                    {{else}}
+                    <span class="icon iconfont icon-cai"></span> <span class="number">{{.Data.Content.CaiCount}}</span>
+                    {{end}}
+                </a>
+                &nbsp; / &nbsp;
                 发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
 
                 {{if .Context.User}}

@@ -15,7 +15,8 @@ type interactApi struct{}
 // @summary 赞
 // @tags    交互
 // @produce json
-// @param   id formData int true "内容ID"
+// @param   id   formData int    true "内容ID"
+// @param   type formData string true "内容类型:content,reply"
 // @router  /interact/zan [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Zan(r *ghttp.Request) {
@@ -34,7 +35,8 @@ func (a *interactApi) Zan(r *ghttp.Request) {
 // @summary 取消赞
 // @tags    交互
 // @produce json
-// @param   id formData int true "内容ID"
+// @param   id   formData int    true "内容ID"
+// @param   type formData string true "内容类型:content,reply"
 // @router  /interact/cancel-zan [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelZan(r *ghttp.Request) {
@@ -53,7 +55,8 @@ func (a *interactApi) CancelZan(r *ghttp.Request) {
 // @summary 踩
 // @tags    交互
 // @produce json
-// @param   id formData int true "内容ID"
+// @param   id   formData int    true "内容ID"
+// @param   type formData string true "内容类型:content,reply"
 // @router  /interact/cai [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Cai(r *ghttp.Request) {
@@ -73,7 +76,7 @@ func (a *interactApi) Cai(r *ghttp.Request) {
 // @tags    交互
 // @produce json
 // @param   id   formData int    true "内容ID"
-// @param   type formData string true "内容模型"
+// @param   type formData string true "内容类型:content,reply"
 // @router  /interact/cancel-cai [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelCai(r *ghttp.Request) {
