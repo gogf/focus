@@ -27,6 +27,7 @@ func init() {
 		group.ALL("/reply", api.Reply)                // 回复
 		group.ALL("/captcha", api.Captcha)            // 验证码
 		group.ALL("/user/:id", api.User.Index)        // 用户 - 主页
+		group.ALL("/search", api.Search)              // 搜索
 	})
 	// 权限控制路由
 	s.Group("/", func(group *ghttp.RouterGroup) {

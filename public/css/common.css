@@ -92,6 +92,9 @@ code[class*="language-"], pre[class*="language-"] {
     content: "\e68f";
 }
 
+.nav-avatar {
+    height: 25px;
+}
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -192,7 +195,11 @@ code[class*="language-"], pre[class*="language-"] {
 }
 #logon .dropdown-menu {
     min-width: 8rem !important;
-    left: -55px !important;
+    left: -10px !important;
+}
+
+.search-form {
+    margin-left: 20px;
 }
 
 /**************** 文章列表 ************************/
@@ -328,7 +335,10 @@ code[class*="language-"], pre[class*="language-"] {
 .vditor-preview__action {
     display: none;
 }
-
+.vditor-sv {
+    font-family: mononoki,Consolas,Liberation Mono,Menlo,Courier,monospace,Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,Segoe UI Symbol,Android Emoji,EmojiSymbols !important;
+    font-size:14px !important;
+}
 
 /**************** 发布页样式 ************************/
 

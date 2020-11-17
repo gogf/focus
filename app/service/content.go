@@ -76,6 +76,87 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 	return getListRes, nil
 }
 
+// 搜索内容列表
+func (s *contentService) Search(ctx context.Context, r *model.ContentServiceSearchReq) (*model.ContentServiceSearchRes, error) {
+	// select *, MATCH (title, content) AGAINST ('祖国') as score
+	// from t_article where MATCH (title, content) AGAINST ('祖国' IN NATURAL LANGUAGE MODE);
+	fieldNames := gutil.Keys(model.ContentListItem{})
+	fieldNames = append(fieldNames, fmt.Sprintf(
+		`MATCH (%s,%s) AGAINST (?) AS score`,
+		dao.Content.Columns.Title,
+		dao.Content.Columns.Content,
+	))
+	m := dao.Content.Fields(fieldNames)
+	m = m.Where(fmt.Sprintf(
+		`MATCH (%s,%s) AGAINST (? IN NATURAL LANGUAGE MODE)`,
+		dao.Content.Columns.Title,
+		dao.Content.Columns.Content,
+	), r.Key)
+
+	// 内容类型
+	if r.Type != "" {
+		m = m.Where(dao.Content.Columns.Type, r.Type)
+	}
+	// 栏目检索
+	if r.CategoryId > 0 {
+		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
+		if err != nil {
+			return nil, err
+		}
+		m = m.Where(dao.Content.Columns.CategoryId, idArray)
+	}
+	listModel := m.Args(r.Key)
+	listModel = listModel.Page(r.Page, r.Size)
+	switch r.Sort {
+	case model.ContentSortHot:
+		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
+	case model.ContentSortActive:
+		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
+	case model.ContentSortScore:
+		listModel = listModel.Order("score", "DESC")
+	default:
+		listModel = listModel.Order(dao.Content.Columns.Id, "DESC")
+	}
+	contentEntities, err := listModel.M.All()
+	if err != nil {
+		return nil, err
+	}
+	// 没有数据
+	if contentEntities.IsEmpty() {
+		return nil, nil
+	}
+	total, err := m.Fields("*").Count()
+	if err != nil {
+		return nil, err
+	}
+	getListRes := &model.ContentServiceSearchRes{
+		Page:  r.Page,
+		Size:  r.Size,
+		Total: total,
+	}
+	// Content
+	if err := contentEntities.ScanList(&getListRes.List, "Content"); err != nil {
+		return nil, err
+	}
+	// Category
+	err = dao.Category.
+		Fields(model.ContentListCategoryItem{}).
+		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
+		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
+	if err != nil {
+		return nil, err
+	}
+	// User
+	err = dao.User.
+		Fields(model.ContentListUserItem{}).
+		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "UserId")).
+		ScanList(&getListRes.List, "User", "Content", "id:UserId")
+	if err != nil {
+		return nil, err
+	}
+	return getListRes, nil
+}
+
 // 查询详情
 func (s *contentService) GetDetail(ctx context.Context, id uint) (*model.ContentServiceGetDetailRes, error) {
 	getDetailRes := new(model.ContentServiceGetDetailRes)

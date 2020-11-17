@@ -70,6 +70,11 @@ func (d *UserRoleAuthDao) Slave() *UserRoleAuthDao {
 	return &UserRoleAuthDao{M:d.M.Slave()}
 }
 
+// Args sets custom arguments for model operation.
+func (d *UserRoleAuthDao) Args(args ...interface{}) *UserRoleAuthDao {
+	return &UserRoleAuthDao{M:d.M.Args(args ...)}
+}
+
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
 // The parameter <table> can be joined table and its joined condition,
 // and also with its alias name, like:

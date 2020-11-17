@@ -66,6 +66,11 @@ func (d *ContentTagDao) Slave() *ContentTagDao {
 	return &ContentTagDao{M:d.M.Slave()}
 }
 
+// Args sets custom arguments for model operation.
+func (d *ContentTagDao) Args(args ...interface{}) *ContentTagDao {
+	return &ContentTagDao{M:d.M.Args(args ...)}
+}
+
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
 // The parameter <table> can be joined table and its joined condition,
 // and also with its alias name, like:

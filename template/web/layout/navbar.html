@@ -24,16 +24,21 @@
                 {{end}}
             </li>
             {{end}}
+            <li class="nav-item">
+                <form class="form-inline search-form" method="get" action="/search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="请输入搜索内容" name="key" value="{{.Query.key}}">
+                    </div>
+                </form>
+            </li>
         </ul>
 
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" id="search" placeholder="请输入搜索内容" aria-label="Search" value=''>
-        </form>
 
         {{if .Context.User}}
-        <div id="logon" class="btn-group" role="group" aria-label="First group">
+        <div id="logon" class="btn-group">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="nav-avatar" src="{{.Context.User.Avatar}}">
                     {{.Context.User.Nickname}}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

@@ -29,6 +29,7 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 			Id:       userEntity.Id,
 			Passport: userEntity.Passport,
 			Nickname: userEntity.Nickname,
+			Avatar:   userEntity.Avatar,
 		}
 	}
 	// 将自定义的上下文对象传递到模板变量中使用

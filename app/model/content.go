@@ -15,9 +15,10 @@ type Content internal.Content
 const (
 	ContentListDefaultSize = 10
 	ContentListMaxSize     = 50
-	ContentSortDefault     = 0
-	ContentSortActive      = 1
-	ContentSortHot         = 2
+	ContentSortDefault     = 0 // 排序：按照创建时间
+	ContentSortActive      = 1 // 排序：按照更新时间
+	ContentSortHot         = 2 // 排序：按照浏览量
+	ContentSortScore       = 3 // 排序：按照搜索结果关联性
 	ContentTypeArticle     = "article"
 	ContentTypeAsk         = "ask"
 	ContentTypeTopic       = "topic"
@@ -131,10 +132,32 @@ type ContentServiceGetListRes struct {
 	Total int                             `json:"total"` // 数据总数
 }
 
+// Service搜索列表
+type ContentServiceSearchReq struct {
+	Key        string // 关键字
+	Type       string // 内容模型
+	CategoryId uint   `p:"cate"`                    // 栏目ID
+	Page       int    `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
+	Size       int    `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
+	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
+}
+
+// Service搜索列表结果
+type ContentServiceSearchRes struct {
+	List  []*ContentServiceSearchResItem `json:"list"`  // 列表
+	Page  int                            `json:"page"`  // 分页码
+	Size  int                            `json:"size"`  // 分页数量
+	Total int                            `json:"total"` // 数据总数
+}
+
 type ContentServiceGetListResItem struct {
 	Content  *ContentListItem         `json:"content"`
 	Category *ContentListCategoryItem `json:"category"`
 	User     *ContentListUserItem     `json:"user"`
+}
+
+type ContentServiceSearchResItem struct {
+	ContentServiceGetListResItem
 }
 
 // Service查询详情结果

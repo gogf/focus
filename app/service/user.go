@@ -51,6 +51,7 @@ func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLogi
 		Id:       userEntity.Id,
 		Passport: userEntity.Passport,
 		Nickname: userEntity.Nickname,
+		Avatar:   userEntity.Avatar,
 	})
 	return nil
 }
