@@ -49,6 +49,9 @@
 <script type="text/javascript">
 jQuery(function($) {
     gf.reloadCaptcha()
+    // footer悬浮
+    $("footer").addClass("fixed-bottom");
+
     $('#loginForm').validate({
         errorElement: 'div',
         errorClass: 'validation-error-block',
