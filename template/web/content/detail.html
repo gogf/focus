@@ -8,7 +8,7 @@
     <div class="col-md-9">
         <div class="gf-content-show">
             {{if .BreadCrumb}}
-            <nav aria-label="breadcrumb" class="gf-content-breadcrumb">
+            <nav aria-label="breadcrumb" class="gf-content-breadcrumb ">
                 <ol class="breadcrumb">
                     {{range $index, $item := .BreadCrumb}}
                     <li class="breadcrumb-item {{if not $item.Url}}active{{end}}">
@@ -23,28 +23,26 @@
             </nav>
             {{end}}
 
-            <div class="gf-title">
+            <h2 class="gf-title">
                 {{.Data.Content.Title}}
-            </div>
-            <div class="gf-detail">
-                <div class="gf-detail-info">
-                    <span class="icon iconfont">&#xe650;</span>
-                    {{.Data.Content.ViewCount}} &nbsp; / &nbsp;
-                    <span class="icon iconfont">&#xe62c;</span>
-                    {{.Data.Content.ReplyCount}} &nbsp; / &nbsp;
-                    <a href=""><span class="icon iconfont">&#xe62a;</span> {{.Data.Content.ZanCount}}</a> &nbsp; / &nbsp;
-                    <a href=""><span class="icon iconfont">&#xe629;</span> {{.Data.Content.CaiCount}}</a> &nbsp; / &nbsp;
-                    发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
+            </h2>
+            <div class="gf-detail-info">
+                <span class="icon iconfont">&#xe650;</span>
+                {{.Data.Content.ViewCount}} &nbsp; / &nbsp;
+                <span class="icon iconfont">&#xe62c;</span>
+                {{.Data.Content.ReplyCount}} &nbsp; / &nbsp;
+                <a href=""><span class="icon iconfont">&#xe62a;</span> {{.Data.Content.ZanCount}}</a> &nbsp; / &nbsp;
+                <a href=""><span class="icon iconfont">&#xe629;</span> {{.Data.Content.CaiCount}}</a> &nbsp; / &nbsp;
+                发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
 
-                    {{if .Context.User}}
-                        {{if eq .Data.Content.UserId .Context.User.Id}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
-                        {{end}}
+                {{if .Context.User}}
+                    {{if eq .Data.Content.UserId .Context.User.Id}}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
                     {{end}}
-                </div>
+                {{end}}
             </div>
-            <div class="gf-content markdown-body" id="content">{{.Data.Content.Content}}</div>
+            <div class="gf-content markdown-body" id="gf-content">{{.Data.Content.Content}}</div>
         </div>
         <div class="gf-comment-list">
             <ul class="list-group">
@@ -132,29 +130,9 @@
             </div>
         </div>
 
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
-        </div>
-
-        <div class="card gf-card">
-            <div class="card-header">GF社区</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span class="icon iconfont">&#xe61c;</span> <a href="">提问的智慧</a></li>
-                <li class="list-group-item"><span class="icon iconfont">&#xe647;</span> <a href="">加入我们</a></li>
-            </ul>
+        <div class="card gf-card gf-content-toc" style="display: none;">
+            <div class="card-header"><span class="icon iconfont">&#xe647;</span> 内容目录</div>
+            <div id="gf-content-toc"></div>
         </div>
     </div>
 </div>
@@ -170,6 +148,16 @@ $(function () {
             $(block).attr("parsed", "true")
         }
     });
+    // 内容目录
+    new Toc('gf-content', {
+        'level'   : 4,
+        'class'   : 'toc',
+        'targetId': 'gf-content-toc'
+    } );
+    // 仅有内容时才展示
+    if ($('#gf-content-toc').text() != "undefined") {
+        $('.gf-content-toc').show()
+    }
 
     let editor = new Vditor('vditor', {
         theme: 'classic',

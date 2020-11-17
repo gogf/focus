@@ -94,7 +94,6 @@
     };
 
     Toc.prototype._showToc = function() {
-
         this.toc = document.createElement('div');
         this.toc.innerHTML = this.tocContent;
         this.toc.setAttribute('class',this.tocClass);
@@ -106,19 +105,19 @@
             document.getElementById(this.options.targetId).appendChild(this.toc);
         }
 
-        var self = this;
-
-        if(this.tocTop > -1){
-            window.onscroll = function(){
-                var t = document.documentElement.scrollTop || document.body.scrollTop;
-                if(t< self.tocTop){
-                    self.toc.setAttribute('style','position:absolute;top:'+ self.tocTop +'px;');
-                }else{
-                    self.toc.setAttribute('style','position:fixed;top:10px;');
-                }
-
-            }
-        }
+        // var self = this;
+        //
+        // if(this.tocTop > -1){
+        //     window.onscroll = function(){
+        //         var t = document.documentElement.scrollTop || document.body.scrollTop;
+        //         if(t< self.tocTop){
+        //             self.toc.setAttribute('style','position:absolute;top:'+ self.tocTop +'px;');
+        //         }else{
+        //             self.toc.setAttribute('style','position:fixed;top:10px;');
+        //         }
+        //
+        //     }
+        // }
 
     };
 

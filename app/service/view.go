@@ -49,6 +49,31 @@ func (s *viewService) GetBreadCrumb(ctx context.Context, r *model.ViewServiceGet
 	return breadcrumb
 }
 
+// 获取标题
+func (s *viewService) GetTitle(ctx context.Context, r *model.ViewServiceGetTitleReq) string {
+	var (
+		titleArray []string
+		uriPrefix  string
+	)
+	if r.CurrentName != "" {
+		titleArray = append(titleArray, r.CurrentName)
+	}
+	if r.CategoryId > 0 {
+		category, _ := Category.GetItem(ctx, r.CategoryId)
+		if category != nil {
+			titleArray = append(titleArray, category.Name)
+		}
+	}
+	if r.ContentType != "" {
+		uriPrefix = "/" + r.ContentType
+		topMenuItem, _ := Menu.GetTopMenuByUrl(uriPrefix)
+		if topMenuItem != nil {
+			titleArray = append(titleArray, topMenuItem.Name)
+		}
+	}
+	return gstr.Join(titleArray, " - ")
+}
+
 // 渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 	var (

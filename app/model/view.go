@@ -29,3 +29,10 @@ type ViewServiceGetBreadCrumbReq struct {
 	ContentType string // (可选)内容类型
 	CategoryId  uint   // (可选)栏目ID
 }
+
+// 获取title请求
+type ViewServiceGetTitleReq struct {
+	ContentType string // (可选)内容类型
+	CategoryId  uint   // (可选)栏目ID
+	CurrentName string // (可选)当前名称
+}

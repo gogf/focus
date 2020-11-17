@@ -35,8 +35,12 @@ func (a *topicApi) Index(r *ghttp.Request) {
 		})
 	} else {
 		service.View.Render(r, model.View{
-			ContentType: model.ContentTypeTopic,
+			ContentType: data.Type,
 			Data:        getListRes,
+			Title: service.View.GetTitle(r.Context(), &model.ViewServiceGetTitleReq{
+				ContentType: data.Type,
+				CategoryId:  data.CategoryId,
+			}),
 		})
 	}
 }
@@ -66,6 +70,11 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 		service.View.Render(r, model.View{
 			ContentType: model.ContentTypeTopic,
 			Data:        getDetailRes,
+			Title: service.View.GetTitle(r.Context(), &model.ViewServiceGetTitleReq{
+				ContentType: getDetailRes.Content.Type,
+				CategoryId:  getDetailRes.Content.CategoryId,
+				CurrentName: getDetailRes.Content.Title,
+			}),
 			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &model.ViewServiceGetBreadCrumbReq{
 				ContentId:   getDetailRes.Content.Id,
 				ContentType: getDetailRes.Content.Type,
