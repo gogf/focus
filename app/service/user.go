@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gfile"
@@ -34,7 +35,7 @@ func init() {
 func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLoginReq) error {
 	userEntity, err := s.GetUserByPassportAndPassword(
 		loginReq.Passport,
-		loginReq.Password,
+		s.EncryptPassword(loginReq.Passport, loginReq.Password),
 	)
 	if err != nil {
 		return err
@@ -57,6 +58,11 @@ func (s *userService) Login(ctx context.Context, loginReq *model.UserServiceLogi
 // 注销
 func (s *userService) Logout(ctx context.Context) error {
 	return Session.RemoveUser(ctx)
+}
+
+// 将密码按照内部算法进行加密
+func (s *userService) EncryptPassword(passport, password string) string {
+	return gmd5.MustEncrypt(passport + password)
 }
 
 // 根据账号和密码查询用户信息，一般用于账号密码登录。
@@ -107,6 +113,7 @@ func (s *userService) Register(r *model.UserServiceRegisterReq) error {
 	if err := s.CheckNicknameUnique(user.Nickname); err != nil {
 		return err
 	}
+	user.Password = s.EncryptPassword(user.Passport, user.Password)
 	// 自动生成头像
 	avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.AvatarUploadPath, user.Passport)
 	if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
@@ -119,15 +126,17 @@ func (s *userService) Register(r *model.UserServiceRegisterReq) error {
 
 // 修改个人密码
 func (s *userService) UpdatePassword(ctx context.Context, r *model.UserApiPasswordReq) error {
-	n, err := dao.User.Where(dao.User.Columns.Password, r.OldPassword).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Count()
+	oldPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.OldPassword)
+	n, err := dao.User.Where(dao.User.Columns.Password, oldPassword).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Count()
 	if err != nil {
 		return err
 	}
 	if n == 0 {
 		return gerror.New(`原始密码错误`)
 	}
+	newPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.NewPassword)
 	_, err = dao.User.Data(g.Map{
-		dao.User.Columns.Password: r.NewPassword,
+		dao.User.Columns.Password: newPassword,
 	}).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Update()
 	return err
 }
