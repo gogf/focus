@@ -33,7 +33,6 @@ type ContentListItem struct {
 	CategoryId uint        `json:"category_id"` // 栏目ID
 	UserId     uint        `json:"user_id"`     // 用户ID
 	Title      string      `json:"title"`       // 标题
-	Content    string      `json:"content"`     // 内容
 	Sort       uint        `json:"sort"`        // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶
 	Brief      string      `json:"brief"`       // 摘要
 	Thumb      string      `json:"thumb"`       // 缩略图
@@ -145,6 +144,7 @@ type ContentServiceSearchReq struct {
 // Service搜索列表结果
 type ContentServiceSearchRes struct {
 	List  []*ContentServiceSearchResItem `json:"list"`  // 列表
+	Stats map[string]int                 `json:"stats"` // 搜索统计
 	Page  int                            `json:"page"`  // 分页码
 	Size  int                            `json:"size"`  // 分页数量
 	Total int                            `json:"total"` // 数据总数

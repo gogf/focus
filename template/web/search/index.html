@@ -25,7 +25,7 @@
                     <div class="float-left">
                         <span class="badge badge-primary">{{$item.Category.Name}}</span>
                         <span class="gf-list-item-title">
-                            <a  href="/{{$item.Category.ContentType}}/{{$item.Content.Id}}" style="color: #222;">{{$item.Content.Title}}</a>
+                            <a href="/{{$item.Category.ContentType}}/{{$item.Content.Id}}" target="_blank">{{$item.Content.Title}}</a>
                         </span>
                     </div>
                     <div class="float-right">
@@ -59,26 +59,30 @@
         <div class="card gf-card" style="margin: 0">
             <div class="card-header">所有话题</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item gf-list-item" id="search-all"><a
-                            href="/user/article"><span class="icon iconfont">&#xe622;</span> 综合</a> <span
-                            class="badge badge-primary" style="float: right;">12</span>
+                <li class="list-group-item gf-list-item">
+                    <a href="/user/article"><span class="icon iconfont">&#xe622;</span> 综合</a>
+                    <span class="badge badge-primary" style="float: right;">{{.Data.Total}}</span>
                 </li>
-                <li class="list-group-item gf-list-item" id="search-article"><a
-                            href="/user/article"><span class="icon iconfont">&#xe61c;</span> 文章</a> <span
-                            class="badge badge-primary" style="float: right;">12</span>
+                {{if .Data.Stats.topic}}
+                <li class="list-group-item gf-list-item" id="search-topic">
+                    <a href="/user/topic"><span class="icon iconfont">&#xe6b3;</span> 主题</a>
+                    <span class="badge badge-primary" style="float: right;">{{.Data.Stats.topic}}</span>
                 </li>
-                <li class="list-group-item gf-list-item" id="search-topic"><a
-                            href="/user/topic"><span class="icon iconfont">&#xe6b3;</span> 主题</a> <span
-                            class="badge badge-primary" style="float: right;">12</span>
+                {{end}}
+
+                {{if .Data.Stats.article}}
+                <li class="list-group-item gf-list-item" id="search-article">
+                    <a href="/user/article"><span class="icon iconfont">&#xe61c;</span> 文章</a>
+                    <span class="badge badge-primary" style="float: right;">{{.Data.Stats.article}}</span>
                 </li>
-                <li class="list-group-item gf-list-item" id="search-ask"><a
-                            href="/user/ask"><span class="icon iconfont">&#xe717;</span> 问答</a> <span
-                            class="badge badge-primary" style="float: right;">12</span>
+                {{end}}
+
+                {{if .Data.Stats.ask}}
+                <li class="list-group-item gf-list-item" id="search-ask">
+                    <a href="/user/ask"><span class="icon iconfont">&#xe717;</span> 问答</a>
+                    <span class="badge badge-primary" style="float: right;">{{.Data.Stats.ask}}</span>
                 </li>
-                <li class="list-group-item gf-list-item" id="search-message"><a
-                            href="/user/message"><span class="icon iconfont">&#xe60e;</span> 消息</a> <span
-                            class="badge badge-primary" style="float: right;">13</span>
-                </li>
+                {{end}}
             </ul>
         </div>
     </div>

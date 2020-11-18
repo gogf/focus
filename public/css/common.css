@@ -236,10 +236,13 @@ code[class*="language-"], pre[class*="language-"] {
     padding-left: 5px;
 }
 
-.gf-list .gf-list-item .gf-list-item-title {
+.gf-list-item-title {
     font-size: 16px;
     line-height: 130%;
     text-shadow: 0 1px 0 #fff;
+}
+.gf-list-item-title a, .gf-list-item-title a:visited, .gf-list-item-title a:active {
+    color: #222;
 }
 
 /**************** 文章内容样式 ************************/

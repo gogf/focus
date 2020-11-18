@@ -78,21 +78,9 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 
 // 搜索内容列表
 func (s *contentService) Search(ctx context.Context, r *model.ContentServiceSearchReq) (*model.ContentServiceSearchRes, error) {
-	// select *, MATCH (title, content) AGAINST ('祖国') as score
-	// from t_article where MATCH (title, content) AGAINST ('祖国' IN NATURAL LANGUAGE MODE);
-	fieldNames := gutil.Keys(model.ContentListItem{})
-	fieldNames = append(fieldNames, fmt.Sprintf(
-		`MATCH (%s,%s) AGAINST (?) AS score`,
-		dao.Content.Columns.Title,
-		dao.Content.Columns.Content,
-	))
-	m := dao.Content.Fields(fieldNames)
-	m = m.Where(fmt.Sprintf(
-		`MATCH (%s,%s) AGAINST (? IN NATURAL LANGUAGE MODE)`,
-		dao.Content.Columns.Title,
-		dao.Content.Columns.Content,
-	), r.Key)
-
+	likePattern := `%` + r.Key + `%`
+	m := dao.Content.Fields(model.ContentListItem{})
+	m = m.Where(dao.Content.Columns.Content+" LIKE ?", likePattern).Or(dao.Content.Columns.Title+" LIKE ?", likePattern)
 	// 内容类型
 	if r.Type != "" {
 		m = m.Where(dao.Content.Columns.Type, r.Type)
@@ -105,8 +93,7 @@ func (s *contentService) Search(ctx context.Context, r *model.ContentServiceSear
 		}
 		m = m.Where(dao.Content.Columns.CategoryId, idArray)
 	}
-	listModel := m.Args(r.Key)
-	listModel = listModel.Page(r.Page, r.Size)
+	listModel := m.Page(r.Page, r.Size)
 	switch r.Sort {
 	case model.ContentSortHot:
 		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
@@ -123,16 +110,29 @@ func (s *contentService) Search(ctx context.Context, r *model.ContentServiceSear
 	}
 	// 没有数据
 	if contentEntities.IsEmpty() {
-		return nil, nil
+		return &model.ContentServiceSearchRes{}, nil
 	}
-	total, err := m.Fields("*").Count()
+	countModel := m.Fields("*")
+	total, err := countModel.Count()
 	if err != nil {
 		return nil, err
+	}
+	// 搜索统计
+	statsModel := m.Fields(dao.Content.Columns.Type, "count(*) total").
+		Group(dao.Content.Columns.Type + "," + dao.Content.Columns.CategoryId)
+	statsAll, err := statsModel.M.All()
+	if err != nil {
+		return nil, err
+	}
+	statsMap := make(map[string]int)
+	for _, v := range statsAll {
+		statsMap[v["type"].String()] = v["total"].Int()
 	}
 	getListRes := &model.ContentServiceSearchRes{
 		Page:  r.Page,
 		Size:  r.Size,
 		Total: total,
+		Stats: statsMap,
 	}
 	// Content
 	if err := contentEntities.ScanList(&getListRes.List, "Content"); err != nil {
@@ -154,6 +154,7 @@ func (s *contentService) Search(ctx context.Context, r *model.ContentServiceSear
 	if err != nil {
 		return nil, err
 	}
+
 	return getListRes, nil
 }
 
