@@ -37,3 +37,17 @@ func (a *replyApi) DoCreate(r *ghttp.Request) {
 		response.JsonExit(r, 0, "")
 	}
 }
+
+func (a *replyApi) Index(r *ghttp.Request) {
+	var (
+		data *model.ReplyServiceGetListReq
+	)
+	if err := r.Parse(&data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if getListRes, err := service.Reply.GetList(r.Context(), data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	} else {
+		service.View.RenderTpl(r, "/web/reply.html", model.View{Data: getListRes})
+	}
+}
