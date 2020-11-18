@@ -74,8 +74,8 @@ func (s *viewService) GetTitle(ctx context.Context, r *model.ViewServiceGetTitle
 	return gstr.Join(titleArray, " - ")
 }
 
-// 渲染模板页面
-func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
+// 渲染指定模板页面
+func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View) {
 	var (
 		viewObj  = model.View{}
 		viewData = make(g.Map)
@@ -113,13 +113,18 @@ func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 		viewData["Notice"] = notice
 	}
 	// 渲染模板
-	r.Response.WriteTplDefault(viewData)
+	r.Response.WriteTpl(tpl, viewData)
 	// 开发模式下，在页面最下面打印所有的模板变量
 	if gmode.IsDevelop() {
 		r.Response.WriteTplContent(`{{dump .}}`, viewData)
 	}
 	// 退出当前业务函数执行
 	r.Exit()
+}
+
+// 渲染默认模板页面
+func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
+	s.RenderTpl(r, r.GetView().GetDefaultFile(), data...)
 }
 
 // 获取自动设置的MainTpl
