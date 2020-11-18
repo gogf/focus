@@ -1,0 +1,27 @@
+{{range $index, $item := .Data.List}}
+    <li class="list-group-item">
+        <div class="reply" style="padding: 5px;width: 100%;">
+            <div class="reply-avatar" style="width: 100%;">
+                <a href="/users/{{$item.User.Id }}">
+                    <img class="img-thumbnail"
+                         src="{{$item.User.Avatar }}"
+                         style="max-width:40px;border-radius: 120px;" alt="">
+                </a>
+                <a href="" class="text-dark font-weight-bold">{{$item.User.Nickname }}</a> <span
+                        class="text-success">#{{ $item.Reply.Id }}</span> · <span
+                        class="text-secondary">{{$item.Reply.CreatedAt | $.BuildIn.FormatTime}}</span>
+                <span class="badge badge-success">已采纳</span>
+            </div>
+            <div class="reply-content" style="padding: 5px;">
+                {{$item.Reply.Content }}
+            </div>
+            <div class="reply-operating" style="padding: 5px">
+                <a href="" class="text-secondary" style="font-size: 14px;">采纳</a>
+                <a href="" class="text-secondary" style="font-size: 14px;">回复</a>
+                <a href="" class="text-secondary" style="font-size: 14px;">删除</a>
+                <a><span class="icon iconfont icon-cai"></span> <span class="number">(0)</span></a>
+                <a><span class="icon iconfont icon-zan"></span> <span class="number">(0)</span></a>
+            </div>
+        </div>
+    </li>
+{{end}}
