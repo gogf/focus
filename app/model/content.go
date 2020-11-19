@@ -121,7 +121,7 @@ type ContentServiceGetListReq struct {
 	Page       int    `d:"1"  v:"min:0#分页号码错误"`     // 分页号码
 	Size       int    `d:"10" v:"max:50#分页数量最大50条"` // 分页数量，最大50
 	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
-	UserId     uint   // 用户ID
+	UserId     uint   // 要查询的用户ID
 }
 
 // Service查询列表结果
