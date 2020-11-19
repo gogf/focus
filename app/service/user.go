@@ -143,11 +143,38 @@ func (s *userService) UpdatePassword(ctx context.Context, r *model.UserApiPasswo
 }
 
 // 修改个人资料
-func (s *userService) UpdateProfile(ctx context.Context, r *model.UserServiceUpdateProfileReq) error {
-	if err := s.CheckNicknameUnique(r.Nickname); err != nil {
+func (s *userService) GetProfile(ctx context.Context) (*model.UserProfileRes, error) {
+	getProfile := new(model.UserProfileRes)
+
+	userRecord, err := dao.User.Fields(model.UserProfileRes{}).WherePri(Context.Get(ctx).User.Id).M.One()
+	if err != nil {
+		return nil, err
+	}
+
+	if err := userRecord.Struct(getProfile); err != nil {
+		return nil, err
+	}
+	return getProfile, nil
+}
+
+// 修改个人资料
+func (s *userService) UpdateProfile(ctx context.Context, r *model.UserApiUpdateProfileReq) error {
+	userId := Context.Get(ctx).User.Id
+	n, err := dao.User.Where(dao.User.Columns.Nickname, r.Nickname).Where("id <> ?", userId).Count()
+	if err != nil {
 		return err
 	}
-	_, err := dao.User.Data(r).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Update()
+	if n > 0 {
+		return gerror.Newf(`昵称"%s"已被占用`, r.Nickname)
+	}
+
+	userServiceUpdateProfileReq := new(model.UserServiceUpdateProfileReq)
+	err = gconv.Struct(r, &userServiceUpdateProfileReq)
+	if err != nil {
+		return err
+	}
+
+	_, err = dao.User.Data(userServiceUpdateProfileReq).Where(dao.User.Columns.Id, userId).Update()
 	return err
 }
 

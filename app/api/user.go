@@ -5,7 +5,6 @@ import (
 	"focus/app/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
 )
 
 var User = new(userApi)
@@ -50,7 +49,19 @@ func (a *userApi) Index(r *ghttp.Request) {
 // @router  /user/profile [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Profile(r *ghttp.Request) {
-	service.View.Render(r)
+	if getProfile, err := service.User.GetProfile(r.Context()); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	} else {
+		title := "gf bbs - 用户 " + getProfile.Nickname + " 资料"
+		service.View.Render(r, model.View{
+			Title:       title,
+			Keywords:    title,
+			Description: title,
+			Data:        getProfile,
+		})
+	}
 }
 
 // @summary 修改头像页面
@@ -59,7 +70,19 @@ func (a *userApi) Profile(r *ghttp.Request) {
 // @router  /user/avatar [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Avatar(r *ghttp.Request) {
-	service.View.Render(r)
+	if getProfile, err := service.User.GetProfile(r.Context()); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	} else {
+		title := "gf bbs - 用户 " + getProfile.Nickname + " 头像"
+		service.View.Render(r, model.View{
+			Title:       title,
+			Keywords:    title,
+			Description: title,
+			Data:        getProfile,
+		})
+	}
 }
 
 // @summary 修改密码页面
@@ -77,7 +100,7 @@ func (a *userApi) Password(r *ghttp.Request) {
 // @router  /user/article [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Article(r *ghttp.Request) {
-	service.View.Render(r)
+	a.getContentList(r, model.ContentTypeArticle)
 }
 
 // @summary 我的主题页面
@@ -86,7 +109,7 @@ func (a *userApi) Article(r *ghttp.Request) {
 // @router  /user/topic [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Topic(r *ghttp.Request) {
-	service.View.Render(r)
+	a.getContentList(r, model.ContentTypeTopic)
 }
 
 // @summary 我的问答页面
@@ -95,7 +118,37 @@ func (a *userApi) Topic(r *ghttp.Request) {
 // @router  /user/ask [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Ask(r *ghttp.Request) {
-	service.View.Render(r)
+	a.getContentList(r, model.ContentTypeAsk)
+}
+
+// 获取内容列表 参数contentType
+func (a *userApi) getContentList(r *ghttp.Request, contentType string) {
+	var (
+		data *model.ContentServiceGetListReq
+	)
+	if err := r.Parse(&data); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	}
+	data.Type = contentType
+	// 设置UserID
+	data.UserId = service.Context.Get(r.Context()).User.Id
+
+	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	} else {
+		service.View.Render(r, model.View{
+			ContentType: data.Type,
+			Data:        getListRes,
+			Title: service.View.GetTitle(r.Context(), &model.ViewServiceGetTitleReq{
+				ContentType: data.Type,
+				CategoryId:  data.CategoryId,
+			}),
+		})
+	}
 }
 
 // @summary 我的消息页面
@@ -135,16 +188,13 @@ func (a *userApi) UpdatePassword(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	var (
-		data                    *model.UserApiUpdateProfileReq
-		serviceUpdateProfileReq *model.UserServiceUpdateProfileReq
+		data *model.UserApiUpdateProfileReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &serviceUpdateProfileReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.User.UpdateProfile(r.Context(), serviceUpdateProfileReq); err != nil {
+
+	if err := service.User.UpdateProfile(r.Context(), data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")

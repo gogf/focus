@@ -34,10 +34,22 @@ type UserApiPasswordReq struct {
 	NewPassword string `v:"required#请输入新密码"`  // 新密码
 }
 
-// API修改个人资料
+// api修改用户
 type UserApiUpdateProfileReq struct {
+	Id       uint   // 用户ID
 	Nickname string `v:"required#请输入昵称信息"` // 昵称
 	Avatar   string // 头像地址
+	Gender   int    // 性别 0: 未设置 1: 男 2: 女
+}
+
+// Service用户信息
+type UserProfileRes struct {
+	UserApiUpdateProfileReq
+}
+
+// Service修改用户
+type UserServiceUpdateProfileReq struct {
+	Nickname string // 昵称
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
 }
 
@@ -65,14 +77,6 @@ type UserServiceRegisterReq struct {
 	Passport string // 账号
 	Password string // 密码(明文)
 	Nickname string // 昵称
-}
-
-// Service修改用户
-type UserServiceUpdateProfileReq struct {
-	Id       uint   // 用户ID
-	Nickname string // 昵称
-	Avatar   string // 头像地址
-	Gender   int    // 性别 0: 未设置 1: 男 2: 女
 }
 
 type UserServiceGetListReq struct {

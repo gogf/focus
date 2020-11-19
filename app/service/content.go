@@ -27,6 +27,9 @@ func (s *contentService) GetList(ctx context.Context, r *model.ContentServiceGet
 		}
 		m = m.Where(dao.Content.Columns.CategoryId, idArray)
 	}
+	if r.UserId > 0 {
+		m = m.Where(dao.Content.Columns.UserId, r.UserId)
+	}
 	listModel := m.Page(r.Page, r.Size)
 	switch r.Sort {
 	case model.ContentSortHot:
