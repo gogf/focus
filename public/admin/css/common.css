@@ -1,0 +1,11 @@
+.nav-treeview a, .nav-treeview a:visited, .nav-treeview a:active {
+padding-left:35px;
+}
+
+.brand-link img {
+    width: 34px !important;
+}
+
+.user-panel img {
+    width: 34px !important;
+}
