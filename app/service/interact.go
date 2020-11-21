@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 )
 
-// 交互管理器
+// 交互管理服务
 var Interact = &interactService{}
 
 type interactService struct{}

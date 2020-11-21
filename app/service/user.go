@@ -14,6 +14,7 @@ import (
 	"github.com/o1egl/govatar"
 )
 
+// 用户管理服务
 var User = &userService{
 	AvatarUploadPath:      g.Cfg().GetString(`upload.path`) + `/avatar`,
 	AvatarUploadUrlPrefix: `/upload/avatar`,

@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// 栏目管理服务
 var Category = new(categoryService)
 
 const (

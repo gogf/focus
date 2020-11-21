@@ -5,7 +5,7 @@ import (
 	"focus/app/model"
 )
 
-// 菜单管理
+// 菜单管理服务
 var Menu = new(menuService)
 
 type menuService struct{}

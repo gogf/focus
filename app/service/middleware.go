@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-// 中间件管理
+// 中间件管理服务
 var Middleware = &middlewareService{
 	LoginUrl: "/login",
 }

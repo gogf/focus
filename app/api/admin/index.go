@@ -12,7 +12,7 @@ var Index = new(indexApi)
 type indexApi struct{}
 
 // @summary 展示后台首页
-// @tags    首页
+// @tags    后台-首页
 // @produce html
 // @router  /admin [GET]
 // @success 200 {string} html "页面HTML"

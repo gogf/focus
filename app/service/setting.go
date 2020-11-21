@@ -6,7 +6,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 )
 
-// 持久化Key-Value管理器
+// 持久化Key-Value管理服务
 var Setting = new(settingService)
 
 type settingService struct{}

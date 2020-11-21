@@ -3,24 +3,25 @@ package service
 import (
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/guid"
-	captcha "github.com/mojocn/base64Captcha"
+	"github.com/mojocn/base64Captcha"
 )
 
+// 验证码管理服务
 var Captcha = new(captchaService)
 
 type captchaService struct{}
 
 var (
-	captchaStore  = captcha.DefaultMemStore
+	captchaStore  = base64Captcha.DefaultMemStore
 	captchaDriver = newDriver()
 )
 
-func newDriver() *captcha.DriverString {
-	driver := &captcha.DriverString{
+func newDriver() *base64Captcha.DriverString {
+	driver := &base64Captcha.DriverString{
 		Height:          44,
 		Width:           126,
 		NoiseCount:      5,
-		ShowLineOptions: captcha.OptionShowSineLine | captcha.OptionShowSlimeLine | captcha.OptionShowHollowLine,
+		ShowLineOptions: base64Captcha.OptionShowSineLine | base64Captcha.OptionShowSlimeLine | base64Captcha.OptionShowHollowLine,
 		Length:          4,
 		Source:          "1234567890",
 		Fonts:           []string{"wqy-microhei.ttc"},
@@ -30,7 +31,7 @@ func newDriver() *captcha.DriverString {
 
 // 创建验证码，直接输出验证码图片内容到HTTP Response.
 func (s *captchaService) NewAndStore(r *ghttp.Request, name string) error {
-	c := captcha.NewCaptcha(captchaDriver, captchaStore)
+	c := base64Captcha.NewCaptcha(captchaDriver, captchaStore)
 	_, content, answer := c.Driver.GenerateIdQuestionAnswer()
 	item, _ := c.Driver.DrawCaptcha(content)
 	captchaStoreKey := guid.S()

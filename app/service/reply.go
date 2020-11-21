@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/util/gutil"
 )
 
+// 评论/回复管理服务
 var Reply = new(replyService)
 
 type replyService struct{}

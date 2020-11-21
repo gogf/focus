@@ -6,6 +6,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 上下文管理服务
 var Context = new(contextService)
 
 type contextService struct{}

@@ -5,7 +5,7 @@ import (
 	"focus/app/model"
 )
 
-// Session管理
+// Session管理服务
 var Session = new(sessionService)
 
 type sessionService struct{}

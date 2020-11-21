@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/util/gmode"
 )
 
+// 视图管理服务
 var View = new(viewService)
 
 type viewService struct{}
@@ -102,7 +103,7 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 		}
 	}
 	// 内置对象
-	viewData["BuildIn"] = &ViewBuildIn{httpRequest: r}
+	viewData["BuildIn"] = &viewBuildIn{httpRequest: r}
 	// 内容模板
 	if viewData["MainTpl"] == nil {
 		viewData["MainTpl"] = s.getDefaultMainTpl(r)

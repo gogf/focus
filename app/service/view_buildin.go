@@ -11,12 +11,12 @@ import (
 )
 
 // 视图自定义方法管理对象
-type ViewBuildIn struct {
+type viewBuildIn struct {
 	httpRequest *ghttp.Request
 }
 
 // 根据性别字段内容返回性别的font。
-func (s *ViewBuildIn) GenderFont(gender int) string {
+func (s *viewBuildIn) GenderFont(gender int) string {
 	switch gender {
 	case model.UserGenderMale:
 		return "&#xe651;"
@@ -28,7 +28,7 @@ func (s *ViewBuildIn) GenderFont(gender int) string {
 }
 
 // 创建分页HTML内容
-func (s *ViewBuildIn) Page(total, size int) string {
+func (s *viewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
 	page.LinkStyle = "page-link"
 	page.SpanStyle = "page-link"
@@ -45,19 +45,19 @@ func (s *ViewBuildIn) Page(total, size int) string {
 }
 
 // 我是否赞了这个内容
-func (s *ViewBuildIn) DidIZan(targetType string, targetId uint) bool {
+func (s *viewBuildIn) DidIZan(targetType string, targetId uint) bool {
 	b, _ := Interact.DidIZan(s.httpRequest.Context(), targetType, targetId)
 	return b
 }
 
 // 我是否踩了这个内容
-func (s *ViewBuildIn) DidICai(targetType string, targetId uint) bool {
+func (s *viewBuildIn) DidICai(targetType string, targetId uint) bool {
 	b, _ := Interact.DidICai(s.httpRequest.Context(), targetType, targetId)
 	return b
 }
 
 // 获取顶部菜单列表
-func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
+func (s *viewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
 	topMenus, err := Menu.GetTopMenus()
 	if err != nil {
 		return nil, err
@@ -101,17 +101,17 @@ func (s *ViewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
 }
 
 // 获取当前页面的Url Path.
-func (s *ViewBuildIn) UrlPath() string {
+func (s *viewBuildIn) UrlPath() string {
 	return s.httpRequest.URL.Path
 }
 
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
-func (s *ViewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
+func (s *viewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
 	return Category.GetTree(s.httpRequest.Context(), contentType)
 }
 
 // 随机数 开发环境时间戳，线上为前端版本号
-func (s *ViewBuildIn) Random() string {
+func (s *viewBuildIn) Random() string {
 	var rand string
 	if gmode.IsDevelop() {
 		rand = gconv.String(gtime.TimestampMilli())
@@ -122,7 +122,7 @@ func (s *ViewBuildIn) Random() string {
 }
 
 // FormatTime 格式化时间
-func (s *ViewBuildIn) FormatTime(gt *gtime.Time) string {
+func (s *viewBuildIn) FormatTime(gt *gtime.Time) string {
 	if gt == nil {
 		return ""
 	}

@@ -1,5 +1,14 @@
+section.content {
+    padding-top:10px !important;
+}
+
+.brand-link {
+    color: rgba(255,255,255,.9) !important;
+}
+
 .nav-treeview a, .nav-treeview a:visited, .nav-treeview a:active {
-padding-left:35px;
+    padding-left:25px;
+    font-size:15px;
 }
 
 .brand-link img {
