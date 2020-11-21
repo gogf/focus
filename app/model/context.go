@@ -15,9 +15,16 @@ const (
 
 // 请求上下文结构
 type Context struct {
-	User    *ContextUser   // 上下文用户信息
 	Session *ghttp.Session // 当前Session管理对象
-	Data    g.Map          // 自定KV变量
+	User    *ContextUser   // 上下文用户信息
+	View    *ContextView   // 上下文视图管理对象
+	Data    g.Map          // 自定KV变量，业务模块根据需要设置，不固定
+}
+
+// 请求上下文中的视图信息
+type ContextView struct {
+	Layout string // 默认布局模板
+	System string // 前台还是后台系统
 }
 
 // 请求上下文中的用户信息

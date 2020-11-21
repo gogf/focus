@@ -22,6 +22,7 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 	customCtx := &model.Context{
 		Session: r.Session,
 		Data:    make(g.Map),
+		View:    &model.ContextView{Layout: g.Cfg().GetString("viewer.indexLayout")},
 	}
 	Context.Init(r, customCtx)
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {
@@ -40,8 +41,39 @@ func (s *middlewareService) CustomCtx(r *ghttp.Request) {
 	r.Middleware.Next()
 }
 
-// 权限控制，用户必须登录才能访问
-func (s *middlewareService) Auth(r *ghttp.Request) {
+// 前台系统权限控制，用户必须登录才能访问
+func (s *middlewareService) IndexAuth(r *ghttp.Request) {
+	user := Session.GetUser(r.Context())
+	if user == nil {
+		Session.SetNotice(r.Context(), &model.SessionNotice{
+			Type:    model.SessionNoticeTypeWarn,
+			Content: "未登录或会话已过期，请您登录后再继续",
+		})
+		// 只有GET请求才支持保存当前URL，以便后续登录后再跳转回来。
+		if r.Method == "GET" {
+			Session.SetLoginReferer(r.Context(), r.GetUrl())
+		}
+		// 根据当前请求方式执行不同的返回数据结构
+		if r.IsAjaxRequest() {
+			response.JsonRedirectExit(r, 1, "", s.LoginUrl)
+		} else {
+			r.Response.RedirectTo(s.LoginUrl)
+		}
+	}
+	r.Middleware.Next()
+}
+
+// 后台系统上下文处理
+func (s *middlewareService) AdminCtx(r *ghttp.Request) {
+	Context.Get(r.Context()).View.Layout = g.Cfg().GetString("viewer.adminLayout")
+	r.Middleware.Next()
+}
+
+// 后台系统权限控制，用户必须登录才能访问
+func (s *middlewareService) AdminAuth(r *ghttp.Request) {
+	r.Middleware.Next()
+	return
+
 	user := Session.GetUser(r.Context())
 	if user == nil {
 		Session.SetNotice(r.Context(), &model.SessionNotice{

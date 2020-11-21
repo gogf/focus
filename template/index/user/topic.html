@@ -1,0 +1,21 @@
+<div class="row gf-list">
+    <div class="col-md-2 offset-md-1">
+        {{include "index/user/user_menu.html" .}}
+    </div>
+    <div class="col-md-8">
+        <div class="card gf-person">
+            <div class="card-header">
+                <span class="iconfont">&#xe6b3;</span> 我的主题
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {{include "index/user/user_content_list.html" .}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $("#user-topic").addClass("active")
+</script>

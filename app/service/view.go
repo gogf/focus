@@ -124,31 +124,34 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 
 // 渲染默认模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
-	s.RenderTpl(r, r.GetView().GetDefaultFile(), data...)
+	s.RenderTpl(r, Context.Get(r.Context()).View.Layout, data...)
 }
 
 // 获取自动设置的MainTpl
 func (s *viewService) getDefaultMainTpl(r *ghttp.Request) string {
 	var (
-		prefix  = "web/"
-		array   = gstr.SplitAndTrim(r.URL.Path, "/")
-		mainTpl = ""
+		viewFolderPrefix = gstr.Split(Context.Get(r.Context()).View.Layout, "/")[0]
+		urlPathArray     = gstr.SplitAndTrim(r.URL.Path, "/")
+		mainTpl          string
 	)
+	if len(urlPathArray) > 0 && urlPathArray[0] == viewFolderPrefix {
+		urlPathArray = urlPathArray[1:]
+	}
 	switch {
-	case len(array) == 2:
+	case len(urlPathArray) == 2:
 		// 如果2级路由为数字，那么为模块的详情页面，那么路由固定为/xxx/detail。
 		// 如果需要定制化内容模板，请在具体路由方法中设置MainTpl。
-		if gstr.IsNumeric(array[1]) {
-			array[1] = "detail"
+		if gstr.IsNumeric(urlPathArray[1]) {
+			urlPathArray[1] = "detail"
 		}
-		mainTpl = prefix + gfile.Join(array[0], array[1]) + ".html"
-	case len(array) == 1:
-		mainTpl = prefix + array[0] + "/index.html"
+		mainTpl = viewFolderPrefix + "/" + gfile.Join(urlPathArray[0], urlPathArray[1]) + ".html"
+	case len(urlPathArray) == 1:
+		mainTpl = viewFolderPrefix + "/" + urlPathArray[0] + "/index.html"
 	default:
 		// 默认首页内容
-		mainTpl = prefix + "index/index.html"
+		mainTpl = viewFolderPrefix + "/index/index.html"
 	}
-	return mainTpl
+	return gstr.TrimLeft(mainTpl, "/")
 }
 
 // 跳转中间页面
@@ -160,7 +163,7 @@ func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "页面跳转中"
 	}
-	view.MainTpl = "web/pages/302.html"
+	view.MainTpl = "index/pages/302.html"
 	s.Render(r, view)
 }
 
@@ -173,7 +176,7 @@ func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "无访问权限"
 	}
-	view.MainTpl = "web/pages/401.html"
+	view.MainTpl = "index/pages/401.html"
 	s.Render(r, view)
 }
 
@@ -186,7 +189,7 @@ func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "无访问权限"
 	}
-	view.MainTpl = "web/pages/403.html"
+	view.MainTpl = "index/pages/403.html"
 	s.Render(r, view)
 }
 
@@ -199,7 +202,7 @@ func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "资源不存在"
 	}
-	view.MainTpl = "web/pages/404.html"
+	view.MainTpl = "index/pages/404.html"
 	s.Render(r, view)
 }
 
@@ -212,6 +215,6 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "请求执行错误"
 	}
-	view.MainTpl = "web/pages/500.html"
+	view.MainTpl = "index/pages/500.html"
 	s.Render(r, view)
 }

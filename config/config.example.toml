@@ -1,8 +1,10 @@
-# Web Server.
+# 配置文件的键名命名方式统一使用小驼峰。
+
+# HTTP Server.
 [server]
-	Address        = ":8199"
-	ServerRoot     = "public"
-	RouteOverWrite = true
+	address        = ":8199"
+	serverRoot     = "public"
+	routeOverWrite = true
 
 # 内容设置
 [setting]
@@ -14,17 +16,18 @@
 [upload]
     path = "upload"
 
-# 日志配置
+# Logger configurations.
 [logger]
-    Path   = "/tmp/log/focus"
-    Level  = "all"
-    Stdout = true
+    path   = "/tmp/log/gf-alpha"
+    level  = "all"
+    stdout = true
 
 # 模板引擎配置
 [viewer]
-    DefaultFile = "web/layout/layout.html"
+    indexLayout = "index/index.html"
+    adminLayout = "admin/index.html"
 
-# 数据库配置
+# 数据库连接配置
 [database]
-    Link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
-    Debug = true
+    link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
+    debug = true
