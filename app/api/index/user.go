@@ -27,19 +27,7 @@ func (a *userApi) Index(r *ghttp.Request) {
 		})
 	}
 
-	if getListRes, err := service.User.GetList(r.Context(), data); err != nil {
-		service.View.Render500(r, model.View{
-			Error: err.Error(),
-		})
-	} else {
-		title := "gf bbs - 用户 " + getListRes.User.Nickname + " 主页"
-		service.View.Render(r, model.View{
-			Title:       title,
-			Keywords:    title,
-			Description: title,
-			Data:        getListRes,
-		})
-	}
+	a.getContentList(r, data.Type, data.Id)
 
 }
 
@@ -100,7 +88,7 @@ func (a *userApi) Password(r *ghttp.Request) {
 // @router  /user/article [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Article(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeArticle)
+	a.getContentList(r, model.ContentTypeArticle, service.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的主题页面
@@ -109,7 +97,7 @@ func (a *userApi) Article(r *ghttp.Request) {
 // @router  /user/topic [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Topic(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeTopic)
+	a.getContentList(r, model.ContentTypeTopic, service.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的问答页面
@@ -118,13 +106,13 @@ func (a *userApi) Topic(r *ghttp.Request) {
 // @router  /user/ask [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Ask(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeAsk)
+	a.getContentList(r, model.ContentTypeAsk, service.Context.Get(r.Context()).User.Id)
 }
 
-// 获取内容列表 参数contentType
-func (a *userApi) getContentList(r *ghttp.Request, contentType string) {
+// 获取内容列表 参数contentType,用户信息
+func (a *userApi) getContentList(r *ghttp.Request, contentType string, userId uint) {
 	var (
-		data *model.ContentServiceGetListReq
+		data *model.UserServiceGetListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		service.View.Render500(r, model.View{
@@ -133,9 +121,9 @@ func (a *userApi) getContentList(r *ghttp.Request, contentType string) {
 	}
 	data.Type = contentType
 	// 设置UserID
-	data.UserId = service.Context.Get(r.Context()).User.Id
+	data.UserId = userId
 
-	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
+	if getListRes, err := service.User.GetList(r.Context(), data); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})

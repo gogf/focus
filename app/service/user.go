@@ -10,7 +10,6 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/util/gconv"
-	"github.com/gogf/gf/util/gutil"
 	"github.com/o1egl/govatar"
 )
 
@@ -143,11 +142,11 @@ func (s *userService) UpdatePassword(ctx context.Context, r *model.UserApiPasswo
 	return err
 }
 
-// 修改个人资料
-func (s *userService) GetProfile(ctx context.Context) (*model.UserProfileRes, error) {
+// 获取个人信息
+func (s *userService) GetProfileById(ctx context.Context, userId uint) (*model.UserProfileRes, error) {
 	getProfile := new(model.UserProfileRes)
 
-	userRecord, err := dao.User.Fields(model.UserProfileRes{}).WherePri(Context.Get(ctx).User.Id).M.One()
+	userRecord, err := dao.User.Fields(model.UserProfileRes{}).WherePri(userId).M.One()
 	if err != nil {
 		return nil, err
 	}
@@ -156,6 +155,11 @@ func (s *userService) GetProfile(ctx context.Context) (*model.UserProfileRes, er
 		return nil, err
 	}
 	return getProfile, nil
+}
+
+// 修改个人资料
+func (s *userService) GetProfile(ctx context.Context) (*model.UserProfileRes, error) {
+	return s.GetProfileById(ctx, Context.Get(ctx).User.Id)
 }
 
 // 修改个人资料
@@ -188,72 +192,25 @@ func (s *userService) Disable(id uint) error {
 	return err
 }
 
-// 查询用户内容列表
+// 查询用户内容列表及用户信息
 func (s *userService) GetList(ctx context.Context, r *model.UserServiceGetListReq) (*model.UserServiceGetListRes, error) {
-	m := dao.Content.Fields(model.ContentListItem{})
-	if r.Type != "" {
-		m = m.Where(dao.Content.Columns.Type, r.Type)
+	var data *model.ContentServiceGetListReq
+	if err := gconv.Struct(r, &data); err != nil {
+		return nil, err
 	}
-	if r.CategoryId > 0 {
-		// 栏目检索
-		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
-		if err != nil {
-			return nil, err
-		}
-		m = m.Where(dao.Content.Columns.CategoryId, idArray)
-	}
-	m = m.Where(dao.Content.Columns.UserId, r.Id)
 
-	listModel := m.Page(r.Page, r.Size)
-	switch r.Sort {
-	case model.ContentSortHot:
-		listModel = listModel.Order(dao.Content.Columns.ViewCount, "DESC")
-	case model.ContentSortActive:
-		listModel = listModel.Order(dao.Content.Columns.UpdatedAt, "DESC")
-	default:
-		listModel = listModel.Order(dao.Content.Columns.Id, "DESC")
-	}
-	contentEntities, err := listModel.M.All()
-	if err != nil {
-		return nil, err
-	}
-	total, err := m.Fields("*").Count()
-	if err != nil {
-		return nil, err
-	}
-	getListRes := &model.UserServiceGetListRes{
-		Page:  r.Page,
-		Size:  r.Size,
-		Total: total,
-	}
-	// Content
-	if err := contentEntities.ScanList(&getListRes.List, "Content"); err != nil {
-		return nil, err
-	}
-	// Category
-	err = dao.Category.
-		Fields(model.ContentListCategoryItem{}).
-		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
-		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
-	if err != nil {
-		return nil, err
-	}
-	// User
-	err = dao.User.
-		Fields(model.ContentListUserItem{}).
-		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "UserId")).
-		ScanList(&getListRes.List, "User", "Content", "id:UserId")
+	getListRes, err := Content.GetList(ctx, data)
 	if err != nil {
 		return nil, err
 	}
 
-	userRecord, err := dao.User.Fields(getListRes.User).WherePri(r.Id).M.One()
+	user, err := User.GetProfileById(ctx, r.UserId)
 	if err != nil {
 		return nil, err
 	}
-	if err := userRecord.Struct(&getListRes.User); err != nil {
-		return nil, err
-	}
 
-	return getListRes, nil
+	res := new(model.UserServiceGetListRes)
+	res.Content = getListRes
+	res.User = user
+	return res, nil
 }
