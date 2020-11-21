@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"focus/app/model"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gstr"
@@ -57,7 +58,7 @@ func (s *viewBuildIn) DidICai(targetType string, targetId uint) bool {
 }
 
 // 获取顶部菜单列表
-func (s *viewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
+func (s *viewBuildIn) TopMenus() ([]*model.MenuItem, error) {
 	topMenus, err := Menu.GetTopMenus()
 	if err != nil {
 		return nil, err
@@ -98,6 +99,65 @@ func (s *viewBuildIn) TopMenus() ([]*model.TopMenuItem, error) {
 	// 最后则自动高亮首页(第一个菜单)
 	topMenus[0].Active = true
 	return topMenus, nil
+}
+
+// 获取管理后台菜单列表，最多两级菜单
+func (s *viewBuildIn) AdminMenus() []*model.MenuItem {
+	var (
+		adminMenus    = make([]*model.MenuItem, 0)
+		menuJsonArray = g.Cfg("admin").GetJsons("menus")
+		value         string
+		items         []string
+		array         []string
+	)
+	for _, v := range menuJsonArray {
+		value = v.GetString("value")
+		items = v.GetStrings("items")
+		array = gstr.SplitAndTrim(value, ",")
+		menuItem := &model.MenuItem{
+			Name:   array[0],
+			Url:    array[1],
+			Icon:   array[2],
+			Active: s.isAdminMenuUrlActive(array[1]),
+			Items:  make([]*model.MenuItem, 0),
+		}
+		if len(array) > 3 {
+			menuItem.Target = array[3]
+		}
+		for _, item := range items {
+			array = gstr.SplitAndTrim(item, ",")
+			item := &model.MenuItem{
+				Name:   array[0],
+				Url:    array[1],
+				Icon:   array[2],
+				Active: s.isAdminMenuUrlActive(array[1]),
+			}
+			if len(array) > 3 {
+				item.Target = array[3]
+			}
+			if item.Active {
+				menuItem.Active = true
+			}
+			menuItem.Items = append(menuItem.Items, item)
+		}
+		adminMenus = append(adminMenus, menuItem)
+	}
+	return adminMenus
+}
+
+// 判断给定的管理后台URL是否被选中
+func (s *viewBuildIn) isAdminMenuUrlActive(url string) bool {
+	// 处理是否选中, URL，包含QueryString
+	if gstr.Equal(url, s.httpRequest.URL.String()) {
+		return true
+	}
+
+	// 处理是否选中, URI
+	if gstr.Equal(gstr.Split(url, "?")[0], s.httpRequest.URL.Path) {
+		return true
+	}
+
+	return false
 }
 
 // 获取当前页面的Url Path.

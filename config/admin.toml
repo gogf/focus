@@ -1,0 +1,26 @@
+# 管理后台相关配置
+
+# 菜单配置
+[[menus]]
+    value = "后台首页, /admin, fa-home"
+[[menus]]
+    value = "系统管理, #, fa-cogs"
+    items = [
+        "系统设置, /admin/system,   fa-cog",
+        "菜单管理, /admin/menu,     fa-th-list",
+        "字典管理, /admin/setting,  fa-list-alt",
+        "模板管理, /admin/template, fa-file",
+    ]
+[[menus]]
+    value = "内容管理, #, fa-th"
+    items = [
+        "内容列表, /admin/content,  fa-bars",
+        "栏目管理, /admin/category, fa-folder-open",
+        "评论管理, /admin/reply,    fa-comments"
+    ]
+[[menus]]
+    value = "用户管理, #, fa-users-cog"
+    items = [
+        "用户列表, /admin/user,      fa-user",
+        "用户角色, /admin/user-role, fa-users",
+    ]

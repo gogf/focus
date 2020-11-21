@@ -4,11 +4,12 @@
 
 package model
 
-// 顶部菜单数据结构
-type TopMenuItem struct {
-	Name   string         `json:"name"`   // 显示名称
-	Url    string         `json:"url"`    // 链接地址
-	Target string         `json:"target"` // 打开方式: 空, _blank
-	Active bool           `json:"active"` // 是否被选中
-	Items  []*TopMenuItem `json:"items"`  // 子级菜单
+// 菜单数据结构
+type MenuItem struct {
+	Name   string      `json:"name"`   // 显示名称
+	Url    string      `json:"url"`    // 链接地址
+	Icon   string      `json:"icon"`   // 图标，可能是class，也可能是iconfont
+	Target string      `json:"target"` // 打开方式: 空, _blank
+	Active bool        `json:"active"` // 是否被选中
+	Items  []*MenuItem `json:"items"`  // 子级菜单
 }

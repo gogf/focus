@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	defaultTopMenus := []*model.TopMenuItem{
+	defaultTopMenus := []*model.MenuItem{
 		{
 			Name: "首页",
 			Url:  "/",
@@ -29,7 +29,7 @@ func main() {
 			Name:   "教程",
 			Url:    "#",
 			Target: "",
-			Items: []*model.TopMenuItem{
+			Items: []*model.MenuItem{
 				{
 					Name:   "GoFrame源码",
 					Url:    "https://github.com/gogf/gf",

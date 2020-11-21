@@ -10,96 +10,26 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                 with font-awesome or any other icon font library -->
-            <li class="nav-item has-treeview menu-open">
-                <a href="/admin" class="nav-link active">
-                    <i class="nav-icon fas fa-home"></i>
-                    <p>后台首页</i>
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>系统管理<i class="right fas fa-angle-left"></i></p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/admin/setting/system" class="nav-link ">
-                            <i class="nav-icon fas fa-cog"></i>
-                            <p>系统设置</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/setting/menu" class="nav-link ">
-                            <i class="nav-icon fas fa-th-list"></i>
-                            <p>菜单管理</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/setting/setting" class="nav-link">
-                            <i class="nav-icon fas fa-list-alt"></i>
-                            <p>字典管理</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/setting/template" class="nav-link">
-                            <i class="nav-icon fas fa-file"></i>
-                            <p>模板管理</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>内容管理<i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/admin/content/list" class="nav-link ">
-                            <i class="nav-icon fas fa-bars"></i>
-                            <p>内容列表</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/content/category" class="nav-link ">
-                            <i class="nav-icon fas fa-folder-open"></i>
-                            <p>内容栏目</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/content/reply" class="nav-link ">
-                            <i class="nav-icon fas fa-comments"></i>
-                            <p>评论管理</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-users-cog"></i>
-                    <p>用户管理<i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/admin/user/list" class="nav-link ">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>用户列表</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/user/role" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>用户角色</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            {{range $index, $item := .BuildIn.AdminMenus}}
+                <li class="nav-item {{if $item.Items}}has-treeview{{end}} {{if $item.Active }}menu-open{{end}}">
+                    <a href="{{$item.Url}}" class="nav-link {{if $item.Active }}active{{end}}" target="{{$item.Target}}">
+                        <i class="nav-icon fas {{$item.Icon}}"></i>
+                        <p>{{$item.Name}} {{if $item.Items}}<i class="right fas fa-angle-left"></i>{{end}}</p>
+                    </a>
+                    {{if $item.Items}}
+                        <ul class="nav nav-treeview">
+                            {{range $index, $subItem := $item.Items}}
+                                <li class="nav-item">
+                                    <a href="{{$subItem.Url}}" class="nav-link {{if $subItem.Active }}active{{end}}" target="{{$subItem.Target}}">
+                                        <i class="nav-icon fas {{$subItem.Icon}}"></i>
+                                        <p>{{$subItem.Name}}</p>
+                                    </a>
+                                </li>
+                            {{end}}
+                        </ul>
+                    {{end}}
+                </li>
+            {{end}}
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

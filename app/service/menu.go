@@ -15,7 +15,7 @@ const (
 )
 
 // 获取顶部菜单
-func (s *menuService) SetTopMenus(menus []*model.TopMenuItem) error {
+func (s *menuService) SetTopMenus(menus []*model.MenuItem) error {
 	b, err := json.Marshal(menus)
 	if err != nil {
 		return err
@@ -24,8 +24,8 @@ func (s *menuService) SetTopMenus(menus []*model.TopMenuItem) error {
 }
 
 // 获取顶部菜单
-func (s *menuService) GetTopMenus() ([]*model.TopMenuItem, error) {
-	var topMenus []*model.TopMenuItem
+func (s *menuService) GetTopMenus() ([]*model.MenuItem, error) {
+	var topMenus []*model.MenuItem
 	v, err := Setting.GetVar(settingTopMenusKey)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (s *menuService) GetTopMenus() ([]*model.TopMenuItem, error) {
 }
 
 // 根据给定的Url检索顶部菜单，给定的Url可能只是一个Url Path。
-func (s *menuService) GetTopMenuByUrl(url string) (*model.TopMenuItem, error) {
+func (s *menuService) GetTopMenuByUrl(url string) (*model.MenuItem, error) {
 	items, _ := s.GetTopMenus()
 	for _, v := range items {
 		if v.Url == url {
