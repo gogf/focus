@@ -6,7 +6,6 @@
 }
 
 
-
 .red {
     color: red
 }
@@ -61,7 +60,7 @@ main .row {
     border-color: #d9ecff !important;
 }
 
-.captcha{
+.captcha {
     height: calc(2.1rem + 2px);
     border-radius: 2px;
     cursor: pointer;
@@ -73,7 +72,7 @@ main .row {
 }
 
 code[class*="language-"], pre[class*="language-"] {
-    font-size:14px !important;
+    font-size: 14px !important;
 }
 
 .icon-zan:before {
@@ -95,6 +94,7 @@ code[class*="language-"], pre[class*="language-"] {
 .nav-avatar {
     height: 25px;
 }
+
 /**************** 分页样式 ************************/
 
 .pagination span.disabled {
@@ -113,7 +113,7 @@ code[class*="language-"], pre[class*="language-"] {
 .validation-error-block {
     color: red;
     padding: 2px 0 0 12px;
-    width:100%;
+    width: 100%;
 }
 
 /**************** 定制 ************************/
@@ -193,6 +193,7 @@ code[class*="language-"], pre[class*="language-"] {
 #logon {
 
 }
+
 #logon .dropdown-menu {
     min-width: 8rem !important;
     left: -10px !important;
@@ -241,6 +242,7 @@ code[class*="language-"], pre[class*="language-"] {
     line-height: 130%;
     text-shadow: 0 1px 0 #fff;
 }
+
 .gf-list-item-title a, .gf-list-item-title a:visited, .gf-list-item-title a:active {
     color: #222;
 }
@@ -269,15 +271,16 @@ code[class*="language-"], pre[class*="language-"] {
 .breadcrumb a, .breadcrumb a:visited, .breadcrumb a:active {
     color: #24292e;
 }
+
 .breadcrumb a:hover {
-    color:#007bff;
+    color: #007bff;
 }
 
 .gf-content-show .gf-title {
     margin-left: 5px;
-    margin-top:25px;
+    margin-top: 25px;
     padding: 0;
-    color:#24292e;
+    color: #24292e;
 }
 
 .gf-content-show .gf-detail {
@@ -287,21 +290,23 @@ code[class*="language-"], pre[class*="language-"] {
 .gf-detail-info {
     color: gray;
     font-size: 14px;
-    margin:5px 0 20px 0;
+    margin: 5px 0 20px 0;
     padding: 5px;
 }
 
 .gf-detail-info a, .gf-detail-info a:visited, .gf-detail-info a:active {
     color: #24292e;
 }
+
 .gf-detail-info a:hover {
-    color:#007bff;
+    color: #007bff;
 }
 
 .gf-content-show .gf-content {
     padding: 5px;
     font-family: "Microsoft YaHei", BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
+
 .gf-comment-list {
     background-color: white;
     margin: 10px 0 10px 0;
@@ -311,6 +316,7 @@ code[class*="language-"], pre[class*="language-"] {
 .gf-comment-editor {
     border-radius: 4px;
 }
+
 .gf-content-user {
     text-align: center;
     background-color: white;
@@ -332,15 +338,17 @@ code[class*="language-"], pre[class*="language-"] {
 }
 
 #gf-content-toc {
-    padding-top:10px;
+    padding-top: 10px;
 }
+
 /**************** 编辑器 ************************/
 .vditor-preview__action {
     display: none;
 }
+
 .vditor-sv {
-    font-family: mononoki,Consolas,Liberation Mono,Menlo,Courier,monospace,Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,Segoe UI Symbol,Android Emoji,EmojiSymbols !important;
-    font-size:14px !important;
+    font-family: mononoki, Consolas, Liberation Mono, Menlo, Courier, monospace, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols !important;
+    font-size: 14px !important;
 }
 
 /**************** 发布页样式 ************************/
@@ -408,8 +416,9 @@ code[class*="language-"], pre[class*="language-"] {
 .gf-user-detail a, .gf-user-detail a:visited, .gf-user-detail a:active {
     color: #24292e;
 }
+
 .gf-user-detail a:hover {
-    color:#007bff;
+    color: #007bff;
 }
 
 footer .list-group-item {
@@ -424,4 +433,9 @@ footer .list-group-item {
 .gf-person .gf-list-item {
     border: 0px;
     border-bottom: 1px solid #e5e5e5;
+}
+
+#avatarForm #avatarFile {
+    padding: .67861429em 1em;
+    border: 1px solid rgba(34, 36, 38, .15);
 }
