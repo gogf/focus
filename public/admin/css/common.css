@@ -1,6 +1,10 @@
-/*body {*/
-/*    color:#c2c7d0 !important;*/
-/*}*/
+.nav-sidebar .nav-link p {
+    transition: none !important;
+    -webkit-animation-name: none !important;
+    animation-name: none !important;
+    -webkit-animation-fill-mode: none !important;
+    animation-fill-mode: none !important;
+}
 
 section.content {
     padding-top:10px !important;
