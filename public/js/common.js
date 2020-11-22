@@ -26,7 +26,8 @@ gf.user = {
 // 内容模块
 gf.content = {
     // 删除内容
-    delete: function (id) {
+    delete: function (id,url) {
+        url = url || "/"
         swal({
             title:   "删除内容",
             text:    "您确定要删除该内容吗？",
@@ -49,7 +50,7 @@ gf.content = {
                             timer:   2000,
                             buttons: false
                         }).then((value) => {
-                            window.location.href = "/";
+                            window.location.href = url;
                         })
                     }
                 });
