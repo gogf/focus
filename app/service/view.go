@@ -17,7 +17,7 @@ var View = new(viewService)
 
 type viewService struct{}
 
-// 获取面包屑列表
+// 前台系统-获取面包屑列表
 func (s *viewService) GetBreadCrumb(ctx context.Context, r *model.ViewServiceGetBreadCrumbReq) []model.ViewBreadCrumb {
 	breadcrumb := []model.ViewBreadCrumb{
 		{Name: "首页", Url: "/"},
@@ -50,7 +50,7 @@ func (s *viewService) GetBreadCrumb(ctx context.Context, r *model.ViewServiceGet
 	return breadcrumb
 }
 
-// 获取标题
+// 前台系统-获取标题
 func (s *viewService) GetTitle(ctx context.Context, r *model.ViewServiceGetTitleReq) string {
 	var (
 		titleArray []string

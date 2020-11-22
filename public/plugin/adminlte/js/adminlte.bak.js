@@ -495,7 +495,7 @@
 
 
     $(window).on('load', function () {
-      // Layout._jQueryInterface.call($('body'));
+      Layout._jQueryInterface.call($('body'));
     });
     $(Selector.SIDEBAR + ' a').on('focusin', function () {
       $(Selector.MAIN_SIDEBAR).addClass(ClassName.SIDEBAR_FOCUSED);
