@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5119332",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "5127306",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "e780",
+      "unicode_decimal": 59264
+    },
+    {
       "icon_id": "8358225",
       "name": "预览",
       "font_class": "yulan",

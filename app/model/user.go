@@ -50,6 +50,11 @@ type UserProfileRes struct {
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
 }
 
+// Service修改用户头像
+type UserServiceUpdateAvatarReq struct {
+	Avatar string // 头像地址
+}
+
 // Service修改用户
 type UserServiceUpdateProfileReq struct {
 	Nickname string // 昵称

@@ -33,9 +33,19 @@
             </li>
         </ul>
 
-
         {{if .Context.User}}
         <div id="logon" class="btn-group">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="icon iconfont">&#xe647;</span>
+                    发布
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/content/create?type=article"><span class="icon iconfont">&#xe61c;</span> 发布文章</a>
+                    <a class="dropdown-item" href="/content/create?type=topic"><span class="icon iconfont">&#xe6b3;</span> 发布主题</a>
+                    <a class="dropdown-item" href="/content/create?type=ask"><span class="icon iconfont">&#xe717;</span> 发布问答</a>
+                </div>
+            </div>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="nav-avatar" src="{{.Context.User.Avatar}}">

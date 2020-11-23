@@ -162,6 +162,19 @@ func (s *userService) GetProfile(ctx context.Context) (*model.UserProfileRes, er
 	return s.GetProfileById(ctx, Context.Get(ctx).User.Id)
 }
 
+// 修改个人头像
+func (s *userService) UpdateAvatar(ctx context.Context, r *model.UserApiUpdateProfileReq) error {
+	userId := Context.Get(ctx).User.Id
+	userServiceUpdateAvatarReq := new(model.UserServiceUpdateAvatarReq)
+	err := gconv.Struct(r, &userServiceUpdateAvatarReq)
+	if err != nil {
+		return err
+	}
+
+	_, err = dao.User.Data(userServiceUpdateAvatarReq).Where(dao.User.Columns.Id, userId).Update()
+	return err
+}
+
 // 修改个人资料
 func (s *userService) UpdateProfile(ctx context.Context, r *model.UserApiUpdateProfileReq) error {
 	userId := Context.Get(ctx).User.Id
