@@ -1,10 +1,7 @@
 package main
 
 import (
-	_ "focus/boot"
-	_ "focus/router"
-
-	"github.com/gogf/gf/frame/g"
+	"focus/app"
 )
 
 // @title       GoFrame社区API
@@ -12,5 +9,5 @@ import (
 // @description GoFrame社区API
 // @schemes     http https
 func main() {
-	g.Server().Run()
+	app.Run()
 }

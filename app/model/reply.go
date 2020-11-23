@@ -12,21 +12,7 @@ import (
 // Reply is the golang structure for table gf_reply.
 type Reply internal.Reply
 
-// API用户注册
-type ReplyApiCreateUpdateBase struct {
-	Title      string
-	ParentId   uint   `v:"required#请输入账号"`    // 回复对应的上一级回复ID(没有的话默认为0)
-	TargetType string `v:"required#评论内容类型错误"` // 评论类型: topic, ask, article, reply
-	TargetId   uint   `v:"required#评论目标ID错误"` // 对应内容ID
-	Content    string `v:"required#评论内容不能为空"` // 回复内容
-}
-
-// Service创建内容
-type ReplyServiceCreateReq struct {
-	ReplyApiCreateUpdateBase
-	UserId uint
-}
-
+// 评论列表项
 type ReplyListItem struct {
 	Id         uint        `json:"id"`          // 回复ID
 	ParentId   uint        `json:"parent_id"`   // 回复对应的上一级回复ID(没有的话默认为0)
@@ -39,27 +25,6 @@ type ReplyListItem struct {
 	Content    string      `json:"content"`     // 回复内容
 	CreatedAt  *gtime.Time `json:"created_at"`  // 创建时间
 	UpdatedAt  *gtime.Time `json:"updated_at"`  //
-}
-
-// Service查询列表结果
-type ReplyServiceGetListReq struct {
-	Page       int    `json:"page"`        // 分页码
-	Size       int    `json:"size"`        // 分页数量
-	TargetType string `json:"target_type"` // 数据总数
-	TargetId   int    `json:"target_id"`   // 数据总数
-}
-
-// Service查询列表结果
-type ReplyServiceGetListRes struct {
-	List  []*ReplyServiceGetListResItem `json:"list"`  // 列表
-	Page  int                           `json:"page"`  // 分页码
-	Size  int                           `json:"size"`  // 分页数量
-	Total int                           `json:"total"` // 数据总数
-}
-
-type ReplyServiceGetListResItem struct {
-	Reply *ReplyListItem     `json:"reply"`
-	User  *ReplyListUserItem `json:"user"`
 }
 
 // 绑定到Content列表中的用户信息
