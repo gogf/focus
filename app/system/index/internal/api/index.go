@@ -2,6 +2,7 @@ package api
 
 import (
 	"focus/app/model"
+	"focus/app/system/index/internal/define"
 	"focus/app/system/index/internal/service"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -17,7 +18,7 @@ type indexApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *indexApi) Index(r *ghttp.Request) {
 	var (
-		data *model.ContentServiceGetListReq
+		data *define.ContentServiceGetListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		service.View.Render500(r, model.View{
