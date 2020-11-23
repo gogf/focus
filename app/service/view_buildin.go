@@ -215,3 +215,21 @@ func (s *viewBuildIn) FormatTime(gt *gtime.Time) string {
 
 	return rs
 }
+
+// 最新文章，12小时内为最新文章
+func (s *viewBuildIn) IsNew(gt *gtime.Time) bool {
+	if gt == nil {
+		return false
+	}
+	n := gtime.Now().Timestamp()
+	t := gt.Timestamp()
+
+	var hs int64 = 3600
+
+	// 最新文章
+	if n-t < hs*12 {
+		return true
+	}
+
+	return false
+}
