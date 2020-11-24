@@ -9,7 +9,6 @@ import (
 )
 
 const (
-	UserDefaultRoleId  = 1 // 默认的用户角色ID
 	UserStatusOk       = 0 // 用户状态正常
 	UserStatusDisabled = 1 // 用户状态禁用
 	UserGenderUnknown  = 0 // 性别: 未知

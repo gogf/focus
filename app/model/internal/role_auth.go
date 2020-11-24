@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-// UserRoleAuth is the golang structure for table gf_user_role_auth.
-type UserRoleAuth struct {
+// RoleAuth is the golang structure for table gf_role_auth.
+type RoleAuth struct {
     Id        uint        `orm:"id,primary" json:"id"`         // 自增ID                                  
     RoleId    uint        `orm:"role_id"    json:"role_id"`    // 角色ID                                  
     Name      string      `orm:"name"       json:"name"`       // 权限名称                                

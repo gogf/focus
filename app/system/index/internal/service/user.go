@@ -106,9 +106,6 @@ func (s *userService) Register(r *define.UserServiceRegisterReq) error {
 	if err := gconv.Struct(r, &user); err != nil {
 		return err
 	}
-	if user.RoleId == 0 {
-		user.RoleId = model.UserDefaultRoleId
-	}
 	if err := s.CheckPassportUnique(user.Passport); err != nil {
 		return err
 	}

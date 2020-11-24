@@ -23,7 +23,7 @@ type UserDetailDao struct {
 
 // UserDetailColumns defines and stores column names for table gf_user_detail.
 type userDetailColumns struct {
-	UserId     string // 用户ID                                         
+	UserId     string //                                                
     TrueName   string // 真实姓名                                       
     IdNumber   string // 身份证号                                       
     City       string // 城市                                           

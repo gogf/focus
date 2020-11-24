@@ -23,15 +23,14 @@ type UserDao struct {
 
 // UserColumns defines and stores column names for table gf_user.
 type userColumns struct {
-	Id         string // UID                                                                 
-    RoleId     string // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色  
-    Passport   string // 账号                                                                
-    Password   string // MD5密码                                                             
-    Nickname   string // 昵称                                                                
-    Avatar     string // 头像地址                                                            
-    Status     string // 状态 0:启用 1:禁用                                                  
-    Gender     string // 性别 0: 未设置 1: 男 2: 女                                          
-    CreatedAt  string // 注册时间                                                            
+	Id         string // UID                         
+    Passport   string // 账号                        
+    Password   string // MD5密码                     
+    Nickname   string // 昵称                        
+    Avatar     string // 头像地址                    
+    Status     string // 状态 0:启用 1:禁用          
+    Gender     string // 性别 0: 未设置 1: 男 2: 女  
+    CreatedAt  string // 注册时间                    
     UpdatedAt  string // 更新时间
 }
 
@@ -42,7 +41,6 @@ var (
 		Table: "gf_user",
 		Columns: userColumns{
 			Id:        "id",          
-            RoleId:    "role_id",     
             Passport:  "passport",    
             Password:  "password",    
             Nickname:  "nickname",    

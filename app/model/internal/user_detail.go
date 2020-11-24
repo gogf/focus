@@ -10,7 +10,7 @@ import (
 
 // UserDetail is the golang structure for table gf_user_detail.
 type UserDetail struct {
-    UserId    uint        `orm:"user_id,primary" json:"user_id"`    // 用户ID                                        
+    UserId    uint        `orm:"user_id,primary" json:"user_id"`    //                                               
     TrueName  string      `orm:"true_name"       json:"true_name"`  // 真实姓名                                      
     IdNumber  string      `orm:"id_number"       json:"id_number"`  // 身份证号                                      
     City      string      `orm:"city"            json:"city"`       // 城市                                          

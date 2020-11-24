@@ -8,7 +8,7 @@ import (
 	"focus/app/model/internal"
 )
 
-// UserRoleAuth is the golang structure for table gf_user_role_auth.
-type UserRoleAuth internal.UserRoleAuth
+// RoleAuth is the golang structure for table gf_role_auth.
+type RoleAuth internal.RoleAuth
 
 // Fill with you ideas below.

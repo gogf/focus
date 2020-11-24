@@ -65,7 +65,6 @@ type UserServiceLoginReq struct {
 
 // Service创建用户
 type UserServiceRegisterReq struct {
-	RoleId   int    // 角色ID，允许负数：< 0 系统使用; > 0 业务使用. 一个用户只有一个角色
 	Passport string // 账号
 	Password string // 密码(明文)
 	Nickname string // 昵称

@@ -8,7 +8,7 @@ import (
 	"focus/app/model/internal"
 )
 
-// UserRoleRoute is the golang structure for table gf_user_role_route.
-type UserRoleRoute internal.UserRoleRoute
+// Role is the golang structure for table gf_role.
+type Role internal.Role
 
 // Fill with you ideas below.

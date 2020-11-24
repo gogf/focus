@@ -23,10 +23,9 @@ type UserRoleDao struct {
 
 // UserRoleColumns defines and stores column names for table gf_user_role.
 type userRoleColumns struct {
-	Id         string // 角色ID，可以为负数表示特殊含义                          
-    Name       string // 角色名称                                                
-    Sort       string // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶  
-    Brief      string // 角色描述                                                
+	Id         string // 自增ID    
+    UserId     string // 用户ID    
+    RoleId     string // 角色ID    
     CreatedAt  string // 创建时间
 }
 
@@ -37,9 +36,8 @@ var (
 		Table: "gf_user_role",
 		Columns: userRoleColumns{
 			Id:        "id",          
-            Name:      "name",        
-            Sort:      "sort",        
-            Brief:     "brief",       
+            UserId:    "user_id",     
+            RoleId:    "role_id",     
             CreatedAt: "created_at",
 		},
 	}
