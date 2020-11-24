@@ -19,8 +19,9 @@
         "评论管理, /admin/reply,    fa-comments"
     ]
 [[menus]]
-    value = "用户管理, #, fa-users-cog"
+    value = "权限管理, #, fa-users-cog"
     items = [
-        "用户列表, /admin/user,      fa-user",
-        "用户角色, /admin/user-role, fa-users",
+        "权限列表, /admin/auth,     fa-id-card",
+        "角色管理, /admin/role,     fa-users",
+        "用户管理, /admin/user,     fa-user",
     ]

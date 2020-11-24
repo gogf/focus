@@ -1,0 +1,152 @@
+
+<div class="modal fade" id="modal-add-auth">
+    <form id="auth-add form" action="/admin/auth/add" method="post">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">添加权限</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="passport" class="col-sm-3 col-form-label text-right">上级权限</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="parent_id">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="passport" class="col-sm-3 col-form-label required text-right">权限名称</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name" placeholder="请输入权限名称" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label text-right">权限标识</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="key" placeholder="请输入权限标识">
+                    </div>
+                </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label text-right">权限路由</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="value" placeholder="请输入权限路由">
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<!-- Main content -->
+<section class="content">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-gf btn-sm btn-success" data-toggle="modal" data-target="#modal-add-auth">
+                    <i class="fas fa-plus"></i> 新增
+                </button>
+
+
+
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                    <tr>
+                        <th>权限名称</th>
+                        <th>权限标识</th>
+                        <th>权限路由</th>
+                        <th class="text-center">创建时间</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>183</td>
+                        <td>John Doe</td>
+                        <td>11-7-2014</td>
+                        <td class="text-center"><span class="tag tag-success">2020-11-24 12:00:12</span></td>
+                        <td class="text-center">
+                            <a class="btn btn-primary btn-sm" href="#">
+                                <i class="fas fa-folder">
+                                </i>
+                                View
+                            </a>
+                            <a class="btn btn-info btn-sm" href="#">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Edit
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="#">
+                                <i class="fas fa-trash">
+                                </i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>219</td>
+                        <td>Alexander Pierce</td>
+                        <td>11-7-2014</td>
+                        <td><span class="tag tag-warning">Pending</span></td>
+                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                    </tr>
+                    <tr>
+                        <td>657</td>
+                        <td>Bob Doe</td>
+                        <td>11-7-2014</td>
+                        <td><span class="tag tag-primary">Approved</span></td>
+                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                    </tr>
+                    <tr>
+                        <td>175</td>
+                        <td>Mike Doe</td>
+                        <td>11-7-2014</td>
+                        <td><span class="tag tag-danger">Denied</span></td>
+                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="row justify-content-center">
+                    <ul class="pagination">
+                        <li class="paginate_button page-item previous disabled" ><a
+                                    href="#" class="page-link">上一页</a></li>
+                        <li class="paginate_button page-item active"><a href="#" aria-controls="example2"
+                                                                        data-dt-idx="1" tabindex="0"
+                                                                        class="page-link">1</a></li>
+                        <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                  data-dt-idx="2" tabindex="0"
+                                                                  class="page-link">2</a></li>
+                        <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                  data-dt-idx="3" tabindex="0"
+                                                                  class="page-link">3</a></li>
+                        <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                  data-dt-idx="4" tabindex="0"
+                                                                  class="page-link">4</a></li>
+                        <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                  data-dt-idx="5" tabindex="0"
+                                                                  class="page-link">5</a></li>
+                        <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                  data-dt-idx="6" tabindex="0"
+                                                                  class="page-link">6</a></li>
+                        <li class="paginate_button page-item next" id="example2_next"><a href="#"
+                                                                                         aria-controls="example2"
+                                                                                         data-dt-idx="7"
+                                                                                         tabindex="0"
+                                                                                         class="page-link">Next</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+
+        </div>
+</section>
+<!-- /.content -->

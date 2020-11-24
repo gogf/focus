@@ -11,8 +11,8 @@ var User = new(userApi)
 
 type userApi struct{}
 
-// @summary 展示用户列表页面
-// @tags    后台-用户
+// @summary 展示用户管理页面
+// @tags    后台-用户管理
 // @produce html
 // @router  /admin/user [GET]
 // @success 200 {string} html "页面HTML"

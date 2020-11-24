@@ -15,15 +15,18 @@ func Init() {
 			service.Middleware.Ctx,
 			service.Middleware.Auth,
 		)
-		group.ALL("/", api.Index)             // 后台首页
-		group.ALL("/system", api.System)      // 系统设置
-		group.ALL("/setting", api.Setting)    // 字段管理
-		group.ALL("/template", api.Template)  // 模板管理
-		group.ALL("/menu", api.Menu)          // 菜单管理
-		group.ALL("/content", api.Content)    // 内容管理
-		group.ALL("/category", api.Category)  // 栏目管理
-		group.ALL("/reply", api.Reply)        // 评论管理
-		group.ALL("/user", api.User)          // 用户管理
-		group.ALL("/user-role", api.UserRole) // 用户角色
+		group.ALLMap(g.Map{
+			"/":         api.Index,    // 后台首页
+			"/system":   api.System,   // 系统设置
+			"/setting":  api.Setting,  // 字段管理
+			"/template": api.Template, // 模板管理
+			"/menu":     api.Menu,     // 菜单管理
+			"/content":  api.Content,  // 内容管理
+			"/category": api.Category, // 栏目管理
+			"/reply":    api.Reply,    // 评论管理
+			"/auth":     api.Auth,     // 权限管理
+			"/role":     api.Role,     // 角色管理
+			"/user":     api.User,     // 用户管理
+		})
 	})
 }

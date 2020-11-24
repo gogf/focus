@@ -28,27 +28,31 @@ func Init() {
 	// 前台系统路由注册
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		group.Middleware(service.Middleware.Ctx)
-		group.ALL("/", api.Index)                     // 首页
-		group.ALL("/login", api.Login)                // 登录
-		group.ALL("/register", api.Register)          // 注册
-		group.ALL("/category", api.Category)          // 栏目
-		group.ALL("/topic", api.Topic)                // 主题
-		group.ALL("/topic/:id", api.Topic.Detail)     // 主题 - 详情
-		group.ALL("/ask", api.Ask)                    // 问答
-		group.ALL("/ask/:id", api.Ask.Detail)         // 问答 - 详情
-		group.ALL("/article", api.Article)            // 文章
-		group.ALL("/article/:id", api.Article.Detail) // 文章 - 详情
-		group.ALL("/reply", api.Reply)                // 回复
-		group.ALL("/captcha", api.Captcha)            // 验证码
-		group.ALL("/user/:id", api.User.Index)        // 用户 - 主页
-		group.ALL("/search", api.Search)              // 搜索
+		group.ALLMap(g.Map{
+			"/":            api.Index,          // 首页
+			"/login":       api.Login,          // 登录
+			"/register":    api.Register,       // 注册
+			"/category":    api.Category,       // 栏目
+			"/topic":       api.Topic,          // 主题
+			"/topic/:id":   api.Topic.Detail,   // 主题 - 详情
+			"/ask":         api.Ask,            // 问答
+			"/ask/:id":     api.Ask.Detail,     // 问答 - 详情
+			"/article":     api.Article,        // 文章
+			"/article/:id": api.Article.Detail, // 文章 - 详情
+			"/reply":       api.Reply,          // 回复
+			"/search":      api.Search,         // 搜索
+			"/captcha":     api.Captcha,        // 验证码
+			"/user/:id":    api.User.Index,     // 用户 - 主页
+		})
 		// 权限控制路由
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.Middleware(service.Middleware.Auth)
-			group.ALL("/user", api.User)         // 用户
-			group.ALL("/content", api.Content)   // 内容
-			group.ALL("/interact", api.Interact) // 交互
-			group.ALL("/file", api.File)         // 文件
+			group.ALLMap(g.Map{
+				"/user":     api.User,     // 用户
+				"/content":  api.Content,  // 内容
+				"/interact": api.Interact, // 交互
+				"/file":     api.File,     // 文件
+			})
 		})
 	})
 }
