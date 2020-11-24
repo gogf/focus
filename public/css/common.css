@@ -247,6 +247,16 @@ code[class*="language-"], pre[class*="language-"] {
     color: #222;
 }
 
+.gf-list .sponsor-link img {
+    width: 200px;
+    margin-left: 10px;
+}
+
+.gf-list .friendly-link img {
+    width: 200px;
+    margin-left: 10px;
+}
+
 /**************** 文章内容样式 ************************/
 
 .gf-content-show {
