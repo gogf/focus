@@ -12,15 +12,8 @@ var Session = new(sessionService)
 type sessionService struct{}
 
 const (
-	// 用户信息存放在Session中的Key
-	sessionKeyUser = "SessionKeyUser"
-
-	// Referer存储，当已存在该session时不会更新。
-	// 用于用户未登录时引导用户登录，并在登录后跳转到登录前页面。
-	sessionKeyLoginReferer = "SessionKeyReferer"
-
-	// 存放在Session中的提示信息，往往使用后则删除
-	sessionKeyNotice = "SessionKeyNotice"
+	sessionKeyUser   = "SessionKeyUserOfAdmin"   // 用户信息存放在Session中的Key，注意和前台系统的不一样哦
+	sessionKeyNotice = "SessionKeyNoticeOfAdmin" // 存放在Session中的提示信息，往往使用后则删除
 )
 
 // 设置用户Session.
@@ -42,24 +35,6 @@ func (s *sessionService) GetUser(ctx context.Context) *model.User {
 // 删除用户Session。
 func (s *sessionService) RemoveUser(ctx context.Context) error {
 	return shared.Context.Get(ctx).Session.Remove(sessionKeyUser)
-}
-
-// 设置LoginReferer.
-func (s *sessionService) SetLoginReferer(ctx context.Context, referer string) error {
-	if s.GetLoginReferer(ctx) == "" {
-		return shared.Context.Get(ctx).Session.Set(sessionKeyLoginReferer, referer)
-	}
-	return nil
-}
-
-// 获取LoginReferer.
-func (s *sessionService) GetLoginReferer(ctx context.Context) string {
-	return shared.Context.Get(ctx).Session.GetString(sessionKeyLoginReferer)
-}
-
-// 删除LoginReferer.
-func (s *sessionService) RemoveLoginReferer(ctx context.Context) error {
-	return shared.Context.Get(ctx).Session.Remove(sessionKeyLoginReferer)
 }
 
 // 设置Notice
