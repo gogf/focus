@@ -14,6 +14,8 @@ import (
 // 栏目管理服务
 var Category = new(categoryService)
 
+type categoryService struct{}
+
 const (
 	mapCacheKey       = "category_map_cache"
 	mapCacheDuration  = time.Hour
@@ -21,21 +23,22 @@ const (
 	treeCacheDuration = time.Hour
 )
 
-type categoryService struct{}
+var (
+	// 缩进字符串，用于层级展示
+	indentChars = []string{"&nbsp;", " │", " ├", " └"}
+)
 
 // 查询列表
 func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTree, error) {
-	v, err := gcache.GetOrSetFunc(treeCacheKey+contentType, func() (interface{}, error) {
-		entities, err := s.GetList(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return s.formTree(0, contentType, entities)
-	}, treeCacheDuration)
+	entities, err := s.GetList(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return v.([]*model.CategoryTree), nil
+	tree, err := s.formTree(0, contentType, entities)
+	if err != nil {
+		return nil, err
+	}
+	return tree, nil
 }
 
 // 获取指定栏目ID及其下面所有子ID，构成数组返回。

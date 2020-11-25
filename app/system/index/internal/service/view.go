@@ -88,7 +88,7 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 	if viewObj.Title == "" {
 		viewObj.Title = g.Cfg().GetString(`setting.title`)
 	} else {
-		viewObj.Title = data[0].Title + ` - ` + g.Cfg().GetString(`setting.title`)
+		viewObj.Title = viewObj.Title + ` - ` + g.Cfg().GetString(`setting.title`)
 	}
 	if viewObj.Keywords == "" {
 		viewObj.Keywords = g.Cfg().GetString(`setting.keywords`)

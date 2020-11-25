@@ -6,10 +6,10 @@ package model
 
 // 菜单数据结构
 type MenuItem struct {
-	Name   string      `json:"name"`   // 显示名称
-	Url    string      `json:"url"`    // 链接地址
-	Icon   string      `json:"icon"`   // 图标，可能是class，也可能是iconfont
-	Target string      `json:"target"` // 打开方式: 空, _blank
-	Active bool        `json:"active"` // 是否被选中
-	Items  []*MenuItem `json:"items"`  // 子级菜单
+	Name   string      // 显示名称
+	Url    string      // 链接地址
+	Icon   string      // 图标，可能是class，也可能是iconfont
+	Target string      // 打开方式: 空, _blank
+	Active bool        // 是否被选中
+	Items  []*MenuItem // 子级菜单
 }

@@ -19,5 +19,6 @@ type CategoryTree struct {
 	Thumb    string          `json:"thumb"`     // 封面图
 	Brief    string          `json:"brief"`     // 简述
 	Content  string          `json:"content"`   // 详细介绍
+	Indent   string          `json:"indent"`    // 缩进字符串，包含：&nbsp;, " │", " ├", " └"
 	Items    []*CategoryTree `json:"items"`     // 子级数据项
 }

@@ -14,6 +14,8 @@ import (
 // 栏目管理服务
 var Category = new(categoryService)
 
+type categoryService struct{}
+
 const (
 	mapCacheKey       = "category_map_cache"
 	mapCacheDuration  = time.Hour
@@ -21,7 +23,10 @@ const (
 	treeCacheDuration = time.Hour
 )
 
-type categoryService struct{}
+var (
+	// 缩进字符串，用于层级展示
+	indentChars = []string{"&nbsp;", " │", " ├", " └"}
+)
 
 // 查询列表
 func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTree, error) {
@@ -30,7 +35,11 @@ func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*m
 		if err != nil {
 			return nil, err
 		}
-		return s.formTree(0, contentType, entities)
+		tree, err := s.formTree(0, contentType, entities)
+		if err != nil {
+			return nil, err
+		}
+		return tree, nil
 	}, treeCacheDuration)
 	if err != nil {
 		return nil, err
