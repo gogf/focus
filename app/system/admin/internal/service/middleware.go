@@ -2,6 +2,7 @@ package service
 
 import (
 	"focus/app/model"
+	"focus/app/shared"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -21,9 +22,8 @@ func (s *middlewareService) Ctx(r *ghttp.Request) {
 	customCtx := &model.Context{
 		Session: r.Session,
 		Data:    make(g.Map),
-		View:    &model.ContextView{Layout: g.Cfg().GetString("viewer.adminLayout")},
 	}
-	Context.Init(r, customCtx)
+	shared.Context.Init(r, customCtx)
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {
 		customCtx.User = &model.ContextUser{
 			Id:       userEntity.Id,

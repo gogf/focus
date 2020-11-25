@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"focus/app/model"
+	"focus/app/shared"
 )
 
 // Session管理服务
@@ -24,12 +25,12 @@ const (
 
 // 设置用户Session.
 func (s *sessionService) SetUser(ctx context.Context, user *model.User) error {
-	return Context.Get(ctx).Session.Set(sessionKeyUser, user)
+	return shared.Context.Get(ctx).Session.Set(sessionKeyUser, user)
 }
 
 // 获取当前登录的用户信息对象，如果用户未登录返回nil。
 func (s *sessionService) GetUser(ctx context.Context) *model.User {
-	v := Context.Get(ctx).Session.GetVar(sessionKeyUser)
+	v := shared.Context.Get(ctx).Session.GetVar(sessionKeyUser)
 	if !v.IsNil() {
 		var user *model.User
 		_ = v.Struct(&user)
@@ -40,35 +41,35 @@ func (s *sessionService) GetUser(ctx context.Context) *model.User {
 
 // 删除用户Session。
 func (s *sessionService) RemoveUser(ctx context.Context) error {
-	return Context.Get(ctx).Session.Remove(sessionKeyUser)
+	return shared.Context.Get(ctx).Session.Remove(sessionKeyUser)
 }
 
 // 设置LoginReferer.
 func (s *sessionService) SetLoginReferer(ctx context.Context, referer string) error {
 	if s.GetLoginReferer(ctx) == "" {
-		return Context.Get(ctx).Session.Set(sessionKeyLoginReferer, referer)
+		return shared.Context.Get(ctx).Session.Set(sessionKeyLoginReferer, referer)
 	}
 	return nil
 }
 
 // 获取LoginReferer.
 func (s *sessionService) GetLoginReferer(ctx context.Context) string {
-	return Context.Get(ctx).Session.GetString(sessionKeyLoginReferer)
+	return shared.Context.Get(ctx).Session.GetString(sessionKeyLoginReferer)
 }
 
 // 删除LoginReferer.
 func (s *sessionService) RemoveLoginReferer(ctx context.Context) error {
-	return Context.Get(ctx).Session.Remove(sessionKeyLoginReferer)
+	return shared.Context.Get(ctx).Session.Remove(sessionKeyLoginReferer)
 }
 
 // 设置Notice
 func (s *sessionService) SetNotice(ctx context.Context, message *model.SessionNotice) error {
-	return Context.Get(ctx).Session.Set(sessionKeyNotice, message)
+	return shared.Context.Get(ctx).Session.Set(sessionKeyNotice, message)
 }
 
 // 获取Notice
 func (s *sessionService) GetNotice(ctx context.Context) (*model.SessionNotice, error) {
-	v := Context.Get(ctx).Session.GetVar(sessionKeyNotice)
+	v := shared.Context.Get(ctx).Session.GetVar(sessionKeyNotice)
 	if v != nil {
 		var message *model.SessionNotice
 		err := v.Struct(&message)
@@ -79,5 +80,5 @@ func (s *sessionService) GetNotice(ctx context.Context) (*model.SessionNotice, e
 
 // 删除Notice
 func (s *sessionService) RemoveNotice(ctx context.Context) error {
-	return Context.Get(ctx).Session.Remove(sessionKeyNotice)
+	return shared.Context.Get(ctx).Session.Remove(sessionKeyNotice)
 }

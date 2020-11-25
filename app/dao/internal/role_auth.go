@@ -23,12 +23,9 @@ type RoleAuthDao struct {
 
 // RoleAuthColumns defines and stores column names for table gf_role_auth.
 type roleAuthColumns struct {
-	Id         string // 自增ID                                  
-    RoleId     string // 角色ID                                  
-    Name       string // 权限名称                                
-    Key        string // 权限键名(用于程序)                      
-    Value      string // 权限键值，部分自定义权限可能有键值存在  
-    Brief      string // 自定义权限描述                          
+	Id         string // 自增ID    
+    RoleId     string // 角色ID    
+    AuthId     string // 权限ID    
     CreatedAt  string // 创建时间
 }
 
@@ -40,10 +37,7 @@ var (
 		Columns: roleAuthColumns{
 			Id:        "id",          
             RoleId:    "role_id",     
-            Name:      "name",        
-            Key:       "key",         
-            Value:     "value",       
-            Brief:     "brief",       
+            AuthId:    "auth_id",     
             CreatedAt: "created_at",
 		},
 	}

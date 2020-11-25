@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 	"github.com/gogf/gf/encoding/ghtml"
 	"github.com/gogf/gf/frame/g"
@@ -189,7 +190,7 @@ func (s *contentService) GetDetail(ctx context.Context, id uint) (*define.Conten
 // 创建
 func (s *contentService) Create(ctx context.Context, r *define.ContentServiceCreateReq) (*define.ContentServiceCreateRes, error) {
 	if r.UserId == 0 {
-		r.UserId = Context.Get(ctx).User.Id
+		r.UserId = shared.Context.Get(ctx).User.Id
 	}
 	// 不允许HTML代码
 	if err := ghtml.SpecialCharsMapOrStruct(r); err != nil {
@@ -215,7 +216,7 @@ func (s *contentService) Update(ctx context.Context, r *define.ContentServiceUpd
 	_, err := dao.Content.Data(r).
 		FieldsEx(dao.Content.Columns.Id).
 		Where(dao.Content.Columns.Id, r.Id).
-		Where(dao.Content.Columns.UserId, Context.Get(ctx).User.Id).
+		Where(dao.Content.Columns.UserId, shared.Context.Get(ctx).User.Id).
 		Update()
 	return err
 }
@@ -224,7 +225,7 @@ func (s *contentService) Update(ctx context.Context, r *define.ContentServiceUpd
 func (s *contentService) Delete(ctx context.Context, id uint) error {
 	_, err := dao.Content.Where(g.Map{
 		dao.Content.Columns.Id:     id,
-		dao.Content.Columns.UserId: Context.Get(ctx).User.Id,
+		dao.Content.Columns.UserId: shared.Context.Get(ctx).User.Id,
 	}).Delete()
 	return err
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/shared"
 	"focus/app/system/admin/internal/define"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -28,7 +29,7 @@ func (s *fileService) Upload(ctx context.Context, r *define.FileServiceUploadReq
 	}
 	// 同一用户1分钟之内只能上传10张图片
 	count, err := dao.File.
-		Where(dao.File.Columns.UserId, Context.Get(ctx).User.Id).
+		Where(dao.File.Columns.UserId, shared.Context.Get(ctx).User.Id).
 		Where(dao.File.Columns.CreatedAt+">=?", gtime.Now().Add(time.Minute)).
 		Count()
 	if err != nil {
@@ -47,7 +48,7 @@ func (s *fileService) Upload(ctx context.Context, r *define.FileServiceUploadReq
 		Name:   fileName,
 		Src:    gfile.Join(uploadPath, dateDirName, fileName),
 		Url:    "/upload/" + dateDirName + "/" + fileName,
-		UserId: Context.Get(ctx).User.Id,
+		UserId: shared.Context.Get(ctx).User.Id,
 	}
 	result, err := dao.File.Data(data).OmitEmpty().Insert()
 	if err != nil {

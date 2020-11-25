@@ -2,6 +2,7 @@ package api
 
 import (
 	"focus/app/model"
+	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 	"focus/app/system/index/internal/service"
 	"focus/library/response"
@@ -89,7 +90,7 @@ func (a *userApi) Password(r *ghttp.Request) {
 // @router  /user/article [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Article(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeArticle, service.Context.Get(r.Context()).User.Id)
+	a.getContentList(r, model.ContentTypeArticle, shared.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的主题页面
@@ -98,7 +99,7 @@ func (a *userApi) Article(r *ghttp.Request) {
 // @router  /user/topic [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Topic(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeTopic, service.Context.Get(r.Context()).User.Id)
+	a.getContentList(r, model.ContentTypeTopic, shared.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的问答页面
@@ -107,7 +108,7 @@ func (a *userApi) Topic(r *ghttp.Request) {
 // @router  /user/ask [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Ask(r *ghttp.Request) {
-	a.getContentList(r, model.ContentTypeAsk, service.Context.Get(r.Context()).User.Id)
+	a.getContentList(r, model.ContentTypeAsk, shared.Context.Get(r.Context()).User.Id)
 }
 
 // 获取内容列表 参数contentType,用户信息

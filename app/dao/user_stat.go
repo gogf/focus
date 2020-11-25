@@ -8,15 +8,18 @@ import (
 	"focus/app/dao/internal"
 )
 
-var UserStat = &userStatDao{
-	internal.UserStat,
-}
-
 // userStatDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type userStatDao struct {
 	*internal.UserStatDao
 }
+
+var (
+	// UserStat is globally public accessible object for table {TplTableName} operations.
+	UserStat = &userStatDao{
+		internal.UserStat,
+	}
+)
 
 // Fill with you ideas below.

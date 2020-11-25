@@ -1,6 +1,6 @@
 
 <div class="modal fade" id="modal-add-auth">
-    <form id="auth-add form" action="/admin/auth/add" method="post">
+    <form id="auth-add form" action="/admin/auth/create" method="post">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,7 +13,15 @@
                 <div class="form-group row">
                     <label for="passport" class="col-sm-3 col-form-label text-right">上级权限</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="parent_id">
+                        <select class="form-control select2" style="width: 100%;">
+                            <option selected="selected">Alabama</option>
+                            <option>Alaska</option>
+                            <option>California</option>
+                            <option>Delaware</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Washington</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -48,11 +56,9 @@
 <section class="content">
         <div class="card">
             <div class="card-body">
-                <button type="button" class="btn btn-gf btn-sm btn-success" data-toggle="modal" data-target="#modal-add-auth">
+                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-add-auth">
                     <i class="fas fa-plus"></i> 新增
                 </button>
-
-
 
                 <table class="table table-hover text-nowrap">
                     <thead>

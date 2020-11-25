@@ -126,13 +126,83 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 
 // 渲染默认模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
-	s.RenderTpl(r, Context.Get(r.Context()).View.Layout, data...)
+	s.RenderTpl(r, g.Cfg().GetString("viewer.indexLayout"), data...)
+}
+
+// 跳转中间页面
+func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "页面跳转中"
+	}
+	view.MainTpl = s.getViewFolderName() + "/pages/302.html"
+	s.Render(r, view)
+}
+
+// 401页面
+func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "无访问权限"
+	}
+	view.MainTpl = s.getViewFolderName() + "/pages/401.html"
+	s.Render(r, view)
+}
+
+// 403页面
+func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "无访问权限"
+	}
+	view.MainTpl = s.getViewFolderName() + "/pages/403.html"
+	s.Render(r, view)
+}
+
+// 404页面
+func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "资源不存在"
+	}
+	view.MainTpl = s.getViewFolderName() + "/pages/404.html"
+	s.Render(r, view)
+}
+
+// 500页面
+func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
+	view := model.View{}
+	if len(data) > 0 {
+		view = data[0]
+	}
+	if view.Title == "" {
+		view.Title = "请求执行错误"
+	}
+	view.MainTpl = s.getViewFolderName() + "/pages/500.html"
+	s.Render(r, view)
+}
+
+// 获取视图存储目录
+func (s *viewService) getViewFolderName() string {
+	return gstr.Split(g.Cfg().GetString("viewer.indexLayout"), "/")[0]
 }
 
 // 获取自动设置的MainTpl
 func (s *viewService) getDefaultMainTpl(r *ghttp.Request) string {
 	var (
-		viewFolderPrefix = gstr.Split(Context.Get(r.Context()).View.Layout, "/")[0]
+		viewFolderPrefix = s.getViewFolderName()
 		urlPathArray     = gstr.SplitAndTrim(r.URL.Path, "/")
 		mainTpl          string
 	)
@@ -154,69 +224,4 @@ func (s *viewService) getDefaultMainTpl(r *ghttp.Request) string {
 		mainTpl = viewFolderPrefix + "/index/index.html"
 	}
 	return gstr.TrimLeft(mainTpl, "/")
-}
-
-// 跳转中间页面
-func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
-	view := model.View{}
-	if len(data) > 0 {
-		view = data[0]
-	}
-	if view.Title == "" {
-		view.Title = "页面跳转中"
-	}
-	view.MainTpl = "index/pages/302.html"
-	s.Render(r, view)
-}
-
-// 401页面
-func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
-	view := model.View{}
-	if len(data) > 0 {
-		view = data[0]
-	}
-	if view.Title == "" {
-		view.Title = "无访问权限"
-	}
-	view.MainTpl = "index/pages/401.html"
-	s.Render(r, view)
-}
-
-// 403页面
-func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
-	view := model.View{}
-	if len(data) > 0 {
-		view = data[0]
-	}
-	if view.Title == "" {
-		view.Title = "无访问权限"
-	}
-	view.MainTpl = "index/pages/403.html"
-	s.Render(r, view)
-}
-
-// 404页面
-func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
-	view := model.View{}
-	if len(data) > 0 {
-		view = data[0]
-	}
-	if view.Title == "" {
-		view.Title = "资源不存在"
-	}
-	view.MainTpl = "index/pages/404.html"
-	s.Render(r, view)
-}
-
-// 500页面
-func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
-	view := model.View{}
-	if len(data) > 0 {
-		view = data[0]
-	}
-	if view.Title == "" {
-		view.Title = "请求执行错误"
-	}
-	view.MainTpl = "index/pages/500.html"
-	s.Render(r, view)
 }

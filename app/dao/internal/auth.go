@@ -13,66 +13,70 @@ import (
 	"time"
 )
 
-// UserAuthDao is the manager for logic model data accessing
+// AuthDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type UserAuthDao struct {
+type AuthDao struct {
 	gmvc.M
 	Table   string
-	Columns userAuthColumns
+	Columns authColumns
 }
 
-// UserAuthColumns defines and stores column names for table gf_user_auth.
-type userAuthColumns struct {
-	Id            string // UID                      
-    UserId        string // 用户ID                   
-    IdentityType  string // 第三方登录类型           
-    Identifier    string // 第三方登录的唯一标识     
-    Credential    string // 第三方登录token或者密钥  
-    CreatedAt     string // 创建时间                 
-    UpdatedAt     string // 更新时间
+// AuthColumns defines and stores column names for table gf_auth.
+type authColumns struct {
+	Id         string // 自增ID                                  
+    ParentId   string // 父级菜单                                
+    UserId     string // 创建用户ID                              
+    Name       string // 权限名称                                
+    Key        string // 权限键名(用于程序)                      
+    Value      string // 权限键值，部分自定义权限可能有键值存在  
+    Sort       string // 排序                                    
+    Icon       string // 展示图标                                
+    CreatedAt  string // 创建时间
 }
 
 var (
-	// UserAuth is globally public accessible object for table gf_user_auth operations.
-	UserAuth = &UserAuthDao{
-		M:     g.DB("default").Table("gf_user_auth").Safe(),
-		Table: "gf_user_auth",
-		Columns: userAuthColumns{
-			Id:           "id",             
-            UserId:       "user_id",        
-            IdentityType: "identity_type",  
-            Identifier:   "identifier",     
-            Credential:   "credential",     
-            CreatedAt:    "created_at",     
-            UpdatedAt:    "updated_at",
+	// Auth is globally public accessible object for table gf_auth operations.
+	Auth = &AuthDao{
+		M:     g.DB("default").Table("gf_auth").Safe(),
+		Table: "gf_auth",
+		Columns: authColumns{
+			Id:        "id",          
+            ParentId:  "parent_id",   
+            UserId:    "user_id",     
+            Name:      "name",        
+            Key:       "key",         
+            Value:     "value",       
+            Sort:      "sort",        
+            Icon:      "icon",        
+            CreatedAt: "created_at",
 		},
 	}
 )
 
 // As sets an alias name for current table.
-func (d *UserAuthDao) As(as string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.As(as)}
+func (d *AuthDao) As(as string) *AuthDao {
+	return &AuthDao{M:d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (d *UserAuthDao) TX(tx *gdb.TX) *UserAuthDao {
-	return &UserAuthDao{M:d.M.TX(tx)}
+func (d *AuthDao) TX(tx *gdb.TX) *AuthDao {
+	return &AuthDao{M:d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (d *UserAuthDao) Master() *UserAuthDao {
-	return &UserAuthDao{M:d.M.Master()}
+func (d *AuthDao) Master() *AuthDao {
+	return &AuthDao{M:d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (d *UserAuthDao) Slave() *UserAuthDao {
-	return &UserAuthDao{M:d.M.Slave()}
+func (d *AuthDao) Slave() *AuthDao {
+	return &AuthDao{M:d.M.Slave()}
 }
 
 // Args sets custom arguments for model operation.
-func (d *UserAuthDao) Args(args ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Args(args ...)}
+func (d *AuthDao) Args(args ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.Args(args ...)}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -80,8 +84,8 @@ func (d *UserAuthDao) Args(args ...interface{}) *UserAuthDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *UserAuthDao) LeftJoin(table ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.LeftJoin(table...)}
+func (d *AuthDao) LeftJoin(table ...string) *AuthDao {
+	return &AuthDao{M:d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -89,8 +93,8 @@ func (d *UserAuthDao) LeftJoin(table ...string) *UserAuthDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *UserAuthDao) RightJoin(table ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.RightJoin(table...)}
+func (d *AuthDao) RightJoin(table ...string) *AuthDao {
+	return &AuthDao{M:d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -98,36 +102,36 @@ func (d *UserAuthDao) RightJoin(table ...string) *UserAuthDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *UserAuthDao) InnerJoin(table ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.InnerJoin(table...)}
+func (d *AuthDao) InnerJoin(table ...string) *AuthDao {
+	return &AuthDao{M:d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *UserAuthDao) Fields(fieldNamesOrMapStruct ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
+func (d *AuthDao) Fields(fieldNamesOrMapStruct ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *UserAuthDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
+func (d *AuthDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.
-func (d *UserAuthDao) Option(option int) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Option(option)}
+func (d *AuthDao) Option(option int) *AuthDao {
+	return &AuthDao{M:d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (d *UserAuthDao) OmitEmpty() *UserAuthDao {
-	return &UserAuthDao{M:d.M.OmitEmpty()}
+func (d *AuthDao) OmitEmpty() *AuthDao {
+	return &AuthDao{M:d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (d *UserAuthDao) Filter() *UserAuthDao {
-	return &UserAuthDao{M:d.M.Filter()}
+func (d *AuthDao) Filter() *AuthDao {
+	return &AuthDao{M:d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -141,8 +145,8 @@ func (d *UserAuthDao) Filter() *UserAuthDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (d *UserAuthDao) Where(where interface{}, args ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Where(where, args...)}
+func (d *AuthDao) Where(where interface{}, args ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -150,54 +154,54 @@ func (d *UserAuthDao) Where(where interface{}, args ...interface{}) *UserAuthDao
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (d *UserAuthDao) WherePri(where interface{}, args ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.WherePri(where, args...)}
+func (d *AuthDao) WherePri(where interface{}, args ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (d *UserAuthDao) And(where interface{}, args ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.And(where, args...)}
+func (d *AuthDao) And(where interface{}, args ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (d *UserAuthDao) Or(where interface{}, args ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Or(where, args...)}
+func (d *AuthDao) Or(where interface{}, args ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (d *UserAuthDao) Group(groupBy string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Group(groupBy)}
+func (d *AuthDao) Group(groupBy string) *AuthDao {
+	return &AuthDao{M:d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (d *UserAuthDao) Order(orderBy ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Order(orderBy...)}
+func (d *AuthDao) Order(orderBy ...string) *AuthDao {
+	return &AuthDao{M:d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (d *UserAuthDao) Limit(limit ...int) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Limit(limit...)}
+func (d *AuthDao) Limit(limit ...int) *AuthDao {
+	return &AuthDao{M:d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (d *UserAuthDao) Offset(offset int) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Offset(offset)}
+func (d *AuthDao) Offset(offset int) *AuthDao {
+	return &AuthDao{M:d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (d *UserAuthDao) Page(page, limit int) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Page(page, limit)}
+func (d *AuthDao) Page(page, limit int) *AuthDao {
+	return &AuthDao{M:d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (d *UserAuthDao) Batch(batch int) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Batch(batch)}
+func (d *AuthDao) Batch(batch int) *AuthDao {
+	return &AuthDao{M:d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -212,8 +216,8 @@ func (d *UserAuthDao) Batch(batch int) *UserAuthDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (d *UserAuthDao) Cache(duration time.Duration, name ...string) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Cache(duration, name...)}
+func (d *AuthDao) Cache(duration time.Duration, name ...string) *AuthDao {
+	return &AuthDao{M:d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -223,39 +227,39 @@ func (d *UserAuthDao) Cache(duration time.Duration, name ...string) *UserAuthDao
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (d *UserAuthDao) Data(data ...interface{}) *UserAuthDao {
-	return &UserAuthDao{M:d.M.Data(data...)}
+func (d *AuthDao) Data(data ...interface{}) *AuthDao {
+	return &AuthDao{M:d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
-// It retrieves the records from table and returns the result as []*model.UserAuth.
+// It retrieves the records from table and returns the result as []*model.Auth.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *UserAuthDao) All(where ...interface{}) ([]*model.UserAuth, error) {
+func (d *AuthDao) All(where ...interface{}) ([]*model.Auth, error) {
 	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.UserAuth
+	var entities []*model.Auth
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 	return entities, nil
 }
 
-// One retrieves one record from table and returns the result as *model.UserAuth.
+// One retrieves one record from table and returns the result as *model.Auth.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *UserAuthDao) One(where ...interface{}) (*model.UserAuth, error) {
+func (d *AuthDao) One(where ...interface{}) (*model.Auth, error) {
 	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.UserAuth
+	var entity *model.Auth
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -264,12 +268,12 @@ func (d *UserAuthDao) One(where ...interface{}) (*model.UserAuth, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (d *UserAuthDao) FindOne(where ...interface{}) (*model.UserAuth, error) {
+func (d *AuthDao) FindOne(where ...interface{}) (*model.Auth, error) {
 	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.UserAuth
+	var entity *model.Auth
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -278,12 +282,12 @@ func (d *UserAuthDao) FindOne(where ...interface{}) (*model.UserAuth, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (d *UserAuthDao) FindAll(where ...interface{}) ([]*model.UserAuth, error) {
+func (d *AuthDao) FindAll(where ...interface{}) ([]*model.Auth, error) {
 	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.UserAuth
+	var entities []*model.Auth
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -291,9 +295,9 @@ func (d *UserAuthDao) FindAll(where ...interface{}) ([]*model.UserAuth, error) {
 }
 
 // Chunk iterates the table with given size and callback function.
-func (d *UserAuthDao) Chunk(limit int, callback func(entities []*model.UserAuth, err error) bool) {
+func (d *AuthDao) Chunk(limit int, callback func(entities []*model.Auth, err error) bool) {
 	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
-		var entities []*model.UserAuth
+		var entities []*model.Auth
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
 			return false
@@ -303,16 +307,16 @@ func (d *UserAuthDao) Chunk(limit int, callback func(entities []*model.UserAuth,
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (d *UserAuthDao) LockUpdate() *UserAuthDao {
-	return &UserAuthDao{M:d.M.LockUpdate()}
+func (d *AuthDao) LockUpdate() *AuthDao {
+	return &AuthDao{M:d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (d *UserAuthDao) LockShared() *UserAuthDao {
-	return &UserAuthDao{M:d.M.LockShared()}
+func (d *AuthDao) LockShared() *AuthDao {
+	return &AuthDao{M:d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (d *UserAuthDao) Unscoped() *UserAuthDao {
-	return &UserAuthDao{M:d.M.Unscoped()}
+func (d *AuthDao) Unscoped() *AuthDao {
+	return &AuthDao{M:d.M.Unscoped()}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 	"github.com/gogf/gf/util/gutil"
 )
@@ -16,7 +17,7 @@ type replyService struct{}
 // 创建回复
 func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateReq) error {
 	if r.UserId == 0 {
-		r.UserId = Context.Get(ctx).User.Id
+		r.UserId = shared.Context.Get(ctx).User.Id
 	}
 	_, err := dao.Reply.Data(r).Insert()
 	return err

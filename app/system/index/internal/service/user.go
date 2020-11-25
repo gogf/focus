@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/errors/gerror"
@@ -48,7 +49,7 @@ func (s *userService) Login(ctx context.Context, loginReq *define.UserServiceLog
 		return err
 	}
 	// 自动更新上线
-	Context.SetUser(ctx, &model.ContextUser{
+	shared.Context.SetUser(ctx, &model.ContextUser{
 		Id:       userEntity.Id,
 		Passport: userEntity.Passport,
 		Nickname: userEntity.Nickname,
@@ -125,18 +126,18 @@ func (s *userService) Register(r *define.UserServiceRegisterReq) error {
 
 // 修改个人密码
 func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPasswordReq) error {
-	oldPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.OldPassword)
-	n, err := dao.User.Where(dao.User.Columns.Password, oldPassword).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Count()
+	oldPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.OldPassword)
+	n, err := dao.User.Where(dao.User.Columns.Password, oldPassword).Where(dao.User.Columns.Id, shared.Context.Get(ctx).User.Id).Count()
 	if err != nil {
 		return err
 	}
 	if n == 0 {
 		return gerror.New(`原始密码错误`)
 	}
-	newPassword := s.EncryptPassword(Context.Get(ctx).User.Passport, r.NewPassword)
+	newPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.NewPassword)
 	_, err = dao.User.Data(g.Map{
 		dao.User.Columns.Password: newPassword,
-	}).Where(dao.User.Columns.Id, Context.Get(ctx).User.Id).Update()
+	}).Where(dao.User.Columns.Id, shared.Context.Get(ctx).User.Id).Update()
 	return err
 }
 
@@ -157,12 +158,12 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.
 
 // 修改个人资料
 func (s *userService) GetProfile(ctx context.Context) (*define.UserProfileRes, error) {
-	return s.GetProfileById(ctx, Context.Get(ctx).User.Id)
+	return s.GetProfileById(ctx, shared.Context.Get(ctx).User.Id)
 }
 
 // 修改个人头像
 func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	userId := Context.Get(ctx).User.Id
+	userId := shared.Context.Get(ctx).User.Id
 	userServiceUpdateAvatarReq := new(define.UserServiceUpdateAvatarReq)
 	err := gconv.Struct(r, &userServiceUpdateAvatarReq)
 	if err != nil {
@@ -175,7 +176,7 @@ func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateP
 
 // 修改个人资料
 func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	userId := Context.Get(ctx).User.Id
+	userId := shared.Context.Get(ctx).User.Id
 	n, err := dao.User.Where(dao.User.Columns.Nickname, r.Nickname).Where("id <> ?", userId).Count()
 	if err != nil {
 		return err

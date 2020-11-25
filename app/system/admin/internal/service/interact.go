@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
+	"focus/app/shared"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 )
@@ -20,7 +21,7 @@ const (
 
 // 赞
 func (s *interactService) Zan(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := Context.Get(ctx)
+	customCtx := shared.Context.Get(ctx)
 	if customCtx == nil || customCtx.User == nil {
 		return nil
 	}
@@ -42,12 +43,12 @@ func (s *interactService) Zan(ctx context.Context, targetType string, targetId u
 
 // 取消赞
 func (s *interactService) CancelZan(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := Context.Get(ctx)
+	customCtx := shared.Context.Get(ctx)
 	if customCtx == nil || customCtx.User == nil {
 		return nil
 	}
 	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.Columns.UserId, Context.Get(ctx).User.Id,
+		dao.Interact.Columns.UserId, shared.Context.Get(ctx).User.Id,
 		dao.Interact.Columns.TargetId, targetId,
 		dao.Interact.Columns.TargetType, targetType,
 		dao.Interact.Columns.Type, model.InteractTypeZan,
@@ -77,7 +78,7 @@ func (s *interactService) DidIZan(ctx context.Context, targetType string, target
 
 // 踩
 func (s *interactService) Cai(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := Context.Get(ctx)
+	customCtx := shared.Context.Get(ctx)
 	if customCtx == nil || customCtx.User == nil {
 		return nil
 	}
@@ -98,12 +99,12 @@ func (s *interactService) Cai(ctx context.Context, targetType string, targetId u
 
 // 取消踩
 func (s *interactService) CancelCai(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := Context.Get(ctx)
+	customCtx := shared.Context.Get(ctx)
 	if customCtx == nil || customCtx.User == nil {
 		return nil
 	}
 	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.Columns.UserId, Context.Get(ctx).User.Id,
+		dao.Interact.Columns.UserId, shared.Context.Get(ctx).User.Id,
 		dao.Interact.Columns.TargetId, targetId,
 		dao.Interact.Columns.TargetType, targetType,
 		dao.Interact.Columns.Type, model.InteractTypeCai,
@@ -133,7 +134,7 @@ func (s *interactService) DidICai(ctx context.Context, targetType string, target
 
 // 获得我的互动数据列表，内部带请求上下文缓存
 func (s *interactService) getMyList(ctx context.Context) ([]*model.Interact, error) {
-	customCtx := Context.Get(ctx)
+	customCtx := shared.Context.Get(ctx)
 	if customCtx == nil || customCtx.User == nil {
 		return nil, nil
 	}
@@ -153,7 +154,7 @@ func (s *interactService) getMyList(ctx context.Context) ([]*model.Interact, err
 func (s *interactService) updateCount(ctx context.Context, interactType int, targetType string, targetId uint, count int) error {
 	defer func() {
 		// 清空上下文对应的互动数据缓存
-		if customCtx := Context.Get(ctx); customCtx != nil {
+		if customCtx := shared.Context.Get(ctx); customCtx != nil {
 			delete(customCtx.Data, contextMapKeyForMyInteractList)
 		}
 	}()

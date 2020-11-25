@@ -10,11 +10,8 @@ import (
 
 // RoleAuth is the golang structure for table gf_role_auth.
 type RoleAuth struct {
-    Id        uint        `orm:"id,primary" json:"id"`         // 自增ID                                  
-    RoleId    uint        `orm:"role_id"    json:"role_id"`    // 角色ID                                  
-    Name      string      `orm:"name"       json:"name"`       // 权限名称                                
-    Key       string      `orm:"key"        json:"key"`        // 权限键名(用于程序)                      
-    Value     string      `orm:"value"      json:"value"`      // 权限键值，部分自定义权限可能有键值存在  
-    Brief     string      `orm:"brief"      json:"brief"`      // 自定义权限描述                          
-    CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间                                
+    Id        uint        `orm:"id,primary" json:"id"`         // 自增ID    
+    RoleId    uint        `orm:"role_id"    json:"role_id"`    // 角色ID    
+    AuthId    uint        `orm:"auth_id"    json:"auth_id"`    // 权限ID    
+    CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间  
 }
