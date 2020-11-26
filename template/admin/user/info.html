@@ -1,0 +1,149 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>用户信息</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">个人中心</a></li>
+                    <li class="breadcrumb-item active">用户信息</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 src="/images/logo.png"
+                                 alt="User profile picture">
+                        </div>
+                        <h3 class="profile-username text-center">管理员</h3>
+                        <p class="text-muted text-center">就是这么无敌</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>手机号</b> <a class="float-right">15812345678</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>邮箱</b> <a class="float-right">goframe@goframe.com</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>所属部门</b> <a class="float-right">三国</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#profileTab"
+                                                    data-toggle="tab">个人信息</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#passwordTab" data-toggle="tab">修改密码</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="profileTab">
+                                <!-- Post -->
+                                <form id="profileForm" class="form-horizontal" action="/admin/user/update" method="post">
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">帐号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName" value="管理员">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">手机号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputEmail"
+                                                   placeholder="请输入手机号">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputName2" class="col-sm-2 col-form-label">邮箱</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName2" placeholder="请输入邮箱">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputExperience" class="col-sm-2 col-form-label">备注</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" id="inputExperience"
+                                                      placeholder="请输入备注"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-danger">保存</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- /.post -->
+                            </div>
+                            <!-- /.tab-pane -->
+
+                            <div class="tab-pane" id="passwordTab">
+                                <form id="passwordForm" class="form-horizontal" action="/admin/user/password-update" method="post">
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">帐号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly class="form-control" id="inputName" value="管理员">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">原始密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" id="inputEmail"
+                                                   placeholder="请输入原始密码" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputName2" class="col-sm-2 col-form-label">新密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName2" placeholder="请输入新密码" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputName2" class="col-sm-2 col-form-label">重复新密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName3" placeholder="请重复新密码" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-danger">保存</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
