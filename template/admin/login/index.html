@@ -15,7 +15,8 @@
 
             <form id="loginForm" action="/admin/login/do" method="post">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" minlength="3" maxlength="20" name="passport" placeholder="请输入帐号" required>
+                    <input type="text" class="form-control" minlength="3" maxlength="20" name="passport"
+                           placeholder="请输入帐号" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -23,7 +24,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" minlength="6" maxlength="20" name="password" placeholder="请输入密码" required>
+                    <input type="password" class="form-control" minlength="6" maxlength="20" name="password"
+                           placeholder="请输入密码" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -31,10 +33,12 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="captcha" class="form-control" minlength="4" maxlength="4"  placeholder="请输入验证码" required>
+                    <input type="text" name="captcha" class="form-control" minlength="4" maxlength="4"
+                           placeholder="请输入验证码" required>
                     <div class="input-group-append">
                         <span class="input-group-text" style="cursor: pointer;padding: 0;">
-                            <img style="line-height: 36px;height: 36px;" id="code-img" class="captcha" loading="lazy" onclick="gf.reloadCaptcha()">
+                            <img style="line-height: 36px;height: 36px;" id="code-img" class="captcha" loading="lazy"
+                                 onclick="gf.reloadCaptcha()">
                         </span>
                     </div>
                 </div>
@@ -64,7 +68,7 @@
             <!-- /.social-auth-links -->
 
             <p class="mb-1">
-                <a href="javascript:void(0);" onclick="swal({text: '请联系管理员'});" >忘记密码</a>
+                <a href="javascript:void(0);" onclick="swal({text: '请联系管理员'});">忘记密码</a>
             </p>
         </div>
         <!-- /.login-card-body -->
@@ -77,6 +81,16 @@
 <script type="text/javascript">
 
     jQuery(function ($) {
+        var storagePassport = window.localStorage.getItem("passport") || "";
+        var storagePassword = window.localStorage.getItem("password") || "";
+        if (storagePassport != "") {
+            $('[name="passport"]').val(storagePassport);
+        }
+        if (storagePassword != "") {
+            $('[name="password"]').val(storagePassword);
+            $("#remember").prop("checked", true);
+        }
+
         gf.reloadCaptcha()
 
         // footer悬浮
@@ -114,6 +128,15 @@
                                 timer: 2000,
                                 buttons: false
                             }).then((value) => {
+                                // 记住上一次成功帐号
+                                window.localStorage.setItem("passport", passport);
+                                // 记住密码
+                                if ($("#remember").is(":checked")) {
+                                    window.localStorage.setItem("password", password);
+                                } else {
+                                    window.localStorage.removeItem("password");
+                                }
+
                                 if (r.redirect != "") {
                                     window.location.href = r.redirect;
                                 } else {
