@@ -16,7 +16,7 @@ var Auth = new(authService)
 type authService struct{}
 
 // 查询权限列表，构造成树形返回
-func (s *authService) GetTree(ctx context.Context) ([]*model.AuthTree, error) {
+func (s *authService) GetTree(ctx context.Context) ([]*model.AuthTreeItem, error) {
 	entities, err := s.GetList(ctx)
 	if err != nil {
 		return nil, err
@@ -25,15 +25,15 @@ func (s *authService) GetTree(ctx context.Context) ([]*model.AuthTree, error) {
 }
 
 // 构造树形权限列表。
-func (s *authService) formTree(parentId uint, entities []*model.Auth) ([]*model.AuthTree, error) {
-	tree := make([]*model.AuthTree, 0)
+func (s *authService) formTree(parentId uint, entities []*model.Auth) ([]*model.AuthTreeItem, error) {
+	var tree []*model.AuthTreeItem
 	for _, entity := range entities {
 		if entity.ParentId == parentId {
 			subTree, err := s.formTree(entity.Id, entities)
 			if err != nil {
 				return nil, err
 			}
-			item := &model.AuthTree{
+			item := &model.AuthTreeItem{
 				Items: subTree,
 			}
 			if err = gconv.Struct(entity, item); err != nil {

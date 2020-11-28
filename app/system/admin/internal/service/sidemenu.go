@@ -1,7 +1,7 @@
 package service
 
 import (
-	"focus/app/model"
+	"focus/app/system/admin/internal/define"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
@@ -13,9 +13,9 @@ var Menu = new(menuService)
 type menuService struct{}
 
 // 获取侧边菜单
-func (s *menuService) GetMenus(r *ghttp.Request) []*model.MenuItem {
+func (s *menuService) GetMenus(r *ghttp.Request) []*define.SideMenuItem {
 	var (
-		adminMenus    = make([]*model.MenuItem, 0)
+		adminMenus    = make([]*define.SideMenuItem, 0)
 		menuJsonArray = g.Cfg("admin").GetJsons("menus")
 		value         string
 		items         []string
@@ -25,19 +25,19 @@ func (s *menuService) GetMenus(r *ghttp.Request) []*model.MenuItem {
 		value = v.GetString("value")
 		items = v.GetStrings("items")
 		array = gstr.SplitAndTrim(value, ",")
-		menuItem := &model.MenuItem{
+		menuItem := &define.SideMenuItem{
 			Name:   array[0],
 			Url:    array[1],
 			Icon:   array[2],
 			Active: s.isMenuUrlActive(r, array[1]),
-			Items:  make([]*model.MenuItem, 0),
+			Items:  make([]*define.SideMenuItem, 0),
 		}
 		if len(array) > 3 {
 			menuItem.Target = array[3]
 		}
 		for _, item := range items {
 			array = gstr.SplitAndTrim(item, ",")
-			item := &model.MenuItem{
+			item := &define.SideMenuItem{
 				Name:   array[0],
 				Url:    array[1],
 				Icon:   array[2],
@@ -77,7 +77,7 @@ func (s *menuService) GetCurrentTitle(r *ghttp.Request) string {
 }
 
 // 递归根据选中的菜单获取级联title
-func (s *menuService) getTitleFromMenus(menus []*model.MenuItem) string {
+func (s *menuService) getTitleFromMenus(menus []*define.SideMenuItem) string {
 	title := ""
 	for _, menu := range menus {
 		if menu.Active {

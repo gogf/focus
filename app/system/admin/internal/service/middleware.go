@@ -5,11 +5,12 @@ import (
 	"focus/app/shared"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gmode"
 )
 
 // 中间件管理服务
 var Middleware = &middlewareService{
-	LoginUrl: "/login",
+	LoginUrl: "/admin/login",
 }
 
 type middlewareService struct {
@@ -24,6 +25,14 @@ func (s *middlewareService) Ctx(r *ghttp.Request) {
 		Data:    make(g.Map),
 	}
 	shared.Context.Init(r, customCtx)
+	// 开发阶段 - 测试信息
+	if gmode.IsDevelop() {
+		customCtx.User = &model.ContextUser{
+			Id:       1,
+			Passport: "root",
+			Nickname: "ROOT",
+		}
+	}
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {
 		customCtx.User = &model.ContextUser{
 			Id:       userEntity.Id,

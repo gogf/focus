@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"focus/app/model"
+	"focus/app/system/admin/internal/define"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gstr"
@@ -14,12 +15,12 @@ type viewBuildIn struct {
 }
 
 // 获取管理后台菜单列表，最多两级菜单
-func (s *viewBuildIn) Menus() []*model.MenuItem {
+func (s *viewBuildIn) SideMenus() []*define.SideMenuItem {
 	return Menu.GetMenus(s.httpRequest)
 }
 
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
-func (s *viewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
+func (s *viewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTreeItem, error) {
 	return Category.GetTree(s.httpRequest.Context(), contentType)
 }
 
