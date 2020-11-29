@@ -34,19 +34,19 @@
                 <div class="form-group row">
                     <label for="password" class="col-sm-3 col-form-label text-right">权限路由</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="uri" placeholder="权限路由，用于页面访问地址权限控制">
+                        <input type="text" class="form-control" name="route" placeholder="用于页面访问地址权限控制，可以是外链地址">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="password" class="col-sm-3 col-form-label text-right">权限自定义标识</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="key" placeholder="权限自定义标识，仅用于程序自定义的权限控制">
+                        <input type="text" class="form-control" name="key" placeholder="仅用于程序自定义的权限控制">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="password" class="col-sm-3 col-form-label text-right">权限自定义数值</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="value" placeholder="权限自定义数值，仅用于程序自定义的权限控制">
+                        <input type="text" class="form-control" name="value" placeholder="仅用于程序自定义的权限控制">
                     </div>
                 </div>
             </div>
@@ -119,6 +119,28 @@
                 <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-auth-create">
                     <i class="fas fa-plus"></i> 新增
                 </button>
+
+
+
+
+            <div id="table-data">
+                <vxe-table
+                        :align="allAlign"
+                        :data="tableData">
+                    <vxe-table-column type="seq" width="60"></vxe-table-column>
+                    <vxe-table-column field="name" title="Name"></vxe-table-column>
+                    <vxe-table-column field="sex" title="Sex"></vxe-table-column>
+                    <vxe-table-column field="age" title="Age"></vxe-table-column>
+                </vxe-table>
+            </div>
+
+
+
+
+
+
+
+
                 <table class="table table-hover text-nowrap">
                     <thead>
                     <tr>
@@ -211,9 +233,28 @@
         </div>
 </section>
 
+
+
+
+
+
+
+
 <script type="application/javascript">
     // register the component
     Vue.component('treeselect', VueTreeselect.Treeselect)
+    new Vue({
+        el  : '#table-data',
+        data: {
+                allAlign: null,
+                tableData: [
+                    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'vxe-table 从入门到放弃' },
+                    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+                    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+                    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' }
+                ],
+        },
+    })
 
     // 初始化显示父级权限下拉选择框-新增
     new Vue({

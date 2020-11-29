@@ -10,7 +10,7 @@ import (
 
 // Role is the golang structure for table gf_role.
 type Role struct {
-    Id        int         `orm:"id,primary" json:"id"`         // 角色ID，可以为负数表示特殊含义                          
+    Id        uint        `orm:"id,primary" json:"id"`         // 角色ID                                                  
     Name      string      `orm:"name"       json:"name"`       // 角色名称                                                
     Sort      uint        `orm:"sort"       json:"sort"`       // 排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶  
     Brief     string      `orm:"brief"      json:"brief"`      // 角色描述                                                

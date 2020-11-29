@@ -25,7 +25,7 @@ type UserDetailDao struct {
 type userDetailColumns struct {
 	UserId     string //                                                
     TrueName   string // 真实姓名                                       
-    IdNumber   string // 身份证号                                       
+    CardId     string // 身份证号                                       
     City       string // 城市                                           
     Birth      string // 出生日期\n(字符串，例如：1986-10-07 00:00:00)  
     Phone      string // 手机号码                                       
@@ -33,7 +33,6 @@ type userDetailColumns struct {
     Email      string // 邮件                                           
     From       string // 用户来源                                       
     Brief      string // 用户说明                                       
-    Remark     string // github 返回                                    
     CreatedAt  string //                                                
     UpdatedAt  string //
 }
@@ -46,7 +45,7 @@ var (
 		Columns: userDetailColumns{
 			UserId:    "user_id",     
             TrueName:  "true_name",   
-            IdNumber:  "id_number",   
+            CardId:    "card_id",     
             City:      "city",        
             Birth:     "birth",       
             Phone:     "phone",       
@@ -54,7 +53,6 @@ var (
             Email:     "email",       
             From:      "from",        
             Brief:     "brief",       
-            Remark:    "remark",      
             CreatedAt: "created_at",  
             UpdatedAt: "updated_at",
 		},

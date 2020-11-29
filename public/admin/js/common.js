@@ -32,7 +32,10 @@ gf.handleAjaxSuccess = function (r, callback) {
             if (typeof callback == "function") {
                 callback(r)
             } else {
-                window.location.reload()
+                // 只有请求执行成功才刷新页面
+                switch (options.icon) {
+                    case "success": window.location.reload(); break;
+                }
             }
         }
     });

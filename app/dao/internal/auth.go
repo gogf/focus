@@ -23,14 +23,16 @@ type AuthDao struct {
 
 // AuthColumns defines and stores column names for table gf_auth.
 type authColumns struct {
-	Id         string // 自增ID                                  
-    ParentId   string // 父级菜单                                
-    UserId     string // 创建用户ID                              
-    Name       string // 权限名称                                
-    Key        string // 权限键名(用于程序)                      
-    Value      string // 权限键值，部分自定义权限可能有键值存在  
-    Sort       string // 排序                                    
-    Icon       string // 展示图标                                
+	Id         string // 自增ID                                                                                                         
+    ParentId   string // 父级菜单                                                                                                       
+    UserId     string // 创建用户ID                                                                                                     
+    Name       string // 权限名称                                                                                                       
+    Route      string // 权限地址，可以是内部路由地址、路由格式，也可以使外链地址。例如：/user/info, /content/:id, https://goframe.org  
+    Key        string // 权限键名(用于程序)                                                                                             
+    Value      string // 权限键值，部分自定义权限可能有键值存在                                                                         
+    Sort       string // 排序                                                                                                           
+    Icon       string // 展示图标                                                                                                       
+    Status     string // 状态。0：正常，1：禁用。                                                                                       
     CreatedAt  string // 创建时间
 }
 
@@ -44,10 +46,12 @@ var (
             ParentId:  "parent_id",   
             UserId:    "user_id",     
             Name:      "name",        
+            Route:     "route",       
             Key:       "key",         
             Value:     "value",       
             Sort:      "sort",        
             Icon:      "icon",        
+            Status:    "status",      
             CreatedAt: "created_at",
 		},
 	}
