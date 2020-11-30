@@ -24,8 +24,9 @@
 
 # 模板引擎配置
 [viewer]
-    indexLayout = "index/index.html"
-    adminLayout = "admin/index.html"
+indexLayout     = "index/index.html"
+adminHomeLayout = "admin/home.html"
+adminLayout     = "admin/index.html"
 
 # 数据库连接配置
 [database]

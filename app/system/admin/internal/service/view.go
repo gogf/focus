@@ -71,6 +71,11 @@ func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
 	s.RenderTpl(r, g.Cfg().GetString("viewer.adminLayout"), data...)
 }
 
+// 渲染首页模板页面
+func (s *viewService) RenderHome(r *ghttp.Request, data ...model.View) {
+	s.RenderTpl(r, g.Cfg().GetString("viewer.adminHomeLayout"), data...)
+}
+
 // 跳转中间页面
 func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 	view := model.View{}

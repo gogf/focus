@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>{{include "admin/header.html" .}}
+</head>
+<body class="sidebar-mini layout-fixed" style="overflow-y: hidden;">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        {{include "admin/navbar.html" .}}
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        {{include "admin/sidebar.html" .}}
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content" style="background:#fff;">
+            <iframe scrolling="yes" frameborder="0" id="inHtml" mame="frameName"
+                    style="width:100%;min-height:200px;overflow:visible;background:#fff;"
+                    src="http://localhost:8199/admin/setting"></iframe>
+        </section>
+        <!-- /.content -->
+    </div>
+
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        {{include "admin/footer.html" .}}
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+</body>
+</html>
+<script>
+    //iframe自适应
+    $(window).on('resize', function () {
+        var $content = $('.content');
+        $content.height($(this).height() - 120);
+        $content.find('iframe').each(function () {
+            $(this).height($content.height());
+        });
+    }).resize();
+
+    function loadUrl(url) {
+        if (url == "/admin" || url == "/") {
+            window.location.href = "/admin";
+        } else {
+            document.getElementById('inHtml').src = url;
+        }
+    }
+</script>
+

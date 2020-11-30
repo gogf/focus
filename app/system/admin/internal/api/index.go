@@ -17,7 +17,7 @@ type indexApi struct{}
 // @router  /admin [GET]
 // @success 200 {string} html "页面HTML"
 func (a *indexApi) Index(r *ghttp.Request) {
-	service.View.Render(r, model.View{
+	service.View.RenderHome(r, model.View{
 		Title: "后台首页",
 	})
 }

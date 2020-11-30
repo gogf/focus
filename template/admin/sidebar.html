@@ -12,7 +12,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             {{range $index, $item := .BuildIn.Menus}}
                 <li class="nav-item {{if $item.Items}}has-treeview{{end}} {{if $item.Active }}menu-open{{end}}">
-                    <a href="{{$item.Url}}" class="nav-link {{if $item.Active }}active{{end}}" target="{{$item.Target}}">
+                    <a href="javascript:loadUrl('{{$item.Url}}')" class="nav-link {{if $item.Active }}active{{end}}" target="{{$item.Target}}">
                         <i class="nav-icon fas {{$item.Icon}}"></i>
                         <p>{{$item.Name}} {{if $item.Items}}<i class="right fas fa-angle-left"></i>{{end}}</p>
                     </a>
@@ -20,7 +20,7 @@
                         <ul class="nav nav-treeview">
                             {{range $index, $subItem := $item.Items}}
                                 <li class="nav-item">
-                                    <a href="{{$subItem.Url}}" class="nav-link {{if $subItem.Active }}active{{end}}" target="{{$subItem.Target}}">
+                                    <a href="javascript:loadUrl('{{$subItem.Url}}')" class="nav-link {{if $subItem.Active }}active{{end}}" target="{{$subItem.Target}}">
                                         <i class="nav-icon fas {{$subItem.Icon}}"></i>
                                         <p>{{$subItem.Name}}</p>
                                     </a>
