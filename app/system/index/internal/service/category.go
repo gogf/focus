@@ -29,7 +29,7 @@ var (
 )
 
 // 查询列表
-func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTree, error) {
+func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTreeItem, error) {
 	v, err := gcache.GetOrSetFunc(treeCacheKey+contentType, func() (interface{}, error) {
 		entities, err := s.GetList(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*m
 	if err != nil {
 		return nil, err
 	}
-	return v.([]*model.CategoryTree), nil
+	return v.([]*model.CategoryTreeItem), nil
 }
 
 // 获取指定栏目ID及其下面所有子ID，构成数组返回。
@@ -66,7 +66,7 @@ func (s *categoryService) GetSubIdList(ctx context.Context, id uint) ([]uint, er
 }
 
 // 递归获取指定栏目ID下的所有子级
-func (s *categoryService) getSubIdListByTree(id uint, trees []*model.CategoryTree) []uint {
+func (s *categoryService) getSubIdListByTree(id uint, trees []*model.CategoryTreeItem) []uint {
 	idArray := make([]uint, 0)
 	for _, item := range trees {
 		if item.ParentId == id {
@@ -82,8 +82,8 @@ func (s *categoryService) getSubIdListByTree(id uint, trees []*model.CategoryTre
 }
 
 // 构造树形栏目列表。
-func (s *categoryService) formTree(parentId uint, contentType string, entities []*model.Category) ([]*model.CategoryTree, error) {
-	tree := make([]*model.CategoryTree, 0)
+func (s *categoryService) formTree(parentId uint, contentType string, entities []*model.Category) ([]*model.CategoryTreeItem, error) {
+	tree := make([]*model.CategoryTreeItem, 0)
 	for _, entity := range entities {
 		if contentType != "" && entity.ContentType != contentType {
 			continue
@@ -93,7 +93,7 @@ func (s *categoryService) formTree(parentId uint, contentType string, entities [
 			if err != nil {
 				return nil, err
 			}
-			item := &model.CategoryTree{
+			item := &model.CategoryTreeItem{
 				Items: subTree,
 			}
 			if err = gconv.Struct(entity, item); err != nil {

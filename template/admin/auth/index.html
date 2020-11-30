@@ -1,6 +1,6 @@
 
-<div class="modal fade" id="modal-add-auth">
-    <form id="auth-add form" action="/admin/auth/create" method="post">
+<div class="modal fade" id="modal-auth-create">
+    <form id="form-auth-create" action="/admin/auth/create" method="post">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,15 +13,75 @@
                 <div class="form-group row">
                     <label for="passport" class="col-sm-3 col-form-label text-right">上级权限</label>
                     <div class="col-sm-9">
-                        <select class="form-control select2" style="width: 100%;">
-                            <option selected="selected">Alabama</option>
-                            <option>Alaska</option>
-                            <option>California</option>
-                            <option>Delaware</option>
-                            <option>Tennessee</option>
-                            <option>Texas</option>
-                            <option>Washington</option>
-                        </select>
+                        <div id="parent-id-select-create">
+                            <treeselect
+                                placeholder="{{if .Data.authTree}}选择父级权限{{else}}暂无权限选择{{end}}"
+                                name="parent-id"
+                                v-model="value"
+                                :options="options"
+                                :normalizer="normalizer"
+                                {{if not .Data.authTree}}disabled{{end}}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="passport" class="col-sm-3 col-form-label required text-right">权限名称</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name" placeholder="请输入权限名称" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label text-right">权限路由</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="route" placeholder="用于页面访问地址权限控制，可以是外链地址">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label text-right">权限自定义标识</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="key" placeholder="仅用于程序自定义的权限控制">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label text-right">权限自定义数值</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="value" placeholder="仅用于程序自定义的权限控制">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="modal fade" id="modal-auth-update">
+    <form id="form-auth-update" action="/admin/auth/update" method="post">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">修改权限</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="passport" class="col-sm-3 col-form-label text-right">上级权限</label>
+                    <div class="col-sm-9">
+                        <div id="parent-id-select">
+                            <treeselect
+                                placeholder="选择父级权限"
+                                name="parent-id"
+                                v-model="value"
+                                :options="options"
+                                :normalizer="normalizer"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -56,24 +116,27 @@
 <section class="content">
         <div class="card">
             <div class="card-body">
-                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-add-auth">
+                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-auth-create">
                     <i class="fas fa-plus"></i> 新增
                 </button>
 
-                <select class="form-control select2" name="categoryId">
-                    {{range $index, $item := .Data.menuTree}}
-                        <option value="{{$item.Id}}">{{$item.Indent}} {{$item.Name}}</option>
-                        {{range $index, $item := $item.Items}}
-                            <option value="{{$item.Id}}">{{$item.Indent}} {{$item.Name}}</option>
-                            {{range $index, $item := $item.Items}}
-                                <option value="{{$item.Id}}">{{$item.Indent}} {{$item.Name}}</option>
-                                {{range $index, $item := $item.Items}}
-                                    <option value="{{$item.Id}}">{{$item.Indent}} {{$item.Name}}</option>
-                                {{end}}
-                            {{end}}
-                        {{end}}
-                    {{end}}
-                </select>
+
+
+
+            <div id="table-data">
+                <vxe-table
+                        :align="allAlign"
+                        :data="tableData">
+                    <vxe-table-column type="seq" width="60"></vxe-table-column>
+                    <vxe-table-column field="name" title="Name"></vxe-table-column>
+                    <vxe-table-column field="sex" title="Sex"></vxe-table-column>
+                    <vxe-table-column field="age" title="Age"></vxe-table-column>
+                </vxe-table>
+            </div>
+
+
+
+
 
 
 
@@ -166,11 +229,113 @@
                         </li>
                     </ul>
                 </div>
-
-
             </div>
-
-
         </div>
 </section>
 
+
+
+
+
+
+
+
+<script type="application/javascript">
+    // register the component
+    Vue.component('treeselect', VueTreeselect.Treeselect)
+    new Vue({
+        el  : '#table-data',
+        data: {
+                allAlign: null,
+                tableData: [
+                    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'vxe-table 从入门到放弃' },
+                    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+                    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+                    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' }
+                ],
+        },
+    })
+
+    // 初始化显示父级权限下拉选择框-新增
+    new Vue({
+        el  : '#parent-id-select-create',
+        data: {
+            value: null,
+            options: {{json .Data.authTree}},
+            normalizer(node) {
+                return {
+                    id:       node.id,
+                    label:    node.name,
+                    children: node.items,
+                }
+            },
+        },
+    })
+    // 初始化显示父级权限下拉选择框-修改
+    let parentIdSelect = new Vue({
+        el  : '#parent-id-select-update',
+        data: {
+            value  : null,
+            options: {{json .Data.authTree}},
+            normalizer(node) {
+                return {
+                    id:       node.id,
+                    label:    node.name,
+                    children: node.items,
+                }
+            },
+        },
+    });
+    // 显示修改弹出框
+    function ShowAuthUpdateModel(id) {
+
+    }
+
+    // 表单校验
+    $('#form-auth-create').validate({
+        errorElement: 'div',
+        errorClass  : 'validation-error-block',
+        focusInvalid: true,
+        rules: {
+            name: {
+                required: true
+            },
+            key: {
+                required: {
+                    depends: function(element) {
+                        return $("#form-auth-create").find("input[name=value]").val().length < 1;
+                    }
+                },
+            },
+            value: {
+                required: {
+                    depends: function(element) {
+                        return $("#form-auth-create").find("input[name=key]").val().length < 1;
+                    }
+                },
+            },
+        },
+        messages: {
+            title: {
+                required: "请输入权限名称"
+            },
+            key: {
+                required: "权限标识和权限路由不能同时为空"
+            },
+            value: {
+                required: "权限标识和权限路由不能同时为空"
+            },
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                dataType: 'json',
+                success:  gf.handleAjaxSuccess,
+                error:    gf.handleAjaxError,
+            });
+        },
+        errorPlacement: function (error, element) {
+            element.addClass("is-invalid")
+            error.appendTo(element.parent());
+        }
+    });
+</script>

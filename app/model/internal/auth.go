@@ -10,13 +10,15 @@ import (
 
 // Auth is the golang structure for table gf_auth.
 type Auth struct {
-    Id        uint        `orm:"id,primary" json:"id"`         // 自增ID                                  
-    ParentId  uint        `orm:"parent_id"  json:"parent_id"`  // 父级菜单                                
-    UserId    uint        `orm:"user_id"    json:"user_id"`    // 创建用户ID                              
-    Name      string      `orm:"name"       json:"name"`       // 权限名称                                
-    Key       string      `orm:"key"        json:"key"`        // 权限键名(用于程序)                      
-    Value     string      `orm:"value"      json:"value"`      // 权限键值，部分自定义权限可能有键值存在  
-    Sort      int         `orm:"sort"       json:"sort"`       // 排序                                    
-    Icon      string      `orm:"icon"       json:"icon"`       // 展示图标                                
-    CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间                                
+    Id        uint        `orm:"id,primary" json:"id"`         // 自增ID                                                                                                         
+    ParentId  uint        `orm:"parent_id"  json:"parent_id"`  // 父级菜单                                                                                                       
+    UserId    uint        `orm:"user_id"    json:"user_id"`    // 创建用户ID                                                                                                     
+    Name      string      `orm:"name"       json:"name"`       // 权限名称                                                                                                       
+    Route     string      `orm:"route"      json:"route"`      // 权限地址，可以是内部路由地址、路由格式，也可以使外链地址。例如：/user/info, /content/:id, https://goframe.org  
+    Key       string      `orm:"key"        json:"key"`        // 权限键名(用于程序)                                                                                             
+    Value     string      `orm:"value"      json:"value"`      // 权限键值，部分自定义权限可能有键值存在                                                                         
+    Sort      int         `orm:"sort"       json:"sort"`       // 排序                                                                                                           
+    Icon      string      `orm:"icon"       json:"icon"`       // 展示图标                                                                                                       
+    Status    uint        `orm:"status"     json:"status"`     // 状态。0：正常，1：禁用。                                                                                       
+    CreatedAt *gtime.Time `orm:"created_at" json:"created_at"` // 创建时间                                                                                                       
 }

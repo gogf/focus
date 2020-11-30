@@ -70,7 +70,7 @@ func (s *viewBuildIn) TopMenus() ([]*model.MenuItem, error) {
 }
 
 // 获得指定的栏目树形对象，当contentType为空时，表示获取所有的栏目树形对象。
-func (s *viewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTree, error) {
+func (s *viewBuildIn) CategoryTree(contentType string) ([]*model.CategoryTreeItem, error) {
 	return Category.GetTree(s.httpRequest.Context(), contentType)
 }
 

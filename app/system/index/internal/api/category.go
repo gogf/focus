@@ -16,7 +16,7 @@ type categoryApi struct{}
 // @produce json
 // @param   contentType query string true  "分类类型:topic, ask, article, reply，当传递空时表示获取所有栏目"
 // @router  /category/tree [GET]
-// @success 200 {array} model.CategoryTree "分类列表"
+// @success 200 {array} model.CategoryTreeItem "分类列表"
 func (a *categoryApi) Tree(r *ghttp.Request) {
 	var (
 		data *define.CategoryApiGetTreeReq

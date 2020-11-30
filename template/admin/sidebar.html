@@ -10,7 +10,7 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            {{range $index, $item := .BuildIn.Menus}}
+            {{range $index, $item := .BuildIn.SideMenus}}
                 <li class="nav-item {{if $item.Items}}has-treeview{{end}} {{if $item.Active }}menu-open{{end}}">
                     <a href="javascript:loadUrl('{{$item.Url}}')" class="nav-link {{if $item.Active }}active{{end}}" target="{{$item.Target}}">
                         <i class="nav-icon fas {{$item.Icon}}"></i>

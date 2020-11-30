@@ -27,11 +27,9 @@ func (a *authApi) Index(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	}
-	t, _ := service.Category.GetTree(r.Context(), "")
 	service.View.Render(r, model.View{
 		Data: g.Map{
 			"authTree": authTree,
-			"menuTree": t,
 		},
 	})
 }
