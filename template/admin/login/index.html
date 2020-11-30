@@ -68,7 +68,7 @@
             <!-- /.social-auth-links -->
 
             <p class="mb-1">
-                <a href="javascript:void(0);" onclick="swal({text: '请联系管理员'});">忘记密码</a>
+                <a href="javascript:void(0);" onclick="Swal.fire({text: '请联系管理员'});">忘记密码</a>
             </p>
         </div>
         <!-- /.login-card-body -->
@@ -121,7 +121,7 @@
                     dataType: 'json',
                     success: function (r, textStatus) {
                         if (r.code == 0) {
-                            swal({
+                            Swal.fire({
                                 title: "登录成功",
                                 text: "页面将自动跳转到登录前页面",
                                 icon: "success",
@@ -144,7 +144,7 @@
                                 }
                             });
                         } else {
-                            swal({
+                            Swal.fire({
                                 text: r.message,
                                 icon: "warning",
                                 button: "确定",

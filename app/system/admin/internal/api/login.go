@@ -2,9 +2,11 @@ package api
 
 import (
 	"focus/app/model"
+	"focus/app/system/admin/internal/define"
 	"focus/app/system/admin/internal/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gconv"
 )
 
 var Login = new(loginApi)
@@ -32,6 +34,22 @@ func (a *loginApi) Index(r *ghttp.Request) {
 // @router  /admin/login/do [POST]
 // @success 200 {object} response.JsonRes "执行结果"
 func (a *loginApi) Do(r *ghttp.Request) {
-	// TODO
-	response.JsonExit(r, 0, "")
+	var (
+		data            *define.UserApiLoginReq
+		serviceLoginReq *define.UserServiceLoginReq
+	)
+	if err := r.Parse(&data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if !service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, data.Captcha) {
+		response.JsonExit(r, 1, "请输入正确的验证码")
+	}
+	if err := gconv.Struct(data, &serviceLoginReq); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	} else {
+		response.JsonRedirectExit(r, 0, "", "/admin")
+	}
 }

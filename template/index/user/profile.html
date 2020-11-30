@@ -69,10 +69,6 @@
             submitHandler: function (form) {
                 $('button[type=submit]').attr('disabled', 'true');
                 // 传输加密
-                let oldPassword = $('[name="oldPassword"]').val();
-                let newPassword = $('[name="newPassword"]').val();
-                $('[name="oldPassword"]').val(hex_md5('{{.Context.User.Passport}}' + oldPassword));
-                $('[name="newPassword"]').val(hex_md5('{{.Context.User.Passport}}' + newPassword));
 
                 jQuery(form).ajaxSubmit({
                     dataType: 'json',
@@ -92,9 +88,6 @@
                                 });
                             }
                         }
-                        $('[name="oldPassword"]').val('');
-                        $('[name="newPassword"]').val('');
-                        $('[name="newPassword2"]').val('');
                     }
                 });
                 $('button[type=submit]').removeAttr('disabled');
