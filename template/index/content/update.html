@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/plugin/vditor/vditor.css"/>
-<script src="/plugin/vditor/vditor.js" defer></script>
+<link rel="stylesheet" href="/plugin/vditor/dist/index.css"/>
+<script src="/plugin/vditor/dist/index.min.js" defer></script>
 
 
 <div class="col-sm-10 offset-md-1 gf-publish">
@@ -55,6 +55,7 @@
     jQuery(function($) {
         // 编辑器初始化
         let editor = new Vditor('vditor', {
+            cdn:'/plugin/vditor/',
             theme : 'classic',
             height: 400,
             icon  : 'ant',

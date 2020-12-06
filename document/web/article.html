@@ -8,8 +8,6 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="js/jquery.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/vditor.css"/>
-    <script src="js/vditor.js" defer></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css?v=1">
@@ -314,6 +312,7 @@
 <script>
     $(function () {
         var editor = new Vditor('vditor', {
+            cdn:'/plugin/vditor/',
             height: 360,
             mode: 'wysiwyg',
             cache: {enable: false},

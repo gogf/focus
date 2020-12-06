@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/plugin/prism/prism.css">
 <script src="/plugin/prism/prism.js"></script>
-<link rel="stylesheet" href="/plugin/vditor/vditor.css"/>
-<script src="/plugin/vditor/vditor.js" defer></script>
+<link rel="stylesheet" href="/plugin/vditor/dist/index.css"/>
+<script src="/plugin/vditor/dist/index.min.js" defer></script>
 <div class="row gf-content">
     <div class="col-md-9">
         <div class="gf-content-show">
@@ -129,6 +129,7 @@
         }
 
         let editor = new Vditor('vditor', {
+            cdn:'/plugin/vditor/',
             theme: 'classic',
             height: 300,
             icon: 'ant',
