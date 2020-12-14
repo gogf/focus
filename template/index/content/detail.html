@@ -6,19 +6,19 @@
     <div class="col-md-9">
         <div class="gf-content-show">
             {{if .BreadCrumb}}
-                <nav aria-label="breadcrumb" class="gf-content-breadcrumb ">
-                    <ol class="breadcrumb">
-                        {{range $index, $item := .BreadCrumb}}
-                            <li class="breadcrumb-item {{if not $item.Url}}active{{end}}">
-                                {{if $item.Url}}
-                                    <a href="{{$item.Url}}">{{$item.Name}}</a>
-                                {{else}}
-                                    {{$item.Name}}
-                                {{end}}
-                            </li>
+            <nav aria-label="breadcrumb" class="gf-content-breadcrumb ">
+                <ol class="breadcrumb">
+                    {{range $index, $item := .BreadCrumb}}
+                    <li class="breadcrumb-item {{if not $item.Url}}active{{end}}">
+                        {{if $item.Url}}
+                        <a href="{{$item.Url}}">{{$item.Name}}</a>
+                        {{else}}
+                        {{$item.Name}}
                         {{end}}
-                    </ol>
-                </nav>
+                    </li>
+                    {{end}}
+                </ol>
+            </nav>
             {{end}}
 
             <h2 class="gf-title">
@@ -33,11 +33,11 @@
                 <a href="javascript:void(0);"
                    onclick="javascript:gf.interact.checkZan(this, 'content', {{.Data.Content.Id}})">
                     {{if .BuildIn.DidIZan "content" .Data.Content.Id}}
-                        <span class="icon iconfont icon-zan-done"></span> <span
-                                class="number">{{.Data.Content.ZanCount}}</span>
+                    <span class="icon iconfont icon-zan-done"></span> <span
+                        class="number">{{.Data.Content.ZanCount}}</span>
                     {{else}}
-                        <span class="icon iconfont icon-zan"></span> <span
-                                class="number">{{.Data.Content.ZanCount}}</span>
+                    <span class="icon iconfont icon-zan"></span> <span
+                        class="number">{{.Data.Content.ZanCount}}</span>
                     {{end}}
                 </a>
 
@@ -46,34 +46,38 @@
                 <a href="javascript:void(0);"
                    onclick="javascript:gf.interact.checkCai(this, 'content', {{.Data.Content.Id}})">
                     {{if .BuildIn.DidICai "content" .Data.Content.Id}}
-                        <span class="icon iconfont icon-cai-done"></span> <span
-                                class="number">{{.Data.Content.CaiCount}}</span>
+                    <span class="icon iconfont icon-cai-done"></span> <span
+                        class="number">{{.Data.Content.CaiCount}}</span>
                     {{else}}
-                        <span class="icon iconfont icon-cai"></span> <span
-                                class="number">{{.Data.Content.CaiCount}}</span>
+                    <span class="icon iconfont icon-cai"></span> <span
+                        class="number">{{.Data.Content.CaiCount}}</span>
                     {{end}}
                 </a>
                 &nbsp; / &nbsp;
                 发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
 
                 {{if .Context.User}}
-                    {{if eq .Data.Content.UserId .Context.User.Id}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
-                    {{end}}
+                {{if eq .Data.Content.UserId .Context.User.Id}}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/content/update?id={{.Data.Content.Id}}">编辑</a>
+                {{end}}
                 {{end}}
             </div>
             <div class="gf-content markdown-body" id="gf-content">{{.Data.Content.Content}}</div>
         </div>
+
         <div class="gf-comment-list">
             <ul class="list-group">
                 <li class="list-group-item comment-num">共 {{.Data.Content.ReplyCount}} 条回复</li>
+                {{if not .Context.User}}
                 <li class="list-group-item">
-                    需要<a href="/user/login" class="btn btn-link">登录</a>
-                    后方可回复, 如果你还没有账号请点击这里<a href="/user/register" class="btn btn btn-link">注册</a>。
+                    需要<a href="/login" class="btn btn-link">登录</a>
+                    后方可回复, 如果你还没有账号请点击这里<a href="/register" class="btn btn btn-link">注册</a>。
                 </li>
+                {{end}}
             </ul>
         </div>
+
         <div class="gf-comment-editor">
             <div id="vditor" class="mt-1"></div>
             <div style="background-color: white;padding: 10px;margin-bottom: 10px;" class="text-right">
@@ -106,6 +110,17 @@
     </div>
 </div>
 <script type="application/javascript">
+    gf.content = {
+        adopted: function (id) {
+
+        },
+        delete: function (id) {
+
+        },
+        reply: function (id) {
+
+        }
+    }
     $(function () {
         // 解析Markdown
         $('.markdown-body').each(function (i, block) {
@@ -129,7 +144,7 @@
         }
 
         let editor = new Vditor('vditor', {
-            cdn:'/plugin/vditor/',
+            cdn: '/plugin/vditor/',
             theme: 'classic',
             height: 300,
             icon: 'ant',
@@ -211,9 +226,21 @@
                 page: 1,
                 target_id: "{{.Data.Content.Id}}",
                 target_type: "{{.Data.Content.Type}}",
+                target_user_id: "{{.Data.Content.UserId}}",
             },
             success: function (r) {
-                $('.comment-num').after(r)
+                $('.comment-num').after(r);
+
+                // 采纳展示，如有有已经被采纳，那么其他全部隐藏
+                $("#adopted_it_{{.Data.Content.AdoptedReplyId}}").show();
+                $("[id^='adopted_btn_']").hide();
+
+                if ($("#adopted_it_{{.Data.Content.AdoptedReplyId}}").is(":hidden")) {
+                    // 只有作者可以采纳
+                    {{if eq .Context.User.Id .Data.Content.UserId }}
+                    $("[id^='adopted_btn_']").show();
+                    {{ end }}
+                }
             },
             error: function (html) {
             }
