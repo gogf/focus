@@ -230,7 +230,7 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 	res := new(define.UserServiceGetListRes)
 	res.Content = getListRes
 	res.User = user
-	res.Stats, err = s.GetUserStats(shared.Context.Get(ctx).User.Id)
+	res.Stats, err = s.GetUserStats(data.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func (s *userService) GetUserStats(userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
 	statsModel := m.Fields(dao.Content.Columns.Type, "count(*) total").
 		Where(dao.Content.Columns.UserId, userId).
-		Group(dao.Content.Columns.Type + "," + dao.Content.Columns.CategoryId)
+		Group(dao.Content.Columns.Type)
 	statsAll, err := statsModel.M.All()
 	if err != nil {
 		return nil, err

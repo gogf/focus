@@ -131,7 +131,7 @@ func (s *contentService) Search(ctx context.Context, r *define.ContentServiceSea
 	}
 	// 搜索统计
 	statsModel := m.Fields(dao.Content.Columns.Type, "count(*) total").
-		Group(dao.Content.Columns.Type + "," + dao.Content.Columns.CategoryId)
+		Group(dao.Content.Columns.Type)
 	statsAll, err := statsModel.M.All()
 	if err != nil {
 		return nil, err

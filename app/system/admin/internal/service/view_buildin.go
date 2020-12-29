@@ -36,6 +36,18 @@ func (s *viewBuildIn) GenderFont(gender int) string {
 	}
 }
 
+// 根据性别字段内容返回性别。
+func (s *viewBuildIn) Gender(gender int) string {
+	switch gender {
+	case model.UserGenderMale:
+		return "男"
+	case model.UserGenderFemale:
+		return "女"
+	default:
+		return "未知"
+	}
+}
+
 // 创建分页HTML内容
 func (s *viewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)
