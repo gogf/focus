@@ -28,7 +28,7 @@ func Run() {
 
 	// HOOK, 开发阶段禁止浏览器缓存,方便调试
 	if gmode.IsDevelop() {
-		s.BindHookHandler("/*", ghttp.HOOK_BEFORE_SERVE, func(r *ghttp.Request) {
+		s.BindHookHandler("/*", ghttp.HookBeforeServe, func(r *ghttp.Request) {
 			r.Response.Header().Set("Cache-Control", "no-store")
 		})
 	}

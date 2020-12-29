@@ -1,4 +1,44 @@
-# Golang社区系统
+# GoFrame社区系统
+
+## 项目介绍
+
+GoFrame社区，采用了简洁强大的GoFrame作为后端web框架，模板引擎用的是GF自带template模板，数据库用mysql，前端使用jquery/bootstrap框架。
+
+### 功能说明
+
+功能模块包含：登录，注册，登出，文章发布，栏目（问答，主题，文章）等；
+
+## 源码部署和配置
+
+1. 从git下载项目： git clone https://github.com/goflyfox/gmanager
+2. 安装mysql数据库，创建db，运行deploy下focus.sql脚本
+3. 修改config下config.toml配置文件
+```toml
+# 数据库配置
+[database]
+    LinkInfo  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+    Debug     = true
+```
+4. 启动：`go run main.go`
+5. 访问http://127.0.0.1:8199 即可看到登录页面，账号/密码：goframe/123456
+
+## 打包部署
+
+1. 安装gf-cli，详情查看：https://itician.org/pages/viewpage.action?pageId=1114260
+2. 打包命令： gf build main.go -n focus -a amd64 -s linux,windows -p bin
+3. 打包结果：focus linux版本；focus.exe window版本；
+```shell
+bin
+├─linux_amd64
+│      focus
+│
+└─windows_amd64
+        focus.exe
+```
+4. 将config,template,pulic目录和focus放到同一级目录，启动focus即可；
+
+## 项目结构
+
 ```
 ├── app
 │ ├── dao
@@ -26,6 +66,8 @@
 ├── go.mod
 └── main.go
 ```
+
+### 目录说明
 
 |目录/文件名称   | 说明 | 描述
 |---|---|---
