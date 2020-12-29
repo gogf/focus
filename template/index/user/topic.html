@@ -9,7 +9,13 @@
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    {{include "index/user/user_content_list.html" .}}
+                    {{if .Data.Stats.topic}}
+                        {{include "index/user/user_content_list.html" .}}
+                    {{else}}
+                    <li class="list-group-item gf-list-item">
+                        <a href="/content/create?type=topic" target="_blank" class="btn btn-primary btn-block">还没有主题，赶紧来发布吧</a>
+                    </li>
+                    {{end}}
                 </ul>
             </div>
         </div>

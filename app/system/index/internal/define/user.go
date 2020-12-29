@@ -28,10 +28,11 @@ type UserApiUpdateProfileReq struct {
 
 // Service用户信息
 type UserProfileRes struct {
-	Id       uint   // 用户ID
-	Nickname string `v:"required#请输入昵称信息"` // 昵称
-	Avatar   string // 头像地址
-	Gender   int    // 性别 0: 未设置 1: 男 2: 女
+	Id       uint           // 用户ID
+	Nickname string         `v:"required#请输入昵称信息"` // 昵称
+	Avatar   string         // 头像地址
+	Gender   int            // 性别 0: 未设置 1: 男 2: 女
+	Stats    map[string]int // 发布内容数量
 }
 
 // Service修改用户头像
@@ -80,4 +81,5 @@ type UserServiceGetListReq struct {
 type UserServiceGetListRes struct {
 	Content *ContentServiceGetListRes `json:"content"` // 查询用户
 	User    *UserProfileRes           `json:"user"`    // 查询用户
+	Stats   map[string]int            // 发布内容数量
 }
