@@ -20,9 +20,14 @@ type contentService struct{}
 // 查询内容列表
 func (s *contentService) GetList(ctx context.Context, r *define.ContentServiceGetListReq) (*define.ContentServiceGetListRes, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
+
+	// 默认查询topic
 	if r.Type != "" {
 		m = m.Where(dao.Content.Columns.Type, r.Type)
+	} else {
+		m = m.Where(dao.Content.Columns.Type, model.ContentTypeTopic)
 	}
+
 	if r.CategoryId > 0 {
 		// 栏目检索
 		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
