@@ -8,7 +8,6 @@
         "description": "GoFrame社区API",
         "title": "GoFrame社区API",
         "contact": {},
-        "license": {},
         "version": "1.0"
     },
     "paths": {
@@ -21,367 +20,6 @@
                     "前台-首页"
                 ],
                 "summary": "展示站点首页",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-首页"
-                ],
-                "summary": "展示后台首页",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/category": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-栏目"
-                ],
-                "summary": "展示栏目里列表页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/category/do-create": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-栏目"
-                ],
-                "summary": "创建栏目",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/category/do-delete": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-栏目"
-                ],
-                "summary": "删除栏目",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/category/do-update": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-栏目"
-                ],
-                "summary": "修改栏目",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "展示内容列表页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content/create": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "显示创建内容",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content/do-create": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "创建内容",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content/do-delete": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "删除内容",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content/do-update": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "修改内容",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/content/update": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-内容"
-                ],
-                "summary": "显示修改内容",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/reply": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-评论"
-                ],
-                "summary": "展示评论列表",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/reply/do-create": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-评论"
-                ],
-                "summary": "创建评论",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/reply/do-delete": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-评论"
-                ],
-                "summary": "删除评论",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/reply/do-update": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "后台-评论"
-                ],
-                "summary": "修改评论",
-                "responses": {
-                    "200": {
-                        "description": "请求结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/setting/setting": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-模板"
-                ],
-                "summary": "展示模板管理页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/setting/system": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-菜单"
-                ],
-                "summary": "展示菜单管理页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/user": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-用户"
-                ],
-                "summary": "展示用户列表页面",
-                "responses": {
-                    "200": {
-                        "description": "页面HTML",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/user-role": {
-            "get": {
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "后台-用户橘色"
-                ],
-                "summary": "展示用户角色列表页面",
                 "responses": {
                     "200": {
                         "description": "页面HTML",
@@ -580,7 +218,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.CategoryTree"
+                                "$ref": "#/definitions/model.CategoryTreeItem"
                             }
                         }
                     }
@@ -615,7 +253,7 @@
                 "tags": [
                     "前台-内容"
                 ],
-                "summary": "创建内容",
+                "summary": "创建回复",
                 "parameters": [
                     {
                         "description": "请求参数",
@@ -631,7 +269,7 @@
                     "200": {
                         "description": "请求结果",
                         "schema": {
-                            "$ref": "#/definitions/define.ContentServiceCreateRes"
+                            "$ref": "#/definitions/response.JsonRes"
                         }
                     }
                 }
@@ -1598,7 +1236,7 @@
                 }
             }
         },
-        "model.CategoryTree": {
+        "model.CategoryTreeItem": {
             "type": "object",
             "properties": {
                 "brief": {
@@ -1613,11 +1251,15 @@
                     "description": "分类ID，自增主键",
                     "type": "integer"
                 },
+                "indent": {
+                    "description": "缩进字符串，包含：\u0026nbsp;, \" │\", \" ├\", \" └\"",
+                    "type": "string"
+                },
                 "items": {
                     "description": "子级数据项",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.CategoryTree"
+                        "$ref": "#/definitions/model.CategoryTreeItem"
                     }
                 },
                 "name": {
