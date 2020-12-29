@@ -237,9 +237,11 @@
 
                 if ($("#adopted_it_{{.Data.Content.AdoptedReplyId}}").is(":hidden")) {
                     // 只有作者可以采纳
+                    {{if .Context.User}}
                     {{if eq .Context.User.Id .Data.Content.UserId }}
                     $("[id^='adopted_btn_']").show();
                     {{ end }}
+                    {{end}}
                 }
             },
             error: function (html) {
