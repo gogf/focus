@@ -81,7 +81,19 @@ func (a *userApi) Avatar(r *ghttp.Request) {
 // @router  /user/password [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Password(r *ghttp.Request) {
-	service.View.Render(r)
+	if getProfile, err := service.User.GetProfile(r.Context()); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	} else {
+		title := "gf bbs - 用户 " + getProfile.Nickname + " 修改密码"
+		service.View.Render(r, model.View{
+			Title:       title,
+			Keywords:    title,
+			Description: title,
+			Data:        getProfile,
+		})
+	}
 }
 
 // @summary 我的文章页面

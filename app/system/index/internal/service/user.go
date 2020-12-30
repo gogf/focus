@@ -153,6 +153,12 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.
 	if err := userRecord.Struct(getProfile); err != nil {
 		return nil, err
 	}
+
+	getProfile.Stats, err = s.GetUserStats(shared.Context.Get(ctx).User.Id)
+	if err != nil {
+		return nil, err
+	}
+
 	return getProfile, nil
 }
 
@@ -224,5 +230,27 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 	res := new(define.UserServiceGetListRes)
 	res.Content = getListRes
 	res.User = user
+	res.Stats, err = s.GetUserStats(data.UserId)
+	if err != nil {
+		return nil, err
+	}
+
 	return res, nil
+}
+
+// 获取文章数量
+func (s *userService) GetUserStats(userId uint) (map[string]int, error) {
+	m := dao.Content.Fields(model.ContentListItem{})
+	statsModel := m.Fields(dao.Content.Columns.Type, "count(*) total").
+		Where(dao.Content.Columns.UserId, userId).
+		Group(dao.Content.Columns.Type)
+	statsAll, err := statsModel.M.All()
+	if err != nil {
+		return nil, err
+	}
+	statsMap := make(map[string]int)
+	for _, v := range statsAll {
+		statsMap[v["type"].String()] = v["total"].Int()
+	}
+	return statsMap, nil
 }

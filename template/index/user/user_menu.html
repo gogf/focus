@@ -12,19 +12,19 @@
         </li>
         <li class="list-group-item gf-list-item" id="user-article"><a
                     href="/user/article"><span class="icon iconfont">&#xe61c;</span> 我的文章</a> <span
-                    class="badge badge-primary" style="float: right;">12</span>
+                    class="badge badge-primary" style="float: right;">{{or .Data.Stats.article 0}}</span>
         </li>
         <li class="list-group-item gf-list-item" id="user-topic"><a
                     href="/user/topic"><span class="icon iconfont">&#xe6b3;</span> 我的主题</a> <span
-                    class="badge badge-primary" style="float: right;">12</span>
+                    class="badge badge-primary" style="float: right;">{{or .Data.Stats.topic 0}}</span>
         </li>
         <li class="list-group-item gf-list-item" id="user-ask"><a
                     href="/user/ask"><span class="icon iconfont">&#xe717;</span> 我的问答</a> <span
-                    class="badge badge-primary" style="float: right;">12</span>
+                    class="badge badge-primary" style="float: right;">{{or .Data.Stats.ask 0}}</span>
         </li>
         <li class="list-group-item gf-list-item" id="user-message"><a
                     href="/user/message"><span class="icon iconfont">&#xe60e;</span> 我的消息</a> <span
-                    class="badge badge-primary" style="float: right;">13</span>
+                    class="badge badge-primary" style="float: right;">0</span>
         </li>
     </ul>
 </div>

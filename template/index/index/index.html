@@ -5,22 +5,11 @@
 
             <li class="list-group-item">
                 <div class="float-left">
-                    <button class=" btn btn-link text-primary top-node-btn btn-sm" data-id="1">随聊</button>
-                    <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="5">翻译</button>
-                    <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="6">分享</button>
-                    <button class=" btn btn-link text-secondary top-node-btn btn-sm" data-id="7">招聘</button>
+                    <a class="btn btn-link {{if eq $.Query.cate 1}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/?cate=1&sort={{$.Query.sort}}">随聊</a>
+                    <a class="btn btn-link {{if eq $.Query.cate 6}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/?cate=6&sort={{$.Query.sort}}">翻译</a>
+                    <a class="btn btn-link {{if eq $.Query.cate 7}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/?cate=7&sort={{$.Query.sort}}">分享</a>
+                    <a class="btn btn-link {{if eq $.Query.cate 12}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/?cate=12&sort={{$.Query.sort}}">招聘</a>
 
-                    <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button"
-                                class="btn btn-link text-secondary top-node-btn btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            其他
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">其他1</a>
-                            <a class="dropdown-item" href="#">其他2</a>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="float-right">
