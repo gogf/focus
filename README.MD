@@ -10,7 +10,7 @@ GoFrame社区，采用了简洁强大的GoFrame作为后端web框架，模板引
 
 ## 源码部署和配置
 
-1. 从git下载项目： git clone https://github.com/goflyfox/gmanager
+1. 从git下载项目： `https://gitee.com/johng/focus`
 2. 安装mysql数据库，创建db，运行deploy下focus.sql脚本
 3. 修改config下config.toml配置文件
 ```toml
