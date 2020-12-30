@@ -47,9 +47,6 @@ bin
 │ └── system
 │     ├── admin
 │     │ └── internal
-│     │     ├── api
-│     │     ├── define
-│     │     └── service
 │     └── index
 │         └── internal
 │             ├── api
@@ -75,7 +72,7 @@ bin
 | - `dao`        | 数据访问   | 数据库的访问操作，仅包含最基础的数据库CURD方法。
 | - `model`      | 数据模型   | 存放数据相关的实体结构定义。
 | - `system`     | 系统模块   | 内部可能包含多个子系统，不同子系统之间资源相互隔离。
-| &nbsp; &nbsp; - `admin`    | 管理后台 | 子系统，管理后台。
+| &nbsp; &nbsp; - `index`    | 前端页面 | 子系统，前端页面。
 | &nbsp; &nbsp; &nbsp; &nbsp; - `internal`       | 内部模块 | 系统内部模块，仅供当前内部系统调用，无法在系统间共享。
 | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; - `api`     | 业务接口 | 系统内部接收/解析用户输入参数的入口/接口层
 | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; - `define`  | 结构定义 | 系统内部的输入、输出数据结构定义。
@@ -90,3 +87,11 @@ bin
 |`Dockerfile`    | 镜像描述 | 云原生时代用于编译生成Docker镜像的描述文件。
 |`go.mod`        | 依赖管理   | 使用`Go Module`包管理的依赖描述文件。
 |`main.go`       | 入口文件   | 程序入口文件。
+
+## 数据库表结构
+
+![image](document/images/databases.png)
+
+## 模块进度
+
+![image](document/design/focus-v0.1.0-beta.png)
