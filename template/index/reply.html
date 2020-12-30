@@ -1,5 +1,5 @@
 {{range $index, $item := .Data.List}}
-    <li class="list-group-item" id="reply_{{ $item.Reply.Id }}">
+    <li class="list-group-item reply-list" id="reply_{{ $item.Reply.Id }}">
         <div class="reply" style="padding: 5px;width: 100%;">
             <div class="reply-avatar" style="width: 100%;">
                 <a href="/users/{{$item.User.Id }}">
@@ -15,6 +15,7 @@
             <div class="reply-content" style="padding: 5px;">
                 {{$item.Reply.Content }}
             </div>
+            <!--
             <div class="reply-operating" style="padding: 5px">
                 <a href="javascript:gf.content.reply({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">回复</a>
                 {{if $.Context.User}}
@@ -26,6 +27,7 @@
                 <a><span class="icon iconfont icon-cai"></span> <span class="number">({{ $item.Reply.CaiCount }})</span></a>
                 <a><span class="icon iconfont icon-zan"></span> <span class="number">({{ $item.Reply.ZanCount }})</span></a>
             </div>
+            -->
         </div>
     </li>
 {{end}}

@@ -119,6 +119,38 @@
         },
         reply: function (id) {
 
+        },
+        loadReply:function () {
+            jQuery.ajax({
+                type: 'GET',
+                url: '/reply/index',
+                data: {
+                    size: 30,
+                    page: 1,
+                    target_id: "{{.Data.Content.Id}}",
+                    target_type: "{{.Data.Content.Type}}",
+                    target_user_id: "{{.Data.Content.UserId}}",
+                },
+                success: function (r) {
+                    $('.reply-list').remove();
+                    $('.comment-num').after(r);
+
+                    // 采纳展示，如有有已经被采纳，那么其他全部隐藏
+                    $("#adopted_it_{{.Data.Content.AdoptedReplyId}}").show();
+                    $("[id^='adopted_btn_']").hide();
+
+                    if ($("#adopted_it_{{.Data.Content.AdoptedReplyId}}").is(":hidden")) {
+                        // 只有作者可以采纳
+                        {{if .Context.User}}
+                        {{if eq .Context.User.Id .Data.Content.UserId }}
+                        $("[id^='adopted_btn_']").show();
+                        {{ end }}
+                        {{end}}
+                    }
+                },
+                error: function (html) {
+                }
+            });
         }
     }
     $(function () {
@@ -209,6 +241,8 @@
                     $('button[type=submit]').removeAttr('disabled');
                     if (r.code === 0) {
                         swal({text: "评论成功", icon: "warning", button: "确定"});
+
+                        gf.content.loadReply();
                     } else {
                         swal({text: r.message, icon: "warning", button: "确定",});
                     }
@@ -218,34 +252,6 @@
             });
         })
 
-        jQuery.ajax({
-            type: 'GET',
-            url: '/reply/index',
-            data: {
-                size: 30,
-                page: 1,
-                target_id: "{{.Data.Content.Id}}",
-                target_type: "{{.Data.Content.Type}}",
-                target_user_id: "{{.Data.Content.UserId}}",
-            },
-            success: function (r) {
-                $('.comment-num').after(r);
-
-                // 采纳展示，如有有已经被采纳，那么其他全部隐藏
-                $("#adopted_it_{{.Data.Content.AdoptedReplyId}}").show();
-                $("[id^='adopted_btn_']").hide();
-
-                if ($("#adopted_it_{{.Data.Content.AdoptedReplyId}}").is(":hidden")) {
-                    // 只有作者可以采纳
-                    {{if .Context.User}}
-                    {{if eq .Context.User.Id .Data.Content.UserId }}
-                    $("[id^='adopted_btn_']").show();
-                    {{ end }}
-                    {{end}}
-                }
-            },
-            error: function (html) {
-            }
-        });
+        gf.content.loadReply();
     })
 </script>
