@@ -10,9 +10,9 @@
                     <span class="icon iconfont">&#xe637;</span> 为您找到 <b>{{.Data.Total}}</b> 条关于 <span class="badge badge-light" style="padding:5px;">{{.Query.key}}</span> 的内容
                 </div>
                 <div class="float-right">
-                <a class="btn btn-link {{if eq .Query.sort 0}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&cate={{.Query.cate}}&sort=0">最新</a>
-                <a class="btn btn-link {{if eq .Query.sort 1}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&cate={{.Query.cate}}&sort=1">活跃</a>
-                <a class="btn btn-link {{if eq .Query.sort 2}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&cate={{.Query.cate}}&sort=2">热度</a>
+                <a class="btn btn-link {{if eq .Query.sort 0}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&type={{.Query.type}}&sort=0">最新</a>
+                <a class="btn btn-link {{if eq .Query.sort 1}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&type={{.Query.type}}&sort=1">活跃</a>
+                <a class="btn btn-link {{if eq .Query.sort 2}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm" href="/search?key={{.Query.key}}&type={{.Query.type}}&sort=2">热度</a>
                 </div>
             </li>
 
@@ -60,26 +60,26 @@
             <div class="card-header">所有话题</div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item gf-list-item">
-                    <a href="/user/article"><span class="icon iconfont">&#xe622;</span> 综合</a>
+                    <a href="/search?key={{.Query.key}}"><span class="icon iconfont">&#xe622;</span> 综合</a>
                     <span class="badge badge-primary" style="float: right;">{{.Data.Total}}</span>
                 </li>
                 {{if .Data.Stats.topic}}
                 <li class="list-group-item gf-list-item" id="search-topic">
-                    <a href="/user/topic"><span class="icon iconfont">&#xe6b3;</span> 主题</a>
+                    <a href="/search?key={{.Query.key}}&type=topic"><span class="icon iconfont">&#xe6b3;</span> 主题</a>
                     <span class="badge badge-primary" style="float: right;">{{.Data.Stats.topic}}</span>
                 </li>
                 {{end}}
 
                 {{if .Data.Stats.article}}
                 <li class="list-group-item gf-list-item" id="search-article">
-                    <a href="/user/article"><span class="icon iconfont">&#xe61c;</span> 文章</a>
+                    <a href="/search?key={{.Query.key}}&type=article"><span class="icon iconfont">&#xe61c;</span> 文章</a>
                     <span class="badge badge-primary" style="float: right;">{{.Data.Stats.article}}</span>
                 </li>
                 {{end}}
 
                 {{if .Data.Stats.ask}}
                 <li class="list-group-item gf-list-item" id="search-ask">
-                    <a href="/user/ask"><span class="icon iconfont">&#xe717;</span> 问答</a>
+                    <a href="/search?key={{.Query.key}}&type=ask"><span class="icon iconfont">&#xe717;</span> 问答</a>
                     <span class="badge badge-primary" style="float: right;">{{.Data.Stats.ask}}</span>
                 </li>
                 {{end}}
