@@ -1,41 +1,45 @@
-# GoFrame社区系统
+# `focus`聚焦社区
 
 ## 项目介绍
 
-GoFrame社区，采用了简洁强大的GoFrame作为后端web框架，模板引擎用的是GF自带template模板，数据库用mysql，前端使用jquery/bootstrap框架。
-
-### 功能说明
-
-功能模块包含：登录，注册，登出，文章发布，栏目（问答，主题，文章）等；
+`focus`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
+模板引擎用的是`GF`自带`template`模板，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
 
 ## 源码部署和配置
 
-1. 从git下载项目： `git clone https://gitee.com/johng/focus`
-2. 安装mysql数据库，创建databases命名为`focus`(CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';)，运行document下focus.sql脚本
-3. 修改config下config.toml配置文件
-```toml
-# 数据库配置
-[database]
-    LinkInfo  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-    Debug     = true
-```
-4. 启动：`go run main.go`
-5. 访问http://127.0.0.1:8199 即可看到登录页面，账号/密码：goframe/123456
+1. 下载项目源码： `git clone https://github.com/gogf/focus`
+1. 创建`focus`数据库:
+    ```sql
+    CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';
+    ```
+1. 运行`document`下`focus.sql`初始化数据库`SQL`。
+3. 复制`config`下`config.example.toml`为`config.toml`配置文件:
+    ```toml
+    # 数据库配置
+    [database]
+        link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+        debug = true
+    ```
+    其他配置根据需要自行调整。
+4. 运行：`go run main.go`
+5. 访问 http://127.0.0.1:8199 即可看到登录页面，默认账号/密码：`goframe` / `123456`
 
 ## 打包部署
 
-1. 安装gf-cli，详情查看：https://itician.org/pages/viewpage.action?pageId=1114260
-2. 打包命令： gf build main.go -n focus -a amd64 -s linux,windows -p bin
-3. 打包结果：focus linux版本；focus.exe window版本；
-```shell
-bin
-├─linux_amd64
-│      focus
-│
-└─windows_amd64
-        focus.exe
-```
-4. 将config,template,pulic目录和focus放到同一级目录，启动focus即可；
+1. 安装`gf-cli`，详情查看：https://itician.org/pages/viewpage.action?pageId=1114260
+2. 打包命令：执行 `gf build` 即可。
+3. 打包结果：默认 `linux/macos/windows` 三个版本。
+    ```shell
+    bin
+    ├── darwin_amd64
+    │   └── focus
+    ├── linux_amd64
+    │   └── focus
+    └── windows_amd64
+        └── focus.exe
+    ```
+4. 将`config,template,public`目录和`focus`放到同一级目录，启动`focus`即可。
+> 也可将资源文件一同打包到可执行文件中一同发布/部署，具体请参考：https://itician.org/pages/viewpage.action?pageId=1115788
 
 ## 项目结构
 
