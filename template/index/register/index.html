@@ -125,9 +125,9 @@ jQuery(function($) {
                                 button: "确定"
                             });
                         }
-                        $('[name="code"]').val('');
-                        $('[name="password"]').val('');
-                        $('[name="password2"]').val('');
+                        $('[name="captcha"]').val('');
+                        $('[name="password"]').val(password);
+                        $('[name="password2"]').val(password2);
                         gf.reloadCaptcha()
                     }
                 }
