@@ -8,7 +8,7 @@
 
 # 数据库连接配置
 [database]
-    link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/focus"
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
     debug = true
     
 # 内容设置
@@ -42,3 +42,9 @@
         system   = "linux,darwin,windows"
         mod      = ""
         cgo      = 0
+
+    [[gfcli.gen.dao]]
+        link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+        path   = "./app"
+        remove-prefix = "gf_"
+        tables = "gf_category, gf_content,gf_file,gf_interact,gf_reply,gf_setting,gf_user"
