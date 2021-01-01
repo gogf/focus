@@ -79,6 +79,7 @@
                                 </span>
                                 <span style="font-size: 12px;color: #ccc;">{{$item.Content.CreatedAt | $.BuildIn.FormatTime}}</span>
 
+                                {{if $.Context.User}}
                                 {{if eq $.Data.User.Id $.Context.User.Id}}
                                 <span style="font-size: 12px;color: #ccc;text-align: right;">
                                 &nbsp;|&nbsp;&nbsp; <a href="/content/update?id={{$item.Content.Id}}"
@@ -88,6 +89,7 @@
                                                        onclick="gf.content.delete({{$item.Content.Id}},'/user/{{$.Data.User.Id}}?type={{$item.Category.ContentType}}')"><span
                                                 class="icon iconfont" style="color: black;">&#xe63c;</span></a>
                                 </span>
+                                {{end}}
                                 {{end}}
                             </div>
                         </div>

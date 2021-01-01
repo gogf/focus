@@ -154,7 +154,7 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.
 		return nil, err
 	}
 
-	getProfile.Stats, err = s.GetUserStats(shared.Context.Get(ctx).User.Id)
+	getProfile.Stats, err = s.GetUserStats(userId)
 	if err != nil {
 		return nil, err
 	}
