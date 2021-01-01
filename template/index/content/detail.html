@@ -252,6 +252,16 @@
         });
 
         $('.btn-submit').on('click', function () {
+
+            {{if not .Context.User}}
+            swal({
+                text:   "请登录后再做操作",
+                icon: "warning",
+                button: "确定"
+            });
+            return;
+            {{end}}
+
             if (!editor.getHTML()) return;
             $('button[type=submit]').attr('disabled', 'true');
             jQuery.ajax({
