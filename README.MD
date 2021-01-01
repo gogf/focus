@@ -5,15 +5,26 @@
 `focus`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
 模板引擎用的是`GF`自带`template`模板，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
 
+## 演示地址
+
+请不要恶意发送垃圾数据哦~ 地址： [https://focus.goframe.org/](https://focus.goframe.org/) 
+
 ## 源码部署和配置
 
-1. 下载项目源码： `git clone https://github.com/gogf/focus`
-1. 创建`focus`数据库:
+### 源码地址
+
+* github：https://github.com/gogf/focus
+* gitee：https://gitee.com/johng/focus
+
+### 启动说明
+
+1. 下载项目源码： `git clone https://github.com/gogf/focus` 
+2. 创建`focus`数据库:
     ```sql
     CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';
     ```
-1. 运行`document`下`focus.sql`初始化数据库`SQL`。
-3. 复制`config`下`config.example.toml`为`config.toml`配置文件:
+3. 运行`document`下`focus.sql`初始化数据库`SQL`。
+4. 复制`config`下`config.example.toml`为`config.toml`配置文件:
     ```toml
     # 数据库配置
     [database]
@@ -21,8 +32,8 @@
         debug = true
     ```
     其他配置根据需要自行调整。
-4. 运行：`go run main.go`
-5. 访问 http://127.0.0.1:8199 即可看到登录页面，默认账号/密码：`goframe` / `123456`
+5. 运行：`go run main.go`
+6. 访问 http://127.0.0.1:8199 即可看到登录页面，默认账号/密码：`goframe` / `123456`
 
 ## 打包部署
 
