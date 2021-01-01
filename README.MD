@@ -5,6 +5,8 @@
 `focus`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
 模板引擎用的是`GF`自带`template`模板，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
 
+项目文档：[focus聚焦社区文档](https://itician.org/pages/viewpage.action?pageId=3672317)
+
 ## 演示地址
 
 请不要恶意发送垃圾数据哦~ 地址： [https://focus.goframe.org/](https://focus.goframe.org/) 
@@ -53,51 +55,6 @@
 > 也可将资源文件一同打包到可执行文件中一同发布/部署，具体请参考：https://itician.org/pages/viewpage.action?pageId=1115788
 
 ## 项目结构
-
-代码采用api/service/dao/model架构的标准MVC模式
-
-* api：负责页面转发，参数验证，返回封装及service层调用
-* service：负责业务处理，应保证业务逻辑独立性和重复利用性；此层负责调用dao层；
-* dao：负责数据操作，即数据库增伤改查等；此层应避免业务逻辑处理；
-* model：数据及业务对象实体对象，struct封装；
-
-### model和dao生成
-
-1. 安装`gf-cli`，详情查看：https://itician.org/pages/viewpage.action?pageId=1114260
-2. 确认配置文件,完成数据源修改
-```toml
-# 工具相关配置
-[gfcli]
-    # dao生成
-    [[gfcli.gen.dao]]
-        link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-        path   = "./app"
-        remove-prefix = "gf_"
-        tables = "gf_category, gf_content,gf_file,gf_interact,gf_reply,gf_setting,gf_user"
-```   
-3. 生成命令：执行 `gf gen dao` 即可。
-4. 生成目录结构如下，后续数据库操作主要完善app/dao/category.go和app/dao/content.go，其他使用官网自动生成文件即可。
-```bash
-app
-│
-├─dao
-│  │  category.go
-│  │  content.go
-│  │
-│  └─internal
-│          category.go
-│          content.go
-│
-├─model
-│  │  captcha.go
-│  │  category.go
-│  │
-│  └─internal
-│          category.go
-└────────  content.go
-```
-
-### 代码结构
 
 ```
 ├── app
