@@ -42,7 +42,7 @@
         system   = "linux,darwin,windows"
         mod      = ""
         cgo      = 0
-
+    # dao生成
     [[gfcli.gen.dao]]
         link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
         path   = "./app"
