@@ -276,8 +276,8 @@
                 success: function (r) {
                     $('button[type=submit]').removeAttr('disabled');
                     if (r.code === 0) {
-                        swal({text: "评论成功", icon: "warning", button: "确定"});
-
+                        swal({text: "评论成功", icon: "success", button: "确定"});
+                        editor.setValue("", true)
                         gf.content.loadReply();
                     } else {
                         swal({text: r.message, icon: "warning", button: "确定",});
