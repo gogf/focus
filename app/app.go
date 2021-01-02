@@ -14,7 +14,7 @@ import (
 
 // 应用启动
 func Run() {
-	//g.SetDebug(true)
+	// g.SetDebug(true)
 
 	// 绑定Swagger Plugin
 	s := g.Server()
