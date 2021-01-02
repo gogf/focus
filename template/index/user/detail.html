@@ -67,7 +67,7 @@
                                 <span class="badge badge-primary">{{$item.Category.Name}}</span>
                                 <span class="gf-list-item-title">
                             <a href="/{{$item.Category.ContentType}}/{{$item.Content.Id}}"
-                               style="color: #222;" target="_blank">{{$item.Content.Title}}</a>
+                               style="color: #222;">{{$item.Content.Title}}</a>
                         </span>
                             </div>
                             <div class="float-right">
@@ -82,8 +82,7 @@
                                 {{if $.Context.User}}
                                 {{if eq $.Data.User.Id $.Context.User.Id}}
                                 <span style="font-size: 12px;color: #ccc;text-align: right;">
-                                &nbsp;|&nbsp;&nbsp; <a href="/content/update?id={{$item.Content.Id}}"
-                                                       target="_blank"><span class="icon iconfont"
+                                &nbsp;|&nbsp;&nbsp; <a href="/content/update?id={{$item.Content.Id}}" ><span class="icon iconfont"
                                                                              style="color: darkred;">&#xe780;</span></a>
                                 &nbsp;|&nbsp;&nbsp; <a href="javascript:void(0);"
                                                        onclick="gf.content.delete({{$item.Content.Id}},'/user/{{$.Data.User.Id}}?type={{$item.Category.ContentType}}')"><span
@@ -119,7 +118,7 @@
                 资料卡
             </div>
             <div>
-                <a href="/user/{{.Data.User.Id}}" target="_blank">
+                <a href="/user/{{.Data.User.Id}}">
                     <img class="gf-user-img image-border circle-image topic-list-author-avatar"
                          src="{{.Data.User.Avatar}}">
                 </a>
