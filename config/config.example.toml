@@ -8,19 +8,24 @@
     routeOverWrite      = true
     accessLogEnabled    = true
     accessLogPattern    = "access-{Ymd}.log"
-    sessionPath         = "/tmp/focus/tmp/gsessions"
-    logPath             = "/tmp/focus/logs/server"
+    sessionPath         = "temp/gsessions"
+    logPath             = "logs/server"
 
 # 数据库连接配置
 [database]
-    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-    debug = true
-    
+    [database.logger]
+        path   = "logs/sql"
+        level  = "all"
+        stdout = true
+    [database.default]
+        link   = "mysql:root:12345678@tcp(127.0.0.1:3306)/gf"
+        debug  = true
+
 # 内容设置
 [setting]
-    title       = "Focus聚焦社区"
+    title       = "Focus聚焦社区 - Beta!"
     keywords    = "Go,MVC,Cookie,Session,ORM,golang,cache,goframe,go frame,gf,go框架,web框架,高性能"
-    description = "GF(Go Frame)是一款模块化、高性能、企业级的Go基础开发框架。实现了比较完善的基础设施建设以及开发工具链，提供了常用的基础开发模块，如：缓存、日志、队列、数组、集合、容器、定时器、命令行、内存锁、对象池、配置管理、资源管理、数据校验、数据编码、定时任务、数据库ORM、TCP/UDP组件、进程管理/通信等等。并提供了Web服务开发的系列核心组件，如：Router、Cookie、Session、Middleware、服务注册、模板引擎等等，支持热重启、热更新、域名绑定、TLS/HTTPS、Rewrite等特性。"
+    description = "模块化、高性能、生产级的Go基础开发框架。实现了比较完善的基础设施建设，包括常用的核心开发组件， 如：缓存、日志、文件、时间、队列、数组、集合、字符串、定时器、命令行、文件锁、内存锁、对象池、连接池、资源管理、数据校验、数据编码、文件监控、 定时任务、数据库ORM、TCP/UDP组件、进程管理/通信、并发安全容器等等。 并提供了Web服务开发的系列核心组件，如：Router、Cookie、Session、Middleware、服务注册、配置管理、模板引擎等等， 支持热重启、热更新、多域名、多端口、多服务、HTTPS、Rewrite等特性。"
 
 # 文件上传设置
 [upload]
@@ -28,7 +33,7 @@
 
 # Logger configurations.
 [logger]
-    path   = "/tmp/focus/log/focus"
+    path   = "logs/default"
     level  = "all"
     stdout = true
 
@@ -49,7 +54,7 @@
         cgo      = 0
     # dao生成
     [[gfcli.gen.dao]]
-        link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-        path   = "./app"
+        link          = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+        path          = "./app"
+        tables        = "gf_category, gf_content,gf_file,gf_interact,gf_reply,gf_setting,gf_user"
         remove-prefix = "gf_"
-        tables = "gf_category, gf_content,gf_file,gf_interact,gf_reply,gf_setting,gf_user"
