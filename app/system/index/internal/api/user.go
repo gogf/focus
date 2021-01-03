@@ -44,7 +44,7 @@ func (a *userApi) Profile(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	} else {
-		title := "gf bbs - 用户 " + getProfile.Nickname + " 资料"
+		title := "用户 " + getProfile.Nickname + " 资料"
 		service.View.Render(r, model.View{
 			Title:       title,
 			Keywords:    title,
@@ -65,7 +65,7 @@ func (a *userApi) Avatar(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	} else {
-		title := "gf bbs - 用户 " + getProfile.Nickname + " 头像"
+		title := "用户 " + getProfile.Nickname + " 头像"
 		service.View.Render(r, model.View{
 			Title:       title,
 			Keywords:    title,
@@ -86,7 +86,7 @@ func (a *userApi) Password(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	} else {
-		title := "gf bbs - 用户 " + getProfile.Nickname + " 修改密码"
+		title := "用户 " + getProfile.Nickname + " 修改密码"
 		service.View.Render(r, model.View{
 			Title:       title,
 			Keywords:    title,

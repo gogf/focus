@@ -33,7 +33,7 @@ func (a *indexApi) Index(r *ghttp.Request) {
 		service.View.Render(r, model.View{
 			ContentType: data.Type,
 			Data:        getListRes,
-			Title:       "首页 - GF BBS",
+			Title:       "首页",
 		})
 	}
 }
