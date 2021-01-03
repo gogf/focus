@@ -9,6 +9,6 @@ import (
 func Init() {
 	// 后台系统路由注册
 	g.Server().Group("/admin", func(group *ghttp.RouterGroup) {
-
+		// 暂未开放。
 	})
 }
