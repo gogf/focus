@@ -8,13 +8,13 @@
     routeOverWrite      = true
     accessLogEnabled    = true
     accessLogPattern    = "access-{Ymd}.log"
-    sessionPath         = "temp/gsessions"
-    logPath             = "logs/server"
+    sessionPath         = "temp/sessions"    # Session文件存储目录
+    logPath             = "logs/server"      # Server日志文件存储目录
 
 # 数据库连接配置
 [database]
     [database.logger]
-        path   = "logs/sql"
+        path   = "logs/sql" # SQL执行日志存储目录
         level  = "all"
         stdout = true
     [database.default]
