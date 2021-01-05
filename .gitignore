@@ -23,5 +23,6 @@ main
 go.sum
 node_modules/
 temp/
+logs/
 
 
