@@ -50,6 +50,7 @@
         name     = "focus"
         arch     = "amd64"
         system   = "linux,darwin,windows"
+        pack     = "public,template"
         mod      = ""
         cgo      = 0
     # dao生成
