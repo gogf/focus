@@ -7,7 +7,7 @@
 ======
 
 *   `github`：[https://github.com/gogf/focus](https://github.com/gogf/focus)
-*    `gitee`：[https://gitee.com/johng/focus](https://gitee.com/johng/focus)
+*   `gitee`：[https://gitee.com/johng/focus](https://gitee.com/johng/focus)
 
 二、演示地址
 ======
@@ -130,35 +130,35 @@ bin
 七、项目截图
 ======
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-25-53.png?version=1&modificationDate=1610018754399&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-25-53.png)
 
 图1. 社区首页
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_14-47-8.png?version=1&modificationDate=1610002030154&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_14-47-8.png)
 
 图2. 登录页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_14-48-31.png?version=1&modificationDate=1610002112054&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_14-48-31.png)
 
 图3. 注册页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-41-52.png?version=1&modificationDate=1610019712571&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-41-52.png)
 
 图4. 发布/编辑页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-44-39.png?version=1&modificationDate=1610019879824&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-44-39.png)
 
 图5. 内容详情
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-42-20.png?version=1&modificationDate=1610019740286&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-42-20.png)
 
 图6. 搜索页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-16.png?version=1&modificationDate=1610019916856&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-16.png)
 
 图7. 个人主页
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-55.png?version=1&modificationDate=1610019955691&api=v2)
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-55.png)
 
 图8. 编辑资料
 
@@ -170,4 +170,4 @@ bin
 九、功能模块进度
 ========
 
-![](https://itician.org/download/attachments/3672270/focus-v0.1.0-beta.png?version=1&modificationDate=1610001218606&api=v2)
+![](https://itician.org/download/attachments/3672270/focus-v0.1.0-beta.png)
