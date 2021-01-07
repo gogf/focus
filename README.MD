@@ -24,16 +24,16 @@
 
 2、创建`focus`数据库:
 ```sql
-CREATE DATABASE \`focus\` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4\_bin';
+CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';
 ```
 3、运行`document`下`focus.sql`初始化数据库`SQL`。
 
 4、复制`config`下`config.example.toml`为`config.toml`配置文件，其他配置根据需要自行调整。
 ```toml
 # 数据库配置
-[database\]
-    link  \= "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-    debug \= true
+[database]
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+    debug = true
 ```
 5、运行：`go run main.go`
 
