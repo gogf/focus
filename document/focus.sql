@@ -7,21 +7,21 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `gf_category`;
 CREATE TABLE `gf_category`  (
                                 `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID，自增主键',
-                                `content_type` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容类型：topic, ask, article, reply',
-                                `key` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '栏目唯一键名，用于程序部分场景硬编码，一般不会用得到',
+                                `content_type` char(10)  NOT NULL COMMENT '内容类型：topic, ask, article, reply',
+                                `key` varchar(45)  NULL DEFAULT NULL COMMENT '栏目唯一键名，用于程序部分场景硬编码，一般不会用得到',
                                 `parent_id` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '父级分类ID，用于层级管理',
                                 `user_id` int(10) UNSIGNED NOT NULL COMMENT '创建的用户ID',
-                                `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
+                                `name` varchar(45)  NOT NULL COMMENT '分类名称',
                                 `sort` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶',
-                                `thumb` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '封面图',
-                                `brief` varchar(9000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '简述',
-                                `content` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '详细介绍',
+                                `thumb` varchar(255)  NULL DEFAULT NULL COMMENT '封面图',
+                                `brief` varchar(9000)  NULL DEFAULT NULL COMMENT '简述',
+                                `content` mediumtext  NULL COMMENT '详细介绍',
                                 `created_at` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                                 `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
                                 PRIMARY KEY (`id`) USING BTREE,
                                 INDEX `key`(`key`) USING BTREE,
                                 INDEX `content_type`(`content_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '栏目列表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15  COMMENT = '栏目列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_category
@@ -46,18 +46,18 @@ INSERT INTO `gf_category` VALUES (14, 'ask', NULL, 0, 1, 'VIP问答', 0, NULL, N
 DROP TABLE IF EXISTS `gf_content`;
 CREATE TABLE `gf_content`  (
                                `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-                               `key` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '唯一键名，用于程序硬编码，一般不常用',
-                               `type` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容模型: topic, ask, article等，具体由程序定义',
+                               `key` varchar(45)  NULL DEFAULT NULL COMMENT '唯一键名，用于程序硬编码，一般不常用',
+                               `type` char(10)  NOT NULL COMMENT '内容模型: topic, ask, article等，具体由程序定义',
                                `category_id` int(10) UNSIGNED NOT NULL COMMENT '栏目ID',
                                `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
                                `adopted_reply_id` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '采纳的回复ID，问答模块有效',
-                               `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
-                               `content` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
+                               `title` varchar(255)  NOT NULL COMMENT '标题',
+                               `content` mediumtext  NOT NULL COMMENT '内容',
                                `sort` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '排序，数值越低越靠前，默认为添加时的时间戳，可用于置顶',
-                               `brief` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NULL DEFAULT NULL COMMENT '摘要',
-                               `thumb` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '缩略图',
-                               `tags` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称列表，以JSON存储',
-                               `referer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '内容来源，例如github/gitee',
+                               `brief` varchar(255)  NULL DEFAULT NULL COMMENT '摘要',
+                               `thumb` varchar(255)  NULL DEFAULT NULL COMMENT '缩略图',
+                               `tags` varchar(900)  NULL DEFAULT NULL COMMENT '标签名称列表，以JSON存储',
+                               `referer` varchar(255)  NULL DEFAULT NULL COMMENT '内容来源，例如github/gitee',
                                `status` smallint(5) UNSIGNED NULL DEFAULT 0 COMMENT '状态 0: 正常, 1: 禁用',
                                `reply_count` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '回复数量',
                                `view_count` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '浏览数量',
@@ -72,7 +72,7 @@ CREATE TABLE `gf_content`  (
                                INDEX `zan_count`(`zan_count`) USING BTREE,
                                INDEX `type_category_id`(`type`, `category_id`) USING BTREE,
                                INDEX `idx_content_user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46927 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '问答列表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 46927  COMMENT = '问答列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_content
@@ -968,14 +968,14 @@ INSERT INTO `gf_content` VALUES (20822, NULL, 'topic', 6, 1, NULL, 'GF(Go Frame)
 DROP TABLE IF EXISTS `gf_file`;
 CREATE TABLE `gf_file`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  `src` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '本地文件存储路径',
-  `url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'URL地址，可能为空',
+  `name` varchar(45)  NULL DEFAULT NULL COMMENT '文件名称',
+  `src` varchar(500)  NOT NULL COMMENT '本地文件存储路径',
+  `url` varchar(500)  NULL DEFAULT NULL COMMENT 'URL地址，可能为空',
   `user_id` int(10) UNSIGNED NOT NULL COMMENT '操作用户',
   `created_at` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件列表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7  COMMENT = '文件列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_file
@@ -996,13 +996,13 @@ CREATE TABLE `gf_interact`  (
   `type` tinyint(4) NOT NULL COMMENT '操作类型。0:赞，1:踩。',
   `user_id` int(10) UNSIGNED NOT NULL COMMENT '操作用户',
   `target_id` int(10) UNSIGNED NOT NULL COMMENT '对应内容ID，该内容可能是content, reply',
-  `target_type` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容模型: content, reply, 具体由程序定义',
+  `target_type` char(10)  NOT NULL COMMENT '内容模型: content, reply, 具体由程序定义',
   `count` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '操作数据值',
   `created_at` datetime(0) NULL DEFAULT NULL,
   `updated_at` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `unique`(`user_id`, `target_id`, `target_type`, `type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '交互管理表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 90  COMMENT = '交互管理表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_interact
@@ -1026,9 +1026,9 @@ DROP TABLE IF EXISTS `gf_reply`;
 CREATE TABLE `gf_reply`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '回复ID',
   `parent_id` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '回复对应的上一级回复ID(没有的话默认为0)',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '回复标题',
-  `content` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '回复内容',
-  `target_type` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论类型: content, reply',
+  `title` varchar(255)  NOT NULL COMMENT '回复标题',
+  `content` mediumtext  NOT NULL COMMENT '回复内容',
+  `target_type` char(10)  NOT NULL COMMENT '评论类型: content, reply',
   `target_id` int(10) UNSIGNED NOT NULL COMMENT '对应内容ID，可能回复的是另一个回复，所以这里没有使用content_id',
   `user_id` int(10) UNSIGNED NOT NULL COMMENT '网站用户ID',
   `zan_count` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '赞',
@@ -1038,7 +1038,7 @@ CREATE TABLE `gf_reply`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `content_type_target_id`(`target_type`, `target_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '回复列表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34  COMMENT = '回复列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_reply
@@ -1051,12 +1051,12 @@ INSERT INTO `gf_reply` VALUES (33, 0, '', '<p>支持一下GoFrame</p>\n', 'topic
 -- ----------------------------
 DROP TABLE IF EXISTS `gf_setting`;
 CREATE TABLE `gf_setting`  (
-  `k` char(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '键名',
-  `v` varchar(9000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '键值',
+  `k` char(45)  NOT NULL COMMENT '键名',
+  `v` varchar(9000)  NOT NULL COMMENT '键值',
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`k`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '键值对设置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB  COMMENT = '键值对设置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_setting
@@ -1069,10 +1069,10 @@ INSERT INTO `gf_setting` VALUES ('TopMenus', '[{\"name\":\"首页\",\"url\":\"/\
 DROP TABLE IF EXISTS `gf_user`;
 CREATE TABLE `gf_user`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'UID',
-  `passport` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '账号',
-  `password` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'MD5密码',
-  `nickname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '昵称',
-  `avatar` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `passport` varchar(45)  NOT NULL COMMENT '账号',
+  `password` char(32)  NOT NULL COMMENT 'MD5密码',
+  `nickname` varchar(45)  NULL DEFAULT NULL COMMENT '昵称',
+  `avatar` varchar(200)  NULL DEFAULT NULL COMMENT '头像地址',
   `status` tinyint(4) NULL DEFAULT 1 COMMENT '状态 0:启用 1:禁用',
   `gender` tinyint(1) NULL DEFAULT 0 COMMENT '性别 0: 未设置 1: 男 2: 女',
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
@@ -1080,7 +1080,7 @@ CREATE TABLE `gf_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uni_user_passport`(`passport`) USING BTREE,
   UNIQUE INDEX `uni_user_nickname`(`nickname`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户基础表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18  COMMENT = '用户基础表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gf_user
