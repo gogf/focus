@@ -1,11 +1,11 @@
-# `focus`聚焦社区
+# `Focus`聚焦社区
 
 ## 项目介绍
 
-`focus`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
+`Focus聚焦社区`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
 模板引擎用的是`GF`自带`template`模板，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
 
-项目文档：[focus聚焦社区文档](https://itician.org/pages/viewpage.action?pageId=3672317)
+项目文档：[Focus聚焦社区](https://itician.org/pages/viewpage.action?pageId=3672317)
 
 ## 演示地址
 
@@ -51,8 +51,11 @@
     └── windows_amd64
         └── focus.exe
     ```
-4. 将`config,template,public`目录和`focus`放到同一级目录，启动`focus`即可。
-> 也可将资源文件一同打包到可执行文件中一同发布/部署，具体请参考：https://itician.org/pages/viewpage.action?pageId=1115788
+4、将config.toml和focus放到同一级目录，启动focus即可。
+
+## 发布
+
+默认配置文件配置中，会将public,template目录进行二进制打包，随着可执行文件一同发布。因此，发布时仅需要将config.toml和focus拷贝到目标服务器运行即可。此外，您也可以考虑将特定的配置文件用打包发布，那么发布时仅需要发布focus可执行文件即可。
 
 ## 项目结构
 
