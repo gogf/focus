@@ -1,64 +1,72 @@
 # `Focus`聚焦社区
 
-## 项目介绍
 
-`Focus聚焦社区`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架，
-模板引擎用的是`GF`自带`template`模板，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
+`Focus聚焦社区`是`GoFrame`社区项目，采用了简洁强大的`GoFrame`作为后端`WEB`框架， 由于前台系统需要`SEO`因此使用了`GF`自带`template`模板引擎，数据库用`MySQL`，前端使用`jQuery`/`bootstrap`框架。
 
-项目文档：[Focus聚焦社区](https://itician.org/pages/viewpage.action?pageId=3672317)
+一、源码地址
+======
 
-## 演示地址
+*   `github`：[https://github.com/gogf/focus](https://github.com/gogf/focus)
+*    `gitee`：[https://gitee.com/johng/focus](https://gitee.com/johng/focus)
 
-请不要恶意发送垃圾数据哦~ 地址： [https://focus.goframe.org/](https://focus.goframe.org/) 
+二、演示地址
+======
 
-## 源码部署和配置
+请不要恶意发送垃圾数据哦~ 地址：[https://focus.goframe.org/](https://focus.goframe.org/)
 
-### 源码地址
+三、安装部署
+======
 
-* github：https://github.com/gogf/focus
-* gitee：https://gitee.com/johng/focus
+安装
+--
 
-### 启动说明
+1、下载项目源码： `git clone [https://github.com/gogf/focus](https://github.com/gogf/focus)`
 
-1. 下载项目源码： `git clone https://github.com/gogf/focus` 
-2. 创建`focus`数据库:
-    ```sql
-    CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';
-    ```
-3. 运行`document`下`focus.sql`初始化数据库`SQL`。
-4. 复制`config`下`config.example.toml`为`config.toml`配置文件:
-    ```toml
-    # 数据库配置
-    [database]
-        link  = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-        debug = true
-    ```
-    其他配置根据需要自行调整。
-5. 运行：`go run main.go`
-6. 访问 http://127.0.0.1:8199 即可看到登录页面，默认账号/密码：`goframe` / `123456`
+2、创建`focus`数据库:
+```sql
+CREATE DATABASE \`focus\` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4\_bin';
+```
+3、运行`document`下`focus.sql`初始化数据库`SQL`。
 
-## 打包部署
+4、复制`config`下`config.example.toml`为`config.toml`配置文件，其他配置根据需要自行调整。
+```toml
+# 数据库配置
+[database\]
+    link  \= "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
+    debug \= true
+```
+5、运行：`go run main.go`
 
-1. 安装`gf-cli`，详情查看：https://itician.org/pages/viewpage.action?pageId=1114260
-2. 打包命令：执行 `gf build` 即可。
-3. 打包结果：默认 `linux/macos/windows` 三个版本。
-    ```shell
-    bin
-    ├── darwin_amd64
-    │   └── focus
-    ├── linux_amd64
-    │   └── focus
-    └── windows_amd64
-        └── focus.exe
-    ```
-4、将config.toml和focus放到同一级目录，启动focus即可。
+6、访问 [http://127.0.0.1:8199](http://127.0.0.1:8199/) 即可看到登录页面，默认账号/密码：`goframe` / `123456`
 
-## 发布
+部署
+--
 
-默认配置文件配置中，会将public,template目录进行二进制打包，随着可执行文件一同发布。因此，发布时仅需要将config.toml和focus拷贝到目标服务器运行即可。此外，您也可以考虑将特定的配置文件用打包发布，那么发布时仅需要发布focus可执行文件即可。
+1、安装`gf-cli`工具链，详情查看：[开发工具](https://itician.org/pages/viewpage.action?pageId=1114260)
 
-## 项目结构
+2、打包命令：执行 `gf build` 即可，具体配置请参考：[build 交叉编译](https://itician.org/pages/viewpage.action?pageId=1115788)
 
+3、打包结果：默认 `linux/macos/windows` 三个版本。
+```html
+bin
+├── darwin_amd64
+│   └── focus
+├── linux_amd64
+│   └── focus
+└── windows_amd64
+    └── focus.exe
+```
+4、将`config.toml`和`focus`放到同一级目录，启动`focus`即可。
+
+发布
+--
+
+默认配置文件配置中，会将`public,template`目录进行二进制打包，随着可执行文件一同发布。因此，发布时仅需要将`config.toml`和`focus`拷贝到目标服务器运行即可。此外，您也可以考虑将特定的配置文件用打包发布，那么发布时仅需要发布`focus`可执行文件即可。
+
+如果您想同时打包配置文件到可执行文件中，那么您可以同时参考一下关于默认配置文件读取的修改方式：[配置管理里#默认文件修改](https://itician.org/pages/viewpage.action?pageId=1114668#id-%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86-%E9%BB%98%E8%AE%A4%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9)
+
+四、项目结构
+======
 ```
 ├── app
 │ ├── dao
@@ -83,8 +91,8 @@
 ├── go.mod
 └── main.go
 ```
-
-### 目录说明
+五、目录说明
+======
 
 |目录/文件名称   | 说明 | 描述
 |---|---|---
@@ -108,10 +116,58 @@
 |`go.mod`        | 依赖管理   | 使用`Go Module`包管理的依赖描述文件。
 |`main.go`       | 入口文件   | 程序入口文件。
 
-## 数据库表结构
+六、框架设计
+======
 
-![image](document/images/databases.png)
+由于采用了强大易用的`GoFrame`开发框架，可以参考框架的一些设计介绍。
 
-## 模块进度
+*   [代码分层设计](https://itician.org/pages/viewpage.action?pageId=3672442)
+*   [对象封装设计](https://itician.org/pages/viewpage.action?pageId=3672526)
+*   [Context上下文](https://itician.org/pages/viewpage.action?pageId=3672552)
+*   [单应用多系统设计](https://itician.org/pages/viewpage.action?pageId=3672600)
+*   更多：[框架设计](https://itician.org/pages/viewpage.action?pageId=3672399)
 
-![image](document/design/focus-v0.1.0-beta.png)
+七、项目截图
+======
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-25-53.png?version=1&modificationDate=1610018754399&api=v2)
+
+图1. 社区首页
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_14-47-8.png?version=1&modificationDate=1610002030154&api=v2)
+
+图2. 登录页面
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_14-48-31.png?version=1&modificationDate=1610002112054&api=v2)
+
+图3. 注册页面
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-41-52.png?version=1&modificationDate=1610019712571&api=v2)
+
+图4. 发布/编辑页面
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-44-39.png?version=1&modificationDate=1610019879824&api=v2)
+
+图5. 内容详情
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-42-20.png?version=1&modificationDate=1610019740286&api=v2)
+
+图6. 搜索页面
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-16.png?version=1&modificationDate=1610019916856&api=v2)
+
+图7. 个人主页
+
+![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-55.png?version=1&modificationDate=1610019955691&api=v2)
+
+图8. 编辑资料
+
+八、数据库表设计
+========
+
+![image](https://gitee.com/johng/focus/raw/develop_v0.1.0_beta/document/images/databases.png)
+
+九、功能模块进度
+========
+
+![](https://itician.org/download/attachments/3672270/focus-v0.1.0-beta.png?version=1&modificationDate=1610001218606&api=v2)
