@@ -24,5 +24,5 @@ go.sum
 node_modules/
 temp/
 logs/
-
+packed/data.go
 
