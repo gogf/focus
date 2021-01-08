@@ -8,7 +8,7 @@
 .settings/
 .vscode/
 vender/
-log/
+logs/*
 composer.lock
 gitpush.sh
 pkg/
@@ -20,3 +20,4 @@ config/config.toml
 main
 .vscode
 go.sum
+packed/
