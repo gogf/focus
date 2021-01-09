@@ -169,7 +169,8 @@ func (s *userService) GetProfile(ctx context.Context) (*define.UserProfileRes, e
 
 // 修改个人头像
 func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	userId := shared.Context.Get(ctx).User.Id
+	user := shared.Context.Get(ctx).User
+	userId := user.Id
 	userServiceUpdateAvatarReq := new(define.UserServiceUpdateAvatarReq)
 	err := gconv.Struct(r, &userServiceUpdateAvatarReq)
 	if err != nil {
@@ -177,12 +178,20 @@ func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateP
 	}
 
 	_, err = dao.User.Data(userServiceUpdateAvatarReq).Where(dao.User.Columns.Id, userId).Update()
+	// 更新登录session Avatar
+	if err == nil && user.Avatar != r.Avatar {
+		sessionUser := Session.GetUser(ctx)
+		sessionUser.Avatar = r.Avatar
+		Session.SetUser(ctx, sessionUser)
+	}
+
 	return err
 }
 
 // 修改个人资料
 func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	userId := shared.Context.Get(ctx).User.Id
+	user := shared.Context.Get(ctx).User
+	userId := user.Id
 	n, err := dao.User.Where(dao.User.Columns.Nickname, r.Nickname).Where("id <> ?", userId).Count()
 	if err != nil {
 		return err
@@ -198,6 +207,13 @@ func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdate
 	}
 
 	_, err = dao.User.Data(userServiceUpdateProfileReq).Where(dao.User.Columns.Id, userId).Update()
+	// 更新登录session Nickname
+	if err == nil && user.Nickname != r.Nickname {
+		sessionUser := Session.GetUser(ctx)
+		sessionUser.Nickname = r.Nickname
+		Session.SetUser(ctx, sessionUser)
+	}
+
 	return err
 }
 

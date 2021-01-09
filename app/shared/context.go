@@ -3,6 +3,7 @@ package shared
 import (
 	"context"
 	"focus/app/model"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -31,4 +32,9 @@ func (s *contextShared) Get(ctx context.Context) *model.Context {
 // 将上下文信息设置到上下文请求中，注意是完整覆盖
 func (s *contextShared) SetUser(ctx context.Context, ctxUser *model.ContextUser) {
 	s.Get(ctx).User = ctxUser
+}
+
+// 将上下文信息设置到上下文请求中，注意是完整覆盖
+func (s *contextShared) SetData(ctx context.Context, data g.Map) {
+	s.Get(ctx).Data = data
 }
