@@ -105,6 +105,9 @@ jQuery(function($) {
                 return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
             }
         },
+        preview: {
+            maxWidth: 1920
+        },
     });
     // 表单校验
     $('#contentForm').validate({

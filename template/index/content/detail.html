@@ -79,7 +79,7 @@
         </div>
 
         <div class="gf-comment-editor">
-            <div id="vditor" class="mt-1"></div>
+            <div id="vditor"></div>
             <div style="background-color: white;padding: 10px;margin-bottom: 10px;" class="text-right">
                 <button class="btn btn-primary btn-submit" type="submit">提交</button>
             </div>
@@ -248,6 +248,9 @@
                     const {code, data, msg} = JSON.parse(response)
                     return JSON.stringify({msg, code, data: {errFiles: [], succMap: {"image.png": data.Url}}})
                 }
+            },
+            preview: {
+                maxWidth: 1920
             },
         });
 
