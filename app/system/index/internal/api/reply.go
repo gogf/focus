@@ -35,6 +35,7 @@ func (a *replyApi) DoCreate(r *ghttp.Request) {
 	if err := service.Reply.Create(r.Context(), serviceCreateReq); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
+		_ = service.Content.AddReplyCount(serviceCreateReq.TargetId, 1)
 		response.JsonExit(r, 0, "")
 	}
 }

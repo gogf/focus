@@ -245,3 +245,14 @@ func (s *contentService) AddViewCount(ctx context.Context, id uint, count int) e
 	}
 	return nil
 }
+
+// 回复次数增加
+func (s *contentService) AddReplyCount(id uint, count int) error {
+	_, err := dao.Content.
+		Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.Columns.ReplyCount, dao.Content.Columns.ReplyCount, count)).
+		WherePri(id).Update()
+	if err != nil {
+		return err
+	}
+	return nil
+}
