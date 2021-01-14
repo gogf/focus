@@ -276,9 +276,11 @@
                 success: function (r) {
                     $('button[type=submit]').removeAttr('disabled');
                     if (r.code === 0) {
-                        swal({text: "评论成功", icon: "success", button: "确定"});
+                        swal({text: "评论成功", type: "success", button: "确定"}).then(
+                        function(){
+                            location.reload(); // 刷新页面同步回复统计
+                        });
                         editor.setValue("", true)
-                        gf.content.loadReply();
                     } else {
                         swal({text: r.message, icon: "warning", button: "确定",});
                     }
