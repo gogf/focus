@@ -304,12 +304,13 @@ code[class*="language-"], pre[class*="language-"] {
     padding: 5px;
 }
 
-.gf-detail-info a, .gf-detail-info a:visited, .gf-detail-info a:active {
+.gf-detail-info a, .gf-detail-info a:visited, .gf-detail-info a:active,.reply-operating a, .reply-operating a:visited, .reply-operating a:active {
     color: #24292e;
 }
 
-.gf-detail-info a:hover {
+.gf-detail-info a:hover, .reply-operating a:hover {
     color: #007bff;
+    text-decoration: none;
 }
 
 .gf-content-show .gf-content {

@@ -1,3 +1,5 @@
+<!-- 全局函数转换 -->
+{{$global :=.}}
 {{range $index, $item := .Data.List}}
     <li class="list-group-item reply-list" id="reply_{{ $item.Reply.Id }}">
         <div class="reply" style="padding: 5px;width: 100%;">
@@ -15,19 +17,35 @@
             <div class="reply-content" style="padding: 5px;">
                 {{$item.Reply.Content }}
             </div>
-            <!--
+            
             <div class="reply-operating" style="padding: 5px">
-                <a href="javascript:gf.content.reply({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">回复</a>
+                <a href="javascript:void(0);" data-type="reply" onclick="javascript:gf.content.zan(this, {{$item.Reply.Id}})">
+                    {{if $global.BuildIn.DidIZan "reply" $item.Reply.Id}}
+                    <span class="icon iconfont icon-zan-done"></span>
+                    {{else}}
+                    <span class="icon iconfont icon-zan"></span>
+                    {{end}}
+                    <span class="number">{{ $item.Reply.ZanCount }}</span>
+                </a>
+                &nbsp; / &nbsp;
+                <a href="javascript:void(0);" data-type="reply" onclick="javascript:gf.content.cai(this, {{$item.Reply.Id}})">
+                    {{if $global.BuildIn.DidICai "reply" $item.Reply.Id}}
+                    <span class="icon iconfont icon-cai-done"></span>
+                    {{else}}
+                    <span class="icon iconfont icon-cai"></span>
+                    {{end}}
+                    <span class="number">{{ $item.Reply.CaiCount }}</span>
+                </a>
+                <!-- <a href="javascript:gf.content.reply({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">回复</a> -->
                 {{if $.Context.User}}
                 <a class="adopted_btn_{{ $item.Reply.UserId }}" id="adopted_btn_{{ $item.Reply.Id }}" href="javascript:gf.content.adopted({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">采纳</a>
-                    {{if eq $.Context.User.Id $item.Reply.CreatedAt }}
-                <a href="javascript:gf.content.delete({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">删除</a>
+                    {{if eq $.Context.User.Id $item.Reply.UserId }}
+                <!-- <a href="javascript:gf.content.delete({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">删除</a> -->
                     {{end}}
                 {{end}}
-                <a><span class="icon iconfont icon-cai"></span> <span class="number">({{ $item.Reply.CaiCount }})</span></a>
-                <a><span class="icon iconfont icon-zan"></span> <span class="number">({{ $item.Reply.ZanCount }})</span></a>
+                
             </div>
-            -->
+           
         </div>
     </li>
 {{end}}

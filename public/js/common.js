@@ -62,7 +62,8 @@ gf.content = {
 // 互动模块
 gf.interact = {
     // 检查赞
-    checkZan: function (elem, type, id) {
+    checkZan: function (elem, id) {
+        var type = $(elem).attr("data-type")
         if ($(elem).find('.icon').hasClass('icon-zan-done')) {
             this.cancelZan(elem, type, id)
         } else {
@@ -118,7 +119,8 @@ gf.interact = {
         });
     },
     // 检查是执行踩还是取消踩
-    checkCai: function (elem, type, id) {
+    checkCai: function (elem, id) {
+        var type = $(elem).attr("data-type")
         if ($(elem).find('.icon').hasClass('icon-cai-done')) {
             this.cancelCai(elem, type, id)
         } else {

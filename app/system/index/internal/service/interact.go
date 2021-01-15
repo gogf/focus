@@ -6,6 +6,7 @@ import (
 	"focus/app/dao"
 	"focus/app/model"
 	"focus/app/shared"
+
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 )
@@ -118,7 +119,7 @@ func (s *interactService) CancelCai(ctx context.Context, targetType string, targ
 	return s.updateCount(ctx, model.InteractTypeCai, targetType, targetId, -1)
 }
 
-// 我是否有对指定内容赞
+// 我是否有对指定内容踩
 func (s *interactService) DidICai(ctx context.Context, targetType string, targetId uint) (bool, error) {
 	list, err := s.getMyList(ctx)
 	if err != nil {
@@ -191,7 +192,7 @@ func (s *interactService) updateCount(ctx context.Context, interactType int, tar
 
 		case model.InteractTypeCai:
 			_, err = dao.Reply.
-				Data(fmt.Sprintf(`%s=%s%d`, dao.Reply.Columns.CaiCount, dao.Reply.Columns.CaiCount, count)).
+				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.Columns.CaiCount, dao.Reply.Columns.CaiCount, count)).
 				Where(dao.Reply.Columns.Id, targetId).Where(dao.Reply.Columns.CaiCount + ">=0").Update()
 			if err != nil {
 				return err

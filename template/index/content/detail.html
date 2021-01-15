@@ -30,28 +30,26 @@
                 <span class="icon iconfont">&#xe6ab;</span>
                 {{.Data.Content.ReplyCount}} &nbsp; / &nbsp;
 
-                <a href="javascript:void(0);"
+                <a href="javascript:void(0);" data-type="content"
                    onclick="javascript:gf.content.zan(this, {{.Data.Content.Id}})">
                     {{if .BuildIn.DidIZan "content" .Data.Content.Id}}
-                    <span class="icon iconfont icon-zan-done"></span> <span
-                        class="number">{{.Data.Content.ZanCount}}</span>
+                    <span class="icon iconfont icon-zan-done"></span>
                     {{else}}
-                    <span class="icon iconfont icon-zan"></span> <span
-                        class="number">{{.Data.Content.ZanCount}}</span>
+                    <span class="icon iconfont icon-zan"></span>
                     {{end}}
+                    <span class="number">{{.Data.Content.ZanCount}}</span>
                 </a>
 
                 &nbsp; / &nbsp;
 
-                <a href="javascript:void(0);"
+                <a href="javascript:void(0);" data-type="content"
                    onclick="javascript:gf.content.cai(this, {{.Data.Content.Id}})">
                     {{if .BuildIn.DidICai "content" .Data.Content.Id}}
-                    <span class="icon iconfont icon-cai-done"></span> <span
-                        class="number">{{.Data.Content.CaiCount}}</span>
+                    <span class="icon iconfont icon-cai-done"></span>
                     {{else}}
-                    <span class="icon iconfont icon-cai"></span> <span
-                        class="number">{{.Data.Content.CaiCount}}</span>
+                    <span class="icon iconfont icon-cai"></span>
                     {{end}}
+                    <span class="number">{{.Data.Content.CaiCount}}</span>
                 </a>
                 &nbsp; / &nbsp;
                 发布于 {{.Data.Content.CreatedAt | .BuildIn.FormatTime}}
@@ -116,7 +114,7 @@
         // 赞
         zan: function (elem, id) {
             {{if .Context.User}}
-            gf.interact.checkZan(elem, 'content', id);
+            gf.interact.checkZan(elem, id);
             {{else}}
             swal({
                 text:   "请登录后再做操作",
@@ -128,7 +126,7 @@
         // 踩
         cai: function (elem, id) {
             {{if .Context.User}}
-            gf.interact.checkCai(elem, 'content', id);
+            gf.interact.checkCai(elem, id);
             {{else}}
             swal({
                 text:   "请登录后再做操作",
