@@ -13,6 +13,11 @@ type ReplyApiCreateUpdateBase struct {
 	Content    string `v:"required#评论内容不能为空"` // 回复内容
 }
 
+// API执行删除内容
+type ReplyApiDoDeleteReq struct {
+	Id uint `v:"min:1#请选择需要删除的内容"` // 删除时ID不能为空
+}
+
 // Service创建内容
 type ReplyServiceCreateReq struct {
 	ReplyApiCreateUpdateBase

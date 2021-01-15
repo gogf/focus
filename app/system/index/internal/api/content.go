@@ -5,6 +5,7 @@ import (
 	"focus/app/system/index/internal/define"
 	"focus/app/system/index/internal/service"
 	"focus/library/response"
+
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gconv"
 )
@@ -120,6 +121,26 @@ func (a *contentApi) DoDelete(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.Content.Delete(r.Context(), data.Id); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	} else {
+		response.JsonExit(r, 0, "")
+	}
+}
+
+// @summary 采纳回复
+// @tags    前台-内容
+// @produce json
+// @param   entity body define.ContentApiAdoptReplyReq true "请求参数" required
+// @router  /content/adopt-reply [POST]
+// @success 200 {object} response.JsonRes "请求结果"
+func (a *contentApi) AdoptReply(r *ghttp.Request) {
+	var (
+		data *define.ContentApiAdoptReplyReq
+	)
+	if err := r.ParseForm(&data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if err := service.Content.AdoptReply(r.Context(), data.Id, data.ReplyId); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")

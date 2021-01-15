@@ -79,7 +79,7 @@
         <div class="gf-comment-editor">
             <div id="vditor"></div>
             <div style="background-color: white;padding: 10px;margin-bottom: 10px;" class="text-right">
-                <button class="btn btn-primary btn-submit" type="submit">提交</button>
+                <button id="reply-btn" data-reply-id="0" class="btn btn-primary btn-submit" type="submit">提交</button>
             </div>
         </div>
 
@@ -136,13 +136,52 @@
             {{end}}
         },
         adopted: function (id) {
-
+            jQuery.ajax({
+                type: 'POST',
+                url: '/content/adopt-reply',
+                data: {
+                    id: "{{.Data.Content.Id}}",
+                    reply_id: id,
+                },
+                success: function (r) {
+                    if (r.code === 0) {
+                        swal({text: "采纳成功", type: "success", button: "确定"}).then(
+                        function(){
+                            location.reload(); // 刷新页面同步回复统计
+                        });
+                    } else {
+                        swal({text: r.message, icon: "warning", button: "确定",});
+                    }
+                },
+                error: function (html) {
+                }
+            });
         },
         delete: function (id) {
-
+            jQuery.ajax({
+                type: 'POST',
+                url: '/reply/do-delete',
+                data: {
+                    id: id,
+                },
+                success: function (r) {
+                    if (r.code === 0) {
+                        swal({text: "删除成功", type: "success", button: "确定"}).then(
+                        function(){
+                            location.reload(); // 刷新页面同步回复统计
+                        });
+                    } else {
+                        swal({text: r.message, icon: "warning", button: "确定",});
+                    }
+                },
+                error: function (html) {
+                }
+            });
         },
         reply: function (id) {
-
+            $("#reply-btn").attr({"data-reply-id":id});
+            $("#reply-btn").html("回复#"+id);
+            $("#reply-btn").focus();
         },
         loadReply:function () {
             jQuery.ajax({
@@ -160,17 +199,18 @@
                     $('.comment-num').after(r);
 
                     // 采纳展示，如有有已经被采纳，那么其他全部隐藏
-                    $("#adopted_it_{{.Data.Content.AdoptedReplyId}}").show();
                     $("[id^='adopted_btn_']").hide();
-
-                    if ($("#adopted_it_{{.Data.Content.AdoptedReplyId}}").is(":hidden")) {
+                    if("{{.Data.Content.AdoptedReplyId}}"=="0"){
                         // 只有作者可以采纳
                         {{if .Context.User}}
                         {{if eq .Context.User.Id .Data.Content.UserId }}
                         $("[id^='adopted_btn_']").show();
                         {{ end }}
                         {{end}}
+                    }else{
+                        $("#adopted_it_{{.Data.Content.AdoptedReplyId}}").show();
                     }
+                    
                 },
                 error: function (html) {
                 }
@@ -265,11 +305,12 @@
 
             if (!editor.getHTML()) return;
             $('button[type=submit]').attr('disabled', 'true');
+            var pid=$("#reply-btn").attr("data-reply-id");
             jQuery.ajax({
                 type: 'POST',
                 url: '/reply/do-create',
                 data: {
-                    parent_id: 0,
+                    parent_id: pid,
                     content: editor.getHTML(),
                     target_id: "{{.Data.Content.Id}}",
                     target_type: "{{.Data.Content.Type}}",

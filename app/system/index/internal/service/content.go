@@ -257,3 +257,28 @@ func (s *contentService) AddReplyCount(ctx context.Context, id uint, count int) 
 	}
 	return nil
 }
+
+// 采纳回复
+func (s *contentService) AdoptReply(ctx context.Context, id uint, replyId uint) error {
+	_, err := dao.Content.
+		Data(fmt.Sprintf(`%s=%d`, dao.Content.Columns.AdoptedReplyId, replyId)).
+		WherePri(id).
+		Where(dao.Content.Columns.UserId, shared.Context.Get(ctx).User.Id).
+		Update()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// 取消采纳回复
+func (s *contentService) UnacceptedReply(ctx context.Context, id uint) error {
+	_, err := dao.Content.
+		Data(fmt.Sprintf(`%s=%d`, dao.Content.Columns.AdoptedReplyId, 0)).
+		WherePri(id).
+		Update()
+	if err != nil {
+		return err
+	}
+	return nil
+}

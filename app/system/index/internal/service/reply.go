@@ -7,6 +7,7 @@ import (
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
 )
 
@@ -23,6 +24,28 @@ func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateR
 	_, err := dao.Reply.Data(r).Insert()
 	if err == nil {
 		_ = Content.AddReplyCount(ctx, r.TargetId, 1)
+	}
+	return err
+}
+
+// 删除
+func (s *replyService) Delete(ctx context.Context, id uint) error {
+	r, err := dao.Reply.WherePri(id).One()
+	if err != nil {
+		return err
+	}
+	_, err = dao.Reply.Where(g.Map{
+		dao.Reply.Columns.Id:     id,
+		dao.Reply.Columns.UserId: shared.Context.Get(ctx).User.Id,
+	}).Delete()
+	if err == nil {
+		// 回复统计-1
+		_ = Content.AddReplyCount(ctx, r.TargetId, -1)
+		// 判断回复是否采纳
+		c, err := dao.Content.WherePri(r.TargetId).One()
+		if err == nil && c.AdoptedReplyId == id {
+			_ = Content.UnacceptedReply(ctx, r.TargetId)
+		}
 	}
 	return err
 }
