@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
 	"focus/app/shared"
@@ -23,7 +22,7 @@ func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateR
 	}
 	_, err := dao.Reply.Data(r).Insert()
 	if err == nil {
-		s.AddReplyCount(ctx, r.TargetId, 1)
+		_ = Content.AddReplyCount(ctx, r.TargetId, 1)
 	}
 	return err
 }
@@ -60,15 +59,4 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		return nil, err
 	}
 	return getListRes, nil
-}
-
-// 回复次数增加
-func (s *replyService) AddReplyCount(ctx context.Context, id uint, count int) error {
-	_, err := dao.Content.
-		Data(fmt.Sprintf(`%s=IFNULL(%s,0)+%d`, dao.Content.Columns.ReplyCount, dao.Content.Columns.ReplyCount, count)).
-		WherePri(id).Update()
-	if err != nil {
-		return err
-	}
-	return nil
 }

@@ -7,6 +7,7 @@ import (
 	"focus/app/model"
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
+
 	"github.com/gogf/gf/encoding/ghtml"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
@@ -247,9 +248,9 @@ func (s *contentService) AddViewCount(ctx context.Context, id uint, count int) e
 }
 
 // 回复次数增加
-func (s *contentService) AddReplyCount(id uint, count int) error {
+func (s *contentService) AddReplyCount(ctx context.Context, id uint, count int) error {
 	_, err := dao.Content.
-		Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.Columns.ReplyCount, dao.Content.Columns.ReplyCount, count)).
+		Data(fmt.Sprintf(`%s=IFNULL(%s,0)+%d`, dao.Content.Columns.ReplyCount, dao.Content.Columns.ReplyCount, count)).
 		WherePri(id).Update()
 	if err != nil {
 		return err
