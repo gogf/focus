@@ -1,0 +1,21 @@
+<div class="list-header shadow-sm sticky-top">
+    <div class="list-nav-scroll">
+        <ul class="list-nav">
+            <li><a class="nav-link{{if eq $.Query.cate nil}} active{{end}}" href="/?cate=&sort={{$.Query.sort}}">推荐</a></li>
+            <li><a class="nav-link{{if eq $.Query.cate 1}} active{{end}}" href="/?cate=1&sort={{$.Query.sort}}">随聊</a></li>
+            <li><a class="nav-link{{if eq $.Query.cate 6}} active{{end}}" href="/?cate=6&sort={{$.Query.sort}}">翻译</a></li>
+            <li><a class="nav-link{{if eq $.Query.cate 7}} active{{end}}" href="/?cate=7&sort={{$.Query.sort}}">分享</a></li>
+            <li><a class="nav-link{{if eq $.Query.cate 12}} active{{end}}" href="/?cate=12&sort={{$.Query.sort}}">招聘</a></li>
+        </ul>
+    </div>
+</div>
+
+<ul class="list-sort">
+    <li><b class="text-muted">排序：</b></li>
+    <li><a class="sort-link{{if eq .Query.sort 0}} active{{end}}" href="/?cate={{.Query.cate}}&sort=0">最新</a></li>
+    <li><a class="sort-link{{if eq .Query.sort 1}} active{{end}}" href="/?cate={{.Query.cate}}&sort=1">活跃</a></li>
+    <li><a class="sort-link{{if eq .Query.sort 2}} active{{end}}" href="/?cate={{.Query.cate}}&sort=2">热度</a></li>
+</ul>
+
+
+{{ include "index/index/list-group.html" .}}

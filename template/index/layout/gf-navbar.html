@@ -1,0 +1,29 @@
+<ul class="navbar-nav d-none d-md-flex flex-row">
+    {{ range $index, $item := .BuildIn.TopMenus }}
+    <li class="nav-item{{ if $item.Active }} active{{ end }}{{ if $item.Items }} dropdown{{ end }}">
+        {{ if $item.Items }}
+        <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $item.Name }}</a>
+        <div class="dropdown-menu">
+            {{ range $index, $subItem := $item.Items }}
+            <a class="dropdown-item" href="{{ $subItem.Url }}" target="{{ $subItem.Target }}">{{ $subItem.Name }}</a>
+            {{ end }}
+        </div>
+        {{ else }}
+        <a class="nav-link" href="{{ $item.Url }}" target="{{ $item.Target }}">{{ $item.Name }}</a>
+        {{ end }}
+    </li>
+    {{ end }}
+</ul>
+
+<div class="dropdown d-md-none">
+    <button class="btn btn-sm border-0 dropdown-toggle shadow-none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span>目录</span>
+    </button>
+    <div class="dropdown-menu">
+        {{ range $index, $item := .BuildIn.TopMenus }} {{ if $item.Items }} {{ range $index, $subItem := $item.Items }}
+        <a class="dropdown-item {{ if $subItem.Active }} active{{ end }}" href="{{ $subItem.Url }}" target="{{ $subItem.Target }}">{{ $subItem.Name }}</a>
+        {{ end }} {{ else }}
+        <a class="dropdown-item {{ if $item.Active }} active{{ end }}" href="{{ $item.Url }}" target="{{ $item.Target }}">{{ $item.Name }}</a>
+        {{ end }} {{ end }}
+    </div>
+</div>

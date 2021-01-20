@@ -1,0 +1,365 @@
+<style>
+    .gf-article {
+        background-color: #fff;
+        padding: 0.75rem 1rem;
+    }
+
+    .gf-article .meta-list,
+    .gf-article .count-list {
+        display: flex;
+        align-items: center;
+    }
+
+    .gf-article .author-avatar {
+        width: 56px;
+        height: 56px;
+        margin-right: 0.5rem;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: #b2bac2;
+    }
+
+    .gf-article .author-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .gf-article .author-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .gf-article .count-list li {
+        display: flex;
+        align-items: center;
+        font-size: 0.875rem;
+        color: #909090;
+    }
+
+    .gf-article .count-list li + li::before {
+        content: '|';
+        margin: 0 0.5rem;
+        color: #b2bac2;
+    }
+
+    .gf-article .count-list .icon {
+        font-size: 20px;
+        margin-right: 0.25rem;
+    }
+
+    .gf-article .info-row {
+        margin: 0 0 0.6em 0;
+    }
+
+    .gf-article .title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+
+    .gf-article-toc-wrapper {
+        display: none;
+    }
+
+    .gf-article-toc {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .gf-article-toc a {
+        display: block;
+        position: relative;
+        padding: 4px 0 4px 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gf-article-toc a::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -3px;
+        width: 6px;
+        height: 6px;
+
+        background-color: currentColor;
+        border-radius: 50%;
+    }
+
+    .gf-article-toc ul ul {
+        padding-left: 0.5rem;
+    }
+</style>
+
+{{if .BreadCrumb}}
+<nav class="border-bottom mb-2" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 bg-white">
+        {{range $index, $item := .BreadCrumb}}
+        <li class="breadcrumb-item {{if not $item.Url}}active{{end}}">
+            {{if $item.Url}}
+            <a href="{{$item.Url}}">{{$item.Name}}</a>
+            {{else}} {{$item.Name}} {{end}}
+        </li>
+        {{end}}
+    </ol>
+</nav>
+{{end}}
+
+<section class="mb-2 gf-article">
+    <div class="info-row">
+        <h2 class="title">{{ .Data.Content.Title }}</h2>
+        <div class="count-row">
+            <ul class="count-list">
+                <li>
+                    <i class="icon icon-browse"></i>
+                    <span>{{ .Data.Content.ViewCount }}</span>
+                </li>
+                <li>
+                    <i class="icon icon-comment"></i>
+                    <span>{{ .Data.Content.ReplyCount }}</span>
+                </li>
+                <li>
+                    <i class="icon icon-good"></i>
+                    <span>{{ .Data.Content.ZanCount }}</span>
+                </li>
+                <li>
+                    <i class="icon icon-bad"></i>
+                    <span>{{ .Data.Content.CaiCount }}</span>
+                </li>
+                <li>
+                    <i class="icon icon-time"></i>
+                    <span>{{ .Data.Content.CreatedAt | .BuildIn.FormatTime }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-row">
+        <div class="markdown-body" id="markdown-body">{{ .Data.Content.Content }}</div>
+    </div>
+</section>
+
+<div class="comment-row">
+    <ul class="list-group comment-list">
+        <li class="list-group-item comment-num">共 {{.Data.Content.ReplyCount}} 条回复</li>
+
+        {{ if not .Context.User }}
+        <li class="list-group-item">需要<a class="text-primary mx-1" href="/login">登录</a>后方可回复, 如果你还没有账号请点击这里<a class="text-primary mx-1" href="/register">注册</a></li>
+        {{ else }}
+        <li class="list-group-item">
+            <div id="vditor"></div>
+            <div class="my-2 text-right">
+                <button id="reply-btn" data-reply-id="0" class="btn btn-primary btn-submit" type="submit">提交</button>
+            </div>
+        </li>
+        {{ end }}
+    </ul>
+</div>
+
+<link rel="stylesheet" href="/plugin/vditor/dist/index.css" />
+<script src="/plugin/marked/marked.min.js"></script>
+<script src="/plugin/md-toc/md-toc.js"></script>
+<script src="/plugin/vditor/dist/index.min.js"></script>
+<script type="application/javascript">
+    gf.content = {
+        // 赞
+        zan: function (elem, id) {
+            {{if .Context.User}}
+            gf.interact.checkZan(elem, id);
+            {{else}}
+            swal({
+                text: '请登录后再做操作',
+                icon: 'warning',
+                button: '确定',
+            });
+            {{end}}
+        },
+        // 踩
+        cai: function (elem, id) {
+            {{if .Context.User}}
+            gf.interact.checkCai(elem, id);
+            {{else}}
+            swal({
+                text: '请登录后再做操作',
+                icon: 'warning',
+                button: '确定',
+            });
+            {{end}}
+        },
+        adopted: function (id) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '/content/adopt-reply',
+                data: {
+                    id: '{{.Data.Content.Id}}',
+                    reply_id: id,
+                },
+                success: function (r) {
+                    if (r.code === 0) {
+                        swal({ text: '采纳成功', type: 'success', button: '确定' }).then(function () {
+                            location.reload(); // 刷新页面同步回复统计
+                        });
+                    } else {
+                        swal({ text: r.message, icon: 'warning', button: '确定' });
+                    }
+                },
+                error: function (html) {},
+            });
+        },
+        delete: function (id) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '/reply/do-delete',
+                data: {
+                    id: id,
+                },
+                success: function (r) {
+                    if (r.code === 0) {
+                        swal({ text: '删除成功', type: 'success', button: '确定' }).then(function () {
+                            location.reload(); // 刷新页面同步回复统计
+                        });
+                    } else {
+                        swal({ text: r.message, icon: 'warning', button: '确定' });
+                    }
+                },
+                error: function (html) {},
+            });
+        },
+        reply: function (id) {
+            $('#reply-btn').attr({ 'data-reply-id': id });
+            $('#reply-btn').html('回复#' + id);
+            $('#reply-btn').focus();
+        },
+        loadReply: function () {
+            jQuery.ajax({
+                type: 'GET',
+                url: '/reply/index',
+                data: {
+                    size: 30,
+                    page: 1,
+                    target_id: '{{.Data.Content.Id}}',
+                    target_type: '{{.Data.Content.Type}}',
+                    target_user_id: '{{.Data.Content.UserId}}',
+                },
+                success: function (r) {
+                    $('.reply-list').remove();
+                    $('.comment-num').after(r);
+
+                    // 采纳展示，如有有已经被采纳，那么其他全部隐藏
+                    $("[id^='adopted_btn_']").hide();
+                    if ('{{.Data.Content.AdoptedReplyId}}' == '0') {
+                        // 只有作者可以采纳
+                        {{if .Context.User}}
+                        {{if eq .Context.User.Id .Data.Content.UserId }}
+                        $("[id^='adopted_btn_']").show();
+                        {{ end }}
+                        {{end}}
+                    } else {
+                        $('#adopted_it_{{.Data.Content.AdoptedReplyId}}').show();
+                    }
+                },
+                error: function (html) {},
+            });
+        },
+    };
+    $(function () {
+        // 解析Markdown
+        $('.markdown-body').each(function (i, block) {
+            if ($(block).attr('parsed') == undefined) {
+                $(block).html(marked($(block).html()));
+                $(block)
+                    .find('pre code')
+                    .each(function (i, block) {
+                        Prism.highlightElement(block);
+                    });
+                $(block).attr('parsed', 'true');
+            }
+        });
+        // 内容目录
+        new Toc('markdown-body', {
+            level: 4,
+            class: 'toc',
+            targetId: 'gf-article-toc',
+        });
+
+        // 仅有内容时才展示
+        if ($('#gf-article-toc').text() != 'undefined') {
+            $('.gf-article-toc-wrapper').show();
+        }
+
+        let editor = new Vditor('vditor', {
+            cdn: '/plugin/vditor/',
+            theme: 'classic',
+            height: 300,
+            icon: 'ant',
+            cache: { enable: false },
+            placeholder: '~请开始你的表演...',
+            toolbar: ['emoji', 'headings', 'bold', 'italic', 'strike', '|', 'line', 'quote', 'list', 'ordered-list', 'check', 'outdent', 'indent', 'code', 'inline-code', 'insert-after', 'insert-before', 'undo', 'redo', 'upload', 'link', 'table', 'fullscreen'],
+            upload: {
+                // 附件格式
+                accept: 'image/*',
+                // 上传路径
+                url: '/file/upload',
+                // 粘贴图片上传
+                linkToImgUrl: '/file/upload',
+                filename(name) {
+                    return name
+                        .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '')
+                        .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '')
+                        .replace('/\\s/g', '');
+                },
+                // 格式化上传返回
+                format(file, response) {
+                    const { code, data, msg } = JSON.parse(response);
+                    return JSON.stringify({ msg, code, data: { errFiles: [], succMap: { 'image.png': data.Url } } });
+                },
+            },
+            preview: {
+                maxWidth: 1920,
+            },
+        });
+
+        $('.btn-submit').on('click', function () {
+            {{if not .Context.User}}
+            swal({
+                text:   "请登录后再做操作",
+                icon: "warning",
+                button: "确定"
+            });
+            return;
+            {{end}}
+
+            if (!editor.getHTML()) return;
+            $('button[type=submit]').attr('disabled', 'true');
+            var pid = $('#reply-btn').attr('data-reply-id');
+            jQuery.ajax({
+                type: 'POST',
+                url: '/reply/do-create',
+                data: {
+                    parent_id: pid,
+                    content: editor.getHTML(),
+                    target_id: '{{.Data.Content.Id}}',
+                    target_type: '{{.Data.Content.Type}}',
+                },
+                success: function (r) {
+                    $('button[type=submit]').removeAttr('disabled');
+                    if (r.code === 0) {
+                        swal({ text: '评论成功', type: 'success', button: '确定' }).then(function () {
+                            location.reload(); // 刷新页面同步回复统计
+                        });
+                        editor.setValue('', true);
+                    } else {
+                        swal({ text: r.message, icon: 'warning', button: '确定' });
+                    }
+                },
+                error: function (html) {},
+            });
+        });
+
+        gf.content.loadReply();
+    });
+</script>

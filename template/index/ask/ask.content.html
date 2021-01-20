@@ -1,0 +1,19 @@
+<div class="list-header shadow-sm sticky-top">
+    <div class="list-nav-scroll">
+        <ul class="list-nav">
+            <li><a class="nav-link{{if not $.Query.cate }} active{{end}}" href="/{{.ContentType}}?sort={{$.Query.sort}}">全部</a></li>
+            {{range $index, $item := .BuildIn.CategoryTree .ContentType}}
+            <li><a class="nav-link{{if eq $.Query.cate $item.Id}} active{{end}}" href="/{{$.ContentType}}?cate={{$item.Id}}&sort={{$.Query.sort}}">{{$item.Name}}</a></li>
+            {{end}}
+        </ul>
+    </div>
+</div>
+
+<ul class="list-sort">
+    <li><b class="text-muted">排序：</b></li>
+    <li><a class="sort-link{{if eq .Query.sort 0}} active{{end}}" href="/?cate={{.Query.cate}}&sort=0">最新</a></li>
+    <li><a class="sort-link{{if eq .Query.sort 1}} active{{end}}" href="/?cate={{.Query.cate}}&sort=1">活跃</a></li>
+    <li><a class="sort-link{{if eq .Query.sort 2}} active{{end}}" href="/?cate={{.Query.cate}}&sort=2">热度</a></li>
+</ul>
+
+{{ include "index/index/list-group.html" .}}

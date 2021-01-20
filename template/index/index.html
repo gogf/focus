@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="keywords" content="{{.Keywords}}" />
+        <meta name="description" content="{{.Description}}" />
+        <title>{{.Title}}</title>
+        {{ include "index/layout/gf-head.html" }}
+    </head>
 
-<head>
-    {{include "index/header.html" .}}
-</head>
+    <body>
+        <!-- Header -->
+        {{ include "index/layout/gf-header.html" . }}
 
-<body>
-<div class="container-fluid">
-    <!-- menu -->
-    {{include "index/navbar.html" .}}
-
-    <!--- main --->
-    <main>
-        {{include "index/message.html" .}}
-        {{include .MainTpl .}}
-    </main>
-
-    <!--- footer --->
-    {{include "index/footer.html" .}}
-</div>
-</body>
-
+        <div class="container">
+            <div class="row">{{ include .MainTpl . }}</div>
+        </div>
+    </body>
 </html>
-
-
-

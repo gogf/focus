@@ -1,0 +1,81 @@
+<header class="navbar navbar-expand-lg navbar-light bg-light gf-navbar">
+    <div class="container">
+        <a href="/" class="navbar-brand mr-0" title="Focus聚焦社区">
+            <img alt="Focus聚焦社区" src="/images/logo.png" style="width: 36px; height: 36px" />
+        </a>
+
+        <div class="flex-fill ml-2">
+            <ul class="nav d-flex align-items-center">
+                <li>{{ include "index/layout/gf-navbar.html" . }}</li>
+
+                <li class="d-flex flex-fill justify-content-end">
+                    <form class="form-inline" method="get" action="/search">
+                        <div class="form-group mb-0">
+                            <input class="form-control form-control-sm rounded-0 gf-search-input" name="key" value="{{.Query.key}}" placeholder="请输入搜索内容" />
+                        </div>
+                    </form>
+                </li>
+
+                {{if .Context.User}}
+                <li>
+                    <div class="dropdown post-actions ml-3">
+                        <button class="btn btn-primary btn-sm shadow-none dropdown-toggle dropdown-no-arraw rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="d-none d-md-inline">发布</span>
+                            <i class="iconfont icon-edit"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PostActionDropdownMenuButton">
+                            <a class="dropdown-item" href="/content/create?type=article">
+                                <span class="icon iconfont">&#xe61c;</span>
+                                <span>发布文章</span>
+                            </a>
+                            <a class="dropdown-item" href="/content/create?type=topic">
+                                <span class="icon iconfont">&#xe6b3;</span>
+                                <span>发布主题</span>
+                            </a>
+                            <a class="dropdown-item" href="/content/create?type=ask">
+                                <span class="icon iconfont">&#xe717;</span>
+                                <span>发布问答</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="dropdown user-actions ml-2">
+                        <button class="btn btn-sm border-0 dropdown-toggle shadow-none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{.Context.User.Avatar}}" style="width: 2rem; height: 2rem" />
+                            <b class="align-middle d-md-inline-block d-none ml-1 text-nowrap text-truncate" style="max-width: 5rem">{{.Context.User.Nickname}}</b>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/{{.Context.User.Id}}">
+                                <span class="iconfont">&#xe647;</span>
+                                <span>个人中心</span>
+                            </a>
+                            <a class="dropdown-item" href="/user/profile">
+                                <span class="iconfont">&#xe68c;</span>
+                                <span>编辑资料</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:gf.user.logout()">
+                                <span class="iconfont">&#xe6c9;</span>
+                                <span>退出</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                {{else}}
+
+                <li class="nav-item ml-2">
+                    <a class="text" href="/register">注册</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a href="/login">登录</a>
+                </li>
+
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</header>

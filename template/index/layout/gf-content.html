@@ -1,0 +1,13 @@
+{{ define "gf-content" }}
+<div class="col-md-9 py-3 px-xs-0 gf-content">{{ . }}</div>
+{{ end }}
+
+{{ define "gf-sidebar" }}
+<div class="col-md-3 py-3 px-xs-0 gf-sidebar">
+  {{ . }} 
+  {{ include "index/sidebar/copyright.html" }}</div>
+{{ end }}
+
+{{ define "gf-content-without-sidebar" }}
+<div class="col-md-12 py-3 px-xs-0 pt-sm-0 gf-content">{{ . }}</div>
+{{ end }}

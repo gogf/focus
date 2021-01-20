@@ -1,1 +1,3 @@
-{{include "index/content/index.html" .}}
+{{ template "gf-content" (include "index/topic/topic.content.html" .) }}
+
+{{ template "gf-sidebar" (include "index/topic/topic.sidebar.html" .) }}
