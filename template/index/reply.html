@@ -16,7 +16,7 @@
                 <span class="badge badge-success" id="adopted_it_{{ $item.Reply.Id }}" style="display: none;">已采纳</span>
                 <a class="adopted_btn_{{ $item.Reply.UserId }}" id="adopted_btn_{{ $item.Reply.Id }}" href="javascript:gf.content.adopted({{ $item.Reply.Id }});" class="text-secondary" style="font-size: 14px;">采纳</a>
             </div>
-            <div class="reply-content" style="padding: 5px;">
+            <div class="reply-content" style="padding: 5px;word-wrap:break-word;">
                 {{$item.Reply.Content}}
             </div>
             <div class="reply-operating" style="padding: 5px">
