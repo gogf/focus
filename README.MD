@@ -40,6 +40,18 @@ CREATE DATABASE `focus` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin';
 
 6、访问 [http://127.0.0.1:8199](http://127.0.0.1:8199/) 即可看到登录页面，默认账号/密码：`goframe` / `123456`
 
+linux一键部署
+--
+
+一键部署仅支持linux，并且需要先完成docker-compose安装;
+
+```bash
+git clone https://github.com/gogf/focus && \
+ cd focus && chmod 755 focus.sh && focus.sh build
+```
+
+更多命令，请执行`./focus help`
+
 部署
 --
 

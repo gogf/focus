@@ -11,9 +11,9 @@ ENV GO111MODULE=on \
 
 WORKDIR /app
 
-COPY document/docker .
+COPY . .
 
-RUN cp document/docker/config.docker.toml config/config.toml
+RUN cp docker/config.docker.toml config/config.toml
 # 指定OS等，并go build
 RUN wget https://goframe.org/cli/linux_amd64/gf && chmod +x gf
 RUN rm -rf packed/data.go && \
@@ -24,7 +24,7 @@ RUN rm -rf packed/data.go && \
 # 所以我将这些文件放到了publish文件夹
 RUN mkdir -p publish/config && \
     cp bin/linux_amd64/focus publish && \
-    cp -r document/docker/config.docker.toml publish/config/config.toml
+    cp -r docker/config.docker.toml publish/config/config.toml
 
 ###############################################################################
 #                                   START

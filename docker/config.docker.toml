@@ -17,7 +17,7 @@
         level  = "all"
         stdout = true
     [database.default]
-        link   = "mysql:root:123456@tcp(mysql8:3306)/focus"
+        link   = "mysql:focus:Focus123@tcp(mysql8:3306)/focus"
         debug  = true
 
 # 内容设置
