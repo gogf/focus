@@ -1,0 +1,37 @@
+{{ $logged_in := false }}
+
+{{ if .Context.User }}
+{{ $logged_in = true }}
+{{ end }}
+
+<nav class="d-flex flex-column flex-md-row flex-self-stretch flex-md-self-auto flex-order-2 flex-md-order-1"
+  aria-label="Global">
+
+  <a class="Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade-15"
+    href="/">首页</a>
+
+  <a class="Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade-15"
+    href="/topic">主题</a>
+
+  <a class="Header-link flex-auto mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade-15"
+    href="/ask">问答</a>
+
+  <a class="Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade-15"
+    href="/article">文章</a>
+
+  {{ if $logged_in }}
+  <a class="Header-link d-block d-md-none mr-0 mr-md-3 py-2 py-md-3 border-top border-md-top-0 border-white-fade-15"
+    href="/user/{{ .Context.User.Id }}">
+    <img class="avatar avatar-user" src="{{ .Context.User.Avatar }}" width="20" height="20"
+      alt="\@{{ .Context.User.Nickname }}" />
+    <span>{{ .Context.User.Nickname }}</span>
+  </a>
+
+  <form action="/user/logout" method="get">
+    <button type="submit"
+      class="Header-link mr-0 mr-md-3 py-2 py-md-3 border-top border-md-top-0 border-white-fade-15 d-md-none btn-link d-block width-full text-left">
+      <span>注销登录</span>
+    </button>
+  </form>
+  {{ end }}
+</nav>

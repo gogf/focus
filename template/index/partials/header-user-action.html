@@ -1,0 +1,26 @@
+<div class="Header-item position-relative mr-0 d-none d-md-flex">
+  <details class="details-overlay details-reset">
+    <summary class="Header-link" aria-haspopup="menu" role="button">
+      <img alt="\@{{ .Context.User.Nickname }}" width="20" height="20" src="{{ .Context.User.Avatar }}"
+        class="avatar avatar-user" />
+      <span class="dropdown-caret"></span>
+    </summary>
+    <details-menu class="dropdown-menu dropdown-menu-sw" role="menu">
+
+      <a role="menuitem" class="dropdown-item" href="/user/profile">编辑资料</a>
+      <a role="menuitem" class="dropdown-item" href="/user/{{ .Context.User.Id }}">个人中心</a>
+      <a role="menuitem" class="dropdown-item" href="/user/{{ .Context.User.Id }}?type=ask">我的问答</a>
+      <a role="menuitem" class="dropdown-item" href="/user/{{ .Context.User.Id }}?type=topic">我的话题</a>
+      <a role="menuitem" class="dropdown-item" href="/user/{{ .Context.User.Id }}?type=article">我的文章</a>
+
+
+      <div role="none" class="dropdown-divider"></div>
+
+      <form class="logout-form" action="/user/logout" accept-charset="UTF-8" method="get">
+        <button type="submit" class="dropdown-item dropdown-signout" role="menuitem">
+          注销登录
+        </button>
+      </form>
+    </details-menu>
+  </details>
+</div>

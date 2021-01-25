@@ -1,0 +1,45 @@
+<div class="container-xl p-responsive mt-5">
+  <div class="Box Box--responsive">
+    <div class="Box-header">
+      <h3 class="Box-title">注册新用户</h3>
+    </div>
+    <div class="Box-body">
+      <div class="d-flex flex-column">
+        <form action="/register/do" method="post" id="register-form">
+          <label for="passport" class="d-flex mb-2">账号</label>
+          <input type="text" name="passport" id="passport" class="form-control input-block input-lg mb-3"
+            autocapitalize="off" autocorrect="off" autocomplete="username" autofocus>
+
+          <label for="nickname" class="d-flex mb-2">昵称</label>
+          <input type="text" name="nickname" id="nickname" class="form-control input-block input-lg mb-3"
+            autocapitalize="off" autocorrect="off">
+
+          <label for="password" class="d-flex flex-justify-between mb-2">
+            密码
+          </label>
+          <input type="password" name="password" id="password"
+            class="form-control form-control input-block input-lg mb-3" autocomplete="current-password">
+
+          <label for="password2" class="d-flex flex-justify-between mb-2">
+            确认密码
+          </label>
+          <input type="password2" name="password2" id="password2"
+            class="form-control form-control input-block input-lg mb-3">
+
+          <label for="captcha" class="d-flex flex-justify-between mb-2">
+            验证码
+          </label>
+          <div class="input-group mb-3">
+            <input type="text" name="captcha" id="captcha" class="form-control form-control input-block input-lg"
+              autocomplete="">
+            <span class="input-group-button">
+              <img class="captcha-img" src="/captcha" alt="验证码" height="32">
+            </span>
+          </div>
+          <input type="submit" value="立即注册" class="btn btn-primary btn-block mt-5 mb-3">
+        </form>
+        <span class="f6">已有账号？<a href="/login">前往登录</a></span>
+      </div>
+    </div>
+  </div>
+</div>

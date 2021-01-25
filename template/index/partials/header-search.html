@@ -1,0 +1,17 @@
+<div
+  class="header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto flex-order-1 flex-md-order-2 mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+  role="combobox" aria-owns="jump-to-results" aria-label="Search or jump to" aria-haspopup="listbox"
+  aria-expanded="false">
+  <div class="position-relative">
+    <form class="js-site-search-form" role="search" aria-label="Site" action="/search" method="get">
+      <label
+        class="form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center">
+        <input type="text"
+          class="form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+          data-hotkey="s,/" name="key" value="{{ .Query.key }}" placeholder="站内搜索" autocapitalize="off" aria-autocomplete="list"
+          spellcheck="false" autocomplete="off" />
+        <img src="/images/search-key-slash.svg" alt="" class="mr-2 header-search-key-slash" />
+      </label>
+    </form>
+  </div>
+</div>

@@ -1,7 +1,5 @@
-{{ if .Context.User }}
-{{ include "/index/sidebar/user-actions.html" }}
-{{ end }}
+{{ include "index/partials/about-us.html" }}
 
-{{ include "/index/sidebar/about-focus.html" }}
-
-{{ include "/index/sidebar/sponsor.html" }}
+<div class="mt-3">
+  {{ include "index/partials/sponsors.html" }}
+</div>

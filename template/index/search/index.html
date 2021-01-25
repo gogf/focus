@@ -1,3 +1,5 @@
-{{ template "gf-content" (include "index/search/search.content.html" .) }}
+{{ template "default" . }}
 
-{{ template "gf-sidebar" (include "index/search/search.sidebar.html" .) }}
+{{ define "content" }}
+{{ . | json }}
+{{ end }}

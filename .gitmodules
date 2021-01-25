@@ -1,0 +1,3 @@
+[submodule "public"]
+	path = public
+	url = git@gitee.com:leex201/focus-dist.git

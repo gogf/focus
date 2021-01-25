@@ -1,3 +1,5 @@
-{{ template "gf-content" (include "index/index/index.content.html" .) }}
+{{ template "default" . }}
 
-{{ template "gf-sidebar" (include "index/index/index.sidebar.html" .) }}
+{{ define "content" }}
+{{ include "index/index/index.content.html" . }}
+{{ end }}

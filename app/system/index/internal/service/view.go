@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"focus/app/model"
 	"focus/app/system/index/internal/define"
+
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
-	"github.com/gogf/gf/util/gmode"
 )
 
 // 视图管理服务
@@ -76,8 +76,8 @@ func (s *viewService) GetTitle(ctx context.Context, r *define.ViewServiceGetTitl
 	return gstr.Join(titleArray, " - ")
 }
 
-// 渲染指定模板页面
-func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View) {
+// 格式化 viewData
+func (s *viewService) FormatViewData(r *ghttp.Request, data ...model.View) g.Map {
 	var (
 		viewObj  = model.View{}
 		viewData = make(g.Map)
@@ -105,28 +105,43 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 	}
 	// 内置对象
 	viewData["BuildIn"] = &viewBuildIn{httpRequest: r}
-	// 内容模板
-	if viewData["MainTpl"] == nil {
-		viewData["MainTpl"] = s.getDefaultMainTpl(r)
-	}
 	// 提示信息
 	if notice, _ := Session.GetNotice(r.Context()); notice != nil {
 		Session.RemoveNotice(r.Context())
 		viewData["Notice"] = notice
 	}
-	// 渲染模板
-	r.Response.WriteTpl(tpl, viewData)
-	// 开发模式下，在页面最下面打印所有的模板变量
-	if gmode.IsDevelop() {
-		r.Response.WriteTplContent(`{{dump .}}`, viewData)
+	return viewData
+}
+
+// 渲染指定模板
+func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View) {
+	var (
+		viewTpl  = tpl
+		viewData = s.FormatViewData(r, data...)
+	)
+	if viewTpl == "" {
+		viewTpl = g.Cfg().GetString("viewer.indexLayout")
 	}
-	// 退出当前业务函数执行
+
+	g.Dump("[s.RenderTpl] viewTpl: ", viewTpl)
+	g.Dump("[s.RenderTpl] viewData: ", viewData)
+
+	r.Response.WriteTpl(viewTpl, viewData)
 	r.Exit()
 }
 
-// 渲染默认模板页面
+// 根据路由自动渲染模板页面
 func (s *viewService) Render(r *ghttp.Request, data ...model.View) {
-	s.RenderTpl(r, g.Cfg().GetString("viewer.indexLayout"), data...)
+	var (
+		viewTpl  = s.getDefaultMainTpl(r)
+		viewData = s.FormatViewData(r, data...)
+	)
+
+	g.Dump("[s.Render] viewTpl: ", viewTpl)
+	g.Dump("[s.Render] viewData: ", viewData)
+
+	r.Response.WriteTpl(viewTpl, viewData)
+	r.Exit()
 }
 
 // 跳转中间页面
@@ -138,8 +153,8 @@ func (s *viewService) Render302(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "页面跳转中"
 	}
-	view.MainTpl = s.getViewFolderName() + "/pages/302.html"
-	s.Render(r, view)
+	tpl := s.getViewFolderName() + "/pages/302.html"
+	s.RenderTpl(r, tpl, view)
 }
 
 // 401页面
@@ -151,8 +166,8 @@ func (s *viewService) Render401(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "无访问权限"
 	}
-	view.MainTpl = s.getViewFolderName() + "/pages/401.html"
-	s.Render(r, view)
+	tpl := s.getViewFolderName() + "/pages/401.html"
+	s.RenderTpl(r, tpl, view)
 }
 
 // 403页面
@@ -164,8 +179,8 @@ func (s *viewService) Render403(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "无访问权限"
 	}
-	view.MainTpl = s.getViewFolderName() + "/pages/403.html"
-	s.Render(r, view)
+	tpl := s.getViewFolderName() + "/pages/403.html"
+	s.RenderTpl(r, tpl, view)
 }
 
 // 404页面
@@ -177,8 +192,8 @@ func (s *viewService) Render404(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "资源不存在"
 	}
-	view.MainTpl = s.getViewFolderName() + "/pages/404.html"
-	s.Render(r, view)
+	tpl := s.getViewFolderName() + "/pages/404.html"
+	s.RenderTpl(r, tpl, view)
 }
 
 // 500页面
@@ -190,8 +205,8 @@ func (s *viewService) Render500(r *ghttp.Request, data ...model.View) {
 	if view.Title == "" {
 		view.Title = "请求执行错误"
 	}
-	view.MainTpl = s.getViewFolderName() + "/pages/500.html"
-	s.Render(r, view)
+	tpl := s.getViewFolderName() + "/pages/500.html"
+	s.RenderTpl(r, tpl, view)
 }
 
 // 获取视图存储目录

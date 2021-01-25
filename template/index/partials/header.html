@@ -1,0 +1,75 @@
+{{ $logged_in := false }}
+
+{{ if .Context.User }}
+{{ $logged_in = true }}
+{{ end }}
+
+<div class="position-relative js-header-wrapper">
+  <a href="#start-of-content" class="p-3 bg-blue text-white show-on-focus js-skip-to-content">Skip to content</a>
+  <span class="progress-pjax-loader width-full js-pjax-loader-bar Progress position-fixed">
+    <span class="Progress-item progress-pjax-loader-bar"></span>
+  </span>
+
+  <header class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap" role="banner">
+    <div class="Header-item mt-n1 mb-n1 d-none d-md-flex">
+      <a class="Header-link" href="/" data-hotkey="g d" aria-label="Homepage">
+        <img src="/images/logo.png" alt="聚焦社区" width="32" height="32" />
+      </a>
+    </div>
+
+    <div class="Header-item d-md-none">
+      <button class="Header-link btn-link js-details-target" type="button" aria-label="Toggle navigation"
+        aria-expanded="false">
+        <svg height="24" class="octicon octicon-three-bars" viewBox="0 0 16 16" version="1.1" width="24"
+          aria-hidden="true">
+          <path fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z">
+          </path>
+        </svg>
+      </button>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex">
+      {{ include "index/partials/header-nav.html" . }}
+
+      {{ include "index/partials/header-search.html" . }}
+    </div>
+
+    <div class="Header-item Header-item--full flex-justify-center d-md-none position-relative">
+      <a class="Header-link" href="/" data-hotkey="g d" aria-label="Homepage">
+        <img src="/images/logo.png" alt="聚焦社区" width="32" height="32" />
+      </a>
+    </div>
+
+    {{ if $logged_in }}
+    <div class="Header-item position-relative d-none d-md-flex">
+      <details class="details-overlay details-reset">
+        <summary class="Header-link border p-1 text-primary" aria-label="Create new…" aria-haspopup="menu" role="button">
+          写文章
+        </summary>
+        <details-menu class="dropdown-menu dropdown-menu-sw" role="menu">
+          <a role="menuitem" class="dropdown-item" href="/content/create?type=article">发布文章</a>
+
+          <a role="menuitem" class="dropdown-item" href="/content/create?type=topic">发布主题</a>
+
+          <a role="menuitem" class="dropdown-item" href="/content/create?type=ask">发布问答</a>
+
+        </details-menu>
+      </details>
+    </div>
+
+    {{ include "index/partials/header-user-action.html" . }}
+
+    {{ else }}
+    <div class="Header-item mr-0">
+      <a class="Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-2 mr-md-3" href="/register" role="button">注册</a>
+      <a class="Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 js-login-btn" href="javascript:;"
+        role="button">登录</a>
+      <template id='site-login-form'>
+        {{ include "index/partials/login-form.html" }}
+      </template>
+    </div>
+    {{ end }}
+  </header>
+</div>

@@ -1,0 +1,30 @@
+<div class="border-bottom border-gray-light">
+  <div class="container-xl">
+    <div class="gutter-condensed gutter-lg flex-column flex-md-row d-flex">
+      <div class="flex-shrink-0 col-12 col-md-9 py-4">
+        <div class="Box mt-3 position-relative">
+          <div class="Box-header">
+            {{if .BreadCrumb}}
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                {{range $index, $item := .BreadCrumb}}
+                <li class="breadcrumb-item">
+                  {{if $item.Url}}
+                  <a href="{{$item.Url}}">{{$item.Name}}</a>
+                  {{else}} {{$item.Name}} {{end}}
+                </li>
+                {{end}}
+              </ol>
+            </nav>
+            {{end}}
+          </div>
+          <div class="Box-body">
+            <h1 class="f2">{{ .Data.Content.Title }}</h1>
+            <article class="container-lg markdown-body entry-content mt-2">{{ .Data.Content.Content }}</article>
+          </div>
+        </div>
+      </div>
+      <div class="flex-shrink-0 col-12 col-md-3 py-4"></div>
+    </div>
+  </div>
+</div>

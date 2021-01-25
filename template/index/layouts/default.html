@@ -1,0 +1,65 @@
+{{ define "default" }}
+<!DOCTYPE html>
+<html lang="zh" data-color-mode="light" data-light-theme="light" data-dark-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ .Title }}</title>
+
+    <link rel="dns-prefetch" href="https://focus.goframe.org/" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+
+    <meta name="author" content="GoFrame" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ .Description }}" />
+
+    <meta property="og:site_name" content="Focus聚焦社区" />
+    <meta property="og:title" content="{{ .Title }}" />
+    <meta property="og:image" content="/images/logo.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="300" />
+    <meta property="og:image:height" content="300" />
+    <meta property="og:description" content="{{ .Description }}" />
+
+    {{ block "styles" . }}
+    <link rel="stylesheet" href="/dist/css/main.css" />
+    {{ end }}
+
+    {{/* 前置插槽 */}}
+    {{ block "prepend" . }}{{ end }}
+  </head>
+
+  <body class="intent-mouse page-responsive height-full d-flex flex-column">
+    {{ block "header" . }}
+      {{ include "index/partials/header.html" . }}
+    {{ end }}
+
+    {{ block "content" . }}{{ end }}
+
+    {{ block "footer" . }}
+      {{ include "index/partials/footer.html" . }}
+    {{ end }}
+
+    {{ block "scripts" . }}
+    <script src="/dist/main.js"></script>
+    {{ end }}
+
+    <!-- debug -->
+    <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script> -->
+    <!-- <script>eruda.init();</script> -->
+
+    {{/* 后置插槽 */}}
+    {{ block "append" . }}{{ end }}
+  </body>
+
+</html>
+{{ end }}
+
+{{ define "prepend" }}
+<!-- this is default prepend -->
+{{ end }}
+
+{{ define "append" }}
+<!-- this is default append -->
+{{ end }}

@@ -1,0 +1,32 @@
+<div class="Box-header bg-white">
+  <h3 class="Box-title text-gray-dark f4">用户登录</h3>
+</div>
+<div class="Box-body">
+  <div class="d-flex flex-column p-3 login-form">
+    <form action="/login/do" method="post" id="login-form">
+      <label for="passport" class="d-flex mb-2">账号</label>
+      <input type="text" name="passport" id="passport" class="form-control input-block input-lg mb-3"
+        autocapitalize="off" autocorrect="off" autocomplete="username" autofocus>
+
+      <label for="password" class="d-flex flex-justify-between mb-2">
+        密码
+        <!-- <a href="/password_reset">忘记密码？</a> -->
+      </label>
+      <input type="password" name="password" id="password" class="form-control form-control input-block input-lg mb-3"
+        autocomplete="current-password">
+
+      <label for="captcha" class="d-flex flex-justify-between mb-2">
+        验证码
+      </label>
+      <div class="input-group mb-3">
+        <input type="text" name="captcha" id="captcha" class="form-control form-control input-block input-lg"
+          autocomplete="">
+        <span class="input-group-button">
+          <img class="captcha-img" src="/captcha" alt="验证码" height="32">
+        </span>
+      </div>
+      <input type="submit" value="登录" class="btn btn-primary btn-block mt-5 mb-3">
+      <span class="f6">没有账号？<a href="/register">立即注册</a></span>
+    </form>
+  </div>
+</div>

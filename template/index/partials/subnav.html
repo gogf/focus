@@ -1,0 +1,24 @@
+{{ $ContentType := "" }}
+{{ if .ContentType }}
+{{ $ContentType = .ContentType }}
+{{ end }}
+
+<div class="site-subnav site-subnav-sticky bg-white js-site-subnav">
+  <nav class="container-xl">
+    <div class="site-subnav-scroll">
+      <ul class="d-flex flex-nowrap site-subnav-inner">
+        <li {{ if eq $.Query.cate `` }}class="selected" {{ end }}>
+          <a class="d-inline-block py-3 no-underline subnav-link"
+            href="/{{$.ContentType}}?cate=&sort={{$.Query.sort}}">全部</a>
+        </li>
+
+        {{range $index, $item := .BuildIn.CategoryTree $ContentType}}
+        <li {{ if eq $.Query.cate $item.Id }}class="selected" {{ end }}>
+          <a class="d-inline-block py-3 no-underline subnav-link"
+            href="/{{$.ContentType}}?cate={{$item.Id}}&sort={{$.Query.sort}}">{{ $item.Name }}</a>
+        </li>
+        {{end}}
+      </ul>
+    </div>
+  </nav>
+</div>
