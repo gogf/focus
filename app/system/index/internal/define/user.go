@@ -83,3 +83,21 @@ type UserServiceGetListRes struct {
 	User    *UserProfileRes           `json:"user"`    // 查询用户
 	Stats   map[string]int            // 发布内容数量
 }
+
+// Service查询用户列表查询请求
+type UserServiceGetMessageListReq struct {
+	Page       int    `json:"page"`        // 分页码
+	Size       int    `json:"size"`        // 分页数量
+	TargetType string `json:"target_type"` // 数据类型
+	TargetId   int    `json:"target_id"`   // 数据ID
+	UserId     uint   `json:"user_id"`     // 用户ID
+}
+
+// Service查询用户列表查询结果
+type UserServiceGetMessageListRes struct {
+	List  []*ReplyServiceGetListResItem `json:"list"`  // 列表
+	Page  int                           `json:"page"`  // 分页码
+	Size  int                           `json:"size"`  // 分页数量
+	Total int                           `json:"total"` // 数据总数
+	Stats map[string]int                // 发布内容数量
+}

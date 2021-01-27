@@ -34,10 +34,9 @@
                     </div>
                     <div class="gf-list-item-text">
                         <div class="float-left">
-                            <span class="badge badge-primary" title="{{$item.Reply.Content}}">{{$item.Reply.Content}}</span>
                             <span class="gf-list-item-title">
                             <a href="/{{$item.Reply.TargetType}}/{{$item.Reply.TargetId}}"
-                               style="color: #222;">{{$item.Content.Title}}</a>
+                               style="color: #222;" title="{{$item.Reply.Content}}">{{$item.Reply.Content}}</a>
                         </span>
                         </div>
                         <div class="float-right">
@@ -49,24 +48,21 @@
                         </span>
                             <span style="font-size: 12px;color: #ccc;">{{$item.Reply.CreatedAt | $.BuildIn.FormatTime}}</span>
 
-                            {{if eq $.Data.User.Id $.Context.User.Id}}
                             <span style="font-size: 12px;color: #ccc;text-align: right;">
-                                &nbsp;|&nbsp;&nbsp; <a href="/content/update?id={{$item.Content.Id}}"><span class="icon iconfont"
+                                &nbsp;|&nbsp;&nbsp; <a href=""><span class="icon iconfont"
                                                                                                             style="color: darkred;">&#xe780;</span></a>
-                                &nbsp;|&nbsp;&nbsp; <a href="javascript:void(0);"
-                                                       onclick="gf.content.delete({{$item.Content.Id}},'/user/{{$.ContentType}}')"><span
+                                &nbsp;|&nbsp;&nbsp; <a href=")"><span
                                     class="icon iconfont" style="color: black;">&#xe63c;</span></a>
                                 </span>
-                            {{end}}
                         </div>
                     </div>
                 </li>
                 {{end}}
 
-                {{if gt .Data.Content.Total .Data.Content.Size}}
+                {{if gt .Data.Total .Data.Size}}
                 <li class="list-group-item gf-list-item">
                     <ul class="pagination">
-                        {{.BuildIn.Page .Data.Content.Total .Data.Content.Size }}
+                        {{.BuildIn.Page .Data.Total .Data.Size }}
                     </ul>
                 </li>
                 {{end}}

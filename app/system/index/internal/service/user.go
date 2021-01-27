@@ -254,6 +254,34 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 	return res, nil
 }
 
+// 消息列表
+
+func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceGetMessageListReq) (*define.UserServiceGetMessageListRes, error) {
+	userId := shared.Context.Get(ctx).User.Id
+
+	replyReq := &define.ReplyServiceGetListReq{}
+	gconv.Struct(r, replyReq)
+
+	replyList, err := Reply.GetList(ctx, replyReq)
+	if err != nil {
+		return nil, err
+	}
+
+	getListRes := &define.UserServiceGetMessageListRes{
+		Page:  r.Page,
+		Size:  r.Size,
+		Total: replyList.Total,
+	}
+
+	getListRes.List = replyList.List
+	getListRes.Stats, err = s.GetUserStats(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return getListRes, nil
+}
+
 // 获取文章数量
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})

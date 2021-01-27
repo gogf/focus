@@ -160,12 +160,12 @@ func (a *userApi) getContentList(r *ghttp.Request, contentType string, userId ui
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Message(r *ghttp.Request) {
 	var (
-		data *define.ReplyServiceGetListReq
+		data *define.UserServiceGetMessageListReq
 	)
 	if err := r.Parse(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if getListRes, err := service.Reply.GetList(r.Context(), data); err != nil {
+	if getListRes, err := service.User.GetMessageList(r.Context(), data); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
