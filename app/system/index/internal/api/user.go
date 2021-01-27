@@ -159,7 +159,23 @@ func (a *userApi) getContentList(r *ghttp.Request, contentType string, userId ui
 // @router  /user/message [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Message(r *ghttp.Request) {
-	service.View.Render(r)
+	var (
+		data *define.ReplyServiceGetListReq
+	)
+	if err := r.Parse(&data); err != nil {
+		response.JsonExit(r, 1, err.Error())
+	}
+	if getListRes, err := service.Reply.GetList(r.Context(), data); err != nil {
+		service.View.Render500(r, model.View{
+			Error: err.Error(),
+		})
+	} else {
+		service.View.Render(r, model.View{
+			ContentType: data.TargetType,
+			Data:        getListRes,
+		})
+	}
+
 }
 
 // @summary AJAX保存个人资料

@@ -5,10 +5,72 @@
     <div class="col-md-8">
         <div class="card gf-person">
             <div class="card-header">
-                <span class="iconfont">&#xe60e;</span>  我的消息
+                <span class="iconfont">&#xe60e;</span>  我的消息 {{.Query.target_type}}
             </div>
             <div class="card-body">
-                <b>暂未开放</b>
+                <ul class="list-group">
+                <li class="list-group-item gf-list-item">
+                    <a class="btn btn-link text-primary top-node-btn btn-sm"
+                       href="/user/message?type=1">内容回复</a>
+                    <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                       href="javascript:alert('敬请期待');">个人私信</a>
+                    <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                       href="javascript:alert('敬请期待');">系统消息</a>
+
+                    <div class="float-right">
+                        <a class="btn btn-link {{if eq .Query.target_type `topic`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                           href="/user/message?type=1&target_type=topic">主题</a>
+                        <a class="btn btn-link {{if eq .Query.target_type `ask`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                           href="/user/message?type=1&target_type=ask">问答</a>
+                        <a class="btn btn-link {{if eq .Query.target_type `article`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                           href="/user/message?type=1&target_type=article">文章</a>
+                    </div>
+                </li>
+
+                {{range $index, $item := .Data.List}}
+                <li class="list-group-item gf-list-item">
+                    <div class="gf-list-item-img">
+                        <img src="{{$item.User.Avatar}}" style="height: 36px;width:36px;">
+                    </div>
+                    <div class="gf-list-item-text">
+                        <div class="float-left">
+                            <span class="badge badge-primary" title="{{$item.Reply.Content}}">{{$item.Reply.Content}}</span>
+                            <span class="gf-list-item-title">
+                            <a href="/{{$item.Reply.TargetType}}/{{$item.Reply.TargetId}}"
+                               style="color: #222;">{{$item.Content.Title}}</a>
+                        </span>
+                        </div>
+                        <div class="float-right">
+                        <span style="font-size: 12px;color: #ccc;text-align: right;">
+                            <span class="icon iconfont icon-cai"></span> {{$item.Reply.CaiCount}}
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <span class="icon iconfont icon-zan"></span> {{$item.Reply.ZanCount}}
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                        </span>
+                            <span style="font-size: 12px;color: #ccc;">{{$item.Reply.CreatedAt | $.BuildIn.FormatTime}}</span>
+
+                            {{if eq $.Data.User.Id $.Context.User.Id}}
+                            <span style="font-size: 12px;color: #ccc;text-align: right;">
+                                &nbsp;|&nbsp;&nbsp; <a href="/content/update?id={{$item.Content.Id}}"><span class="icon iconfont"
+                                                                                                            style="color: darkred;">&#xe780;</span></a>
+                                &nbsp;|&nbsp;&nbsp; <a href="javascript:void(0);"
+                                                       onclick="gf.content.delete({{$item.Content.Id}},'/user/{{$.ContentType}}')"><span
+                                    class="icon iconfont" style="color: black;">&#xe63c;</span></a>
+                                </span>
+                            {{end}}
+                        </div>
+                    </div>
+                </li>
+                {{end}}
+
+                {{if gt .Data.Content.Total .Data.Content.Size}}
+                <li class="list-group-item gf-list-item">
+                    <ul class="pagination">
+                        {{.BuildIn.Page .Data.Content.Total .Data.Content.Size }}
+                    </ul>
+                </li>
+                {{end}}
+                </ul>
             </div>
         </div>
     </div>
