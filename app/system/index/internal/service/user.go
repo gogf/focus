@@ -154,7 +154,7 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.
 		return nil, err
 	}
 
-	getProfile.Stats, err = s.GetUserStats(userId)
+	getProfile.Stats, err = s.GetUserStats(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +246,7 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 	res := new(define.UserServiceGetListRes)
 	res.Content = getListRes
 	res.User = user
-	res.Stats, err = s.GetUserStats(data.UserId)
+	res.Stats, err = s.GetUserStats(ctx, data.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -255,11 +255,13 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 }
 
 // 获取文章数量
-func (s *userService) GetUserStats(userId uint) (map[string]int, error) {
+func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
-	statsModel := m.Fields(dao.Content.Columns.Type, "count(*) total").
-		Where(dao.Content.Columns.UserId, userId).
-		Group(dao.Content.Columns.Type)
+	m = m.Fields(dao.Content.Columns.Type, "count(*) total")
+	if !shared.Context.Get(ctx).User.IsAdmin {
+		m = m.Where(dao.Content.Columns.UserId, userId)
+	}
+	statsModel := m.Group(dao.Content.Columns.Type)
 	statsAll, err := statsModel.M.All()
 	if err != nil {
 		return nil, err

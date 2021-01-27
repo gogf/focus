@@ -7,7 +7,6 @@ import (
 	"focus/app/model"
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
-
 	"github.com/gogf/gf/encoding/ghtml"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
@@ -37,7 +36,10 @@ func (s *contentService) GetList(ctx context.Context, r *define.ContentServiceGe
 		}
 		m = m.Where(dao.Content.Columns.CategoryId, idArray)
 	}
-	if r.UserId > 0 {
+
+	// 管理员查看所有文章
+	if r.UserId > 0 &&
+		!shared.Context.Get(ctx).User.IsAdmin {
 		m = m.Where(dao.Content.Columns.UserId, r.UserId)
 	}
 	listModel := m.Page(r.Page, r.Size)

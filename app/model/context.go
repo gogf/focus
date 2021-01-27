@@ -12,6 +12,8 @@ import (
 const (
 	// 上下文变量存储键名，前后端系统共享
 	ContextKey = "ContextKey"
+	// 默认管理员ID
+	DefaultAdminId = 1
 )
 
 // 请求上下文结构
@@ -27,4 +29,5 @@ type ContextUser struct {
 	Passport string // 用户账号
 	Nickname string // 用户名称
 	Avatar   string // 用户头像
+	IsAdmin  bool   // 是否是管理员
 }

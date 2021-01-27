@@ -26,11 +26,14 @@ func (s *middlewareService) Ctx(r *ghttp.Request) {
 	}
 	shared.Context.Init(r, customCtx)
 	if userEntity := Session.GetUser(r.Context()); userEntity != nil {
+
+		adminId := g.Cfg().GetUint("setting.adminId", model.DefaultAdminId)
 		customCtx.User = &model.ContextUser{
 			Id:       userEntity.Id,
 			Passport: userEntity.Passport,
 			Nickname: userEntity.Nickname,
 			Avatar:   userEntity.Avatar,
+			IsAdmin:  userEntity.Id == adminId,
 		}
 	}
 	// 将自定义的上下文对象传递到模板变量中使用
