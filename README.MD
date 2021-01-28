@@ -47,7 +47,7 @@ linux一键部署
 
 ```bash
 git clone https://github.com/gogf/focus && \
- cd focus && chmod 755 focus.sh && focus.sh build
+ cd focus && chmod 755 focus.sh && ./focus.sh build
 ```
 
 更多命令，请执行`./focus help`

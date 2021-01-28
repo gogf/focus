@@ -39,7 +39,7 @@ func (s *contentService) GetList(ctx context.Context, r *define.ContentServiceGe
 
 	// 管理员查看所有文章
 	if r.UserId > 0 &&
-		!shared.Context.Get(ctx).User.IsAdmin {
+		!User.IsAdminShow(ctx, r.UserId) {
 		m = m.Where(dao.Content.Columns.UserId, r.UserId)
 	}
 	listModel := m.Page(r.Page, r.Size)

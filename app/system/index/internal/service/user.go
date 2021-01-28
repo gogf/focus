@@ -258,7 +258,7 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
 	m = m.Fields(dao.Content.Columns.Type, "count(*) total")
-	if !shared.Context.Get(ctx).User.IsAdmin {
+	if !s.IsAdminShow(ctx, userId) {
 		m = m.Where(dao.Content.Columns.UserId, userId)
 	}
 	statsModel := m.Group(dao.Content.Columns.Type)
@@ -271,4 +271,19 @@ func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string
 		statsMap[v["type"].String()] = v["total"].Int()
 	}
 	return statsMap, nil
+}
+
+// 是否是访问管理员的数据
+func (s *userService) IsAdminShow(ctx context.Context, userId uint) bool {
+	context := shared.Context.Get(ctx)
+	if context == nil {
+		return false
+	}
+	if context.User == nil {
+		return false
+	}
+	if userId != context.User.Id {
+		return false
+	}
+	return context.User.IsAdmin
 }
