@@ -116,6 +116,20 @@ func (s *viewBuildIn) Gender(gender int) string {
 	}
 }
 
+// 根据性别字段内容返回性别。
+func (s *viewBuildIn) ContentTypeName(contentType string) string {
+	switch contentType {
+	case model.ContentTypeArticle:
+		return "文章"
+	case model.ContentTypeAsk:
+		return "问答"
+	case model.ContentTypeTopic:
+		return "主题"
+	default:
+		return "未知"
+	}
+}
+
 // 创建分页HTML内容
 func (s *viewBuildIn) Page(total, size int) string {
 	page := s.httpRequest.GetPage(total, size)

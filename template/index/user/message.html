@@ -5,67 +5,70 @@
     <div class="col-md-8">
         <div class="card gf-person">
             <div class="card-header">
-                <span class="iconfont">&#xe60e;</span>  我的消息 {{.Query.target_type}}
+                <span class="iconfont">&#xe60e;</span> 我的消息 {{.Query.target_type}}
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                <li class="list-group-item gf-list-item">
-                    <a class="btn btn-link text-primary top-node-btn btn-sm"
-                       href="/user/message?type=1">内容回复</a>
-                    <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                       href="javascript:alert('敬请期待');">个人私信</a>
-                    <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                       href="javascript:alert('敬请期待');">系统消息</a>
+                    <li class="list-group-item gf-list-item">
+                        <a class="btn btn-link text-primary top-node-btn btn-sm"
+                           href="/user/message?type=1">内容回复</a>
+                        <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                           href="javascript:alert('敬请期待');">个人私信</a>
+                        <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                           href="javascript:alert('敬请期待');">系统消息</a>
 
-                    <div class="float-right">
-                        <a class="btn btn-link {{if eq .Query.target_type `topic`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                           href="/user/message?type=1&target_type=topic">主题</a>
-                        <a class="btn btn-link {{if eq .Query.target_type `ask`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                           href="/user/message?type=1&target_type=ask">问答</a>
-                        <a class="btn btn-link {{if eq .Query.target_type `article`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                           href="/user/message?type=1&target_type=article">文章</a>
-                    </div>
-                </li>
+                        <div class="float-right">
+                            <a class="btn btn-link {{if eq .Query.target_type `topic`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                               href="/user/message?type=1&target_type=topic">主题</a>
+                            <a class="btn btn-link {{if eq .Query.target_type `ask`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                               href="/user/message?type=1&target_type=ask">问答</a>
+                            <a class="btn btn-link {{if eq .Query.target_type `article`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
+                               href="/user/message?type=1&target_type=article">文章</a>
+                        </div>
+                    </li>
 
-                {{range $index, $item := .Data.List}}
-                <li class="list-group-item gf-list-item">
-                    <div class="gf-list-item-img">
-                        <img src="{{$item.User.Avatar}}" style="height: 36px;width:36px;">
-                    </div>
-                    <div class="gf-list-item-text">
-                        <div class="float-left">
+                    {{range $index, $item := .Data.List}}
+                    <li class="list-group-item gf-list-item">
+                        <div class="gf-list-item-img">
+                            <img src="{{$item.User.Avatar}}" style="height: 36px;width:36px;">
+                        </div>
+                        <div class="gf-list-item-text">
+                            <div class="float-left">
+                            <span class="badge badge-primary">{{$.BuildIn.ContentTypeName "ask" }}</span>
+
                             <span class="gf-list-item-title">
                             <a href="/{{$item.Reply.TargetType}}/{{$item.Reply.TargetId}}"
-                               style="color: #222;" title="{{$item.Reply.Content}}">{{$item.Reply.Content}}</a>
-                        </span>
-                        </div>
-                        <div class="float-right">
+                               style="color: #222;" title="{{$item.Reply.Content}}">
+                                <span class="d-inline-block text-truncate" style="max-width: 300px;">文章名称</span></a>
+                            </span>
+                            </div>
+                            <div class="float-right">
                         <span style="font-size: 12px;color: #ccc;text-align: right;">
                             <span class="icon iconfont icon-cai"></span> {{$item.Reply.CaiCount}}
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <span class="icon iconfont icon-zan"></span> {{$item.Reply.ZanCount}}
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                         </span>
-                            <span style="font-size: 12px;color: #ccc;">{{$item.Reply.CreatedAt | $.BuildIn.FormatTime}}</span>
+                                <span style="font-size: 12px;color: #ccc;">{{$item.Reply.CreatedAt | $.BuildIn.FormatTime}}</span>
 
-                            <span style="font-size: 12px;color: #ccc;text-align: right;">
+                                <span style="font-size: 12px;color: #ccc;text-align: right;">
                                 &nbsp;|&nbsp;&nbsp; <a href=""><span class="icon iconfont"
-                                                                                                            style="color: darkred;">&#xe780;</span></a>
+                                                                     style="color: darkred;">&#xe780;</span></a>
                                 &nbsp;|&nbsp;&nbsp; <a href=")"><span
-                                    class="icon iconfont" style="color: black;">&#xe63c;</span></a>
+                                        class="icon iconfont" style="color: black;">&#xe63c;</span></a>
                                 </span>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                {{end}}
+                    </li>
+                    {{end}}
 
-                {{if gt .Data.Total .Data.Size}}
-                <li class="list-group-item gf-list-item">
-                    <ul class="pagination">
-                        {{.BuildIn.Page .Data.Total .Data.Size }}
-                    </ul>
-                </li>
-                {{end}}
+                    {{if gt .Data.Total .Data.Size}}
+                    <li class="list-group-item gf-list-item">
+                        <ul class="pagination">
+                            {{.BuildIn.Page .Data.Total .Data.Size }}
+                        </ul>
+                    </li>
+                    {{end}}
                 </ul>
             </div>
         </div>
