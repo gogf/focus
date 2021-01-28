@@ -28,8 +28,9 @@ type ReplyServiceCreateReq struct {
 type ReplyServiceGetListReq struct {
 	Page       int    `json:"page"`        // 分页码
 	Size       int    `json:"size"`        // 分页数量
-	TargetType string `json:"target_type"` // 数据总数
+	TargetType string `json:"target_type"` // 数据类型
 	TargetId   int    `json:"target_id"`   // 数据ID
+	UserId     uint   `json:"user_id"`     // 用户ID
 }
 
 // Service查询列表结果
