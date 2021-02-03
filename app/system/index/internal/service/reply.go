@@ -43,7 +43,7 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 		_ = Content.AddReplyCount(ctx, r.TargetId, -1)
 		// 判断回复是否采纳
 		c, err := dao.Content.WherePri(r.TargetId).One()
-		if err == nil && c.AdoptedReplyId == id {
+		if err == nil && c != nil && c.AdoptedReplyId == id {
 			_ = Content.UnacceptedReply(ctx, r.TargetId)
 		}
 	}
@@ -81,5 +81,13 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 	if err != nil {
 		return nil, err
 	}
+
+	//err = dao.Content.Fields(dao.Content.Columns.Id,dao.Content.Columns.Title).
+	//	Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
+	//	ScanList(&getListRes.List, "Reply", "Reply", "id:TargetId")
+	//if err != nil {
+	//	return nil, err
+	//}
+
 	return getListRes, nil
 }

@@ -158,25 +158,35 @@
             });
         },
         delete: function (id) {
-            jQuery.ajax({
-                type: 'POST',
-                url: '/reply/do-delete',
-                data: {
-                    id: id,
-                },
-                success: function (r) {
-                    if (r.code === 0) {
-                        swal({text: "删除成功", type: "success", button: "确定"}).then(
-                        function(){
-                            location.reload(); // 刷新页面同步回复统计
-                        });
-                    } else {
-                        swal({text: r.message, icon: "warning", button: "确定",});
+            swal({
+                title:   "删除回复",
+                text:    "您确定删除回复信息吗？",
+                icon:    "warning",
+                buttons: ["取消", "确定"]
+            }).then((value) => {
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '/reply/do-delete',
+                    data: {
+                        id: id,
+                    },
+                    success: function (r) {
+                        if (r.code === 0) {
+                            swal({text: "删除成功", type: "success", button: "确定"}).then(
+                                function(){
+                                    location.reload(); // 刷新页面同步回复统计
+                                });
+                        } else {
+                            swal({text: r.message, icon: "warning", button: "确定",});
+                        }
+                    },
+                    error: function (html) {
                     }
-                },
-                error: function (html) {
-                }
+                });
+
             });
+
         },
         reply: function (id) {
             $("#reply-btn").attr({"data-reply-id":id});
