@@ -255,12 +255,15 @@ func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListR
 }
 
 // 消息列表
-
 func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceGetMessageListReq) (*define.UserServiceGetMessageListRes, error) {
 	userId := shared.Context.Get(ctx).User.Id
-
 	replyReq := &define.ReplyServiceGetListReq{}
 	gconv.Struct(r, replyReq)
+
+	// 管理员看所有的
+	if !s.IsAdmin(ctx) {
+		replyReq.UserId = userId
+	}
 
 	replyList, err := Reply.GetList(ctx, replyReq)
 	if err != nil {
@@ -286,7 +289,7 @@ func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceG
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
 	m = m.Fields(dao.Content.Columns.Type, "count(*) total")
-	if !s.IsAdminShow(ctx, userId) {
+	if userId > 0 {
 		m = m.Where(dao.Content.Columns.UserId, userId)
 	}
 	statsModel := m.Group(dao.Content.Columns.Type)
@@ -311,6 +314,18 @@ func (s *userService) IsAdminShow(ctx context.Context, userId uint) bool {
 		return false
 	}
 	if userId != context.User.Id {
+		return false
+	}
+	return context.User.IsAdmin
+}
+
+// 是否是访问管理员的数据
+func (s *userService) IsAdmin(ctx context.Context) bool {
+	context := shared.Context.Get(ctx)
+	if context == nil {
+		return false
+	}
+	if context.User == nil {
 		return false
 	}
 	return context.User.IsAdmin

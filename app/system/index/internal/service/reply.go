@@ -60,6 +60,10 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 	if r.TargetId > 0 {
 		m = m.Where(dao.Reply.Columns.TargetId, r.TargetId)
 	}
+	if r.UserId > 0 {
+		m = m.Where(dao.Reply.Columns.UserId, r.UserId)
+	}
+
 	listModel := m.Page(r.Page, r.Size).Order(dao.Content.Columns.Id, "DESC")
 	replyEntities, err := listModel.M.All()
 	if err != nil {
