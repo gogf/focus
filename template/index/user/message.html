@@ -38,7 +38,8 @@
                         <div class="gf-list-item-text">
                             <div class="float-left">
                                 <a href="/{{$item.Reply.TargetType}}/{{$item.Reply.TargetId}}"
-                                   style="color: #222;float: left" title="{{$item.Reply.Content}}">{{$item.Reply.Title}} 回复: {{$item.Reply.Content}}</a>
+                                   class="d-inline-block text-truncate float-left" style="max-width: 400px;" style="color: #222;" title="{{$item.Reply.Content}}">{{$item.Content.Title}} </a>
+                                <span  class="d-inline-block float-left">&nbsp;&nbsp;回复内容:&nbsp;&nbsp;</span>
                                 <span  class="d-inline-block text-truncate float-left" style="max-width: 400px;">{{$item.Reply.Content}}</span>
 
                             </div>

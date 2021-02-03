@@ -53,6 +53,7 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 // 获取回复列表
 func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetListReq) (*define.ReplyServiceGetListRes, error) {
 	m := dao.Reply.Fields(model.ReplyListItem{})
+
 	if r.TargetType != "" {
 		m = m.Where(dao.Reply.Columns.TargetType, r.TargetType)
 	}
@@ -82,12 +83,12 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		return nil, err
 	}
 
-	//err = dao.Content.Fields(dao.Content.Columns.Id,dao.Content.Columns.Title).
-	//	Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
-	//	ScanList(&getListRes.List, "Reply", "Reply", "id:TargetId")
-	//if err != nil {
-	//	return nil, err
-	//}
+	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title).
+		Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
+		ScanList(&getListRes.List, "Content", "Reply", "id:TargetId")
+	if err != nil {
+		return nil, err
+	}
 
 	return getListRes, nil
 }
