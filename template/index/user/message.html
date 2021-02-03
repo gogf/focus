@@ -16,15 +16,6 @@
                            href="javascript:alert('敬请期待');">个人私信</a>
                         <a class="btn btn-link {{if not $.Query.type}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
                            href="javascript:alert('敬请期待');">系统消息</a>
-
-                        <div class="float-right">
-                            <a class="btn btn-link {{if eq .Query.target_type `topic`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                               href="/user/message?type=1&target_type=topic">主题</a>
-                            <a class="btn btn-link {{if eq .Query.target_type `ask`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                               href="/user/message?type=1&target_type=ask">问答</a>
-                            <a class="btn btn-link {{if eq .Query.target_type `article`}}text-primary{{else}}text-secondary{{end}} top-node-btn btn-sm"
-                               href="/user/message?type=1&target_type=article">文章</a>
-                        </div>
                     </li>
 
 
@@ -37,8 +28,9 @@
 
                         <div class="gf-list-item-text">
                             <div class="float-left">
+                                <span class="badge badge-primary float-left">{{$item.Category.Name}}</span>
                                 <a href="/{{$item.Reply.TargetType}}/{{$item.Reply.TargetId}}"
-                                   class="d-inline-block text-truncate float-left" style="max-width: 400px;" style="color: #222;" title="{{$item.Reply.Content}}">{{$item.Content.Title}} </a>
+                                   class="d-inline-block text-truncate float-left" style="max-width: 400px;margin-left: 10px;" style="color: #222;" title="{{$item.Reply.Content}}">{{$item.Content.Title}} </a>
                                 <span  class="d-inline-block float-left">&nbsp;&nbsp;回复内容:&nbsp;&nbsp;</span>
                                 <span  class="d-inline-block text-truncate float-left" style="max-width: 400px;">{{$item.Reply.Content}}</span>
 

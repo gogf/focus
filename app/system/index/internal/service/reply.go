@@ -76,6 +76,8 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		Page: r.Page,
 		Size: r.Size,
 	}
+
+	// User
 	if err := replyEntities.ScanList(&getListRes.List, "Reply"); err != nil {
 		return nil, err
 	}
@@ -87,12 +89,19 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		return nil, err
 	}
 
-	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title).
+	// Content
+	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title, dao.Content.Columns.CategoryId).
 		Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
 		ScanList(&getListRes.List, "Content", "Reply", "id:TargetId")
 	if err != nil {
 		return nil, err
 	}
+
+	// Category
+	err = dao.Category.
+		Fields(model.ContentListCategoryItem{}).
+		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
+		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
 
 	return getListRes, nil
 }

@@ -102,11 +102,7 @@ func (a *userApi) Password(r *ghttp.Request) {
 // @router  /user/article [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Article(r *ghttp.Request) {
-	userId := shared.Context.Get(r.Context()).User.Id
-	if service.User.IsAdmin(r.Context()) {
-		userId = 0
-	}
-	a.getContentList(r, model.ContentTypeArticle, userId)
+	a.getContentList(r, model.ContentTypeArticle, shared.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的主题页面
@@ -115,11 +111,7 @@ func (a *userApi) Article(r *ghttp.Request) {
 // @router  /user/topic [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Topic(r *ghttp.Request) {
-	userId := shared.Context.Get(r.Context()).User.Id
-	if service.User.IsAdmin(r.Context()) {
-		userId = 0
-	}
-	a.getContentList(r, model.ContentTypeTopic, userId)
+	a.getContentList(r, model.ContentTypeTopic, shared.Context.Get(r.Context()).User.Id)
 }
 
 // @summary 我的问答页面
@@ -128,11 +120,7 @@ func (a *userApi) Topic(r *ghttp.Request) {
 // @router  /user/ask [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Ask(r *ghttp.Request) {
-	userId := shared.Context.Get(r.Context()).User.Id
-	if service.User.IsAdmin(r.Context()) {
-		userId = 0
-	}
-	a.getContentList(r, model.ContentTypeAsk, userId)
+	a.getContentList(r, model.ContentTypeAsk, shared.Context.Get(r.Context()).User.Id)
 }
 
 // 获取内容列表 参数contentType,用户信息

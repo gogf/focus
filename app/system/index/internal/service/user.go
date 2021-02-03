@@ -261,7 +261,7 @@ func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceG
 	gconv.Struct(r, replyReq)
 
 	// 管理员看所有的
-	if !s.IsAdmin(ctx) {
+	if !s.IsAdminShow(ctx, userId) {
 		replyReq.UserId = userId
 	}
 
@@ -289,7 +289,7 @@ func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceG
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
 	m = m.Fields(dao.Content.Columns.Type, "count(*) total")
-	if userId > 0 {
+	if userId > 0 && !s.IsAdminShow(ctx, userId) {
 		m = m.Where(dao.Content.Columns.UserId, userId)
 	}
 	statsModel := m.Group(dao.Content.Columns.Type)
@@ -301,6 +301,17 @@ func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string
 	for _, v := range statsAll {
 		statsMap[v["type"].String()] = v["total"].Int()
 	}
+
+	replyModel := dao.Reply.Fields("count(*) total")
+	if userId > 0 && !s.IsAdminShow(ctx, userId) {
+		replyModel = replyModel.Where(dao.Reply.Columns.UserId, userId)
+	}
+	record, err := replyModel.M.One()
+	if err != nil {
+		return nil, err
+	}
+	statsMap["message"] = record["total"].Int()
+
 	return statsMap, nil
 }
 
@@ -314,18 +325,6 @@ func (s *userService) IsAdminShow(ctx context.Context, userId uint) bool {
 		return false
 	}
 	if userId != context.User.Id {
-		return false
-	}
-	return context.User.IsAdmin
-}
-
-// 是否是访问管理员的数据
-func (s *userService) IsAdmin(ctx context.Context) bool {
-	context := shared.Context.Get(ctx)
-	if context == nil {
-		return false
-	}
-	if context.User == nil {
 		return false
 	}
 	return context.User.IsAdmin

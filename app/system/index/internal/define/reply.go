@@ -43,7 +43,8 @@ type ReplyServiceGetListRes struct {
 
 // Service查询列表结果项
 type ReplyServiceGetListResItem struct {
-	Reply   *model.ReplyListItem     `json:"reply"`
-	User    *model.ReplyListUserItem `json:"user"`
-	Content *model.ContentListItem   `json:"content"`
+	Reply    *model.ReplyListItem           `json:"reply"`
+	User     *model.ReplyListUserItem       `json:"user"`
+	Content  *model.ContentListItem         `json:"content"`
+	Category *model.ContentListCategoryItem `json:"category"`
 }
