@@ -89,14 +89,6 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		return nil, err
 	}
 
-	// Test
-	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title, dao.Content.Columns.CategoryId).
-		Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
-		ScanList(&getListRes.List, "Reply", "Reply", "id:TargetId")
-	if err != nil {
-		return nil, err
-	}
-
 	// Content
 	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title, dao.Content.Columns.CategoryId).
 		Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
