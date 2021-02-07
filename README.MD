@@ -178,9 +178,14 @@ bin
 八、数据库表设计
 ========
 
-![image](https://gitee.com/johng/focus/raw/develop_v0.1.0_beta/document/images/databases.png)
+![image](https://gitee.com/johng/focus/raw/master/document/images/databases.png)
 
 九、功能模块进度
 ========
 
 ![](https://itician.org/download/attachments/3672270/focus-v0.1.0-beta.png)
+
+十、Focus文档
+========
+
+更多资料请移步：[Focus聚焦社区文档](https://goframe.org/pages/viewpage.action?pageId=3672270)
