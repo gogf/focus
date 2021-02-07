@@ -143,47 +143,47 @@ bin
 七、项目截图
 ======
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-25-53.png)
+![](document/images/demo1.png)
 
 图1. 社区首页
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_14-47-8.png)
+![](document/images/demo2.png)
 
 图2. 登录页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_14-48-31.png)
+![](document/images/demo3.png)
 
 图3. 注册页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-41-52.png)
+![](document/images/demo4.png)
 
 图4. 发布/编辑页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-44-39.png)
+![](document/images/demo5.png)
 
 图5. 内容详情
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-42-20.png)
+![](document/images/demo6.png)
 
 图6. 搜索页面
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-16.png)
+![](document/images/demo7.png)
 
 图7. 个人主页
 
-![](https://itician.org/download/attachments/3672270/image2021-1-7_19-45-55.png)
+![](document/images/demo8.png)
 
 图8. 编辑资料
 
 八、数据库表设计
 ========
 
-![image](https://gitee.com/johng/focus/raw/master/document/images/databases.png)
+![](document/images/databases.png)
 
 九、功能模块进度
 ========
 
-![](https://itician.org/download/attachments/3672270/focus-v0.1.0-beta.png)
+![](document/images/plan.png)
 
 十、Focus文档
 ========
