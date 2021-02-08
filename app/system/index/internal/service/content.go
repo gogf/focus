@@ -230,10 +230,31 @@ func (s *contentService) Update(ctx context.Context, r *define.ContentServiceUpd
 
 // 删除
 func (s *contentService) Delete(ctx context.Context, id uint) error {
+	user := shared.Context.Get(ctx).User
+	// 管理员直接删除文章和评论
+	if user.IsAdmin {
+		_, err := dao.Content.Where(g.Map{
+			dao.Content.Columns.Id: id,
+		}).Delete()
+		if err == nil {
+			_, err = dao.Reply.Where(g.Map{
+				dao.Reply.Columns.TargetId: id,
+			}).Delete()
+		}
+		return err
+	}
+
 	_, err := dao.Content.Where(g.Map{
 		dao.Content.Columns.Id:     id,
 		dao.Content.Columns.UserId: shared.Context.Get(ctx).User.Id,
 	}).Delete()
+	// 删除评论
+	if err == nil {
+		_, err = dao.Reply.Where(g.Map{
+			dao.Reply.Columns.TargetId: id,
+			dao.Reply.Columns.UserId:   shared.Context.Get(ctx).User.Id,
+		}).Delete()
+	}
 	return err
 }
 

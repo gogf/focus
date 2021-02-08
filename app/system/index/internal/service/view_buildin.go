@@ -3,9 +3,12 @@ package service
 import (
 	"fmt"
 	"focus/app/model"
+	"focus/app/shared"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gconv"
+	"github.com/gogf/gf/util/gmode"
 )
 
 // 视图自定义方法管理对象
@@ -185,4 +188,15 @@ func (s *viewBuildIn) FormatTime(gt *gtime.Time) string {
 	}
 
 	return rs
+}
+
+// 随机数 开发环境时间戳，线上为前端版本号
+func (s *viewBuildIn) Version() string {
+	var rand string
+	if gmode.IsDevelop() {
+		rand = gconv.String(gtime.TimestampMilli())
+	} else {
+		rand = shared.VERSION
+	}
+	return rand
 }
