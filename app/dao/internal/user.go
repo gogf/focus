@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type UserDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns userColumns
 }
@@ -40,6 +41,7 @@ var (
 	// User is globally public accessible object for table gf_user operations.
 	User = UserDao{
 		M:     g.DB("default").Model("gf_user").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_user",
 		Columns: userColumns{
 			Id:        "id",

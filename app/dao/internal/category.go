@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type CategoryDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns categoryColumns
 }
@@ -43,6 +44,7 @@ var (
 	// Category is globally public accessible object for table gf_category operations.
 	Category = CategoryDao{
 		M:     g.DB("default").Model("gf_category").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_category",
 		Columns: categoryColumns{
 			Id:          "id",

@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type SettingDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns settingColumns
 }
@@ -35,6 +36,7 @@ var (
 	// Setting is globally public accessible object for table gf_setting operations.
 	Setting = SettingDao{
 		M:     g.DB("default").Model("gf_setting").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_setting",
 		Columns: settingColumns{
 			K:         "k",

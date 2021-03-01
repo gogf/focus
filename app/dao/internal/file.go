@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type FileDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns fileColumns
 }
@@ -37,6 +38,7 @@ var (
 	// File is globally public accessible object for table gf_file operations.
 	File = FileDao{
 		M:     g.DB("default").Model("gf_file").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_file",
 		Columns: fileColumns{
 			Id:        "id",

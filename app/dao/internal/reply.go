@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type ReplyDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns replyColumns
 }
@@ -42,6 +43,7 @@ var (
 	// Reply is globally public accessible object for table gf_reply operations.
 	Reply = ReplyDao{
 		M:     g.DB("default").Model("gf_reply").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_reply",
 		Columns: replyColumns{
 			Id:         "id",

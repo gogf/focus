@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type InteractDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns interactColumns
 }
@@ -39,6 +40,7 @@ var (
 	// Interact is globally public accessible object for table gf_interact operations.
 	Interact = InteractDao{
 		M:     g.DB("default").Model("gf_interact").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_interact",
 		Columns: interactColumns{
 			Id:         "id",

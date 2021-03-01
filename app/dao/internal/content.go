@@ -19,6 +19,7 @@ import (
 // and custom defined data operations functions management.
 type ContentDao struct {
 	gmvc.M
+	DB      gdb.DB
 	Table   string
 	Columns contentColumns
 }
@@ -51,6 +52,7 @@ var (
 	// Content is globally public accessible object for table gf_content operations.
 	Content = ContentDao{
 		M:     g.DB("default").Model("gf_content").Safe(),
+		DB:    g.DB("default"),
 		Table: "gf_content",
 		Columns: contentColumns{
 			Id:             "id",
