@@ -33,7 +33,7 @@ type settingColumns struct {
 
 var (
 	// Setting is globally public accessible object for table gf_setting operations.
-	Setting = &SettingDao{
+	Setting = SettingDao{
 		M:     g.DB("default").Model("gf_setting").Safe(),
 		Table: "gf_setting",
 		Columns: settingColumns{

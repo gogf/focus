@@ -41,7 +41,7 @@ type categoryColumns struct {
 
 var (
 	// Category is globally public accessible object for table gf_category operations.
-	Category = &CategoryDao{
+	Category = CategoryDao{
 		M:     g.DB("default").Model("gf_category").Safe(),
 		Table: "gf_category",
 		Columns: categoryColumns{

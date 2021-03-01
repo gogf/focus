@@ -8,7 +8,7 @@ import (
 	"focus/app/dao/internal"
 )
 
-var User = &userDao{
+var User = userDao{
 	internal.User,
 }
 
@@ -16,5 +16,5 @@ var User = &userDao{
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type userDao struct {
-	*internal.UserDao
+	internal.UserDao
 }

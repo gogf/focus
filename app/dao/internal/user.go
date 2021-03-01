@@ -38,7 +38,7 @@ type userColumns struct {
 
 var (
 	// User is globally public accessible object for table gf_user operations.
-	User = &UserDao{
+	User = UserDao{
 		M:     g.DB("default").Model("gf_user").Safe(),
 		Table: "gf_user",
 		Columns: userColumns{

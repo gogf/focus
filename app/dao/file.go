@@ -12,12 +12,12 @@ import (
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type fileDao struct {
-	*internal.FileDao
+	internal.FileDao
 }
 
 var (
 	// File is globally public accessible object for table {TplTableName} operations.
-	File = &fileDao{
+	File = fileDao{
 		internal.File,
 	}
 )

@@ -35,7 +35,7 @@ type fileColumns struct {
 
 var (
 	// File is globally public accessible object for table gf_file operations.
-	File = &FileDao{
+	File = FileDao{
 		M:     g.DB("default").Model("gf_file").Safe(),
 		Table: "gf_file",
 		Columns: fileColumns{

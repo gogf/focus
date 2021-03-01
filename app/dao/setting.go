@@ -8,7 +8,7 @@ import (
 	"focus/app/dao/internal"
 )
 
-var Setting = &settingDao{
+var Setting = settingDao{
 	internal.Setting,
 }
 
@@ -16,7 +16,7 @@ var Setting = &settingDao{
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type settingDao struct {
-	*internal.SettingDao
+	internal.SettingDao
 }
 
 // Fill with you ideas below.

@@ -12,12 +12,12 @@ import (
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type interactDao struct {
-	*internal.InteractDao
+	internal.InteractDao
 }
 
 var (
 	// Interact is globally public accessible object for table {TplTableName} operations.
-	Interact = &interactDao{
+	Interact = interactDao{
 		internal.Interact,
 	}
 )

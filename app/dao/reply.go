@@ -8,7 +8,7 @@ import (
 	"focus/app/dao/internal"
 )
 
-var Reply = &replyDao{
+var Reply = replyDao{
 	internal.Reply,
 }
 
@@ -16,7 +16,7 @@ var Reply = &replyDao{
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
 type replyDao struct {
-	*internal.ReplyDao
+	internal.ReplyDao
 }
 
 // Fill with you ideas below.

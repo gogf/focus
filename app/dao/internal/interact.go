@@ -37,7 +37,7 @@ type interactColumns struct {
 
 var (
 	// Interact is globally public accessible object for table gf_interact operations.
-	Interact = &InteractDao{
+	Interact = InteractDao{
 		M:     g.DB("default").Model("gf_interact").Safe(),
 		Table: "gf_interact",
 		Columns: interactColumns{

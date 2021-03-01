@@ -40,7 +40,7 @@ type replyColumns struct {
 
 var (
 	// Reply is globally public accessible object for table gf_reply operations.
-	Reply = &ReplyDao{
+	Reply = ReplyDao{
 		M:     g.DB("default").Model("gf_reply").Safe(),
 		Table: "gf_reply",
 		Columns: replyColumns{

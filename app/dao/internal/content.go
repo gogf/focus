@@ -49,7 +49,7 @@ type contentColumns struct {
 
 var (
 	// Content is globally public accessible object for table gf_content operations.
-	Content = &ContentDao{
+	Content = ContentDao{
 		M:     g.DB("default").Model("gf_content").Safe(),
 		Table: "gf_content",
 		Columns: contentColumns{
