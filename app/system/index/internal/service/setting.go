@@ -7,7 +7,7 @@ import (
 )
 
 // 持久化Key-Value管理服务
-var Setting = new(settingService)
+var Setting = settingService{}
 
 type settingService struct{}
 

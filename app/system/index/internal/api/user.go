@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var User = new(userApi)
+var User = userApi{}
 
 type userApi struct{}
 
@@ -266,6 +266,6 @@ func (a *userApi) Logout(r *ghttp.Request) {
 			Error: err.Error(),
 		})
 	} else {
-		r.Response.RedirectTo(service.Middleware.LoginUrl)
+		r.Response.RedirectTo(service.Middleware.GetLoginUrl())
 	}
 }

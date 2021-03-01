@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var Topic = new(topicApi)
+var Topic = topicApi{}
 
 type topicApi struct{}
 

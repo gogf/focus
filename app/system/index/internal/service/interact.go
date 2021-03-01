@@ -12,7 +12,7 @@ import (
 )
 
 // 交互管理服务
-var Interact = &interactService{}
+var Interact = interactService{}
 
 type interactService struct{}
 

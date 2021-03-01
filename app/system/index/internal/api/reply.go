@@ -11,7 +11,7 @@ import (
 )
 
 // 回复控制器
-var Reply = new(replyApi)
+var Reply = replyApi{}
 
 type replyApi struct{}
 

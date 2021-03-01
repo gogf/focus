@@ -12,7 +12,7 @@ import (
 )
 
 // 栏目管理服务
-var Category = new(categoryService)
+var Category = categoryService{}
 
 type categoryService struct{}
 

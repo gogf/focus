@@ -8,7 +8,7 @@ import (
 )
 
 // 赞踩控制器
-var Interact = new(interactApi)
+var Interact = interactApi{}
 
 type interactApi struct{}
 

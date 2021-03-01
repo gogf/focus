@@ -13,7 +13,7 @@ import (
 )
 
 // 内容管理服务
-var Content = &contentService{}
+var Content = contentService{}
 
 type contentService struct{}
 

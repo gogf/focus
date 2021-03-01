@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var Index = new(indexApi)
+var Index = indexApi{}
 
 type indexApi struct{}
 

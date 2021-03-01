@@ -14,7 +14,7 @@ import (
 )
 
 // 文件管理服务
-var File = new(fileService)
+var File = fileService{}
 
 type fileService struct{}
 

@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var Ask = new(askApi)
+var Ask = askApi{}
 
 type askApi struct{}
 

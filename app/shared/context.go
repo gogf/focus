@@ -8,7 +8,7 @@ import (
 )
 
 // 上下文管理服务
-var Context = new(contextShared)
+var Context = contextShared{}
 
 type contextShared struct{}
 

@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var Search = new(searchApi)
+var Search = searchApi{}
 
 type searchApi struct{}
 

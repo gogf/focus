@@ -14,7 +14,7 @@ import (
 )
 
 // 视图管理服务
-var View = new(viewService)
+var View = viewService{}
 
 type viewService struct{}
 

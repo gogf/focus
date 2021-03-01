@@ -12,7 +12,7 @@ import (
 )
 
 // 评论/回复管理服务
-var Reply = new(replyService)
+var Reply = replyService{}
 
 type replyService struct{}
 

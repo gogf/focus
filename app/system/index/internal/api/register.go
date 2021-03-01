@@ -10,7 +10,7 @@ import (
 )
 
 // 注册控制器
-var Register = new(registerApi)
+var Register = registerApi{}
 
 type registerApi struct{}
 

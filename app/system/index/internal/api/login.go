@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-var Login = new(loginApi)
+var Login = loginApi{}
 
 type loginApi struct{}
 

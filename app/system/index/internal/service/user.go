@@ -16,20 +16,20 @@ import (
 )
 
 // 用户管理服务
-var User = &userService{
-	AvatarUploadPath:      g.Cfg().GetString(`upload.path`) + `/avatar`,
-	AvatarUploadUrlPrefix: `/upload/avatar`,
+var User = userService{
+	avatarUploadPath:      g.Cfg().GetString(`upload.path`) + `/avatar`,
+	avatarUploadUrlPrefix: `/upload/avatar`,
 }
 
 type userService struct {
-	AvatarUploadPath      string // 头像上传路径
-	AvatarUploadUrlPrefix string // 头像上传对应的URL前缀
+	avatarUploadPath      string // 头像上传路径
+	avatarUploadUrlPrefix string // 头像上传对应的URL前缀
 }
 
 func init() {
 	// 启动时创建头像存储目录
-	if !gfile.Exists(User.AvatarUploadPath) {
-		gfile.Mkdir(User.AvatarUploadPath)
+	if !gfile.Exists(User.avatarUploadPath) {
+		gfile.Mkdir(User.avatarUploadPath)
 	}
 }
 
@@ -115,11 +115,11 @@ func (s *userService) Register(r *define.UserServiceRegisterReq) error {
 	}
 	user.Password = s.EncryptPassword(user.Passport, user.Password)
 	// 自动生成头像
-	avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.AvatarUploadPath, user.Passport)
+	avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadPath, user.Passport)
 	if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
 		return gerror.Wrapf(err, `自动创建头像失败`)
 	}
-	user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.AvatarUploadUrlPrefix, user.Passport)
+	user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadUrlPrefix, user.Passport)
 	_, err := dao.User.Data(user).OmitEmpty().Save()
 	return err
 }

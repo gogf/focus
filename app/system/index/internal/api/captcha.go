@@ -7,7 +7,7 @@ import (
 )
 
 // 图形验证码
-var Captcha = new(captchaApi)
+var Captcha = captchaApi{}
 
 type captchaApi struct{}
 

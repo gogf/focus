@@ -10,7 +10,7 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-var Content = new(contentApi)
+var Content = contentApi{}
 
 type contentApi struct{}
 

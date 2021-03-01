@@ -7,7 +7,7 @@ import (
 )
 
 // 验证码管理服务
-var Captcha = new(captchaService)
+var Captcha = captchaService{}
 
 type captchaService struct{}
 

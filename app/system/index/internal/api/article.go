@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var Article = new(articleApi)
+var Article = articleApi{}
 
 type articleApi struct{}
 

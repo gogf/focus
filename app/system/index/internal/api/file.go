@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-var File = new(fileApi)
+var File = fileApi{}
 
 type fileApi struct{}
 

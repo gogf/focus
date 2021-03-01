@@ -9,12 +9,17 @@ import (
 )
 
 // 中间件管理服务
-var Middleware = &middlewareService{
-	LoginUrl: "/login",
+var Middleware = middlewareService{
+	loginUrl: "/login",
 }
 
 type middlewareService struct {
-	LoginUrl string // 登录路由地址
+	loginUrl string // 登录路由地址
+}
+
+// 获取用户登录URL
+func (s *middlewareService) GetLoginUrl() string {
+	return s.loginUrl
 }
 
 // 自定义上下文对象
@@ -58,9 +63,9 @@ func (s *middlewareService) Auth(r *ghttp.Request) {
 		}
 		// 根据当前请求方式执行不同的返回数据结构
 		if r.IsAjaxRequest() {
-			response.JsonRedirectExit(r, 1, "", s.LoginUrl)
+			response.JsonRedirectExit(r, 1, "", s.loginUrl)
 		} else {
-			r.Response.RedirectTo(s.LoginUrl)
+			r.Response.RedirectTo(s.loginUrl)
 		}
 	}
 	r.Middleware.Next()

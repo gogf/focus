@@ -6,7 +6,7 @@ import (
 )
 
 // 菜单管理服务
-var Menu = new(menuService)
+var Menu = menuService{}
 
 type menuService struct{}
 
