@@ -18,7 +18,7 @@ type UserApiPasswordReq struct {
 	NewPassword string `v:"required#请输入新密码"`  // 新密码
 }
 
-// api修改用户
+// API修改用户
 type UserApiUpdateProfileReq struct {
 	Id       uint   // 用户ID
 	Nickname string `v:"required#请输入昵称信息"` // 昵称
