@@ -26,8 +26,20 @@ type UserApiUpdateProfileReq struct {
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
 }
 
+// API禁用用户
+type UserApiDisableReq struct {
+	Id *uint `v:"required#请选择需要禁用的用户"` // 删除时ID不能为空
+}
+
+// Api用户登录
+type UserApiLoginReq struct {
+	Passport string `v:"required#请输入账号"`  // 账号
+	Password string `v:"required#请输入密码"`  // 密码(明文)
+	Captcha  string `v:"required#请输入验证码"` // 验证码
+}
+
 // Service用户信息
-type UserProfileRes struct {
+type UserServiceProfileRes struct {
 	Id       uint           // 用户ID
 	Nickname string         `v:"required#请输入昵称信息"` // 昵称
 	Avatar   string         // 头像地址
@@ -44,18 +56,6 @@ type UserServiceUpdateAvatarReq struct {
 type UserServiceUpdateProfileReq struct {
 	Nickname string // 昵称
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
-}
-
-// API禁用用户
-type UserApiDisableReq struct {
-	Id *uint `v:"required#请选择需要禁用的用户"` // 删除时ID不能为空
-}
-
-// Api用户登录
-type UserApiLoginReq struct {
-	Passport string `v:"required#请输入账号"`  // 账号
-	Password string `v:"required#请输入密码"`  // 密码(明文)
-	Captcha  string `v:"required#请输入验证码"` // 验证码
 }
 
 // Service用户登录
@@ -80,7 +80,7 @@ type UserServiceGetListReq struct {
 // Service查询用户详情结果
 type UserServiceGetListRes struct {
 	Content *ContentServiceGetListRes `json:"content"` // 查询用户
-	User    *UserProfileRes           `json:"user"`    // 查询用户
+	User    *UserServiceProfileRes    `json:"user"`    // 查询用户
 	Stats   map[string]int            // 发布内容数量
 }
 

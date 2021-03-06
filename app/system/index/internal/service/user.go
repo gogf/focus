@@ -142,10 +142,10 @@ func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPassw
 }
 
 // 获取个人信息
-func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.UserProfileRes, error) {
-	getProfile := new(define.UserProfileRes)
+func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.UserServiceProfileRes, error) {
+	getProfile := new(define.UserServiceProfileRes)
 
-	userRecord, err := dao.User.Fields(define.UserProfileRes{}).WherePri(userId).M.One()
+	userRecord, err := dao.User.Fields(define.UserServiceProfileRes{}).WherePri(userId).M.One()
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,7 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.
 }
 
 // 修改个人资料
-func (s *userService) GetProfile(ctx context.Context) (*define.UserProfileRes, error) {
+func (s *userService) GetProfile(ctx context.Context) (*define.UserServiceProfileRes, error) {
 	return s.GetProfileById(ctx, shared.Context.Get(ctx).User.Id)
 }
 
