@@ -29,8 +29,20 @@ type userService struct {
 func init() {
 	// 启动时创建头像存储目录
 	if !gfile.Exists(User.avatarUploadPath) {
-		gfile.Mkdir(User.avatarUploadPath)
+		if err := gfile.Mkdir(User.avatarUploadPath); err != nil {
+			g.Log().Fatal(err)
+		}
 	}
+}
+
+// 获得头像上传路径
+func (s *userService) GetAvatarUploadPath() string {
+	return s.avatarUploadPath
+}
+
+// 获得头像上传对应的URL前缀
+func (s *userService) GetAvatarUploadUrlPrefix() string {
+	return s.avatarUploadUrlPrefix
 }
 
 // 执行登录
