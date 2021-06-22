@@ -54,9 +54,8 @@
         pack     = "public,template"
         mod      = ""
         cgo      = 0
+
     # dao生成
     [[gfcli.gen.dao]]
         link         = "mysql:root:123456@tcp(127.0.0.1:3306)/focus"
-        path         = "./app"
-        tables       = "gf_category, gf_content,gf_file,gf_interact,gf_reply,gf_setting,gf_user"
         removePrefix = "gf_"
