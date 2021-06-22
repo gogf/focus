@@ -181,7 +181,7 @@ func (s *contentService) GetDetail(ctx context.Context, id uint) (*define.Conten
 	if result.Content == nil {
 		return nil, nil
 	}
-	err := dao.User.Ctx(ctx).WherePri(result.Content.UserId).Scan(result.User)
+	err := dao.User.Ctx(ctx).WherePri(result.Content.UserId).Scan(&result.User)
 	if err != nil {
 		return nil, err
 	}

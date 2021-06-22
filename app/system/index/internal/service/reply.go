@@ -67,7 +67,7 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		m = m.Where(dao.Reply.C.UserId, r.UserId)
 	}
 
-	err := m.Page(r.Page, r.Size).OrderDesc(dao.Content.C.Id).Scan(&result.List)
+	err := m.Page(r.Page, r.Size).OrderDesc(dao.Content.C.Id).ScanList(&result.List, "Reply")
 	if err != nil {
 		return nil, err
 	}
