@@ -5,12 +5,8 @@
 package model
 
 import (
-	"focus/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
 )
-
-// Content is the golang structure for table gf_content.
-type Content internal.Content
 
 const (
 	ContentListDefaultSize = 10

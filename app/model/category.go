@@ -4,13 +4,6 @@
 
 package model
 
-import (
-	"focus/app/model/internal"
-)
-
-// Category is the golang structure for table gf_category.
-type Category internal.Category
-
 // 栏目树形列表
 type CategoryTreeItem struct {
 	Id       uint                `json:"id"`              // 分类ID，自增主键

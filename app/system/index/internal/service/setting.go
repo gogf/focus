@@ -28,6 +28,6 @@ func (s *settingService) Get(key string) (string, error) {
 
 // 查询KV，返回泛型，便于转换。
 func (s *settingService) GetVar(key string) (*g.Var, error) {
-	v, err := dao.Setting.Fields(dao.Setting.Columns.V).Where(dao.Setting.Columns.K, key).Value()
+	v, err := dao.Setting.Fields(dao.Setting.C.V).Where(dao.Setting.C.K, key).Value()
 	return v, err
 }

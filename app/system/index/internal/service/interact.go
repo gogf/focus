@@ -31,7 +31,7 @@ func (s *interactService) Zan(ctx context.Context, targetType string, targetId u
 		TargetId:   targetId,
 		TargetType: targetType,
 		Type:       model.InteractTypeZan,
-	}).FieldsEx(dao.Interact.Columns.Id).InsertIgnore()
+	}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
 	if err != nil {
 		return err
 	}
@@ -49,10 +49,10 @@ func (s *interactService) CancelZan(ctx context.Context, targetType string, targ
 		return nil
 	}
 	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.Columns.UserId, shared.Context.Get(ctx).User.Id,
-		dao.Interact.Columns.TargetId, targetId,
-		dao.Interact.Columns.TargetType, targetType,
-		dao.Interact.Columns.Type, model.InteractTypeZan,
+		dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
+		dao.Interact.C.TargetId, targetId,
+		dao.Interact.C.TargetType, targetType,
+		dao.Interact.C.Type, model.InteractTypeZan,
 	}).Delete()
 	if err != nil {
 		return err
@@ -88,7 +88,7 @@ func (s *interactService) Cai(ctx context.Context, targetType string, targetId u
 		TargetId:   targetId,
 		TargetType: targetType,
 		Type:       model.InteractTypeCai,
-	}).FieldsEx(dao.Interact.Columns.Id).InsertIgnore()
+	}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
 	if err != nil {
 		return err
 	}
@@ -105,10 +105,10 @@ func (s *interactService) CancelCai(ctx context.Context, targetType string, targ
 		return nil
 	}
 	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.Columns.UserId, shared.Context.Get(ctx).User.Id,
-		dao.Interact.Columns.TargetId, targetId,
-		dao.Interact.Columns.TargetType, targetType,
-		dao.Interact.Columns.Type, model.InteractTypeCai,
+		dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
+		dao.Interact.C.TargetId, targetId,
+		dao.Interact.C.TargetType, targetType,
+		dao.Interact.C.Type, model.InteractTypeCai,
 	}).Delete()
 	if err != nil {
 		return err
@@ -142,14 +142,13 @@ func (s *interactService) getMyList(ctx context.Context) ([]*model.Interact, err
 	if v, ok := customCtx.Data[contextMapKeyForMyInteractList]; ok {
 		return v.([]*model.Interact), nil
 	}
-	all, err := dao.Interact.Where(g.Slice{
-		dao.Interact.Columns.UserId, customCtx.User.Id,
-	}).All()
+	var list []*model.Interact
+	err := dao.Interact.Where(dao.Interact.C.UserId, customCtx.User.Id).Scan(&list)
 	if err != nil {
 		return nil, err
 	}
-	customCtx.Data[contextMapKeyForMyInteractList] = all
-	return all, err
+	customCtx.Data[contextMapKeyForMyInteractList] = list
+	return list, err
 }
 
 func (s *interactService) updateCount(ctx context.Context, interactType int, targetType string, targetId uint, count int) error {
@@ -165,16 +164,16 @@ func (s *interactService) updateCount(ctx context.Context, interactType int, tar
 		switch interactType {
 		case model.InteractTypeZan:
 			_, err = dao.Content.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.Columns.ZanCount, dao.Content.Columns.ZanCount, count)).
-				Where(dao.Content.Columns.Id, targetId).Where(dao.Content.Columns.ZanCount + ">=0").Update()
+				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.C.ZanCount, dao.Content.C.ZanCount, count)).
+				Where(dao.Content.C.Id, targetId).Where(dao.Content.C.ZanCount + ">=0").Update()
 			if err != nil {
 				return err
 			}
 
 		case model.InteractTypeCai:
 			_, err = dao.Content.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.Columns.CaiCount, dao.Content.Columns.CaiCount, count)).
-				Where(dao.Content.Columns.Id, targetId).Where(dao.Content.Columns.CaiCount + ">=0").Update()
+				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.C.CaiCount, dao.Content.C.CaiCount, count)).
+				Where(dao.Content.C.Id, targetId).Where(dao.Content.C.CaiCount + ">=0").Update()
 			if err != nil {
 				return err
 			}
@@ -184,16 +183,16 @@ func (s *interactService) updateCount(ctx context.Context, interactType int, tar
 		switch interactType {
 		case model.InteractTypeZan:
 			_, err = dao.Reply.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.Columns.ZanCount, dao.Reply.Columns.ZanCount, count)).
-				Where(dao.Reply.Columns.Id, targetId).Where(dao.Reply.Columns.ZanCount + ">=0").Update()
+				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.C.ZanCount, dao.Reply.C.ZanCount, count)).
+				Where(dao.Reply.C.Id, targetId).Where(dao.Reply.C.ZanCount + ">=0").Update()
 			if err != nil {
 				return err
 			}
 
 		case model.InteractTypeCai:
 			_, err = dao.Reply.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.Columns.CaiCount, dao.Reply.Columns.CaiCount, count)).
-				Where(dao.Reply.Columns.Id, targetId).Where(dao.Reply.Columns.CaiCount + ">=0").Update()
+				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.C.CaiCount, dao.Reply.C.CaiCount, count)).
+				Where(dao.Reply.C.Id, targetId).Where(dao.Reply.C.CaiCount + ">=0").Update()
 			if err != nil {
 				return err
 			}

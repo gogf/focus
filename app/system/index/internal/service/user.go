@@ -82,16 +82,17 @@ func (s *userService) EncryptPassword(passport, password string) string {
 
 // 根据账号和密码查询用户信息，一般用于账号密码登录。
 // 注意password参数传入的是按照相同加密算法加密过后的密码字符串。
-func (s *userService) GetUserByPassportAndPassword(passport, password string) (*model.User, error) {
-	return dao.User.Where(g.Map{
-		dao.User.Columns.Passport: passport,
-		dao.User.Columns.Password: password,
-	}).One()
+func (s *userService) GetUserByPassportAndPassword(passport, password string) (user *model.User, err error) {
+	err = dao.User.Where(g.Map{
+		dao.User.C.Passport: passport,
+		dao.User.C.Password: password,
+	}).Scan(&user)
+	return
 }
 
 // 检测给定的账号是否唯一
 func (s *userService) CheckPassportUnique(passport string) error {
-	n, err := dao.User.Where(dao.User.Columns.Passport, passport).Count()
+	n, err := dao.User.Where(dao.User.C.Passport, passport).Count()
 	if err != nil {
 		return err
 	}
@@ -103,7 +104,7 @@ func (s *userService) CheckPassportUnique(passport string) error {
 
 // 检测给定的昵称是否唯一
 func (s *userService) CheckNicknameUnique(nickname string) error {
-	n, err := dao.User.Where(dao.User.Columns.Nickname, nickname).Count()
+	n, err := dao.User.Where(dao.User.C.Nickname, nickname).Count()
 	if err != nil {
 		return err
 	}
@@ -139,7 +140,7 @@ func (s *userService) Register(r *define.UserServiceRegisterReq) error {
 // 修改个人密码
 func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPasswordReq) error {
 	oldPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.OldPassword)
-	n, err := dao.User.Where(dao.User.Columns.Password, oldPassword).Where(dao.User.Columns.Id, shared.Context.Get(ctx).User.Id).Count()
+	n, err := dao.User.Where(dao.User.C.Password, oldPassword).Where(dao.User.C.Id, shared.Context.Get(ctx).User.Id).Count()
 	if err != nil {
 		return err
 	}
@@ -148,30 +149,22 @@ func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPassw
 	}
 	newPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.NewPassword)
 	_, err = dao.User.Data(g.Map{
-		dao.User.Columns.Password: newPassword,
-	}).Where(dao.User.Columns.Id, shared.Context.Get(ctx).User.Id).Update()
+		dao.User.C.Password: newPassword,
+	}).Where(dao.User.C.Id, shared.Context.Get(ctx).User.Id).Update()
 	return err
 }
 
 // 获取个人信息
-func (s *userService) GetProfileById(ctx context.Context, userId uint) (*define.UserServiceProfileRes, error) {
-	getProfile := new(define.UserServiceProfileRes)
-
-	userRecord, err := dao.User.Fields(define.UserServiceProfileRes{}).WherePri(userId).M.One()
+func (s *userService) GetProfileById(ctx context.Context, userId uint) (result *define.UserServiceProfileRes, err error) {
+	result = &define.UserServiceProfileRes{}
+	if err = dao.User.WherePri(userId).Scan(result); err != nil {
+		return nil, err
+	}
+	result.Stats, err = s.GetUserStats(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
-
-	if err := userRecord.Struct(getProfile); err != nil {
-		return nil, err
-	}
-
-	getProfile.Stats, err = s.GetUserStats(ctx, userId)
-	if err != nil {
-		return nil, err
-	}
-
-	return getProfile, nil
+	return
 }
 
 // 修改个人资料
@@ -189,7 +182,7 @@ func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateP
 		return err
 	}
 
-	_, err = dao.User.Data(userServiceUpdateAvatarReq).Where(dao.User.Columns.Id, userId).Update()
+	_, err = dao.User.Data(userServiceUpdateAvatarReq).Where(dao.User.C.Id, userId).Update()
 	// 更新登录session Avatar
 	if err == nil && user.Avatar != r.Avatar {
 		sessionUser := Session.GetUser(ctx)
@@ -204,7 +197,7 @@ func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateP
 func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
 	user := shared.Context.Get(ctx).User
 	userId := user.Id
-	n, err := dao.User.Where(dao.User.Columns.Nickname, r.Nickname).Where("id <> ?", userId).Count()
+	n, err := dao.User.Where(dao.User.C.Nickname, r.Nickname).Where("id <> ?", userId).Count()
 	if err != nil {
 		return err
 	}
@@ -218,7 +211,7 @@ func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdate
 		return err
 	}
 
-	_, err = dao.User.Data(userServiceUpdateProfileReq).Where(dao.User.Columns.Id, userId).Update()
+	_, err = dao.User.Data(userServiceUpdateProfileReq).Where(dao.User.C.Id, userId).Update()
 	// 更新登录session Nickname
 	if err == nil && user.Nickname != r.Nickname {
 		sessionUser := Session.GetUser(ctx)
@@ -232,8 +225,8 @@ func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdate
 // 禁用指定用户
 func (s *userService) Disable(id uint) error {
 	_, err := dao.User.
-		Data(dao.User.Columns.Status, model.UserStatusDisabled).
-		Where(dao.User.Columns.Id, id).
+		Data(dao.User.C.Status, model.UserStatusDisabled).
+		Where(dao.User.C.Id, id).
 		Update()
 	return err
 }
@@ -300,12 +293,12 @@ func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceG
 // 获取文章数量
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
 	m := dao.Content.Fields(model.ContentListItem{})
-	m = m.Fields(dao.Content.Columns.Type, "count(*) total")
+	m = m.Fields(dao.Content.C.Type, "count(*) total")
 	if userId > 0 && !s.IsAdminShow(ctx, userId) {
-		m = m.Where(dao.Content.Columns.UserId, userId)
+		m = m.Where(dao.Content.C.UserId, userId)
 	}
-	statsModel := m.Group(dao.Content.Columns.Type)
-	statsAll, err := statsModel.M.All()
+	statsModel := m.Group(dao.Content.C.Type)
+	statsAll, err := statsModel.All()
 	if err != nil {
 		return nil, err
 	}
@@ -316,9 +309,9 @@ func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string
 
 	replyModel := dao.Reply.Fields("count(*) total")
 	if userId > 0 && !s.IsAdminShow(ctx, userId) {
-		replyModel = replyModel.Where(dao.Reply.Columns.UserId, userId)
+		replyModel = replyModel.Where(dao.Reply.C.UserId, userId)
 	}
-	record, err := replyModel.M.One()
+	record, err := replyModel.One()
 	if err != nil {
 		return nil, err
 	}

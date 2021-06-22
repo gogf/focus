@@ -5,12 +5,8 @@
 package model
 
 import (
-	"focus/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
 )
-
-// Reply is the golang structure for table gf_reply.
-type Reply internal.Reply
 
 // 评论列表项
 type ReplyListItem struct {

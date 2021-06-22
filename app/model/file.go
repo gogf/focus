@@ -4,13 +4,6 @@
 
 package model
 
-import (
-	"focus/app/model/internal"
-)
-
-// File is the golang structure for table gf_file.
-type File internal.File
-
 const (
 	// 同一用户1分钟之内最大上传数量
 	FileMaxUploadCountMinute = 10

@@ -30,21 +30,23 @@ func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateR
 
 // 删除
 func (s *replyService) Delete(ctx context.Context, id uint) error {
-	r, err := dao.Reply.WherePri(id).One()
+	var reply *model.Reply
+	err := dao.Reply.Ctx(ctx).WherePri(id).Scan(&reply)
 	if err != nil {
 		return err
 	}
-	_, err = dao.Reply.Where(g.Map{
-		dao.Reply.Columns.Id:     id,
-		dao.Reply.Columns.UserId: shared.Context.Get(ctx).User.Id,
+	_, err = dao.Reply.Ctx(ctx).Where(g.Map{
+		dao.Reply.C.Id:     id,
+		dao.Reply.C.UserId: shared.Context.Get(ctx).User.Id,
 	}).Delete()
 	if err == nil {
 		// 回复统计-1
-		_ = Content.AddReplyCount(ctx, r.TargetId, -1)
+		_ = Content.AddReplyCount(ctx, reply.TargetId, -1)
 		// 判断回复是否采纳
-		c, err := dao.Content.WherePri(r.TargetId).One()
-		if err == nil && c != nil && c.AdoptedReplyId == id {
-			_ = Content.UnacceptedReply(ctx, r.TargetId)
+		var content *model.Content
+		err := dao.Content.WherePri(reply.TargetId).Scan(&content)
+		if err == nil && content != nil && content.AdoptedReplyId == id {
+			_ = Content.UnacceptedReply(ctx, reply.TargetId)
 		}
 	}
 	return err
@@ -52,24 +54,24 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 
 // 获取回复列表
 func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetListReq) (*define.ReplyServiceGetListRes, error) {
-	m := dao.Reply.Fields(model.ReplyListItem{})
+	var result = &define.ReplyServiceGetListRes{}
+	m := dao.Reply.Ctx(ctx).Fields(model.ReplyListItem{})
 
 	if r.TargetType != "" {
-		m = m.Where(dao.Reply.Columns.TargetType, r.TargetType)
+		m = m.Where(dao.Reply.C.TargetType, r.TargetType)
 	}
 	if r.TargetId > 0 {
-		m = m.Where(dao.Reply.Columns.TargetId, r.TargetId)
+		m = m.Where(dao.Reply.C.TargetId, r.TargetId)
 	}
 	if r.UserId > 0 {
-		m = m.Where(dao.Reply.Columns.UserId, r.UserId)
+		m = m.Where(dao.Reply.C.UserId, r.UserId)
 	}
 
-	listModel := m.Page(r.Page, r.Size).Order(dao.Content.Columns.Id, "DESC")
-	replyEntities, err := listModel.M.All()
+	err := m.Page(r.Page, r.Size).OrderDesc(dao.Content.C.Id).Scan(&result.List)
 	if err != nil {
 		return nil, err
 	}
-	if replyEntities.IsEmpty() {
+	if len(result.List) == 0 {
 		return nil, nil
 	}
 	getListRes := &define.ReplyServiceGetListRes{
@@ -78,20 +80,20 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 	}
 
 	// User
-	if err := replyEntities.ScanList(&getListRes.List, "Reply"); err != nil {
+	if err := m.ScanList(&getListRes.List, "Reply"); err != nil {
 		return nil, err
 	}
 	err = dao.User.
 		Fields(model.ReplyListUserItem{}).
-		Where(dao.User.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "UserId")).
+		Where(dao.User.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "UserId")).
 		ScanList(&getListRes.List, "User", "Reply", "id:UserId")
 	if err != nil {
 		return nil, err
 	}
 
 	// Content
-	err = dao.Content.Fields(dao.Content.Columns.Id, dao.Content.Columns.Title, dao.Content.Columns.CategoryId).
-		Where(dao.Content.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
+	err = dao.Content.Fields(dao.Content.C.Id, dao.Content.C.Title, dao.Content.C.CategoryId).
+		Where(dao.Content.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
 		ScanList(&getListRes.List, "Content", "Reply", "id:TargetId")
 	if err != nil {
 		return nil, err
@@ -100,7 +102,7 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 	// Category
 	err = dao.Category.
 		Fields(model.ContentListCategoryItem{}).
-		Where(dao.Category.Columns.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
+		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
 		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
 
 	return getListRes, nil

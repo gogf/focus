@@ -106,13 +106,14 @@ func (s *categoryService) formTree(parentId uint, contentType string, entities [
 }
 
 // 获得所有的栏目列表。
-func (s *categoryService) GetList(ctx context.Context) ([]*model.Category, error) {
+func (s *categoryService) GetList(ctx context.Context) (list []*model.Category, err error) {
 	orderBy := fmt.Sprintf(
 		`%s ASC, %s ASC`,
-		dao.Category.Columns.Sort,
-		dao.Category.Columns.Id,
+		dao.Category.C.Sort,
+		dao.Category.C.Id,
 	)
-	return dao.Category.Order(orderBy).All()
+	err = dao.Category.Ctx(ctx).Order(orderBy).Scan(&list)
+	return
 }
 
 // 查询单个栏目信息

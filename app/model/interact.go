@@ -4,13 +4,6 @@
 
 package model
 
-import (
-	"focus/app/model/internal"
-)
-
-// Interact is the golang structure for table gf_interact.
-type Interact internal.Interact
-
 const (
 	InteractTypeZan           = 0
 	InteractTypeCai           = 1
