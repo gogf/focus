@@ -104,6 +104,9 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 		Fields(model.ContentListCategoryItem{}).
 		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
 		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
+	if err != nil {
+		return nil, err
+	}
 
 	return getListRes, nil
 }
