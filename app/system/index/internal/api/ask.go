@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 问答管理
 var Ask = askApi{}
 
 type askApi struct{}

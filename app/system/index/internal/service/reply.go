@@ -18,11 +18,10 @@ var Reply = replyService{}
 type replyService struct{}
 
 // 创建回复
-func (s *replyService) Create(ctx context.Context, input *define.ReplyCreateInput) error {
+func (s *replyService) Create(ctx context.Context, input define.ReplyCreateInput) error {
 	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		if input.UserId == 0 {
-			input.UserId = shared.Context.Get(ctx).User.Id
-		}
+		// 覆盖用户ID
+		input.UserId = shared.Context.Get(ctx).User.Id
 		_, err := dao.Reply.Ctx(ctx).Data(input).Insert()
 		if err == nil {
 			_ = Content.AddReplyCount(ctx, input.TargetId, 1)
@@ -62,7 +61,7 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 }
 
 // 获取回复列表
-func (s *replyService) GetList(ctx context.Context, input *define.ReplyGetListInput) (output *define.ReplyGetListOutput, err error) {
+func (s *replyService) GetList(ctx context.Context, input define.ReplyGetListInput) (output *define.ReplyGetListOutput, err error) {
 	output = &define.ReplyGetListOutput{
 		Page: input.Page,
 		Size: input.Size,

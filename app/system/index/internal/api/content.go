@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 内容管理
 var Content = contentApi{}
 
 type contentApi struct{}

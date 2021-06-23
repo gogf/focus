@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 文件管理
 var File = fileApi{}
 
 type fileApi struct{}
@@ -16,20 +17,20 @@ type fileApi struct{}
 // @produce json
 // @param   file formData file true "文件域"
 // @router  /file/upload [POST]
-// @success 200 {object} define.FileApiUploadRes "请求结果"
+// @success 200 {object} define.FileUploadRes "请求结果"
 func (a *fileApi) Upload(r *ghttp.Request) {
 	file := r.GetUploadFile("file")
 	if file == nil {
 		response.JsonExit(r, 1, "请选择需要上传的文件")
 	}
-	uploadResult, err := service.File.Upload(r.Context(), &define.FileServiceUploadReq{
+	uploadResult, err := service.File.Upload(r.Context(), define.FileUploadInput{
 		File:       file,
 		RandomName: true,
 	})
 	if err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	response.JsonExit(r, 0, "", &define.FileApiUploadRes{
+	response.JsonExit(r, 0, "", &define.FileUploadRes{
 		Name: uploadResult.Name,
 		Url:  uploadResult.Url,
 	})

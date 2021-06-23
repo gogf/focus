@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 登录管理
 var Login = loginApi{}
 
 type loginApi struct{}

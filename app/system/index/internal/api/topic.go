@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 主题管理
 var Topic = topicApi{}
 
 type topicApi struct{}

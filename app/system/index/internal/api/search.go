@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 搜索管理
 var Search = searchApi{}
 
 type searchApi struct{}

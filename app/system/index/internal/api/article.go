@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 文章管理
 var Article = articleApi{}
 
 type articleApi struct{}

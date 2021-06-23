@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 栏目管理
 var Category = categoryApi{}
 
 type categoryApi struct{}
@@ -19,12 +20,12 @@ type categoryApi struct{}
 // @success 200 {array} model.CategoryTreeItem "分类列表"
 func (a *categoryApi) Tree(r *ghttp.Request) {
 	var (
-		data *define.CategoryApiGetTreeReq
+		req *define.CategoryGetTreeReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if tree, err := service.Category.GetTree(r.Context(), data.ContentType); err != nil {
+	if tree, err := service.Category.GetTree(r.Context(), req.ContentType); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "", tree)

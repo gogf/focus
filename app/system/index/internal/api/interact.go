@@ -21,7 +21,7 @@ type interactApi struct{}
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Zan(r *ghttp.Request) {
 	var (
-		req *define.InteractApiZanReq
+		req *define.InteractZanReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
@@ -41,7 +41,7 @@ func (a *interactApi) Zan(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelZan(r *ghttp.Request) {
 	var (
-		req *define.InteractApiCancelZanReq
+		req *define.InteractCancelZanReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
@@ -61,7 +61,7 @@ func (a *interactApi) CancelZan(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Cai(r *ghttp.Request) {
 	var (
-		req *define.InteractApiCaiReq
+		req *define.InteractCaiReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
@@ -81,7 +81,7 @@ func (a *interactApi) Cai(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelCai(r *ghttp.Request) {
 	var (
-		req *define.InteractApiCancelCaiReq
+		req *define.InteractCancelCaiReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())

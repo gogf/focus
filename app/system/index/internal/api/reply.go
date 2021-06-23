@@ -7,7 +7,6 @@ import (
 	"focus/library/response"
 
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
 )
 
 // 回复控制器
@@ -24,30 +23,27 @@ type replyApi struct{}
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *replyApi) DoCreate(r *ghttp.Request) {
 	var (
-		req              *define.ReplyApiCreateUpdateBase
-		replyCreateInput *define.ReplyCreateInput
+		req *define.ReplyDoCreateReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(req, &replyCreateInput); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.Reply.Create(r.Context(), replyCreateInput); err != nil {
+	if err := service.Reply.Create(r.Context(), req.ReplyCreateInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
 	}
 }
 
+// 回复列表
 func (a *replyApi) Index(r *ghttp.Request) {
 	var (
-		req *define.ReplyGetListInput
+		req *define.ReplyGetListReq
 	)
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if getListRes, err := service.Reply.GetList(r.Context(), req); err != nil {
+	if getListRes, err := service.Reply.GetList(r.Context(), req.ReplyGetListInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		service.View.RenderTpl(r, "index/reply.html", model.View{Data: getListRes})
@@ -62,7 +58,7 @@ func (a *replyApi) Index(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *replyApi) DoDelete(r *ghttp.Request) {
 	var (
-		req *define.ReplyApiDoDeleteReq
+		req *define.ReplyDoDeleteReq
 	)
 	if err := r.ParseForm(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())

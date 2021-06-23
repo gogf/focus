@@ -163,7 +163,7 @@ func (a *userApi) Message(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if getListRes, err := service.User.GetMessageList(r.Context(), req); err != nil {
+	if getListRes, err := service.User.GetMessageList(r.Context(), req.UserGetMessageListInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
@@ -189,7 +189,7 @@ func (a *userApi) UpdatePassword(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.User.UpdatePassword(r.Context(), req); err != nil {
+	if err := service.User.UpdatePassword(r.Context(), req.UserPasswordInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
@@ -210,7 +210,7 @@ func (a *userApi) UpdateAvatar(r *ghttp.Request) {
 	}
 	uploadResult, err := service.File.Upload(
 		r.Context(),
-		&define.FileServiceUploadReq{
+		define.FileUploadInput{
 			File:       file,
 			RandomName: true,
 		},
@@ -228,7 +228,7 @@ func (a *userApi) UpdateAvatar(r *ghttp.Request) {
 	if uploadResult != nil {
 		req.Avatar = uploadResult.Url
 	}
-	if err := service.User.UpdateAvatar(r.Context(), req); err != nil {
+	if err := service.User.UpdateAvatar(r.Context(), req.UserUpdateProfileInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
@@ -248,7 +248,7 @@ func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.User.UpdateProfile(r.Context(), req); err != nil {
+	if err := service.User.UpdateProfile(r.Context(), req.UserUpdateProfileInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")

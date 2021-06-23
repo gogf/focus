@@ -4,7 +4,7 @@
 
 package define
 
-// API用户注册
+// 用户注册
 type UserRegisterReq struct {
 	UserRegisterInput
 	Passport string `v:"required#请输入账号"`  // 账号
@@ -13,21 +13,32 @@ type UserRegisterReq struct {
 	Captcha  string `v:"required#请输入验证码"` // 验证码
 }
 
-// API修改用户密码
+// 创建用户
+type UserRegisterInput struct {
+	Passport string // 账号
+	Password string // 密码(明文)
+	Nickname string // 昵称
+}
+
+// 修改用户密码
 type UserPasswordReq struct {
+	UserPasswordInput
 	OldPassword string `v:"required#请输入原始密码"` // 原密码
 	NewPassword string `v:"required#请输入新密码"`  // 新密码
 }
 
-// API修改用户
-type UserUpdateProfileReq struct {
-	Id       uint   // 用户ID
-	Nickname string `v:"required#请输入昵称信息"` // 昵称
-	Avatar   string // 头像地址
-	Gender   int    // 性别 0: 未设置 1: 男 2: 女
+type UserPasswordInput struct {
+	OldPassword string // 原密码
+	NewPassword string // 新密码
 }
 
-// API禁用用户
+// 修改用户
+type UserUpdateProfileReq struct {
+	UserUpdateProfileInput
+	Nickname string `v:"required#请输入昵称信息"` // 昵称
+}
+
+// 禁用用户
 type UserDisableReq struct {
 	Id *uint `v:"required#请选择需要禁用的用户"` // 删除时ID不能为空
 }
@@ -40,7 +51,13 @@ type UserLoginReq struct {
 	Captcha  string `v:"required#请输入验证码"` // 验证码
 }
 
-// Service用户信息
+// 用户登录
+type UserLoginInput struct {
+	Passport string // 账号
+	Password string // 密码(明文)
+}
+
+// 用户信息
 type UserGetProfileOutput struct {
 	Id       uint           // 用户ID
 	Nickname string         // 昵称
@@ -54,23 +71,10 @@ type UserUpdateAvatarInput struct {
 	Avatar string // 头像地址
 }
 
-// Service修改用户
+// 修改用户
 type UserServiceUpdateProfileReq struct {
 	Nickname string // 昵称
 	Gender   int    // 性别 0: 未设置 1: 男 2: 女
-}
-
-// Service用户登录
-type UserLoginInput struct {
-	Passport string // 账号
-	Password string // 密码(明文)
-}
-
-// Service创建用户
-type UserRegisterInput struct {
-	Passport string // 账号
-	Password string // 密码(明文)
-	Nickname string // 昵称
 }
 
 // 修改用户信息
@@ -93,7 +97,7 @@ type UserGetListInput struct {
 	Id uint
 }
 
-// Service查询用户详情结果
+// 查询用户详情结果
 type UserGetListOutput struct {
 	Content *ContentGetListOutput `json:"content"` // 查询用户
 	User    *UserGetProfileOutput `json:"user"`    // 查询用户
@@ -113,11 +117,11 @@ type UserGetMessageListInput struct {
 	UserId     uint   `json:"user_id"`     // 用户ID
 }
 
-// Service查询用户列表查询结果
+// 查询用户列表查询结果
 type UserGetMessageListOutput struct {
-	List  []*ReplyGetListOutputItem `json:"list"`  // 列表
-	Page  int                       `json:"page"`  // 分页码
-	Size  int                       `json:"size"`  // 分页数量
-	Total int                       `json:"total"` // 数据总数
-	Stats map[string]int            // 发布内容数量
+	List  []ReplyGetListOutputItem `json:"list"`  // 列表
+	Page  int                      `json:"page"`  // 分页码
+	Size  int                      `json:"size"`  // 分页数量
+	Total int                      `json:"total"` // 数据总数
+	Stats map[string]int           // 发布内容数量
 }
