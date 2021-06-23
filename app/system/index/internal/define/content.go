@@ -52,7 +52,7 @@ type ContentGetListReq struct {
 // 获取内容列表
 type ContentGetListInput struct {
 	Type       string // 内容模型
-	CategoryId uint   // 栏目ID
+	CategoryId uint   `p:"cate"` // 栏目ID
 	Page       int    // 分页号码
 	Size       int    // 分页数量，最大50
 	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
