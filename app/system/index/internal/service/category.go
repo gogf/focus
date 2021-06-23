@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
 	"github.com/gogf/gf/errors/gerror"
@@ -30,6 +29,7 @@ var (
 
 // 查询列表
 func (s *categoryService) GetTree(ctx context.Context, contentType string) ([]*model.CategoryTreeItem, error) {
+	// 缓存控制
 	v, err := gcache.GetOrSetFunc(treeCacheKey+contentType, func() (interface{}, error) {
 		entities, err := s.GetList(ctx)
 		if err != nil {
@@ -107,12 +107,10 @@ func (s *categoryService) formTree(parentId uint, contentType string, entities [
 
 // 获得所有的栏目列表。
 func (s *categoryService) GetList(ctx context.Context) (list []*model.Category, err error) {
-	orderBy := fmt.Sprintf(
-		`%s ASC, %s ASC`,
-		dao.Category.C.Sort,
-		dao.Category.C.Id,
-	)
-	err = dao.Category.Ctx(ctx).Order(orderBy).Scan(&list)
+	err = dao.Category.Ctx(ctx).
+		OrderAsc(dao.Category.C.Sort).
+		OrderAsc(dao.Category.C.Id).
+		Scan(&list)
 	return
 }
 

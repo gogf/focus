@@ -28,9 +28,9 @@ func (s *fileService) Upload(ctx context.Context, r *define.FileServiceUploadReq
 		r.File.Filename = r.Name
 	}
 	// 同一用户1分钟之内只能上传10张图片
-	count, err := dao.File.
+	count, err := dao.File.Ctx(ctx).
 		Where(dao.File.C.UserId, shared.Context.Get(ctx).User.Id).
-		Where(dao.File.C.CreatedAt+">=?", gtime.Now().Add(time.Minute)).
+		WhereGTE(dao.File.C.CreatedAt, gtime.Now().Add(time.Minute)).
 		Count()
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (s *fileService) Upload(ctx context.Context, r *define.FileServiceUploadReq
 		Url:    "/upload/" + dateDirName + "/" + fileName,
 		UserId: shared.Context.Get(ctx).User.Id,
 	}
-	result, err := dao.File.Data(data).OmitEmpty().Insert()
+	result, err := dao.File.Ctx(ctx).Data(data).OmitEmpty().Insert()
 	if err != nil {
 		return nil, err
 	}
