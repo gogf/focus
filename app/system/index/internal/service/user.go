@@ -215,7 +215,7 @@ func (s *userService) UpdateProfile(ctx context.Context, input define.UserUpdate
 		if n > 0 {
 			return gerror.Newf(`昵称"%s"已被占用`, input.Nickname)
 		}
-		_, err = dao.User.Ctx(ctx).Data(input).Where(dao.User.C.Id, userId).Update()
+		_, err = dao.User.Ctx(ctx).OmitEmpty().Data(input).Where(dao.User.C.Id, userId).Update()
 		// 更新登录session Nickname
 		if err == nil && user.Nickname != input.Nickname {
 			sessionUser := Session.GetUser(ctx)
