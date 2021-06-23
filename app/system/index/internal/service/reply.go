@@ -18,20 +18,20 @@ var Reply = replyService{}
 type replyService struct{}
 
 // 创建回复
-func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateReq) error {
+func (s *replyService) Create(ctx context.Context, input *define.ReplyCreateInput) error {
 	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		if r.UserId == 0 {
-			r.UserId = shared.Context.Get(ctx).User.Id
+		if input.UserId == 0 {
+			input.UserId = shared.Context.Get(ctx).User.Id
 		}
-		_, err := dao.Reply.Ctx(ctx).Data(r).Insert()
+		_, err := dao.Reply.Ctx(ctx).Data(input).Insert()
 		if err == nil {
-			_ = Content.AddReplyCount(ctx, r.TargetId, 1)
+			_ = Content.AddReplyCount(ctx, input.TargetId, 1)
 		}
 		return err
 	})
 }
 
-// 删除
+// 删除回复(硬删除)
 func (s *replyService) Delete(ctx context.Context, id uint) error {
 	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		var reply *model.Reply
@@ -39,18 +39,22 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 		if err != nil {
 			return err
 		}
+		// 删除回复记录
 		_, err = dao.Reply.Ctx(ctx).Where(g.Map{
 			dao.Reply.C.Id:     id,
 			dao.Reply.C.UserId: shared.Context.Get(ctx).User.Id,
 		}).Delete()
 		if err == nil {
 			// 回复统计-1
-			_ = Content.AddReplyCount(ctx, reply.TargetId, -1)
+			err = Content.AddReplyCount(ctx, reply.TargetId, -1)
+			if err != nil {
+				return err
+			}
 			// 判断回复是否采纳
 			var content *model.Content
-			err := dao.Content.WherePri(reply.TargetId).Scan(&content)
+			err = dao.Content.Ctx(ctx).WherePri(reply.TargetId).Scan(&content)
 			if err == nil && content != nil && content.AdoptedReplyId == id {
-				_ = Content.UnacceptedReply(ctx, reply.TargetId)
+				err = Content.UnacceptedReply(ctx, reply.TargetId)
 			}
 		}
 		return err
@@ -58,48 +62,45 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 }
 
 // 获取回复列表
-func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetListReq) (*define.ReplyServiceGetListRes, error) {
-	var result = &define.ReplyServiceGetListRes{}
+func (s *replyService) GetList(ctx context.Context, input *define.ReplyGetListInput) (output *define.ReplyGetListOutput, err error) {
+	output = &define.ReplyGetListOutput{
+		Page: input.Page,
+		Size: input.Size,
+	}
 	m := dao.Reply.Ctx(ctx).Fields(model.ReplyListItem{})
+	if input.TargetType != "" {
+		m = m.Where(dao.Reply.C.TargetType, input.TargetType)
+	}
+	if input.TargetId > 0 {
+		m = m.Where(dao.Reply.C.TargetId, input.TargetId)
+	}
+	if input.UserId > 0 {
+		m = m.Where(dao.Reply.C.UserId, input.UserId)
+	}
 
-	if r.TargetType != "" {
-		m = m.Where(dao.Reply.C.TargetType, r.TargetType)
-	}
-	if r.TargetId > 0 {
-		m = m.Where(dao.Reply.C.TargetId, r.TargetId)
-	}
-	if r.UserId > 0 {
-		m = m.Where(dao.Reply.C.UserId, r.UserId)
-	}
-
-	err := m.Page(r.Page, r.Size).OrderDesc(dao.Content.C.Id).ScanList(&result.List, "Reply")
+	err = m.Page(input.Page, input.Size).OrderDesc(dao.Content.C.Id).ScanList(&output.List, "Reply")
 	if err != nil {
 		return nil, err
 	}
-	if len(result.List) == 0 {
+	if len(output.List) == 0 {
 		return nil, nil
 	}
-	getListRes := &define.ReplyServiceGetListRes{
-		Page: r.Page,
-		Size: r.Size,
-	}
-
 	// User
-	if err := m.ScanList(&getListRes.List, "Reply"); err != nil {
+	if err = m.ScanList(&output.List, "Reply"); err != nil {
 		return nil, err
 	}
 	err = dao.User.
 		Fields(model.ReplyListUserItem{}).
-		Where(dao.User.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "UserId")).
-		ScanList(&getListRes.List, "User", "Reply", "id:UserId")
+		Where(dao.User.C.Id, gutil.ListItemValuesUnique(output.List, "Reply", "UserId")).
+		ScanList(&output.List, "User", "Reply", "id:UserId")
 	if err != nil {
 		return nil, err
 	}
 
 	// Content
 	err = dao.Content.Fields(dao.Content.C.Id, dao.Content.C.Title, dao.Content.C.CategoryId).
-		Where(dao.Content.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Reply", "TargetId")).
-		ScanList(&getListRes.List, "Content", "Reply", "id:TargetId")
+		Where(dao.Content.C.Id, gutil.ListItemValuesUnique(output.List, "Reply", "TargetId")).
+		ScanList(&output.List, "Content", "Reply", "id:TargetId")
 	if err != nil {
 		return nil, err
 	}
@@ -107,11 +108,11 @@ func (s *replyService) GetList(ctx context.Context, r *define.ReplyServiceGetLis
 	// Category
 	err = dao.Category.
 		Fields(model.ContentListCategoryItem{}).
-		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(getListRes.List, "Content", "CategoryId")).
-		ScanList(&getListRes.List, "Category", "Content", "id:CategoryId")
+		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(output.List, "Content", "CategoryId")).
+		ScanList(&output.List, "Category", "Content", "id:CategoryId")
 	if err != nil {
 		return nil, err
 	}
 
-	return getListRes, nil
+	return output, nil
 }

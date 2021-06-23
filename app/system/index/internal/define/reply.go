@@ -19,13 +19,13 @@ type ReplyApiDoDeleteReq struct {
 }
 
 // Service创建内容
-type ReplyServiceCreateReq struct {
+type ReplyCreateInput struct {
 	ReplyApiCreateUpdateBase
 	UserId uint
 }
 
 // Service查询列表结果
-type ReplyServiceGetListReq struct {
+type ReplyGetListInput struct {
 	Page       int    `json:"page"`        // 分页码
 	Size       int    `json:"size"`        // 分页数量
 	TargetType string `json:"target_type"` // 数据类型
@@ -34,15 +34,15 @@ type ReplyServiceGetListReq struct {
 }
 
 // Service查询列表结果
-type ReplyServiceGetListRes struct {
-	List  []*ReplyServiceGetListResItem `json:"list"`  // 列表
-	Page  int                           `json:"page"`  // 分页码
-	Size  int                           `json:"size"`  // 分页数量
-	Total int                           `json:"total"` // 数据总数
+type ReplyGetListOutput struct {
+	List  []*ReplyGetListOutputItem `json:"list"`  // 列表
+	Page  int                       `json:"page"`  // 分页码
+	Size  int                       `json:"size"`  // 分页数量
+	Total int                       `json:"total"` // 数据总数
 }
 
 // Service查询列表结果项
-type ReplyServiceGetListResItem struct {
+type ReplyGetListOutputItem struct {
 	Reply    *model.ReplyListItem           `json:"reply"`
 	User     *model.ReplyListUserItem       `json:"user"`
 	Content  *model.ContentListItem         `json:"content"`

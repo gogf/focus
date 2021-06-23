@@ -23,21 +23,21 @@ type searchApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *searchApi) Index(r *ghttp.Request) {
 	var (
-		req *define.ContentServiceSearchReq
+		req *define.ContentSearchReq
 	)
 	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	if searchRes, err := service.Content.Search(r.Context(), req); err != nil {
+	if searchRes, err := service.Content.Search(r.Context(), req.ContentSearchInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
 		service.View.Render(r, model.View{
 			Data:  searchRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{}),
+			Title: service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{}),
 		})
 	}
 }

@@ -6,7 +6,6 @@ import (
 	"focus/app/system/index/internal/service"
 	"focus/library/response"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
 )
 
 var Login = loginApi{}
@@ -35,25 +34,21 @@ func (a *loginApi) Index(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "执行结果"
 func (a *loginApi) Do(r *ghttp.Request) {
 	var (
-		data            *define.UserApiLoginReq
-		serviceLoginReq *define.UserServiceLoginReq
+		req *define.UserLoginReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if !service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, data.Captcha) {
+	if !service.Captcha.VerifyAndClear(r, model.CaptchaDefaultName, req.Captcha) {
 		response.JsonExit(r, 1, "请输入正确的验证码")
 	}
-	if err := gconv.Struct(data, &serviceLoginReq); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	if err := service.User.Login(r.Context(), serviceLoginReq); err != nil {
+	if err := service.User.Login(r.Context(), req.UserLoginInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		// 识别并跳转到登录前页面
 		loginReferer := service.Session.GetLoginReferer(r.Context())
 		if loginReferer != "" {
-			service.Session.RemoveLoginReferer(r.Context())
+			_ = service.Session.RemoveLoginReferer(r.Context())
 		}
 		response.JsonRedirectExit(r, 0, "", loginReferer)
 	}

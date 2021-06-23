@@ -22,25 +22,25 @@ type articleApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *articleApi) Index(r *ghttp.Request) {
 	var (
-		data *define.ContentServiceGetListReq
+		req *define.ContentGetListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	data.Type = model.ContentTypeArticle
-	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
+	req.Type = model.ContentTypeArticle
+	if getListRes, err := service.Content.GetList(r.Context(), req.ContentGetListInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
 		service.View.Render(r, model.View{
-			ContentType: data.Type,
+			ContentType: req.Type,
 			Data:        getListRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{
-				ContentType: data.Type,
-				CategoryId:  data.CategoryId,
+			Title: service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{
+				ContentType: req.Type,
+				CategoryId:  req.CategoryId,
 			}),
 		})
 	}
@@ -54,29 +54,33 @@ func (a *articleApi) Index(r *ghttp.Request) {
 // @success 200 {string} html "页面HTML"
 func (a *articleApi) Detail(r *ghttp.Request) {
 	var (
-		data *define.ContentApiDetailReq
+		req *define.ContentDetailReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	if getDetailRes, err := service.Content.GetDetail(r.Context(), data.Id); err != nil {
+	if getDetailRes, err := service.Content.GetDetail(r.Context(), req.Id); err != nil {
 		service.View.Render500(r)
 	} else {
 		if getDetailRes == nil {
 			service.View.Render404(r)
 		}
-		service.Content.AddViewCount(r.Context(), data.Id, 1)
+		if err := service.Content.AddViewCount(r.Context(), req.Id, 1); err != nil {
+			service.View.Render500(r, model.View{
+				Error: err.Error(),
+			})
+		}
 		service.View.Render(r, model.View{
 			ContentType: model.ContentTypeArticle,
 			Data:        getDetailRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{
+			Title: service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{
 				ContentType: getDetailRes.Content.Type,
 				CategoryId:  getDetailRes.Content.CategoryId,
 				CurrentName: getDetailRes.Content.Title,
 			}),
-			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &define.ViewServiceGetBreadCrumbReq{
+			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &define.ViewGetBreadCrumbInput{
 				ContentId:   getDetailRes.Content.Id,
 				ContentType: getDetailRes.Content.Type,
 				CategoryId:  getDetailRes.Content.CategoryId,

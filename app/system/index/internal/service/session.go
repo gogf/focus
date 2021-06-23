@@ -12,15 +12,9 @@ var Session = sessionService{}
 type sessionService struct{}
 
 const (
-	// 用户信息存放在Session中的Key
-	sessionKeyUser = "SessionKeyUser"
-
-	// Referer存储，当已存在该session时不会更新。
-	// 用于用户未登录时引导用户登录，并在登录后跳转到登录前页面。
-	sessionKeyLoginReferer = "SessionKeyReferer"
-
-	// 存放在Session中的提示信息，往往使用后则删除
-	sessionKeyNotice = "SessionKeyNotice"
+	sessionKeyUser         = "SessionKeyUser"    // 用户信息存放在Session中的Key
+	sessionKeyLoginReferer = "SessionKeyReferer" // Referer存储，当已存在该session时不会更新。用于用户未登录时引导用户登录，并在登录后跳转到登录前页面。
+	sessionKeyNotice       = "SessionKeyNotice"  // 存放在Session中的提示信息，往往使用后则删除
 )
 
 // 设置用户Session.

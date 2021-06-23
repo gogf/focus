@@ -21,12 +21,12 @@ type interactApi struct{}
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Zan(r *ghttp.Request) {
 	var (
-		data *define.InteractApiZanReq
+		req *define.InteractApiZanReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Interact.Zan(r.Context(), data.Type, data.Id); err != nil {
+	if err := service.Interact.Zan(r.Context(), req.Type, req.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	response.JsonExit(r, 0, "")
@@ -41,12 +41,12 @@ func (a *interactApi) Zan(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelZan(r *ghttp.Request) {
 	var (
-		data *define.InteractApiCancelZanReq
+		req *define.InteractApiCancelZanReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Interact.CancelZan(r.Context(), data.Type, data.Id); err != nil {
+	if err := service.Interact.CancelZan(r.Context(), req.Type, req.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	response.JsonExit(r, 0, "")
@@ -61,12 +61,12 @@ func (a *interactApi) CancelZan(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) Cai(r *ghttp.Request) {
 	var (
-		data *define.InteractApiCaiReq
+		req *define.InteractApiCaiReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Interact.Cai(r.Context(), data.Type, data.Id); err != nil {
+	if err := service.Interact.Cai(r.Context(), req.Type, req.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	response.JsonExit(r, 0, "")
@@ -81,12 +81,12 @@ func (a *interactApi) Cai(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *interactApi) CancelCai(r *ghttp.Request) {
 	var (
-		data *define.InteractApiCancelCaiReq
+		req *define.InteractApiCancelCaiReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Interact.CancelCai(r.Context(), data.Type, data.Id); err != nil {
+	if err := service.Interact.CancelCai(r.Context(), req.Type, req.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	response.JsonExit(r, 0, "")

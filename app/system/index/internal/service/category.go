@@ -11,7 +11,9 @@ import (
 )
 
 // 栏目管理服务
-var Category = categoryService{}
+var (
+	Category = categoryService{}
+)
 
 type categoryService struct{}
 
@@ -20,11 +22,6 @@ const (
 	mapCacheDuration  = time.Hour
 	treeCacheKey      = "category_tree_cache"
 	treeCacheDuration = time.Hour
-)
-
-var (
-	// 缩进字符串，用于层级展示
-	indentChars = []string{"&nbsp;", " │", " ├", " └"}
 )
 
 // 查询列表

@@ -8,6 +8,7 @@ import (
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
 	"github.com/gogf/gf/crypto/gmd5"
+	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gfile"
@@ -46,10 +47,11 @@ func (s *userService) GetAvatarUploadUrlPrefix() string {
 }
 
 // 执行登录
-func (s *userService) Login(ctx context.Context, loginReq *define.UserServiceLoginReq) error {
+func (s *userService) Login(ctx context.Context, input define.UserLoginInput) error {
 	userEntity, err := s.GetUserByPassportAndPassword(
-		loginReq.Passport,
-		s.EncryptPassword(loginReq.Passport, loginReq.Password),
+		ctx,
+		input.Passport,
+		s.EncryptPassword(input.Passport, input.Password),
 	)
 	if err != nil {
 		return err
@@ -82,8 +84,8 @@ func (s *userService) EncryptPassword(passport, password string) string {
 
 // 根据账号和密码查询用户信息，一般用于账号密码登录。
 // 注意password参数传入的是按照相同加密算法加密过后的密码字符串。
-func (s *userService) GetUserByPassportAndPassword(passport, password string) (user *model.User, err error) {
-	err = dao.User.Where(g.Map{
+func (s *userService) GetUserByPassportAndPassword(ctx context.Context, passport, password string) (user *model.User, err error) {
+	err = dao.User.Ctx(ctx).Where(g.Map{
 		dao.User.C.Passport: passport,
 		dao.User.C.Password: password,
 	}).Scan(&user)
@@ -91,8 +93,8 @@ func (s *userService) GetUserByPassportAndPassword(passport, password string) (u
 }
 
 // 检测给定的账号是否唯一
-func (s *userService) CheckPassportUnique(passport string) error {
-	n, err := dao.User.Where(dao.User.C.Passport, passport).Count()
+func (s *userService) CheckPassportUnique(ctx context.Context, passport string) error {
+	n, err := dao.User.Ctx(ctx).Where(dao.User.C.Passport, passport).Count()
 	if err != nil {
 		return err
 	}
@@ -103,8 +105,8 @@ func (s *userService) CheckPassportUnique(passport string) error {
 }
 
 // 检测给定的昵称是否唯一
-func (s *userService) CheckNicknameUnique(nickname string) error {
-	n, err := dao.User.Where(dao.User.C.Nickname, nickname).Count()
+func (s *userService) CheckNicknameUnique(ctx context.Context, nickname string) error {
+	n, err := dao.User.Ctx(ctx).Where(dao.User.C.Nickname, nickname).Count()
 	if err != nil {
 		return err
 	}
@@ -115,15 +117,15 @@ func (s *userService) CheckNicknameUnique(nickname string) error {
 }
 
 // 用户注册。
-func (s *userService) Register(r *define.UserServiceRegisterReq) error {
+func (s *userService) Register(ctx context.Context, input define.UserRegisterInput) error {
 	var user *model.User
-	if err := gconv.Struct(r, &user); err != nil {
+	if err := gconv.Struct(input, &user); err != nil {
 		return err
 	}
-	if err := s.CheckPassportUnique(user.Passport); err != nil {
+	if err := s.CheckPassportUnique(ctx, user.Passport); err != nil {
 		return err
 	}
-	if err := s.CheckNicknameUnique(user.Nickname); err != nil {
+	if err := s.CheckNicknameUnique(ctx, user.Nickname); err != nil {
 		return err
 	}
 	user.Password = s.EncryptPassword(user.Passport, user.Password)
@@ -138,9 +140,12 @@ func (s *userService) Register(r *define.UserServiceRegisterReq) error {
 }
 
 // 修改个人密码
-func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPasswordReq) error {
+func (s *userService) UpdatePassword(ctx context.Context, r *define.UserPasswordReq) error {
 	oldPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.OldPassword)
-	n, err := dao.User.Where(dao.User.C.Password, oldPassword).Where(dao.User.C.Id, shared.Context.Get(ctx).User.Id).Count()
+	n, err := dao.User.Ctx(ctx).
+		Where(dao.User.C.Password, oldPassword).
+		Where(dao.User.C.Id, shared.Context.Get(ctx).User.Id).
+		Count()
 	if err != nil {
 		return err
 	}
@@ -148,19 +153,19 @@ func (s *userService) UpdatePassword(ctx context.Context, r *define.UserApiPassw
 		return gerror.New(`原始密码错误`)
 	}
 	newPassword := s.EncryptPassword(shared.Context.Get(ctx).User.Passport, r.NewPassword)
-	_, err = dao.User.Data(g.Map{
+	_, err = dao.User.Ctx(ctx).Data(g.Map{
 		dao.User.C.Password: newPassword,
 	}).Where(dao.User.C.Id, shared.Context.Get(ctx).User.Id).Update()
 	return err
 }
 
 // 获取个人信息
-func (s *userService) GetProfileById(ctx context.Context, userId uint) (result *define.UserServiceProfileRes, err error) {
-	result = &define.UserServiceProfileRes{}
-	if err = dao.User.WherePri(userId).Scan(result); err != nil {
+func (s *userService) GetProfileById(ctx context.Context, userId uint) (output *define.UserGetProfileOutput, err error) {
+	output = &define.UserGetProfileOutput{}
+	if err = dao.User.Ctx(ctx).WherePri(userId).Scan(output); err != nil {
 		return nil, err
 	}
-	result.Stats, err = s.GetUserStats(ctx, userId)
+	output.Stats, err = s.GetUserStats(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -168,63 +173,68 @@ func (s *userService) GetProfileById(ctx context.Context, userId uint) (result *
 }
 
 // 修改个人资料
-func (s *userService) GetProfile(ctx context.Context) (*define.UserServiceProfileRes, error) {
+func (s *userService) GetProfile(ctx context.Context) (*define.UserGetProfileOutput, error) {
 	return s.GetProfileById(ctx, shared.Context.Get(ctx).User.Id)
 }
 
 // 修改个人头像
-func (s *userService) UpdateAvatar(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	user := shared.Context.Get(ctx).User
-	userId := user.Id
-	userServiceUpdateAvatarReq := new(define.UserServiceUpdateAvatarReq)
-	err := gconv.Struct(r, &userServiceUpdateAvatarReq)
-	if err != nil {
+func (s *userService) UpdateAvatar(ctx context.Context, req *define.UserUpdateProfileReq) error {
+	return dao.User.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		var (
+			err                   error
+			user                  = shared.Context.Get(ctx).User
+			userId                = user.Id
+			userUpdateAvatarInput = define.UserUpdateAvatarInput{}
+		)
+		if err = gconv.Struct(req, &userUpdateAvatarInput); err != nil {
+			return err
+		}
+		_, err = dao.User.Ctx(ctx).Data(userUpdateAvatarInput).Where(dao.User.C.Id, userId).Update()
+		// 更新登录session Avatar
+		if err == nil && user.Avatar != req.Avatar {
+			sessionUser := Session.GetUser(ctx)
+			sessionUser.Avatar = req.Avatar
+			err = Session.SetUser(ctx, sessionUser)
+		}
 		return err
-	}
-
-	_, err = dao.User.Data(userServiceUpdateAvatarReq).Where(dao.User.C.Id, userId).Update()
-	// 更新登录session Avatar
-	if err == nil && user.Avatar != r.Avatar {
-		sessionUser := Session.GetUser(ctx)
-		sessionUser.Avatar = r.Avatar
-		Session.SetUser(ctx, sessionUser)
-	}
-
-	return err
+	})
 }
 
 // 修改个人资料
-func (s *userService) UpdateProfile(ctx context.Context, r *define.UserApiUpdateProfileReq) error {
-	user := shared.Context.Get(ctx).User
-	userId := user.Id
-	n, err := dao.User.Where(dao.User.C.Nickname, r.Nickname).Where("id <> ?", userId).Count()
-	if err != nil {
+func (s *userService) UpdateProfile(ctx context.Context, req *define.UserUpdateProfileReq) error {
+	return dao.User.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		var (
+			err                    error
+			user                   = shared.Context.Get(ctx).User
+			userId                 = user.Id
+			userUpdateProfileInput = new(define.UserUpdateProfileInput)
+		)
+		n, err := dao.User.Where(dao.User.C.Nickname, req.Nickname).Where("id <> ?", userId).Count()
+		if err != nil {
+			return err
+		}
+		if n > 0 {
+			return gerror.Newf(`昵称"%s"已被占用`, req.Nickname)
+		}
+		err = gconv.Struct(req, userUpdateProfileInput)
+		if err != nil {
+			return err
+		}
+		_, err = dao.User.Ctx(ctx).Data(userUpdateProfileInput).Where(dao.User.C.Id, userId).Update()
+		// 更新登录session Nickname
+		if err == nil && user.Nickname != req.Nickname {
+			sessionUser := Session.GetUser(ctx)
+			sessionUser.Nickname = req.Nickname
+			err = Session.SetUser(ctx, sessionUser)
+		}
 		return err
-	}
-	if n > 0 {
-		return gerror.Newf(`昵称"%s"已被占用`, r.Nickname)
-	}
+	})
 
-	userServiceUpdateProfileReq := new(define.UserServiceUpdateProfileReq)
-	err = gconv.Struct(r, &userServiceUpdateProfileReq)
-	if err != nil {
-		return err
-	}
-
-	_, err = dao.User.Data(userServiceUpdateProfileReq).Where(dao.User.C.Id, userId).Update()
-	// 更新登录session Nickname
-	if err == nil && user.Nickname != r.Nickname {
-		sessionUser := Session.GetUser(ctx)
-		sessionUser.Nickname = r.Nickname
-		Session.SetUser(ctx, sessionUser)
-	}
-
-	return err
 }
 
 // 禁用指定用户
-func (s *userService) Disable(id uint) error {
-	_, err := dao.User.
+func (s *userService) Disable(ctx context.Context, id uint) error {
+	_, err := dao.User.Ctx(ctx).
 		Data(dao.User.C.Status, model.UserStatusDisabled).
 		Where(dao.User.C.Id, id).
 		Update()
@@ -232,68 +242,60 @@ func (s *userService) Disable(id uint) error {
 }
 
 // 查询用户内容列表及用户信息
-func (s *userService) GetList(ctx context.Context, r *define.UserServiceGetListReq) (*define.UserServiceGetListRes, error) {
-	var data *define.ContentServiceGetListReq
-	if err := gconv.Struct(r, &data); err != nil {
-		return nil, err
-	}
-
-	getListRes, err := Content.GetList(ctx, data)
+func (s *userService) GetList(ctx context.Context, input define.UserGetListInput) (output *define.UserGetListOutput, err error) {
+	output = &define.UserGetListOutput{}
+	// 内容列表
+	output.Content, err = Content.GetList(ctx, input.ContentGetListInput)
 	if err != nil {
-		return nil, err
+		return output, err
 	}
-
-	user, err := User.GetProfileById(ctx, r.UserId)
+	// 用户信息
+	output.User, err = User.GetProfileById(ctx, input.UserId)
 	if err != nil {
-		return nil, err
+		return output, err
 	}
-
-	res := new(define.UserServiceGetListRes)
-	res.Content = getListRes
-	res.User = user
-	res.Stats, err = s.GetUserStats(ctx, data.UserId)
+	// 统计信息
+	output.Stats, err = s.GetUserStats(ctx, input.UserId)
 	if err != nil {
-		return nil, err
+		return output, err
 	}
-
-	return res, nil
+	return
 }
 
 // 消息列表
-func (s *userService) GetMessageList(ctx context.Context, r *define.UserServiceGetMessageListReq) (*define.UserServiceGetMessageListRes, error) {
-	userId := shared.Context.Get(ctx).User.Id
-	replyReq := &define.ReplyServiceGetListReq{}
-	gconv.Struct(r, replyReq)
-
+func (s *userService) GetMessageList(ctx context.Context, req *define.UserGetMessageListReq) (output *define.UserGetMessageListOutput, err error) {
+	output = &define.UserGetMessageListOutput{
+		Page: req.Page,
+		Size: req.Size,
+	}
+	var (
+		userId            = shared.Context.Get(ctx).User.Id
+		replyGetListInput = &define.ReplyGetListInput{}
+	)
+	if err = gconv.Struct(req, replyGetListInput); err != nil {
+		return nil, err
+	}
 	// 管理员看所有的
 	if !s.IsAdminShow(ctx, userId) {
-		replyReq.UserId = userId
+		replyGetListInput.UserId = userId
 	}
 
-	replyList, err := Reply.GetList(ctx, replyReq)
+	replyList, err := Reply.GetList(ctx, replyGetListInput)
 	if err != nil {
 		return nil, err
 	}
-
-	getListRes := &define.UserServiceGetMessageListRes{
-		Page:  r.Page,
-		Size:  r.Size,
-		Total: replyList.Total,
-	}
-
-	getListRes.List = replyList.List
-	getListRes.Stats, err = s.GetUserStats(ctx, userId)
+	output.List = replyList.List
+	output.Stats, err = s.GetUserStats(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
-
-	return getListRes, nil
+	return
 }
 
 // 获取文章数量
 func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string]int, error) {
-	m := dao.Content.Fields(model.ContentListItem{})
-	m = m.Fields(dao.Content.C.Type, "count(*) total")
+	// 文章统计
+	m := dao.Content.Ctx(ctx).Fields(dao.Content.C.Type, "count(*) total")
 	if userId > 0 && !s.IsAdminShow(ctx, userId) {
 		m = m.Where(dao.Content.C.UserId, userId)
 	}
@@ -306,8 +308,8 @@ func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string
 	for _, v := range statsAll {
 		statsMap[v["type"].String()] = v["total"].Int()
 	}
-
-	replyModel := dao.Reply.Fields("count(*) total")
+	// 回复统计
+	replyModel := dao.Reply.Ctx(ctx).Fields("count(*) total")
 	if userId > 0 && !s.IsAdminShow(ctx, userId) {
 		replyModel = replyModel.Where(dao.Reply.C.UserId, userId)
 	}
@@ -322,15 +324,15 @@ func (s *userService) GetUserStats(ctx context.Context, userId uint) (map[string
 
 // 是否是访问管理员的数据
 func (s *userService) IsAdminShow(ctx context.Context, userId uint) bool {
-	context := shared.Context.Get(ctx)
-	if context == nil {
+	c := shared.Context.Get(ctx)
+	if c == nil {
 		return false
 	}
-	if context.User == nil {
+	if c.User == nil {
 		return false
 	}
-	if userId != context.User.Id {
+	if userId != c.User.Id {
 		return false
 	}
-	return context.User.IsAdmin
+	return c.User.IsAdmin
 }

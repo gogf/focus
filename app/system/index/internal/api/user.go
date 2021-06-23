@@ -16,21 +16,20 @@ type userApi struct{}
 // @summary 用户主页
 // @tags    前台-用户
 // @produce html
-// @param   entity body define.UserServiceGetListReq true "请求参数" required
+// @param   entity body define.UserGetListInput true "请求参数" required
 // @router  /user/{id} [GET]
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Index(r *ghttp.Request) {
 	var (
-		data *define.UserServiceGetListReq
+		req *define.UserGetListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
 
-	a.getContentList(r, data.Type, data.Id)
-
+	a.getContentList(r, req.Type, req.Id)
 }
 
 // @summary 展示个人资料页面
@@ -126,29 +125,28 @@ func (a *userApi) Ask(r *ghttp.Request) {
 // 获取内容列表 参数contentType,用户信息
 func (a *userApi) getContentList(r *ghttp.Request, contentType string, userId uint) {
 	var (
-		data *define.UserServiceGetListReq
+		req *define.UserGetListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	data.Type = contentType
-	// 设置UserID
-	data.UserId = userId
-
-	if getListRes, err := service.User.GetList(r.Context(), data); err != nil {
+	req.Type = contentType
+	req.UserId = userId
+	if output, err := service.User.GetList(r.Context(), req.UserGetListInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
+		title := service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{
+			ContentType: req.Type,
+			CategoryId:  req.CategoryId,
+		})
 		service.View.Render(r, model.View{
-			ContentType: data.Type,
-			Data:        getListRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{
-				ContentType: data.Type,
-				CategoryId:  data.CategoryId,
-			}),
+			ContentType: req.Type,
+			Data:        output,
+			Title:       title,
 		})
 	}
 }
@@ -160,18 +158,18 @@ func (a *userApi) getContentList(r *ghttp.Request, contentType string, userId ui
 // @success 200 {string} html "页面HTML"
 func (a *userApi) Message(r *ghttp.Request) {
 	var (
-		data *define.UserServiceGetMessageListReq
+		req *define.UserGetMessageListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if getListRes, err := service.User.GetMessageList(r.Context(), data); err != nil {
+	if getListRes, err := service.User.GetMessageList(r.Context(), req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
 		service.View.Render(r, model.View{
-			ContentType: data.TargetType,
+			ContentType: req.TargetType,
 			Data:        getListRes,
 		})
 	}
@@ -181,17 +179,17 @@ func (a *userApi) Message(r *ghttp.Request) {
 // @summary AJAX保存个人资料
 // @tags    前台-用户
 // @produce json
-// @param   entity body define.UserApiPasswordReq true "请求参数" required
+// @param   entity body define.UserPasswordReq true "请求参数" required
 // @router  /user/update-password [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *userApi) UpdatePassword(r *ghttp.Request) {
 	var (
-		data *define.UserApiPasswordReq
+		req *define.UserPasswordReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.User.UpdatePassword(r.Context(), data); err != nil {
+	if err := service.User.UpdatePassword(r.Context(), req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
@@ -210,23 +208,27 @@ func (a *userApi) UpdateAvatar(r *ghttp.Request) {
 	if file == nil {
 		response.JsonExit(r, 1, "请选择需要上传的文件")
 	}
-	res, err := service.File.Upload(r.Context(), &define.FileServiceUploadReq{
-		File:       file,
-		RandomName: true,
-	})
+	uploadResult, err := service.File.Upload(
+		r.Context(),
+		&define.FileServiceUploadReq{
+			File:       file,
+			RandomName: true,
+		},
+	)
 	if err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 
 	var (
-		data *define.UserApiUpdateProfileReq
+		req *define.UserUpdateProfileReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	data.Avatar = res.Url
-
-	if err := service.User.UpdateAvatar(r.Context(), data); err != nil {
+	if uploadResult != nil {
+		req.Avatar = uploadResult.Url
+	}
+	if err := service.User.UpdateAvatar(r.Context(), req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
@@ -236,18 +238,17 @@ func (a *userApi) UpdateAvatar(r *ghttp.Request) {
 // @summary AJAX保存个人资料
 // @tags    前台-用户
 // @produce json
-// @param   entity body define.UserApiUpdateProfileReq true "请求参数" required
+// @param   entity body define.UserUpdateProfileReq true "请求参数" required
 // @router  /user/update-profile [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *userApi) UpdateProfile(r *ghttp.Request) {
 	var (
-		data *define.UserApiUpdateProfileReq
+		req *define.UserUpdateProfileReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-
-	if err := service.User.UpdateProfile(r.Context(), data); err != nil {
+	if err := service.User.UpdateProfile(r.Context(), req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")

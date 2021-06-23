@@ -30,7 +30,7 @@ func (s *viewBuildIn) DidICai(targetType string, targetId uint) bool {
 
 // 获取顶部菜单列表
 func (s *viewBuildIn) TopMenus() ([]*model.MenuItem, error) {
-	topMenus, err := Menu.GetTopMenus()
+	topMenus, err := Menu.GetTopMenus(s.httpRequest.Context())
 	if err != nil {
 		return nil, err
 	}

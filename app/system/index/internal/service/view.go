@@ -19,14 +19,14 @@ var View = viewService{}
 type viewService struct{}
 
 // 前台系统-获取面包屑列表
-func (s *viewService) GetBreadCrumb(ctx context.Context, r *define.ViewServiceGetBreadCrumbReq) []model.ViewBreadCrumb {
+func (s *viewService) GetBreadCrumb(ctx context.Context, input *define.ViewGetBreadCrumbInput) []model.ViewBreadCrumb {
 	breadcrumb := []model.ViewBreadCrumb{
 		{Name: "首页", Url: "/"},
 	}
 	var uriPrefix string
-	if r.ContentType != "" {
-		uriPrefix = "/" + r.ContentType
-		topMenuItem, _ := Menu.GetTopMenuByUrl(uriPrefix)
+	if input.ContentType != "" {
+		uriPrefix = "/" + input.ContentType
+		topMenuItem, _ := Menu.GetTopMenuByUrl(ctx, uriPrefix)
 		if topMenuItem != nil {
 			breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
 				Name: topMenuItem.Name,
@@ -34,8 +34,8 @@ func (s *viewService) GetBreadCrumb(ctx context.Context, r *define.ViewServiceGe
 			})
 		}
 	}
-	if uriPrefix != "" && r.CategoryId > 0 {
-		category, _ := Category.GetItem(ctx, r.CategoryId)
+	if uriPrefix != "" && input.CategoryId > 0 {
+		category, _ := Category.GetItem(ctx, input.CategoryId)
 		if category != nil {
 			breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
 				Name: category.Name,
@@ -43,7 +43,7 @@ func (s *viewService) GetBreadCrumb(ctx context.Context, r *define.ViewServiceGe
 			})
 		}
 	}
-	if r.ContentId > 0 {
+	if input.ContentId > 0 {
 		breadcrumb = append(breadcrumb, model.ViewBreadCrumb{
 			Name: "内容详情",
 		})
@@ -52,23 +52,23 @@ func (s *viewService) GetBreadCrumb(ctx context.Context, r *define.ViewServiceGe
 }
 
 // 前台系统-获取标题
-func (s *viewService) GetTitle(ctx context.Context, r *define.ViewServiceGetTitleReq) string {
+func (s *viewService) GetTitle(ctx context.Context, input *define.ViewGetTitleInput) string {
 	var (
 		titleArray []string
 		uriPrefix  string
 	)
-	if r.CurrentName != "" {
-		titleArray = append(titleArray, r.CurrentName)
+	if input.CurrentName != "" {
+		titleArray = append(titleArray, input.CurrentName)
 	}
-	if r.CategoryId > 0 {
-		category, _ := Category.GetItem(ctx, r.CategoryId)
+	if input.CategoryId > 0 {
+		category, _ := Category.GetItem(ctx, input.CategoryId)
 		if category != nil {
 			titleArray = append(titleArray, category.Name)
 		}
 	}
-	if r.ContentType != "" {
-		uriPrefix = "/" + r.ContentType
-		topMenuItem, _ := Menu.GetTopMenuByUrl(uriPrefix)
+	if input.ContentType != "" {
+		uriPrefix = "/" + input.ContentType
+		topMenuItem, _ := Menu.GetTopMenuByUrl(ctx, uriPrefix)
 		if topMenuItem != nil {
 			titleArray = append(titleArray, topMenuItem.Name)
 		}
@@ -111,14 +111,14 @@ func (s *viewService) RenderTpl(r *ghttp.Request, tpl string, data ...model.View
 	}
 	// 提示信息
 	if notice, _ := Session.GetNotice(r.Context()); notice != nil {
-		Session.RemoveNotice(r.Context())
+		_ = Session.RemoveNotice(r.Context())
 		viewData["Notice"] = notice
 	}
 	// 渲染模板
-	r.Response.WriteTpl(tpl, viewData)
+	_ = r.Response.WriteTpl(tpl, viewData)
 	// 开发模式下，在页面最下面打印所有的模板变量
 	if gmode.IsDevelop() {
-		r.Response.WriteTplContent(`{{dump .}}`, viewData)
+		_ = r.Response.WriteTplContent(`{{dump .}}`, viewData)
 	}
 	// 退出当前业务函数执行
 	r.Exit()

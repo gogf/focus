@@ -22,26 +22,27 @@ type topicApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Index(r *ghttp.Request) {
 	var (
-		data *define.ContentServiceGetListReq
+		req *define.ContentGetListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	data.Type = model.ContentTypeTopic
-	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
+	req.Type = model.ContentTypeTopic
+	if getListRes, err := service.Content.GetList(r.Context(), req.ContentGetListInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
+		title := service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{
+			ContentType: req.Type,
+			CategoryId:  req.CategoryId,
+		})
 		service.View.Render(r, model.View{
-			ContentType: data.Type,
+			ContentType: req.Type,
 			Data:        getListRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{
-				ContentType: data.Type,
-				CategoryId:  data.CategoryId,
-			}),
+			Title:       title,
 		})
 	}
 }
@@ -54,7 +55,7 @@ func (a *topicApi) Index(r *ghttp.Request) {
 // @success 200 {string} html "页面HTML"
 func (a *topicApi) Detail(r *ghttp.Request) {
 	var (
-		data *define.ContentApiDetailReq
+		data *define.ContentDetailReq
 	)
 	if err := r.Parse(&data); err != nil {
 		service.View.Render500(r, model.View{
@@ -71,12 +72,12 @@ func (a *topicApi) Detail(r *ghttp.Request) {
 		service.View.Render(r, model.View{
 			ContentType: model.ContentTypeTopic,
 			Data:        getDetailRes,
-			Title: service.View.GetTitle(r.Context(), &define.ViewServiceGetTitleReq{
+			Title: service.View.GetTitle(r.Context(), &define.ViewGetTitleInput{
 				ContentType: getDetailRes.Content.Type,
 				CategoryId:  getDetailRes.Content.CategoryId,
 				CurrentName: getDetailRes.Content.Title,
 			}),
-			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &define.ViewServiceGetBreadCrumbReq{
+			BreadCrumb: service.View.GetBreadCrumb(r.Context(), &define.ViewGetBreadCrumbInput{
 				ContentId:   getDetailRes.Content.Id,
 				ContentType: getDetailRes.Content.Type,
 				CategoryId:  getDetailRes.Content.CategoryId,

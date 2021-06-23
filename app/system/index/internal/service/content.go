@@ -19,36 +19,36 @@ var Content = contentService{}
 type contentService struct{}
 
 // 查询内容列表
-func (s *contentService) GetList(ctx context.Context, r *define.ContentServiceGetListReq) (result *define.ContentServiceGetListRes, err error) {
+func (s *contentService) GetList(ctx context.Context, input define.ContentGetListInput) (output *define.ContentGetListOutput, err error) {
 	var (
 		m = dao.Content.Ctx(ctx)
 	)
-	result = &define.ContentServiceGetListRes{
-		Page: r.Page,
-		Size: r.Size,
+	output = &define.ContentGetListOutput{
+		Page: input.Page,
+		Size: input.Size,
 	}
 	// 默认查询topic
-	if r.Type != "" {
-		m = m.Where(dao.Content.C.Type, r.Type)
+	if input.Type != "" {
+		m = m.Where(dao.Content.C.Type, input.Type)
 	} else {
 		m = m.Where(dao.Content.C.Type, model.ContentTypeTopic)
 	}
 	// 栏目检索
-	if r.CategoryId > 0 {
-		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
+	if input.CategoryId > 0 {
+		idArray, err := Category.GetSubIdList(ctx, input.CategoryId)
 		if err != nil {
-			return nil, err
+			return output, err
 		}
 		m = m.Where(dao.Content.C.CategoryId, idArray)
 	}
 	// 管理员可以查看所有文章
-	if r.UserId > 0 && !User.IsAdminShow(ctx, r.UserId) {
-		m = m.Where(dao.Content.C.UserId, r.UserId)
+	if input.UserId > 0 && !User.IsAdminShow(ctx, input.UserId) {
+		m = m.Where(dao.Content.C.UserId, input.UserId)
 	}
 	// 分配查询
-	listModel := m.Page(r.Page, r.Size)
+	listModel := m.Page(input.Page, input.Size)
 	// 排序方式
-	switch r.Sort {
+	switch input.Sort {
 	case model.ContentSortHot:
 		listModel = listModel.OrderDesc(dao.Content.C.ViewCount)
 	case model.ContentSortActive:
@@ -59,70 +59,70 @@ func (s *contentService) GetList(ctx context.Context, r *define.ContentServiceGe
 	// 执行查询
 	var list []*model.Content
 	if err := listModel.Scan(&list); err != nil {
-		return nil, err
+		return output, err
 	}
 	// 没有数据
 	if len(list) == 0 {
-		return nil, nil
+		return output, nil
 	}
-	result.Total, err = m.Count()
+	output.Total, err = m.Count()
 	if err != nil {
-		return nil, err
+		return output, err
 	}
 	// Content
-	if err := listModel.ScanList(&result.List, "Content"); err != nil {
-		return nil, err
+	if err := listModel.ScanList(&output.List, "Content"); err != nil {
+		return output, err
 	}
 	// Category
 	err = dao.Category.
 		Fields(model.ContentListCategoryItem{}).
-		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(result.List, "Content", "CategoryId")).
-		ScanList(&result.List, "Category", "Content", "id:CategoryId")
+		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(output.List, "Content", "CategoryId")).
+		ScanList(&output.List, "Category", "Content", "id:CategoryId")
 	if err != nil {
-		return nil, err
+		return output, err
 	}
 	// User
 	err = dao.User.
 		Fields(model.ContentListUserItem{}).
-		Where(dao.User.C.Id, gutil.ListItemValuesUnique(result.List, "Content", "UserId")).
-		ScanList(&result.List, "User", "Content", "id:UserId")
+		Where(dao.User.C.Id, gutil.ListItemValuesUnique(output.List, "Content", "UserId")).
+		ScanList(&output.List, "User", "Content", "id:UserId")
 	if err != nil {
-		return nil, err
+		return output, err
 	}
 	return
 }
 
 // 搜索内容列表
-func (s *contentService) Search(ctx context.Context, r *define.ContentServiceSearchReq) (result *define.ContentServiceSearchRes, err error) {
+func (s *contentService) Search(ctx context.Context, input define.ContentSearchInput) (output *define.ContentSearchOutput, err error) {
 	var (
 		m           = dao.Content.Ctx(ctx)
-		likePattern = `%` + r.Key + `%`
+		likePattern = `%` + input.Key + `%`
 	)
-	result = &define.ContentServiceSearchRes{
-		Page: r.Page,
-		Size: r.Size,
+	output = &define.ContentSearchOutput{
+		Page: input.Page,
+		Size: input.Size,
 	}
 	m = m.WhereLike(dao.Content.C.Content, likePattern).WhereOrLike(dao.Content.C.Title, likePattern)
 	// 内容类型
-	if r.Type != "" {
-		m = m.Where(dao.Content.C.Type, r.Type)
+	if input.Type != "" {
+		m = m.Where(dao.Content.C.Type, input.Type)
 	}
 	// 栏目检索
-	if r.CategoryId > 0 {
-		idArray, err := Category.GetSubIdList(ctx, r.CategoryId)
+	if input.CategoryId > 0 {
+		idArray, err := Category.GetSubIdList(ctx, input.CategoryId)
 		if err != nil {
 			return nil, err
 		}
 		m = m.Where(dao.Content.C.CategoryId, idArray)
 	}
-	listModel := m.Page(r.Page, r.Size)
-	switch r.Sort {
+	listModel := m.Page(input.Page, input.Size)
+	switch input.Sort {
 	case model.ContentSortHot:
 		listModel = listModel.OrderDesc(dao.Content.C.ViewCount)
 	case model.ContentSortActive:
 		listModel = listModel.OrderDesc(dao.Content.C.UpdatedAt)
-	case model.ContentSortScore:
-		listModel = listModel.OrderDesc("score")
+	//case model.ContentSortScore:
+	//	listModel = listModel.OrderDesc("score")
 	default:
 		listModel = listModel.OrderDesc(dao.Content.C.Id)
 	}
@@ -132,9 +132,9 @@ func (s *contentService) Search(ctx context.Context, r *define.ContentServiceSea
 	}
 	// 没有数据
 	if all.IsEmpty() {
-		return result, nil
+		return output, nil
 	}
-	result.Total, err = m.Count()
+	output.Total, err = m.Count()
 	if err != nil {
 		return nil, err
 	}
@@ -144,85 +144,83 @@ func (s *contentService) Search(ctx context.Context, r *define.ContentServiceSea
 	if err != nil {
 		return nil, err
 	}
-	result.Stats = make(map[string]int)
+	output.Stats = make(map[string]int)
 	for _, v := range statsAll {
-		result.Stats[v["type"].String()] = v["total"].Int()
+		output.Stats[v["type"].String()] = v["total"].Int()
 	}
 	// Content
-	if err := all.ScanList(&result.List, "Content"); err != nil {
+	if err := all.ScanList(&output.List, "Content"); err != nil {
 		return nil, err
 	}
 	// Category
 	err = dao.Category.
 		Fields(model.ContentListCategoryItem{}).
-		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(result.List, "Content", "CategoryId")).
-		ScanList(&result.List, "Category", "Content", "id:CategoryId")
+		Where(dao.Category.C.Id, gutil.ListItemValuesUnique(output.List, "Content", "CategoryId")).
+		ScanList(&output.List, "Category", "Content", "id:CategoryId")
 	if err != nil {
 		return nil, err
 	}
 	// User
 	err = dao.User.
 		Fields(model.ContentListUserItem{}).
-		Where(dao.User.C.Id, gutil.ListItemValuesUnique(result.List, "Content", "UserId")).
-		ScanList(&result.List, "User", "Content", "id:UserId")
+		Where(dao.User.C.Id, gutil.ListItemValuesUnique(output.List, "Content", "UserId")).
+		ScanList(&output.List, "User", "Content", "id:UserId")
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	return output, nil
 }
 
 // 查询详情
-func (s *contentService) GetDetail(ctx context.Context, id uint) (*define.ContentServiceGetDetailRes, error) {
-	result := &define.ContentServiceGetDetailRes{}
-	if err := dao.Content.Ctx(ctx).WherePri(id).Scan(&result.Content); err != nil {
+func (s *contentService) GetDetail(ctx context.Context, id uint) (output *define.ContentGetDetailOutput, err error) {
+	output = &define.ContentGetDetailOutput{}
+	if err := dao.Content.Ctx(ctx).WherePri(id).Scan(&output.Content); err != nil {
 		return nil, err
 	}
 	// 没有数据
-	if result.Content == nil {
+	if output.Content == nil {
 		return nil, nil
 	}
-	err := dao.User.Ctx(ctx).WherePri(result.Content.UserId).Scan(&result.User)
+	err = dao.User.Ctx(ctx).WherePri(output.Content.UserId).Scan(&output.User)
 	if err != nil {
 		return nil, err
 	}
-	return result, nil
+	return output, nil
 }
 
 // 创建内容
-func (s *contentService) Create(ctx context.Context, r *define.ContentServiceCreateReq) (*define.ContentServiceCreateRes, error) {
-	if r.UserId == 0 {
-		r.UserId = shared.Context.Get(ctx).User.Id
+func (s *contentService) Create(ctx context.Context, input define.ContentCreateInput) (output define.ContentCreateOutput, err error) {
+	if input.UserId == 0 {
+		input.UserId = shared.Context.Get(ctx).User.Id
 	}
 	// 不允许HTML代码
-	if err := ghtml.SpecialCharsMapOrStruct(r); err != nil {
-		return nil, err
+	if err = ghtml.SpecialCharsMapOrStruct(input); err != nil {
+		return output, err
 	}
-	result, err := dao.Content.Ctx(ctx).Data(r).Insert()
+	lastInsertId, err := dao.Content.Ctx(ctx).Data(input).InsertAndGetId()
 	if err != nil {
-		return nil, err
+		return output, err
 	}
-	n, err := result.LastInsertId()
-	if err != nil {
-		return nil, err
-	}
-	return &define.ContentServiceCreateRes{ContentId: uint(n)}, err
+	return define.ContentCreateOutput{ContentId: uint(lastInsertId)}, err
 }
 
 // 修改
-func (s *contentService) Update(ctx context.Context, r *define.ContentServiceUpdateReq) error {
-	// 不允许HTML代码
-	if err := ghtml.SpecialCharsMapOrStruct(r); err != nil {
+func (s *contentService) Update(ctx context.Context, input define.ContentUpdateInput) error {
+	return dao.Content.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		// 不允许HTML代码
+		if err := ghtml.SpecialCharsMapOrStruct(input); err != nil {
+			return err
+		}
+		_, err := dao.Content.
+			Ctx(ctx).
+			Data(input).
+			FieldsEx(dao.Content.C.Id).
+			Where(dao.Content.C.Id, input.Id).
+			Where(dao.Content.C.UserId, shared.Context.Get(ctx).User.Id).
+			Update()
 		return err
-	}
-	_, err := dao.Content.
-		Ctx(ctx).
-		Data(r).
-		FieldsEx(dao.Content.C.Id).
-		Where(dao.Content.C.Id, r.Id).
-		Where(dao.Content.C.UserId, shared.Context.Get(ctx).User.Id).
-		Update()
-	return err
+	})
 }
 
 // 删除
@@ -237,7 +235,6 @@ func (s *contentService) Delete(ctx context.Context, id uint) error {
 			}
 			return err
 		}
-
 		_, err := dao.Content.Ctx(ctx).Where(g.Map{
 			dao.Content.C.Id:     id,
 			dao.Content.C.UserId: shared.Context.Get(ctx).User.Id,
@@ -255,43 +252,51 @@ func (s *contentService) Delete(ctx context.Context, id uint) error {
 
 // 浏览次数增加
 func (s *contentService) AddViewCount(ctx context.Context, id uint, count int) error {
-	_, err := dao.Content.Ctx(ctx).WherePri(id).Increment(dao.Content.C.ViewCount, count)
-	if err != nil {
-		return err
-	}
-	return nil
+	return dao.Content.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		_, err := dao.Content.Ctx(ctx).WherePri(id).Increment(dao.Content.C.ViewCount, count)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 // 回复次数增加
 func (s *contentService) AddReplyCount(ctx context.Context, id uint, count int) error {
-	_, err := dao.Content.Ctx(ctx).WherePri(id).Increment(dao.Content.C.ReplyCount, count)
-	if err != nil {
-		return err
-	}
-	return nil
+	return dao.Content.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		_, err := dao.Content.Ctx(ctx).WherePri(id).Increment(dao.Content.C.ReplyCount, count)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 // 采纳回复
 func (s *contentService) AdoptReply(ctx context.Context, id uint, replyId uint) error {
-	_, err := dao.Content.Ctx(ctx).
-		Data(dao.Content.C.AdoptedReplyId, replyId).
-		Where(dao.Content.C.UserId, shared.Context.Get(ctx).User.Id).
-		WherePri(id).
-		Update()
-	if err != nil {
-		return err
-	}
-	return nil
+	return dao.Content.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		_, err := dao.Content.Ctx(ctx).
+			Data(dao.Content.C.AdoptedReplyId, replyId).
+			Where(dao.Content.C.UserId, shared.Context.Get(ctx).User.Id).
+			WherePri(id).
+			Update()
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 // 取消采纳回复
 func (s *contentService) UnacceptedReply(ctx context.Context, id uint) error {
-	_, err := dao.Content.Ctx(ctx).
-		Data(dao.Content.C.AdoptedReplyId, 0).
-		WherePri(id).
-		Update()
-	if err != nil {
-		return err
-	}
-	return nil
+	return dao.Content.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		_, err := dao.Content.Ctx(ctx).
+			Data(dao.Content.C.AdoptedReplyId, 0).
+			WherePri(id).
+			Update()
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+// 首页接口
 var Index = indexApi{}
 
 type indexApi struct{}
@@ -18,20 +19,20 @@ type indexApi struct{}
 // @success 200 {string} html "页面HTML"
 func (a *indexApi) Index(r *ghttp.Request) {
 	var (
-		data *define.ContentServiceGetListReq
+		req *define.ContentGetListReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	}
-	if getListRes, err := service.Content.GetList(r.Context(), data); err != nil {
+	if getListRes, err := service.Content.GetList(r.Context(), req.ContentGetListInput); err != nil {
 		service.View.Render500(r, model.View{
 			Error: err.Error(),
 		})
 	} else {
 		service.View.Render(r, model.View{
-			ContentType: data.Type,
+			ContentType: req.Type,
 			Data:        getListRes,
 			Title:       "首页",
 		})

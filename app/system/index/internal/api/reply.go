@@ -19,21 +19,21 @@ type replyApi struct{}
 // @description 客户端AJAX提交，客户端
 // @tags    前台-回复
 // @produce json
-// @param   entity body define.ContentApiDoCreateReq true "请求参数" required
+// @param   entity body define.ContentDoCreateReq true "请求参数" required
 // @router  /reply/do-create [POST]
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *replyApi) DoCreate(r *ghttp.Request) {
 	var (
-		data             *define.ReplyApiCreateUpdateBase
-		serviceCreateReq *define.ReplyServiceCreateReq
+		req              *define.ReplyApiCreateUpdateBase
+		replyCreateInput *define.ReplyCreateInput
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := gconv.Struct(data, &serviceCreateReq); err != nil {
+	if err := gconv.Struct(req, &replyCreateInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Reply.Create(r.Context(), serviceCreateReq); err != nil {
+	if err := service.Reply.Create(r.Context(), replyCreateInput); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
@@ -42,12 +42,12 @@ func (a *replyApi) DoCreate(r *ghttp.Request) {
 
 func (a *replyApi) Index(r *ghttp.Request) {
 	var (
-		data *define.ReplyServiceGetListReq
+		req *define.ReplyGetListInput
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.Parse(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if getListRes, err := service.Reply.GetList(r.Context(), data); err != nil {
+	if getListRes, err := service.Reply.GetList(r.Context(), req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		service.View.RenderTpl(r, "index/reply.html", model.View{Data: getListRes})
@@ -62,12 +62,12 @@ func (a *replyApi) Index(r *ghttp.Request) {
 // @success 200 {object} response.JsonRes "请求结果"
 func (a *replyApi) DoDelete(r *ghttp.Request) {
 	var (
-		data *define.ReplyApiDoDeleteReq
+		req *define.ReplyApiDoDeleteReq
 	)
-	if err := r.ParseForm(&data); err != nil {
+	if err := r.ParseForm(&req); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
-	if err := service.Reply.Delete(r.Context(), data.Id); err != nil {
+	if err := service.Reply.Delete(r.Context(), req.Id); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
 		response.JsonExit(r, 0, "")
