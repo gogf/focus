@@ -6,6 +6,7 @@ import (
 	"focus/app/model"
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
+	"github.com/gogf/gf/database/gdb"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gutil"
@@ -18,38 +19,42 @@ type replyService struct{}
 
 // 创建回复
 func (s *replyService) Create(ctx context.Context, r *define.ReplyServiceCreateReq) error {
-	if r.UserId == 0 {
-		r.UserId = shared.Context.Get(ctx).User.Id
-	}
-	_, err := dao.Reply.Data(r).Insert()
-	if err == nil {
-		_ = Content.AddReplyCount(ctx, r.TargetId, 1)
-	}
-	return err
+	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		if r.UserId == 0 {
+			r.UserId = shared.Context.Get(ctx).User.Id
+		}
+		_, err := dao.Reply.Ctx(ctx).Data(r).Insert()
+		if err == nil {
+			_ = Content.AddReplyCount(ctx, r.TargetId, 1)
+		}
+		return err
+	})
 }
 
 // 删除
 func (s *replyService) Delete(ctx context.Context, id uint) error {
-	var reply *model.Reply
-	err := dao.Reply.Ctx(ctx).WherePri(id).Scan(&reply)
-	if err != nil {
-		return err
-	}
-	_, err = dao.Reply.Ctx(ctx).Where(g.Map{
-		dao.Reply.C.Id:     id,
-		dao.Reply.C.UserId: shared.Context.Get(ctx).User.Id,
-	}).Delete()
-	if err == nil {
-		// 回复统计-1
-		_ = Content.AddReplyCount(ctx, reply.TargetId, -1)
-		// 判断回复是否采纳
-		var content *model.Content
-		err := dao.Content.WherePri(reply.TargetId).Scan(&content)
-		if err == nil && content != nil && content.AdoptedReplyId == id {
-			_ = Content.UnacceptedReply(ctx, reply.TargetId)
+	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		var reply *model.Reply
+		err := dao.Reply.Ctx(ctx).WherePri(id).Scan(&reply)
+		if err != nil {
+			return err
 		}
-	}
-	return err
+		_, err = dao.Reply.Ctx(ctx).Where(g.Map{
+			dao.Reply.C.Id:     id,
+			dao.Reply.C.UserId: shared.Context.Get(ctx).User.Id,
+		}).Delete()
+		if err == nil {
+			// 回复统计-1
+			_ = Content.AddReplyCount(ctx, reply.TargetId, -1)
+			// 判断回复是否采纳
+			var content *model.Content
+			err := dao.Content.WherePri(reply.TargetId).Scan(&content)
+			if err == nil && content != nil && content.AdoptedReplyId == id {
+				_ = Content.UnacceptedReply(ctx, reply.TargetId)
+			}
+		}
+		return err
+	})
 }
 
 // 获取回复列表

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"focus/app/dao"
 	"focus/app/model"
 	"focus/app/shared"
@@ -160,43 +159,47 @@ func (s *interactService) updateCount(ctx context.Context, interactType int, tar
 	}()
 	var err error
 	switch targetType {
+	// 内容赞踩
 	case model.InteractTargetTypeContent:
 		switch interactType {
 		case model.InteractTypeZan:
-			_, err = dao.Content.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.C.ZanCount, dao.Content.C.ZanCount, count)).
-				Where(dao.Content.C.Id, targetId).Where(dao.Content.C.ZanCount + ">=0").Update()
+			_, err = dao.Content.Ctx(ctx).
+				Where(dao.Content.C.Id, targetId).
+				WhereGTE(dao.Content.C.ZanCount, 0).
+				Increment(dao.Content.C.ZanCount, count)
 			if err != nil {
 				return err
 			}
 
 		case model.InteractTypeCai:
-			_, err = dao.Content.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Content.C.CaiCount, dao.Content.C.CaiCount, count)).
-				Where(dao.Content.C.Id, targetId).Where(dao.Content.C.CaiCount + ">=0").Update()
+			_, err = dao.Content.Ctx(ctx).
+				Where(dao.Content.C.Id, targetId).
+				WhereGTE(dao.Content.C.CaiCount, 0).
+				Increment(dao.Content.C.CaiCount, count)
 			if err != nil {
 				return err
 			}
 		}
-
+	// 评论赞踩
 	case model.InteractTargetTypeReply:
 		switch interactType {
 		case model.InteractTypeZan:
-			_, err = dao.Reply.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.C.ZanCount, dao.Reply.C.ZanCount, count)).
-				Where(dao.Reply.C.Id, targetId).Where(dao.Reply.C.ZanCount + ">=0").Update()
+			_, err = dao.Reply.Ctx(ctx).
+				Where(dao.Content.C.Id, targetId).
+				WhereGTE(dao.Content.C.ZanCount, 0).
+				Increment(dao.Content.C.ZanCount, count)
 			if err != nil {
 				return err
 			}
 
 		case model.InteractTypeCai:
-			_, err = dao.Reply.
-				Data(fmt.Sprintf(`%s=%s+%d`, dao.Reply.C.CaiCount, dao.Reply.C.CaiCount, count)).
-				Where(dao.Reply.C.Id, targetId).Where(dao.Reply.C.CaiCount + ">=0").Update()
+			_, err = dao.Reply.Ctx(ctx).
+				Where(dao.Content.C.Id, targetId).
+				WhereGTE(dao.Content.C.CaiCount, 0).
+				Increment(dao.Content.C.CaiCount, count)
 			if err != nil {
 				return err
 			}
-
 		}
 	}
 	return nil
