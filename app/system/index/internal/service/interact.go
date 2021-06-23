@@ -6,6 +6,8 @@ import (
 	"focus/app/model"
 	"focus/app/shared"
 
+	"github.com/gogf/gf/database/gdb"
+
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 )
@@ -21,45 +23,49 @@ const (
 
 // 赞
 func (s *interactService) Zan(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := shared.Context.Get(ctx)
-	if customCtx == nil || customCtx.User == nil {
-		return nil
-	}
-	r, err := dao.Interact.Data(&model.Interact{
-		UserId:     customCtx.User.Id,
-		TargetId:   targetId,
-		TargetType: targetType,
-		Type:       model.InteractTypeZan,
-	}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
-	if err != nil {
-		return err
-	}
+	return dao.Interact.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		customCtx := shared.Context.Get(ctx)
+		if customCtx == nil || customCtx.User == nil {
+			return nil
+		}
+		r, err := dao.Interact.Data(&model.Interact{
+			UserId:     customCtx.User.Id,
+			TargetId:   targetId,
+			TargetType: targetType,
+			Type:       model.InteractTypeZan,
+		}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
+		if err != nil {
+			return err
+		}
 
-	if n, _ := r.RowsAffected(); n == 0 {
-		return gerror.New("您已经赞过啦")
-	}
-	return s.updateCount(ctx, model.InteractTypeZan, targetType, targetId, 1)
+		if n, _ := r.RowsAffected(); n == 0 {
+			return gerror.New("您已经赞过啦")
+		}
+		return s.updateCount(ctx, model.InteractTypeZan, targetType, targetId, 1)
+	})
 }
 
 // 取消赞
 func (s *interactService) CancelZan(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := shared.Context.Get(ctx)
-	if customCtx == nil || customCtx.User == nil {
-		return nil
-	}
-	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
-		dao.Interact.C.TargetId, targetId,
-		dao.Interact.C.TargetType, targetType,
-		dao.Interact.C.Type, model.InteractTypeZan,
-	}).Delete()
-	if err != nil {
-		return err
-	}
-	if n, _ := r.RowsAffected(); n == 0 {
-		return nil
-	}
-	return s.updateCount(ctx, model.InteractTypeZan, targetType, targetId, -1)
+	return dao.Interact.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		customCtx := shared.Context.Get(ctx)
+		if customCtx == nil || customCtx.User == nil {
+			return nil
+		}
+		r, err := dao.Interact.Where(g.Slice{
+			dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
+			dao.Interact.C.TargetId, targetId,
+			dao.Interact.C.TargetType, targetType,
+			dao.Interact.C.Type, model.InteractTypeZan,
+		}).Delete()
+		if err != nil {
+			return err
+		}
+		if n, _ := r.RowsAffected(); n == 0 {
+			return nil
+		}
+		return s.updateCount(ctx, model.InteractTypeZan, targetType, targetId, -1)
+	})
 }
 
 // 我是否有对指定内容赞
@@ -78,44 +84,48 @@ func (s *interactService) DidIZan(ctx context.Context, targetType string, target
 
 // 踩
 func (s *interactService) Cai(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := shared.Context.Get(ctx)
-	if customCtx == nil || customCtx.User == nil {
-		return nil
-	}
-	r, err := dao.Interact.Data(&model.Interact{
-		UserId:     customCtx.User.Id,
-		TargetId:   targetId,
-		TargetType: targetType,
-		Type:       model.InteractTypeCai,
-	}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
-	if err != nil {
-		return err
-	}
-	if n, _ := r.RowsAffected(); n == 0 {
-		return gerror.New("您已经踩过啦")
-	}
-	return s.updateCount(ctx, model.InteractTypeCai, targetType, targetId, 1)
+	return dao.Interact.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		customCtx := shared.Context.Get(ctx)
+		if customCtx == nil || customCtx.User == nil {
+			return nil
+		}
+		r, err := dao.Interact.Data(&model.Interact{
+			UserId:     customCtx.User.Id,
+			TargetId:   targetId,
+			TargetType: targetType,
+			Type:       model.InteractTypeCai,
+		}).FieldsEx(dao.Interact.C.Id).InsertIgnore()
+		if err != nil {
+			return err
+		}
+		if n, _ := r.RowsAffected(); n == 0 {
+			return gerror.New("您已经踩过啦")
+		}
+		return s.updateCount(ctx, model.InteractTypeCai, targetType, targetId, 1)
+	})
 }
 
 // 取消踩
 func (s *interactService) CancelCai(ctx context.Context, targetType string, targetId uint) error {
-	customCtx := shared.Context.Get(ctx)
-	if customCtx == nil || customCtx.User == nil {
-		return nil
-	}
-	r, err := dao.Interact.Where(g.Slice{
-		dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
-		dao.Interact.C.TargetId, targetId,
-		dao.Interact.C.TargetType, targetType,
-		dao.Interact.C.Type, model.InteractTypeCai,
-	}).Delete()
-	if err != nil {
-		return err
-	}
-	if n, _ := r.RowsAffected(); n == 0 {
-		return nil
-	}
-	return s.updateCount(ctx, model.InteractTypeCai, targetType, targetId, -1)
+	return dao.Interact.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		customCtx := shared.Context.Get(ctx)
+		if customCtx == nil || customCtx.User == nil {
+			return nil
+		}
+		r, err := dao.Interact.Where(g.Slice{
+			dao.Interact.C.UserId, shared.Context.Get(ctx).User.Id,
+			dao.Interact.C.TargetId, targetId,
+			dao.Interact.C.TargetType, targetType,
+			dao.Interact.C.Type, model.InteractTypeCai,
+		}).Delete()
+		if err != nil {
+			return err
+		}
+		if n, _ := r.RowsAffected(); n == 0 {
+			return nil
+		}
+		return s.updateCount(ctx, model.InteractTypeCai, targetType, targetId, -1)
+	})
 }
 
 // 我是否有对指定内容踩

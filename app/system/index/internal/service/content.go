@@ -1,12 +1,12 @@
 package service
 
-import "C"
 import (
 	"context"
 	"focus/app/dao"
 	"focus/app/model"
 	"focus/app/shared"
 	"focus/app/system/index/internal/define"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/encoding/ghtml"
 	"github.com/gogf/gf/frame/g"
