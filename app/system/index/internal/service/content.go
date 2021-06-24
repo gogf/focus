@@ -235,16 +235,14 @@ func (s *contentService) Delete(ctx context.Context, id uint) error {
 			}
 			return err
 		}
+		// 删除内容
 		_, err := dao.Content.Ctx(ctx).Where(g.Map{
 			dao.Content.C.Id:     id,
 			dao.Content.C.UserId: shared.Context.Get(ctx).User.Id,
 		}).Delete()
 		// 删除评论
 		if err == nil {
-			_, err = dao.Reply.Ctx(ctx).Where(g.Map{
-				dao.Reply.C.TargetId: id,
-				dao.Reply.C.UserId:   shared.Context.Get(ctx).User.Id,
-			}).Delete()
+			err = Reply.DeleteByUserContentId(ctx, user.Id, id)
 		}
 		return err
 	})

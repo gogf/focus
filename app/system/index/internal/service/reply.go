@@ -60,6 +60,18 @@ func (s *replyService) Delete(ctx context.Context, id uint) error {
 	})
 }
 
+// 删除回复(硬删除)
+func (s *replyService) DeleteByUserContentId(ctx context.Context, userId, contentId uint) error {
+	return dao.Reply.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		// 删除内容对应的回复
+		_, err := dao.Reply.Ctx(ctx).Where(g.Map{
+			dao.Reply.C.TargetId: contentId,
+			dao.Reply.C.UserId:   userId,
+		}).Delete()
+		return err
+	})
+}
+
 // 获取回复列表
 func (s *replyService) GetList(ctx context.Context, input define.ReplyGetListInput) (output *define.ReplyGetListOutput, err error) {
 	output = &define.ReplyGetListOutput{

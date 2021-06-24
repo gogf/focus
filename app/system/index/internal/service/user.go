@@ -118,25 +118,27 @@ func (s *userService) CheckNicknameUnique(ctx context.Context, nickname string) 
 
 // 用户注册。
 func (s *userService) Register(ctx context.Context, input define.UserRegisterInput) error {
-	var user *model.User
-	if err := gconv.Struct(input, &user); err != nil {
+	return dao.User.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		var user *model.User
+		if err := gconv.Struct(input, &user); err != nil {
+			return err
+		}
+		if err := s.CheckPassportUnique(ctx, user.Passport); err != nil {
+			return err
+		}
+		if err := s.CheckNicknameUnique(ctx, user.Nickname); err != nil {
+			return err
+		}
+		user.Password = s.EncryptPassword(user.Passport, user.Password)
+		// 自动生成头像
+		avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadPath, user.Passport)
+		if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
+			return gerror.Wrapf(err, `自动创建头像失败`)
+		}
+		user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadUrlPrefix, user.Passport)
+		_, err := dao.User.Ctx(ctx).Data(user).OmitEmpty().Save()
 		return err
-	}
-	if err := s.CheckPassportUnique(ctx, user.Passport); err != nil {
-		return err
-	}
-	if err := s.CheckNicknameUnique(ctx, user.Nickname); err != nil {
-		return err
-	}
-	user.Password = s.EncryptPassword(user.Passport, user.Password)
-	// 自动生成头像
-	avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadPath, user.Passport)
-	if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
-		return gerror.Wrapf(err, `自动创建头像失败`)
-	}
-	user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadUrlPrefix, user.Passport)
-	_, err := dao.User.Data(user).OmitEmpty().Save()
-	return err
+	})
 }
 
 // 修改个人密码
@@ -208,7 +210,10 @@ func (s *userService) UpdateProfile(ctx context.Context, input define.UserUpdate
 			user   = shared.Context.Get(ctx).User
 			userId = user.Id
 		)
-		n, err := dao.User.Where(dao.User.C.Nickname, input.Nickname).Where("id <> ?", userId).Count()
+		n, err := dao.User.Ctx(ctx).
+			Where(dao.User.C.Nickname, input.Nickname).
+			WhereNot(dao.User.C.Id, userId).
+			Count()
 		if err != nil {
 			return err
 		}
