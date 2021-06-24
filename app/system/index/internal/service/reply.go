@@ -24,7 +24,7 @@ func (s *replyService) Create(ctx context.Context, input define.ReplyCreateInput
 		input.UserId = shared.Context.Get(ctx).User.Id
 		_, err := dao.Reply.Ctx(ctx).Data(input).Insert()
 		if err == nil {
-			_ = Content.AddReplyCount(ctx, input.TargetId, 1)
+			err = Content.AddReplyCount(ctx, input.TargetId, 1)
 		}
 		return err
 	})
