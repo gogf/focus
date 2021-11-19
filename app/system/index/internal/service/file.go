@@ -18,7 +18,7 @@ var File = fileService{}
 
 type fileService struct{}
 
-// 同一上传文件
+// 统一上传文件
 func (s *fileService) Upload(ctx context.Context, input define.FileUploadInput) (*define.FileUploadOutput, error) {
 	uploadPath := g.Cfg().GetString("upload.path")
 	if uploadPath == "" {
